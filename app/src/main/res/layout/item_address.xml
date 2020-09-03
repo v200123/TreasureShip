@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="address"
+            type="com.jzz.treasureship.model.bean.Address" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_addressItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/address_item_bg_shape"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
+
+        <LinearLayout
+            android:id="@+id/address_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_input_shape"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_item"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22.5dp"
+                    android:text="姓名"
+                    android:textColor="@color/garyf3"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:text="\ 15856915060"
+                    android:textColor="@color/garyf3"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+            >
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="22.5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="北京通州区玉桥街道 柳岸方园86号楼4单元502"
+                    android:textColor="@color/garyf3"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/garyf6" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <CheckBox
+                    android:layout_marginStart="17.5dp"
+                    android:id="@+id/cb_setDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:button="@drawable/address_check_seletor"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:text="默认地址"
+                    android:clickable="false"
+                    android:textColor="@color/gray999"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_addr_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="21dp"
+                        android:drawableLeft="@drawable/icon_address_edit" />
+
+                    <TextView
+                        android:id="@+id/tv_addr_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="22dp"
+                        android:drawableLeft="@drawable/icon_address_del"
+                        android:textColor="@color/gray999" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

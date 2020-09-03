@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jzz.treasureship.ui.search.SearchViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0.0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:background="@drawable/home_search_input_shape"
+                android:drawableStart="@drawable/icon_search"
+                android:drawableEnd="@drawable/icon_cancle"
+                android:drawablePadding="10.0dp"
+                android:hint="输入名称或您添加的标签"
+                android:imeOptions="actionSearch"
+                android:padding="7dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:singleLine="true"
+                android:textColor="#C9C8C8"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_cancal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="取消"
+                android:textColor="#4A4A4A"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_hot"
+                    android:drawablePadding="5.0dp"
+                    android:gravity="center"
+                    android:padding="15.0dp"
+                    android:text="热搜"
+                    android:textColor="#262626"
+                    android:textSize="16.0sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mrv_search_hot"
+                    android:layout_width="match_parent"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="#FAFAFA" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5.0dp"
+                    android:gravity="center"
+                    android:padding="15.0dp"
+                    android:text="病症"
+                    android:textColor="#262626"
+                    android:textSize="16.0sp" />
+
+                <com.jzz.treasureship.view.CustomFlexlayout
+                    android:id="@+id/mfl_search_disease"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dp"
+                    android:layout_marginRight="10.0dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="#FAFAFA" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5.0dp"
+                    android:gravity="center"
+                    android:padding="15.0dp"
+                    android:text="品牌"
+                    android:textColor="#262626"
+                    android:textSize="16.0sp" />
+
+                <com.jzz.treasureship.view.CustomFlexlayout
+                    android:id="@+id/mfl_search_brand"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dp"
+                    android:layout_marginRight="10.0dp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

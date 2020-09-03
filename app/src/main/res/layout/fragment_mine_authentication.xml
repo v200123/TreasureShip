@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="userModel"
+            type="com.jzz.treasureship.ui.user.UserViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/garyf6"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/titles"
+            layout="@layout/include_title" />
+
+        <TextView
+            android:id="@+id/tv_files"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titles"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="26dp"
+            android:text="个人资质认证资料"
+            android:textColor="#ff111111"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+        <FrameLayout
+            android:id="@+id/ll_upLoadCerts"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_below="@id/tv_files"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/white"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_cert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/icon_upload"
+                android:drawablePadding="20dp"
+                android:gravity="center"
+                android:text="上传医生/护士工牌或从业资格证"
+                android:textColor="#ff26c8d7"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_imgCert"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/ll_uploadHalfBodyImg"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_below="@id/ll_upLoadCerts"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/white"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_halfBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/icon_upload"
+                android:drawablePadding="20dp"
+                android:gravity="center"
+                android:text="上传身份证正面或可见工牌的半身像"
+                android:textColor="#ff26c8d7"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_imgHalfBody"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_submit_auth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#26C8D7"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="提交认证"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</layout>

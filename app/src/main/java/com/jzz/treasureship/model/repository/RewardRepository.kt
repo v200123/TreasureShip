@@ -1,0 +1,42 @@
+package com.jzz.treasureship.model.repository
+
+import cn.jpush.android.api.JPushInterface
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.ToastUtils
+import com.jzz.treasureship.App
+import com.jzz.treasureship.BuildConfig
+import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.api.JzzApiService
+import com.jzz.treasureship.model.bean.JzzResponse
+import com.jzz.treasureship.model.bean.Reward
+import com.jzz.treasureship.model.bean.UpdateAppBean
+import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.utils.PreferenceUtils
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import org.json.JSONObject
+
+class RewardRepository(private val service: JzzApiService) : BaseRepository() {
+
+
+    //领取红包
+    suspend fun getReward(): Result<JzzResponse<Reward>> {
+        return safeApiCall(
+            call = { requestReward() },
+            errorMessage = "红包/问卷获取失败!"
+        )
+    }
+
+    //微信登录
+    private suspend fun requestReward(): Result<JzzResponse<Reward>> {
+        val root = JSONObject()
+        val body = JSONObject()
+
+        root.put("body", body)
+
+        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val response = service.receiveRedEnvelope(requestBody)
+
+        return executeResponse(response)
+    }
+}

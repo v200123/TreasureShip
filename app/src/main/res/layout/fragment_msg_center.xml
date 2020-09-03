@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="msgViewModel"
+            type="com.jzz.treasureship.ui.msg.MsgViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F6F6"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_title" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/msg_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorFullWidth="false"
+            app:tabMaxWidth="200dp"
+            app:tabMinWidth="20dp"
+            app:tabPaddingEnd="8dp"
+            app:tabPaddingStart="12dp"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/TabText"
+            app:tabTextColor="#FF666666" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/msgcenter_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.jzz.treasureship.model.bean.CommentData" />
+    </data>
+
+
+    <LinearLayout
+        android:id="@+id/layout_childContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_childName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13.5dp"
+            android:text="宝舰箱01号:"
+            android:textColor="#ff26c8d7"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_childContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="3年，是胶囊款。"
+            android:textColor="#ff333333"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</layout>
