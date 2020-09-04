@@ -22,7 +22,7 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
     val userState: LiveData<UserModel>
         get() = _UserState
 
-    //获取用户信息
+    //获取用户信v
     fun getUserInfo() {
         emitUserUiState(true)
         viewModelScope.launch(Dispatchers.Main) {

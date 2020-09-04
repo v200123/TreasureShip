@@ -2,8 +2,14 @@ package com.jzz.treasureship.ui.home
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
+import android.text.style.ImageSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +17,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
@@ -24,6 +32,7 @@ import com.jzz.treasureship.adapter.CommentsAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.VideoData
+import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.questions.QuestionsFragment
@@ -32,6 +41,7 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.interfaces.SimpleCallback
+import com.lxj.xpopup.interfaces.XPopupCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
@@ -42,9 +52,11 @@ import kotlinx.android.synthetic.main.layout_home_header.*
 import kotlinx.android.synthetic.main.video_layout_normal.view.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.math.BigDecimal
+import kotlin.math.log
 
 class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
+    private val popStatus by activityViewModels<DialogStatusViewModel>()
     private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     private var tsbUpdate by PreferenceUtils(PreferenceUtils.TSB_UPDATE, false)
     private val mAdapter by lazy { HomeVpAdapter(0) }
@@ -81,8 +93,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
     override fun initVM(): HomeViewModel = getViewModel()
 
     override fun initView() {
-
-        arguments!!.let {
+        requireArguments().let {
             mTab = it.getParcelable<HomeTabBeanItem>("tabItem")
             mTabPosition = it.getInt("tabPosition")
         }
@@ -135,36 +146,37 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         }
     }
 
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.layout_like -> {
-                if (isLogin) {
-                    mViewModel.getCollectCategory()
-                    currentVideoID = mAdapter.getItem(position)!!.id
-                    currentPosition = position
-                } else {
-                    switchLogin()
+    private var onItemChildClickListener =
+        BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.layout_like -> {
+                    if (isLogin) {
+                        mViewModel.getCollectCategory()
+                        currentVideoID = mAdapter.getItem(position)!!.id
+                        currentPosition = position
+                    } else {
+                        switchLogin()
+                    }
                 }
-            }
-            R.id.layout_comment -> {
-                if (isLogin) {
-                    mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
-                    XPopup.Builder(this@HomeVpFragment.context)
-                        .asCustom(
-                            CustomCommentBottomPopup(
-                                this@HomeVpFragment.context!!,
-                                mViewModel,
-                                mAdapter.getItem(position)!!.id,
-                                commentsAdapter
-                            )
-                        ).show()
-                    currentVideoID = mAdapter.getItem(position)!!.id
-                    currentPosition = position
-                } else {
-                    switchLogin()
-                }
+                R.id.layout_comment -> {
+                    if (isLogin) {
+                        mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
+                        XPopup.Builder(this@HomeVpFragment.context)
+                            .asCustom(
+                                CustomCommentBottomPopup(
+                                    this@HomeVpFragment.context!!,
+                                    mViewModel,
+                                    mAdapter.getItem(position)!!.id,
+                                    commentsAdapter
+                                )
+                            ).show()
+                        currentVideoID = mAdapter.getItem(position)!!.id
+                        currentPosition = position
+                    } else {
+                        switchLogin()
+                    }
 
-            }
+                }
 //            R.id.layout_share -> {
 //                XPopup.Builder(view.context).asCustom(
 //                    CustomShareBottomPopup(
@@ -176,8 +188,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 //                    )
 //                ).show()
 //            }
+            }
         }
-    }
 
     override fun initData() {
 //        if (mTab == 0) {
@@ -190,7 +202,9 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
-            val xPopup = XPopup.Builder(context).dismissOnBackPressed(false).dismissOnTouchOutside(false).asLoading()
+            val xPopup =
+                XPopup.Builder(context).dismissOnBackPressed(false).dismissOnTouchOutside(false)
+                    .asLoading()
 
             adState.observe(this@HomeVpFragment, Observer {
 
@@ -278,7 +292,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 }
             })
 
-            collectUiState.observe(this@HomeVpFragment, Observer {
+            collectUiState.observe(this@HomeVpFragment, {
                 it.showLoading.let {
                     if (it) {
                         xPopup.show()
@@ -287,15 +301,37 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let { list ->
                     xPopup.dismiss()
-                    XPopup.Builder(context).asCustom(
-                        CustomLikeBottomPopup(
-                            context!!,
-                            currentVideoID,
-                            0,
-                            list,
-                            mViewModel
-                        )
-                    ).show()
+                    XPopup.Builder(context)
+                        .setPopupCallback(object : XPopupCallback {
+                            override fun onCreated() {
+                            }
+
+                            override fun beforeShow() {
+                            }
+
+                            override fun onShow() {
+                                Log.d("TAG", "onShow:回调发生了 ")
+                                popStatus.isOpen = true
+                            }
+
+                            override fun onDismiss() {
+                                popStatus.isOpen = false
+                            }
+
+                            override fun onBackPressed(): Boolean {
+                                Log.d("TAG", "onBackPressed:哈哈哈哈哈 ")
+                               return true
+                            }
+                        })
+                        .asCustom(
+                            CustomLikeBottomPopup(
+                                requireContext(),
+                                currentVideoID,
+                                0,
+                                list,
+                                mViewModel
+                            )
+                        ).show()
                 }
 
                 it.showError?.let { message ->
@@ -421,9 +457,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             val customDialog = CustomDialog.Builder(this@HomeVpFragment.context!!)
                             customDialog.setTitle("提示")
                             customDialog.setMessage("${it.resultMsg}")
-                            customDialog.setPositiveButton("确定", DialogInterface.OnClickListener { dialog, which ->
-                                dialog.dismiss()
-                            })
+                            customDialog.setPositiveButton(
+                                "确定",
+                                DialogInterface.OnClickListener { dialog, which ->
+                                    dialog.dismiss()
+                                })
                             customDialog.create().show()
 //                            ToastUtils.showShort("${it.resultMsg}")
                         }
@@ -446,9 +484,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             val customDialog = CustomDialog.Builder(this@HomeVpFragment.context!!)
                             customDialog.setTitle("提示")
                             customDialog.setMessage("${it.resultMsg}")
-                            customDialog.setPositiveButton("确定", DialogInterface.OnClickListener { dialog, which ->
-                                dialog.dismiss()
-                            })
+                            customDialog.setPositiveButton(
+                                "确定",
+                                DialogInterface.OnClickListener { dialog, which ->
+                                    dialog.dismiss()
+                                })
                             customDialog.create().show()
                         }
                     }
@@ -474,13 +514,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
             rewardState.observe(this@HomeVpFragment, Observer {
 
-                it.showSuccess?.let {reward ->
-                    if (reward.redEnvelopeRecord == null){
+                it.showSuccess?.let { reward ->
+                    if (reward.redEnvelopeRecord == null) {
                         ToastUtils.showShort("来晚一步，红包没有啦！")
                         return@Observer
                     }
                     reward.redEnvelopeRecord.let { record ->
-                        record.amount?.let {amount ->
+                        record.amount?.let { amount ->
                             XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
                                 override fun onDismiss() {
                                     super.onDismiss()
@@ -563,9 +603,10 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
             helper.getView<TextView>(R.id.totalTime).text = formatTimeS(item.duration.toLong())
 
+
             GSYVideoOptionBuilder().setIsTouchWiget(false)
                 .setUrl(item.videoUrl)
-                .setVideoTitle(item.videoName)
+//                .setVideoTitle(item.videoName)
                 .setCacheWithPlay(false)
                 .setRotateViewAuto(true)
                 .setCacheWithPlay(true)
@@ -573,7 +614,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 .setReleaseWhenLossAudio(true)
                 .setShowFullAnimation(true)
                 .setNeedLockFull(true)
-                .setPlayPosition(helper.position)
+                .setPlayPosition(helper.layoutPosition)
                 .setVideoAllCallBack(object : GSYSampleCallBack() {
                     override fun onPrepared(url: String, vararg objects: Any) {
                         super.onPrepared(url, *objects)
@@ -587,7 +628,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         super.onQuitFullscreen(url, *objects)
                         //全屏不静音
                         GSYVideoManager.instance().isNeedMute = false
-                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility = View.VISIBLE
+                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility =
+                            View.VISIBLE
                         helper.getView<TextView>(R.id.totalTime).visibility = View.VISIBLE
                         GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL)
                     }
@@ -615,11 +657,26 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         super.onClickStop(url, *objects)
                         helper.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.VISIBLE
                     }
-
-
                 }).build(helper.getView<CustomVideoPlayer>(R.id.video_player))
             helper.getView<CustomVideoPlayer>(R.id.video_player).apply {
-                fullscreenButton.setOnClickListener { resolveFullBtn(helper.getView<CustomVideoPlayer>(R.id.video_player) as StandardGSYVideoPlayer) }
+                val spannerText =
+                    SpannableStringBuilder(item.mark ?: "").append(item.videoName).apply {
+                        if (!item.mark.isNullOrEmpty())
+                            setSpan(
+                                RadiusSpan(Color.rgb(244,92,90), 10, mContext),
+                                0,
+                                item.mark.length,
+                                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                            )
+                    }
+                setMarkAndTitle(spannerText)
+                fullscreenButton.setOnClickListener {
+                    resolveFullBtn(
+                        helper.getView<CustomVideoPlayer>(
+                            R.id.video_player
+                        ) as StandardGSYVideoPlayer
+                    )
+                }
                 backButton.visibility = View.GONE
             }
 
@@ -629,7 +686,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
                             View.INVISIBLE
                     } else {
-                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility = View.VISIBLE
+                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
+                            View.VISIBLE
                         helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.setOnClickListener {
                             if (!isLogin) {
                                 switchLogin()
@@ -677,7 +735,9 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 for (ele in keywords) {
                     if (ele.isNotBlank()) {
                         val tv = LayoutInflater.from(mContext).inflate(
-                            R.layout.layout_home_video_keywords, helper.getView(R.id.keywordsFlexlayout), false
+                            R.layout.layout_home_video_keywords,
+                            helper.getView(R.id.keywordsFlexlayout),
+                            false
                         ) as TextView
                         tv.maxEms = 6
                         tv.maxLines = 1
@@ -690,9 +750,15 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             if (item.like == 0) {
-                helper.setImageDrawable(R.id.iv_like, mContext.resources.getDrawable(R.drawable.home_unfavorite))
+                helper.setImageDrawable(
+                    R.id.iv_like,
+                    mContext.resources.getDrawable(R.drawable.home_unfavorite)
+                )
             } else {
-                helper.setImageDrawable(R.id.iv_like, mContext.resources.getDrawable(R.drawable.home_favorite))
+                helper.setImageDrawable(
+                    R.id.iv_like,
+                    mContext.resources.getDrawable(R.drawable.home_favorite)
+                )
             }
             helper.setText(R.id.tv_likeCount, "${toNum(item.likeCount)}")
             helper.setText(R.id.tv_commentCount, "${toNum(item.commentCount)}")

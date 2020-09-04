@@ -1,3 +1,9 @@
+import com.lc.versionplugin.VersionControllor
+
+plugins{
+    // 这个 id 就是在 versionPlugin 文件夹下 build.gradle 文件内定义的 id
+    id "com.lc.plugin"
+}
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
@@ -8,6 +14,21 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'mtj-circle-plugin'
 android {
+
+    if(project.hasProperty('devBuild')){
+        // 开发中禁用 Split apk
+        splits.abi.enable = false
+        splits.density.enable =false
+        // 禁用 PNG 运算
+        aaptOptions.cruncherEnabled = false
+    }
+
+    dexOptions{
+        javaMaxHeapSize = "1g"
+        incremental true
+        threadCount = 10
+        preDexLibraries = true
+    }
 
     lintOptions {
         checkReleaseBuilds false
@@ -47,7 +68,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.jzz.treasureship"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 129
         versionName "1.2.9"
@@ -131,6 +152,7 @@ dependencies {
 //    def work_version = "2.3.4"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation VersionControllor.Ktx.fragmentKtx
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'

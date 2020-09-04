@@ -43,6 +43,8 @@ class CustomLikeBottomPopup(
 
     override fun getImplLayoutId() = R.layout.dialog_home_like
 
+
+
     override fun initPopupContent() {
         super.initPopupContent()
 
@@ -57,9 +59,7 @@ class CustomLikeBottomPopup(
         }
 
         mAdapter.run {
-
             this.removeAllFooterView()
-
             val addCategoryFooter: View = View.inflate(context, R.layout.dialog_collect_footer, null)
             addCategoryFooter.setOnClickListener {
                 this@CustomLikeBottomPopup.dismiss()
@@ -106,5 +106,6 @@ class CustomLikeBottomPopup(
     override fun getMaxHeight(): Int {
         return (XPopupUtils.getWindowHeight(context) * .75f).roundToInt()
     }
+
 
 }

@@ -11,6 +11,7 @@ import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.PathUtils
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.addressbook.AddressBookFragment
 import com.jzz.treasureship.ui.home.HomeFragment
+import com.jzz.treasureship.ui.home.HomeVpFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.ui.msg.MsgFragment
@@ -51,9 +53,9 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
 
 
     val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
-
     private var curFragment by PreferenceUtils(PreferenceUtils.CUR_FRAGMENT, "")
     private var mCurrentFragment = Fragment()
+    private val mPopStatus by viewModels<DialogStatusViewModel>()
 
     //    private val mHomeFragment by lazy { HomeFragment.newInstance() }
     private val mTsbFragment by lazy { TreasureBoxFragment.newInstance() }
@@ -88,6 +90,8 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
         if (GSYVideoManager.backFromWindowFull(this)) {
             return
         }
+
+
         if (supportFragmentManager.backStackEntryCount == 0) {
             val currentTIme = System.currentTimeMillis()
             if (lastBackPressTime == -1L || currentTIme - lastBackPressTime >= 2000) {
@@ -101,24 +105,24 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
             }
         } else {
             when (supportFragmentManager.findFragmentById(R.id.frame_content)) {
-                is MsgFragment ->{
+                is MsgFragment -> {
                     super.onBackPressed()
                 }
-
                 is HomeFragment,
                 is TreasureBoxFragment,
                 is AddressBookFragment,
                 is UserSettingFragment -> {
-                    val currentTime = System.currentTimeMillis()
-                    if (lastBackPressTime == -1L || currentTime - lastBackPressTime >= 2000) {
-                        // 显示提示信息
-                        ToastUtils.showShort("再按一次返回键退出宝舰")
-                        // 记录时间
-                        lastBackPressTime = currentTime
-                    } else {
-                        //退出应用
-                        finish()
-                    }
+
+                        val currentTime = System.currentTimeMillis()
+                        if (lastBackPressTime == -1L || currentTime - lastBackPressTime >= 2000) {
+                            // 显示提示信息
+                            ToastUtils.showShort("再按一次返回键退出宝舰")
+                            // 记录时间
+                            lastBackPressTime = currentTime
+                        } else {
+                            //退出应用
+                            finish()
+                        }
                 }
                 else -> {
                     if (!BackHandlerHelper.handleBackPress(this)) {
@@ -287,9 +291,7 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
             })
 
             updateState.observe(this@MainActivity, Observer {
-
                 it.showSuccess?.let {
-
                     if (BuildConfig.VERSION_CODE >= it.versionCode!!) {
                         return@Observer
                     }

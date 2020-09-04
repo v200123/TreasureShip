@@ -18,6 +18,7 @@ data class VideoData(
     val videoName: String?,
     val videoUrl: String?,
     val width: Int,
+    val mark:String?,
     //利用这个值控制列表第一个视频的top1图标显示
     var position: Int = -1
 )

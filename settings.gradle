@@ -1,6 +1,7 @@
-include ':myBaseLibrary'
-include ':versionplugin'
 include ':app'
+includeBuild 'versionPlugin'
+include ':myBaseLibrary'
+
 rootProject.name='TreasureShip'
 
 gradle.addBuildListener(new BuildListener() {
@@ -41,4 +42,8 @@ gradle.addBuildListener(new BuildListener() {
     }
 //    }
 
+    @Override
+    void beforeSettings(Settings settings) {
+        super.beforeSettings(settings)
+    }
 })
