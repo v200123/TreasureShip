@@ -14,6 +14,7 @@ import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.login.LoginActivity
 
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.changeImage
 import com.lxj.xpopup.core.BottomPopupView
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession
@@ -65,7 +66,7 @@ class CustomShareGoosBottomPopup(
             msg.description = description
 
             val thumbBmp = BitmapFactory.decodeResource(this.context.resources, R.mipmap.ic_launcher);
-            msg.thumbData = ImageUtils.bitmap2Bytes(thumbBmp, Bitmap.CompressFormat.PNG,100)
+            msg.thumbData = thumbBmp.changeImage()
 
             //构造一个Req
             val req = SendMessageToWX.Req()

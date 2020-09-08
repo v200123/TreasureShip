@@ -41,6 +41,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.changeImage
 import com.jzz.treasureship.view.CustomComparePricePopup
 import com.jzz.treasureship.view.CustomPropertyPopup
 import com.jzz.treasureship.view.CustomSkuBottomPopup
@@ -786,7 +787,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             shareMsg.title = goodsDetail.goodsName
             shareMsg.description = "我在宝舰上发现了一个不错的商品，快来看看吧。"
             val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher);
-            shareMsg.thumbData = ImageUtils.bitmap2Bytes(thumbBmp, Bitmap.CompressFormat.PNG,100)
+            shareMsg.thumbData = thumbBmp.changeImage()
 
             val req = SendMessageToWX.Req()
             req.transaction = buildTransaction("webpage")

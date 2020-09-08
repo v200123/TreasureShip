@@ -31,7 +31,8 @@ class SplashActivity : Activity() {
         if (FIRST_BOOT) {
             //首次启动，进入引导页
             if (!alreadyNoticeLic) {
-                XPopup.Builder(this).dismissOnTouchOutside(false).dismissOnBackPressed(false)
+                XPopup.Builder(this).dismissOnTouchOutside(false)
+                    .dismissOnBackPressed(false)
                     .setPopupCallback(object : SimpleCallback() {
                         override fun onDismiss() {
                             super.onDismiss()

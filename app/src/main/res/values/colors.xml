@@ -5,10 +5,10 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="white">#ffffff</color>
-
+    <color name="black_343434">#343434</color>
     <color name="blue_normal">#26C8D7</color>
     <color name="blue_light">#26C8D7</color>
-
+    <color name="white_eeeeee">#EEEEEE</color>
     <color name="Home_text_bold">#111111</color>
     <color name="Home_text_normal">#666666</color>
 
@@ -16,7 +16,7 @@
     <color name="garyf6">#FFF6F6F6</color>
 
     <color name="gray999">#FF999999</color>
-
+    <color name="black_121212">#121212</color>
     <!-- 透明 -->
     <color name="transparent">#00000000</color>
     <!-- 半透明 -->
@@ -291,6 +291,7 @@
     <color name="darkGray">#FFA9A9A9</color>
     <!-- 灰色 -->
     <color name="gray">#FF808080</color>
+    <color name="gray_9a9a9a">#9A9A9A</color>
     <!-- 暗淡的灰色 -->
     <color name="dimGray">#FF696969</color>
     <!-- 纯黑 -->

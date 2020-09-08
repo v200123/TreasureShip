@@ -26,6 +26,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.orders.OrdersFragment
 import com.jzz.treasureship.ui.paypal.PaypalViewModel
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.changeImage
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
@@ -145,9 +146,7 @@ class AddDoctorAdvicesFragment : BaseVMFragment<PaypalViewModel>() {
                             msg.title = "支付"
                             msg.description = "前往微信支付吧"
                             val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher);
-                            msg.thumbData = ImageUtils.bitmap2Bytes(thumbBmp, Bitmap.CompressFormat.PNG,100)
-
-
+                            msg.thumbData = thumbBmp.changeImage()
                             //构造一个Req
                             val req = SendMessageToWX.Req()
                             req.transaction = buildTransaction("webpage")

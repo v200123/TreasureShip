@@ -15,6 +15,7 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.ui.license.LicenseActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.core.CenterPopupView
+import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.layout_comfirm_lic.view.tv_cancel
 import kotlinx.android.synthetic.main.view_boot_license_dialog.view.*
 
@@ -24,6 +25,9 @@ class CustomComfirmLicDialog(context: Context) : CenterPopupView(context) {
     private var alreadyNoticeLic by PreferenceUtils(PreferenceUtils.ALREADY_LIC, false)
     private var acceptLic by PreferenceUtils(PreferenceUtils.ACCEPT_LIC, false)
     override fun getImplLayoutId() = R.layout.view_boot_license_dialog
+    override fun getMaxHeight(): Int {
+        return (XPopupUtils.getWindowHeight(context)*0.8).toInt()
+    }
 
     override fun initPopupContent() {
         super.initPopupContent()

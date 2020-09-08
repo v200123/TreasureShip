@@ -33,6 +33,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.RealPathFromUriUtils
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
@@ -226,11 +227,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                 }
 
                 lin_mine_audit.setOnClickListener {
-                    activity!!.supportFragmentManager.beginTransaction()
-                        .addToBackStack(UserInfoFragment.javaClass.name)
-                        .hide(this@UserInfoFragment)//隐藏当前Fragment
-                        .add(R.id.frame_content, mAuthenticationFragment, mAuthenticationFragment.javaClass.name)
-                        .commit()
+                mContext.start<AuthenticationFragment> {  }
                 }
 
                 lin_receiveAddress.setOnClickListener {

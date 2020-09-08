@@ -9,11 +9,14 @@
             name="viewModel"
             type="com.jzz.treasureship.ui.login.LoginViewModel" />
     </data>
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:background="@color/white"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <include
             android:id="@+id/layout_loginTitle"
@@ -52,19 +55,19 @@
 
         <com.jzz.treasureship.view.PhoneEditText
             android:id="@+id/et_phoneNum"
-            android:layout_width="106dp"
+            android:layout_width="150dp"
             android:layout_height="20dp"
-            android:layout_marginStart="95.78dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="258.04dp"
-            android:layout_marginEnd="173.22dp"
-            android:inputType="phone"
             android:layout_marginBottom="388.96dp"
             android:background="@null"
             android:hint="@string/login_et_phone_num"
+            android:inputType="phone"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_phone"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -97,9 +100,9 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_codeNum"
-            android:layout_width="91dp"
+            android:layout_width="120dp"
             android:layout_height="20dp"
-            android:layout_marginStart="95.78dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="319.04dp"
             android:layout_marginEnd="188.22dp"
             android:layout_marginBottom="327.96dp"
@@ -109,7 +112,8 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_code"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -233,4 +237,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/login_wechat" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </layout>

@@ -267,3 +267,5 @@
 
 #注意，如果你使用的是自定义Api解析器解析，还需要给你自定义Api实体配上混淆，如下是本demo中配置的自定义Api实体混淆规则：
 -keep class com.xuexiang.xupdatedemo.entity.** { *; }
+
+-keep class com.xuexiang.xui.widget.edittext.materialedittext.** { *; }

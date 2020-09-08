@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
+import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.InvitedAdapter
 import com.jzz.treasureship.base.BaseVMFragment
@@ -17,6 +18,7 @@ import com.jzz.treasureship.model.bean.DataXXXX
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.changeImage
 import com.lxj.xpopup.XPopup
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
@@ -63,8 +65,8 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             val msg = WXMediaMessage(webpage)
             msg.title = "好友邀请"
             msg.description = "宝舰医疗全新的购物体验"
-            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher);
-            msg.thumbData = ImageUtils.bitmap2Bytes(thumbBmp, Bitmap.CompressFormat.PNG,100)
+            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher)
+            msg.thumbData =thumbBmp.changeImage()
 
 
             //构造一个Req
@@ -102,7 +104,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             msg.title = "App分享"
             msg.description = "医护小伙伴一起来分享"
             val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher);
-            msg.thumbData = ImageUtils.bitmap2Bytes(thumbBmp, Bitmap.CompressFormat.PNG,100)
+            msg.thumbData = thumbBmp.changeImage()
 
 
             //构造一个Req

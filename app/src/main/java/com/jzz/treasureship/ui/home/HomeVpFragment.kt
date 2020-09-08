@@ -302,6 +302,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 it.showSuccess?.let { list ->
                     xPopup.dismiss()
                     XPopup.Builder(context)
+                        .dismissOnBackPressed(true)
+                        .dismissOnTouchOutside(true)
                         .setPopupCallback(object : XPopupCallback {
                             override fun onCreated() {
                             }

@@ -21,9 +21,11 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     protected lateinit var mBinding: ViewDataBinding
     protected lateinit var mViewModel: VM
     var mActivity: Activity? = null
+    lateinit var mContext:Context
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        mContext = context
         this.mActivity = context as AppCompatActivity
     }
 

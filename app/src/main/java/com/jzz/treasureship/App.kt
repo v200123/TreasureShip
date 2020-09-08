@@ -15,6 +15,7 @@ import com.jzz.treasureship.service.OKHttpUpdateHttpService
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import com.xuexiang.xui.XUI
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION
 import com.xuexiang.xupdate.utils.UpdateUtils
@@ -41,6 +42,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        XUI.init(this); //初始化UI框架
+        XUI.debug(true);  //开启UI框架调试日志
         DoraemonKit.install(this)
         CONTEXT = applicationContext
         initAutoSize()

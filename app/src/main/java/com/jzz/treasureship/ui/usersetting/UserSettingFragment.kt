@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.ui.coupon.CouponActivity
 import com.jzz.treasureship.ui.invite.InviteFragment
 import com.jzz.treasureship.ui.msg.MsgFragment
 import com.jzz.treasureship.ui.orders.OrdersFragment
@@ -29,6 +31,8 @@ import com.jzz.treasureship.ui.user.UserInfoFragment
 import com.jzz.treasureship.ui.user.UserViewModel
 import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.view.Dialog_identification_tip
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user_setting.*
@@ -48,7 +52,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
         if (!hidden) {
             activity!!.nav_view.visibility = View.VISIBLE
             activity!!.nav_view.menu[3].isChecked = true
-            StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
+            StateAppBar.setStatusBarLightMode(this.activity,ContextCompat.getColor(mContext,R.color.blue_normal))
             mViewModel.getUserInfo()
         }
     }
@@ -58,6 +62,10 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
     override fun initVM(): UserViewModel = getViewModel()
 
     override fun initView() {
+
+        fl_setting_card.setOnClickListener {
+            mContext.start<CouponActivity> {  }
+        }
         activity!!.nav_view.visibility = View.VISIBLE
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
 
@@ -86,6 +94,10 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
                         ) as TextView
                         tv.text = "未认证"
                         cf_titles.addView(tv)
+                        XPopup.Builder(mContext)
+                            .asCustom(Dialog_identification_tip(mContext))
+                            .show()
+
                     }
                     0 -> {
                         val tv = LayoutInflater.from(context).inflate(
@@ -140,6 +152,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
 
             }
         }
+
 
         lin_auth.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()

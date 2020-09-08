@@ -1,5 +1,6 @@
 package com.jzz.treasureship.base
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -10,7 +11,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     lateinit var mViewModel: VM
-
+     var mContext: Context  = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

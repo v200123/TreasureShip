@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.ToastUtils
@@ -23,6 +24,7 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.utils.FileUtil
@@ -43,7 +45,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 
-class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.PermissionCallbacks {
+class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.PermissionCallbacks {
 
     companion object {
         //请求相机,半身照
@@ -75,30 +77,29 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
 
     override fun initView() {
 
-        tv_title.text = "我要认证"
-
+        tv_title.text = ""
         rlback.setOnClickListener {
-            activity!!.supportFragmentManager.popBackStack()
+            (mContext as AppCompatActivity).finish()
         }
 
-        ll_upLoadCerts.setOnClickListener {
-            whichImg = 0
-
-            XPopup.Builder(it.context).asCustom(CustomUploadHeaderBottomPopup(it.context)).show()
-        }
-
-        ll_uploadHalfBodyImg.setOnClickListener {
-            whichImg = 1
-            XPopup.Builder(it.context).asCustom(CustomUploadHeaderBottomPopup(it.context)).show()
-        }
-
-        tv_submit_auth.setOnClickListener {
-            if ((certBean == null) or (halfBodyBean == null)) {
-                ToastUtils.showShort("请选择相应资料上传!")
-            } else {
-                mViewModel.saveQualification("${halfBodyBean!!.url}", "${certBean!!.url}")
-            }
-        }
+//        ll_upLoadCerts.seApptOnClickListener {
+//            whichImg = 0
+//
+//            XPopup.Builder(it.context).asCustom(CustomUploadHeaderBottomPopup(it.context)).show()
+//        }
+//
+//        ll_uploadHalfBodyImg.setOnClickListener {
+//            whichImg = 1
+//            XPopup.Builder(it.context).asCustom(CustomUploadHeaderBottomPopup(it.context)).show()
+//        }
+//
+//        tv_submit_auth.setOnClickListener {
+//            if ((certBean == null) or (halfBodyBean == null)) {
+//                ToastUtils.showShort("请选择相应资料上传!")
+//            } else {
+//                mViewModel.saveQualification("${halfBodyBean!!.url}", "${certBean!!.url}")
+//            }
+//        }
     }
 
     override fun initData() {
@@ -106,7 +107,7 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
 
     override fun startObserve() {
         mViewModel.apply {
-            val uploading = XPopup.Builder(context).asLoading()
+            val uploading = XPopup.Builder(mContext).asLoading()
             uploadImgState.observe(this@AuthenticationFragment, Observer {
                 if (it.showProgress) {
                     uploading.show()
@@ -126,29 +127,29 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
                     when (whichImg) {
                         0 -> {
                             certBean = it
-                            tv_cert.visibility = View.INVISIBLE
-                            iv_imgCert.visibility = View.VISIBLE
-//                            Glide.with(context!!)
+//                            tv_cert.visibility = View.INVISIBLE
+//                            iv_imgCert.visibility = View.VISIBLE
+//                            Glide.with(mContext)
 //                                .load(it.url!!.replace("bj.jzzchina.com", "119.3.125.1")).into(iv_imgCert)
 
-                            iv_imgCert.visibility = View.VISIBLE
-                            Glide.with(context!!).asBitmap()
-                                .load(it.url!!).into(object : SimpleTarget<Bitmap>() {
-                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                        iv_imgCert.setImageBitmap(resource)
-                                    }
-                                })
+//                            iv_imgCert.visibility = View.VISIBLE
+//                            Glide.with(context!!).asBitmap()
+//                                .load(it.url!!).into(object : SimpleTarget<Bitmap>() {
+//                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+//                                        iv_imgCert.setImageBitmap(resource)
+//                                    }
+//                                })
                         }
                         1 -> {
                             halfBodyBean = it
-                            tv_halfBody.visibility = View.INVISIBLE
-                            iv_imgHalfBody.visibility = View.VISIBLE
-                            Glide.with(context!!).asBitmap()
-                                .load(it.url!!).into(object : SimpleTarget<Bitmap>() {
-                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                        iv_imgHalfBody.setImageBitmap(resource)
-                                    }
-                                })
+//                            tv_halfBody.visibility = View.INVISIBLE
+//                            iv_imgHalfBody.visibility = View.VISIBLE
+//                            Glide.with(context!!).asBitmap()
+//                                .load(it.url!!).into(object : SimpleTarget<Bitmap>() {
+//                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+//                                        iv_imgHalfBody.setImageBitmap(resource)
+//                                    }
+//                                })
                         }
                         else -> {
 
@@ -174,7 +175,7 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
                     uploading.dismiss()
                     if (it.isBlank() or ("null" == it)) {
                         ToastUtils.showShort("认证资料提交成功")
-                        activity!!.supportFragmentManager.popBackStack()
+                        (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
                     } else {
                         ToastUtils.showShort(it)
                     }
@@ -183,8 +184,6 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
         }
     }
 
-    override fun initListener() {
-    }
 
 
     /**
@@ -202,7 +201,7 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //设置7.0中共享文件，分享路径定义在xml/file_paths.xml
             intent.flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
             val contentUri: Uri = FileProvider.getUriForFile(
-                this.activity!!,
+                mContext,
                 BuildConfig.APPLICATION_ID + ".fileProvider",
                 tempFile!!
             )
@@ -237,7 +236,7 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
                     val img = Uri.fromFile(tempFile)
                     var bmp = BitmapFactory.decodeFile(img.path)
                     if (bmp == null) {
-                        bmp = getBitmapFromUri(context!!, this.getImageContentUri(context!!, img.path!!)!!)
+                        bmp = getBitmapFromUri(mContext, this.getImageContentUri(mContext, img.path!!)!!)
                     }
                     compressImage(bmp)?.let { mViewModel.uploadImg(it) }
                 }
@@ -248,7 +247,7 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
                     val img = Uri.fromFile(tempFile)
                     var bmp = BitmapFactory.decodeFile(img.path)
                     if (bmp == null) {
-                        bmp = getBitmapFromUri(context!!, this.getImageContentUri(context!!, img.path!!)!!)
+                        bmp = getBitmapFromUri(mContext, this.getImageContentUri(mContext, img.path!!)!!)
                     }
                     compressImage(bmp)?.let { mViewModel.uploadImg(it) }
                 }
@@ -257,10 +256,10 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
             REQUEST_PICK -> {
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
-                        val path = RealPathFromUriUtils.getRealPathFromUri(context, data.data)
+                        val path = RealPathFromUriUtils.getRealPathFromUri(mContext, data.data)
                         var bmp = BitmapFactory.decodeFile(path)
                         if (bmp == null) {
-                            bmp = getBitmapFromUri(context!!, this.getImageContentUri(context!!, path!!)!!)
+                            bmp = getBitmapFromUri(mContext, this.getImageContentUri(mContext, path!!)!!)
                         }
                         compressImage(bmp)?.let {
                             mViewModel.uploadImg(it)
@@ -364,7 +363,7 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this@AuthenticationFragment.activity!!, perms)) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this@AuthenticationFragment)
                 .setRationale("没有该权限，此应用程序可能无法正常工作。打开应用设置界面以修改应用权限").setTitle("必需权限").build().show()
         }
@@ -383,7 +382,7 @@ class AuthenticationFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.
                 gotoCamera()
             }
         } else if (requestCode == REQUEST_PERMISSION_READ_STORAGE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {
                 gotoPhoto()
             }
         }

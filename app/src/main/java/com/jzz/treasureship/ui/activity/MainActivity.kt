@@ -87,6 +87,7 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
     private var lastBackPressTime = -1L
 
     override fun onBackPressed() {
+        super.onBackPressed()
         if (GSYVideoManager.backFromWindowFull(this)) {
             return
         }

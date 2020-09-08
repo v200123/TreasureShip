@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:binding="http://schemas.android.com/tools">
 
@@ -9,10 +11,16 @@
             name="viewModel"
             type="com.jzz.treasureship.ui.login.LoginViewModel" />
     </data>
+<ScrollView
+
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white">
 
         <include
@@ -56,21 +64,19 @@
 
         <com.jzz.treasureship.view.PhoneEditText
             android:id="@+id/et_phoneNum"
-            android:layout_width="106dp"
+            android:layout_width="210dp"
             android:layout_height="20dp"
-            android:layout_marginStart="95.78dp"
-            android:layout_marginLeft="95.78dp"
             android:layout_marginTop="258.04dp"
-            android:layout_marginEnd="173.22dp"
-            android:layout_marginRight="173.22dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="388.96dp"
-            android:inputType="phone"
             android:background="@null"
             android:hint="@string/login_et_phone_num"
+            android:inputType="phone"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toEndOf="@+id/iv_phone"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -107,21 +113,19 @@
 
         <EditText
             android:id="@+id/et_codeNum"
-            android:layout_width="91dp"
+            android:layout_width="140dp"
             android:layout_height="20dp"
-            android:layout_marginStart="95.78dp"
-            android:layout_marginLeft="95.78dp"
             android:layout_marginTop="319.04dp"
-            android:layout_marginEnd="188.22dp"
-            android:inputType="number"
-            android:layout_marginRight="188.22dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="327.96dp"
             android:background="@null"
             android:hint="@string/login_et_code_num"
+            android:inputType="number"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.029"
+            app:layout_constraintStart_toEndOf="@+id/iv_code"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -211,39 +215,35 @@
             app:srcCompat="@drawable/login_back_arrow" />
 
         <CheckBox
+            android:checked="true"
             android:id="@+id/cb_lic"
             style="@style/checkBoxStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="615dp"
             android:layout_marginEnd="301dp"
-            android:layout_marginRight="301dp"
             android:layout_marginBottom="39dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/tv_lic"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/tv_lic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80.08dp"
-            android:layout_marginLeft="80.08dp"
-            android:layout_marginTop="613.04dp"
             android:layout_marginEnd="73.92dp"
-            android:layout_marginRight="73.92dp"
             android:layout_marginBottom="37.96dp"
             android:text="我已阅读并同意《用户协议》和《隐私政策》"
             android:textColorHighlight="#00ffffff"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </layout>

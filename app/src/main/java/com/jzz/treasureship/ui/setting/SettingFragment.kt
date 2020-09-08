@@ -13,14 +13,17 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.ui.coupon.CouponActivity
 import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.utils.DataCleanManagerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_setting.*
+import kotlinx.android.synthetic.main.fragment_user_setting.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -57,6 +60,8 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
         rlback.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
         }
+
+
 
         tv_servicePhone.setOnClickListener {
 

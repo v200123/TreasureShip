@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -8,103 +9,60 @@
             type="com.jzz.treasureship.ui.user.UserViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/garyf6"
-        android:orientation="vertical">
+        android:background="@color/white">
 
         <include
             android:id="@+id/titles"
             layout="@layout/include_title" />
 
         <TextView
-            android:id="@+id/tv_files"
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/titles"
-            android:layout_marginStart="22dp"
             android:layout_marginTop="26dp"
-            android:text="个人资质认证资料"
-            android:textColor="#ff111111"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
-        <FrameLayout
-            android:id="@+id/ll_upLoadCerts"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_below="@id/tv_files"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/white"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/tv_cert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableTop="@drawable/icon_upload"
-                android:drawablePadding="20dp"
-                android:gravity="center"
-                android:text="上传医生/护士工牌或从业资格证"
-                android:textColor="#ff26c8d7"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/iv_imgCert"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:visibility="invisible" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/ll_uploadHalfBodyImg"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_below="@id/ll_upLoadCerts"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="15dp"
-            android:background="@color/white"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/tv_halfBody"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableTop="@drawable/icon_upload"
-                android:drawablePadding="20dp"
-                android:gravity="center"
-                android:text="上传身份证正面或可见工牌的半身像"
-                android:textColor="#ff26c8d7"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/iv_imgHalfBody"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:visibility="invisible" />
-        </FrameLayout>
+            android:text="为了您更好的体验"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titles" />
 
         <TextView
-            android:id="@+id/tv_submit_auth"
-            android:layout_width="match_parent"
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#26C8D7"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="提交认证"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+            android:layout_marginTop="13dp"
+            android:text="请选择您的身份"
+            android:textColor="@color/black_333333"
+            android:textSize="19sp"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dk_dp_20"
+            android:columnCount="3"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+            android:id="@+id/roundButton"
+            android:layout_width="345dp"
+            android:layout_height="44dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="7dp"
+            android:text="下一步"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:rb_backgroundColor="@color/blue_normal"
+            app:rb_radius="22dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

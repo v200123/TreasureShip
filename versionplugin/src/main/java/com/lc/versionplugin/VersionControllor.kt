@@ -3,6 +3,7 @@ package com.lc.versionplugin
 import com.lc.versionplugin.VersionControllor.version.appCompatVersion
 import com.lc.versionplugin.VersionControllor.version.constraintlayoutVersion
 import com.lc.versionplugin.VersionControllor.version.koinVersion
+import com.lc.versionplugin.VersionControllor.version.xuiVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.internal.impldep.com.esotericsoftware.minlog.Log
@@ -32,6 +33,8 @@ private object version{
     val toastyVersion = "1.4.2"
     val mmkvVersion = "1.2.1"
     val fileVersion = "1.0.2"
+    val xuiVersion = "1.1.5"
+    val materialVersion = "material-rc01"
 
 }
 
@@ -40,6 +43,7 @@ private object version{
      val constraintlayout = "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
      val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${version.coroutinesVersion}"
      val viewmodelSavedstate = "androidx.lifecycle:lifecycle-viewmodel-savedstate:${version.lifecycleVersion}"
+     val material = "com.google.android.material:${version.materialVersion}"
  }
 
     object koin{
@@ -56,6 +60,7 @@ private object version{
         val MMKV= "com.tencent:mmkv-static:${version.mmkvVersion}"
 //        文件选择器
         val FILE= "com.sky.filePicker:filePicker:${version.fileVersion}"
+        val xui = "com.github.xuexiangjys:XUI:${xuiVersion}"
     }
 
     object oppo{
