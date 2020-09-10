@@ -20,6 +20,7 @@ object JzzRetrofitClient : BaseRetrofitClient() {
                         .build()
                 }
                 val response = chain.proceed(request)
+            //如果网络可用
                 if (!NetworkUtils.isAvailable()) {
                     val maxAge = 60 * 60
                     response.newBuilder()

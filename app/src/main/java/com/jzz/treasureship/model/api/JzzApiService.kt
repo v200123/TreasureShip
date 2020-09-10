@@ -393,7 +393,7 @@ interface JzzApiService {
      * 提交问卷
      */
     @POST("/api/v1/questionnaire/submitQuestionnaire")
-    suspend fun submitQuestionnaire(@Body body: RequestBody): JzzResponse<RedEnvelopeRecordVo>
+    suspend fun submitQuestionnaire(@Body body: RequestBody): JzzResponse<Reward.RedEnvelopeRecordVo>
 
     /**
      * 领取红包
@@ -406,4 +406,11 @@ interface JzzApiService {
      */
     @POST("/api/v1/ad/getAdList")
     suspend fun getAdList(@Body body: RequestBody): JzzResponse<Ad>
+
+
+    /**
+     * 获取身份信息，该接口用于用户认证的身份选择
+     */
+    @POST("/api/v1/userOccupation/getUserOccupation")
+    suspend fun getAuthType(@Body body: BaseRequestBody):JzzResponse<UserAuthTypeBean>
 }

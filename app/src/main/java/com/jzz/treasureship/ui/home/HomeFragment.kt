@@ -1,5 +1,6 @@
 package com.jzz.treasureship.ui.home
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.util.Log
 import android.view.View
@@ -15,6 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
+import com.jzz.treasureship.service.RewardService
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.search.SearchFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
@@ -169,45 +171,26 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
             })
 
             questionnarieState.observe(this@HomeFragment, Observer {
-
                 it.showSuccess?.let {
                     //                    Log.d("caicaicaicai", it.toString())
                     when (it.resultCode) {
                         1 -> {
+                            val intent = Intent(mContext, RewardService::class.java)
                             //未答题
+                            if (System.currentTimeMillis() !in it.receiveDate!!.startDateTimeInMillis - 10000 until it.receiveDate.startDateTimeInMillis + 10000) {
+                                mContext.startService(intent.apply {
+                                    putExtra(RewardService.TestQuestions,it.questionnaire)
+                                })
+                            }
+                            else if(System.currentTimeMillis()>it.receiveDate.endDateTimeInMillis)
+                            {
+                                mContext.stopService(intent)
+                            }
+                            else
                             XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
                                 override fun onDismiss() {
                                     super.onDismiss()
                                     if (startAnswer) {
-//                                        mQuestionsAdapter.run {
-//                                            val content = JSONObject(it.questionnaire?.content)
-////                                        val content = JSONObject(
-////                                            "{\"items\":[{\"item\":\"A\",\"text\":\"非常喜欢\"},{\"item\":\"B\",\"text\":\"有点喜欢\"},{\"item\":\"C\",\"text\":\"既不喜欢也不讨厌\"},{\"item\":\"D\",\"text\":\"有点讨厌\"},{\"item\":\"E\",\"text\":\"非常讨厌\"}]}"
-////                                        )
-//                                            val questionItems = JSONArray(content.get("items").toString())
-//
-//                                            val list = ArrayList<QuestionItem>(questionItems.length())
-//
-//                                            for (i in 0 until questionItems.length()) {
-//                                                val questionItem: QuestionItem =
-//                                                    QuestionItem(questionItems.get(i).toString())
-//                                                list.add(questionItem)
-//                                            }
-//
-//                                            setNewData(list)
-//                                            notifyDataSetChanged()
-//                                        }
-//                                        XPopup.Builder(context!!)
-//                                            .asCustom(
-//                                                QuestionsDialog(
-//                                                    context!!,
-//                                                    it.questionnaire!!.iconPath!!,
-//                                                    it.questionnaire.id!!,
-//                                                    mViewModel,
-//                                                    mQuestionsAdapter
-//                                                )
-//                                            ).show()
-
                                         activity!!.supportFragmentManager.beginTransaction()
                                             .addToBackStack(HomeVpFragment.javaClass.name)
                                             .hide(this@HomeFragment)//隐藏当前Fragment

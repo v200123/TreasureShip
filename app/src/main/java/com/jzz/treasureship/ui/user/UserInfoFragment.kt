@@ -183,7 +183,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                         1 -> {
                             //审核通过
                             tv_auditStatus.text = "已认证"
-                            lin_mine_audit.isEnabled = false
+                            lin_mine_audit.isEnabled = true
                             tv_auditStatus.setTextColor(context!!.resources.getColor(R.color.blue_normal))
                             lin_mine_modifyName.setOnClickListener(null)
                         }

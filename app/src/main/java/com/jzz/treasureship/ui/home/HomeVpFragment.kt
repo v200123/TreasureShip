@@ -32,6 +32,7 @@ import com.jzz.treasureship.adapter.CommentsAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.VideoData
+import com.jzz.treasureship.service.RewardService
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.login.LoginActivity
@@ -322,7 +323,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
                             override fun onBackPressed(): Boolean {
                                 Log.d("TAG", "onBackPressed:哈哈哈哈哈 ")
-                               return true
+                                return true
                             }
                         })
                         .asCustom(
@@ -431,23 +432,28 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                     when (it.resultCode) {
                         1 -> {
                             //未答题
-                            XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                                override fun onDismiss() {
-                                    super.onDismiss()
-                                    if (startAnswer) {
-                                        activity!!.supportFragmentManager.beginTransaction()
-                                            .addToBackStack(HomeVpFragment.javaClass.name)
-                                            .hide(this@HomeVpFragment.parentFragment!!)//隐藏当前Fragment
-                                            .add(
-                                                R.id.frame_content,
-                                                QuestionsFragment.newInstance(it.questionnaire!!),
-                                                QuestionsFragment.javaClass.name
-                                            )
-                                            .commit()
+                            if (System.currentTimeMillis() in it.receiveDate!!.startDateTimeInMillis - 10000 until it.receiveDate.startDateTimeInMillis + 10000) {
+                                mContext.startService(Intent(mContext,RewardService::class.java).apply {
+                                    putExtra(RewardService.TestQuestions,it.questionnaire)
+                                })
+                            } else
+                                XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
+                                    override fun onDismiss() {
+                                        super.onDismiss()
+                                        if (startAnswer) {
+                                            activity!!.supportFragmentManager.beginTransaction()
+                                                .addToBackStack(HomeVpFragment.javaClass.name)
+                                                .hide(this@HomeVpFragment.parentFragment!!)//隐藏当前Fragment
+                                                .add(
+                                                    R.id.frame_content,
+                                                    QuestionsFragment.newInstance(it.questionnaire!!),
+                                                    QuestionsFragment.javaClass.name
+                                                )
+                                                .commit()
+                                        }
                                     }
-                                }
-                            })
-                                .asCustom(StartQuestionsDialog(context!!)).show()
+                                })
+                                    .asCustom(StartQuestionsDialog(context!!)).show()
                         }
                         2 -> {
                             //未领取红包
@@ -503,7 +509,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             })
 
             redEnvState.observe(this@HomeVpFragment, Observer {
-
                 it.showSuccess?.let {
                     XPopup.Builder(context)
                         .asCustom(NoticeGetRewardDialog(context!!, mViewModel)).show()
@@ -665,7 +670,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                     SpannableStringBuilder(item.mark ?: "").append(item.videoName).apply {
                         if (!item.mark.isNullOrEmpty())
                             setSpan(
-                                RadiusSpan(Color.rgb(244,92,90), 10, mContext),
+                                RadiusSpan(Color.rgb(244, 92, 90), 10, mContext),
                                 0,
                                 item.mark.length,
                                 Spannable.SPAN_INCLUSIVE_INCLUSIVE

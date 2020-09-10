@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.AnswersAdapter
+import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.AnswerItem
 import com.jzz.treasureship.model.bean.Questionnaire
@@ -36,7 +37,6 @@ class QuestionsFragment : BaseVMFragment<HomeViewModel>() {
     val go2Wallet by PreferenceUtils(PreferenceUtils.goto_wallet, false)
 
     companion object {
-
         fun newInstance(questions: Questionnaire): QuestionsFragment {
             val f = QuestionsFragment()
             val bundle = Bundle()
@@ -86,8 +86,6 @@ class QuestionsFragment : BaseVMFragment<HomeViewModel>() {
         mAnswersAdapter.apply {
 
             val content = JSONObject(questionnaire?.content)
-//            val content = JSONObject(
-//                "{\"items\":[{\"item\":\"A\",\"text\":\"非常喜欢\"},{\"item\":\"B\",\"text\":\"有点喜欢\"},{\"item\":\"C\",\"text\":\"既不喜欢也不讨厌\"},{\"item\":\"D\",\"text\":\"有点讨厌\"},{\"item\":\"E\",\"text\":\"非常讨厌\"},{\"item\":\"F\",\"text\":\"非常讨厌\"},{\"item\":\"G\",\"text\":\"非常讨厌\"},{\"item\":\"H\",\"text\":\"非常讨厌\"},{\"item\":\"I\",\"text\":\"非常讨厌\"},{\"item\":\"J\",\"text\":\"非常讨厌\"},{\"item\":\"K\",\"text\":\"非常讨厌\"}]}"
 //            )
             val questionItems = JSONArray(content.get("items").toString())
 
@@ -101,9 +99,7 @@ class QuestionsFragment : BaseVMFragment<HomeViewModel>() {
 
             setNewData(list)
             notifyDataSetChanged()
-
             onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-
                 when (view.id) {
                     R.id.layout_ansItem -> {
                         val json = JSONObject(mAnswersAdapter.getItem(position)!!.item)

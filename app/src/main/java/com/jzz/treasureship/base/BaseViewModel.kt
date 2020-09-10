@@ -4,11 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.core.Result
+import com.lc.mybaselibrary.ErrorState
+import com.lc.mybaselibrary.LoadState
+import com.lc.mybaselibrary.StateActionEvent
+import com.lc.mybaselibrary.SuccessState
 import kotlinx.coroutines.*
 import okhttp3.internal.ignoreIoExceptions
 
-
+typealias LaunchBlock = suspend CoroutineScope.() -> Unit
+typealias Cancel = (e: Exception) -> Unit
 open class BaseViewModel : ViewModel() {
+
+    val mStateLiveData = MutableLiveData<StateActionEvent>()
 
     open class BaseUiModel<T>(
         var showLoading: Boolean = false,
@@ -18,6 +25,24 @@ open class BaseViewModel : ViewModel() {
         var isRefresh: Boolean = false // 刷新
 
     )
+
+
+    fun launchTask(cancel: Cancel? = null, block: LaunchBlock) {//使用协程封装统一的网络请求处理
+        viewModelScope.launch {
+            //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
+            try {
+                mStateLiveData.value = LoadState
+                block()
+                mStateLiveData.value = SuccessState
+            } catch (e: Exception) {
+                when (e) {
+                    is CancellationException -> cancel?.invoke(e)
+                    else -> mStateLiveData.value = ErrorState(e.message)
+                }
+            }
+        }
+    }
+
 
     val mException: MutableLiveData<Throwable> = MutableLiveData()
 
@@ -34,7 +59,7 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    fun launch(tryBlock: suspend CoroutineScope.() -> Unit) {
+    fun launc(tryBlock: suspend CoroutineScope.() -> Unit) {
         launchOnUI {
             tryCatch(tryBlock, {}, {}, true)
         }

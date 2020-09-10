@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.jzz.treasureship.R
 import kotlinx.android.synthetic.main.fragment_main_coupon.*
@@ -27,6 +29,12 @@ class CouponMainFragment : Fragment(R.layout.fragment_main_coupon) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tab_main_coupon.setTabTitles(arrayOf("未使用","已使用","已过期"))
+        tab_main_coupon.setViewPager(vp_coupon,object : FragmentPagerAdapter(childFragmentManager,
+            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            override fun getCount(): Int  = 3
+            override fun getItem(position: Int): Fragment = Fragment()
+
+        })
     }
 
 }

@@ -45,7 +45,6 @@ class HomeRepository : BaseRepository() {
         body.put("keyword", keyword)
         //tab分类
         body.put("categoryId", type)
-
         root.put("header", header)
         root.put("body", body)
         val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
@@ -363,12 +362,12 @@ class HomeRepository : BaseRepository() {
     }
 
     //提交问卷
-    suspend fun submitQuestionnaire(answer:String,id:Int): Result<JzzResponse<RedEnvelopeRecordVo>> {
+    suspend fun submitQuestionnaire(answer:String,id:Int): Result<JzzResponse<Reward.RedEnvelopeRecordVo>> {
         return safeApiCall(call = { requestSubmitQuestionnaire(answer,id) }, errorMessage = "提交问卷失败")
     }
 
     //提交问卷
-    private suspend fun requestSubmitQuestionnaire(answer:String,id:Int): Result<JzzResponse<RedEnvelopeRecordVo>> {
+    private suspend fun requestSubmitQuestionnaire(answer:String,id:Int): Result<JzzResponse<Reward.RedEnvelopeRecordVo>> {
         val root = JSONObject()
         val body = JSONObject()
 
@@ -408,9 +407,7 @@ class HomeRepository : BaseRepository() {
     private suspend fun requestAd(): Result<JzzResponse<Ad>> {
         val root = JSONObject()
         val body = JSONObject()
-
         root.put("body", body)
-
         val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
         val response = service.getAdList(requestBody)
         return executeResponse(response)

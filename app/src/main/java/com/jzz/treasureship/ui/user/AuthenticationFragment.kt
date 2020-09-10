@@ -29,6 +29,7 @@ import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.RealPathFromUriUtils
+import com.lc.mybaselibrary.out
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
@@ -46,7 +47,6 @@ import kotlin.math.roundToInt
 
 
 class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.PermissionCallbacks {
-
     companion object {
         //请求相机,半身照
         private const val REQUEST_CAPTURE_HALF_BODY = 101
@@ -103,9 +103,17 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
     }
 
     override fun initData() {
+
+        mViewModel.getType()
     }
 
     override fun startObserve() {
+
+        mViewModel.userType.observe(this,{
+            it.toString().out(true)
+
+        })
+
         mViewModel.apply {
             val uploading = XPopup.Builder(mContext).asLoading()
             uploadImgState.observe(this@AuthenticationFragment, Observer {

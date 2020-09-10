@@ -455,7 +455,7 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
                         .hide(this@SearchResultsFragment)//隐藏当前Fragment
                         .add(
                             R.id.frame_content,
-                            GoodsDetailFragment.newInstance("${item.id}"),
+                            GoodsDetailFragment.newInstance("${item.goodsId}"),
                             GoodsDetailFragment.javaClass.name
                         ).commit()
 

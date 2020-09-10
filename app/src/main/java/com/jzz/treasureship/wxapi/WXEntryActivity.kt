@@ -27,9 +27,7 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
         api = App.iwxapi
-
         api.handleIntent(getIntent(), this);
 
     }
@@ -41,12 +39,12 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
         api.handleIntent(intent, this);
     }
 
-    override fun onResp(baseResp: BaseResp?) {
+    override fun onResp(baseResp: BaseResp) {
         if (baseResp != null) {
             //认证授权的响应
             if (baseResp is SendAuth.Resp) {
                 //响应的类型是授权类型
-                if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+                if (baseResp.getType() === ConstantsAPI.COMMAND_SENDAUTH) {
                     when (baseResp.errCode) {
                         BaseResp.ErrCode.ERR_OK -> {
                             val state = (baseResp as SendAuth.Resp).state
@@ -82,7 +80,7 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
 
             //微信分享
             if (baseResp is SendMessageToWX.Resp) {
-                if (baseResp.getType() === ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) { //响应的类型是发消息类型
+                if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) { //响应的类型是发消息类型
                     when (baseResp.errCode) {
                         //成功分享
                         BaseResp.ErrCode.ERR_OK -> {

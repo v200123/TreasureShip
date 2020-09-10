@@ -68,7 +68,6 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
             val req: SendAuth.Req = SendAuth.Req()
             req.scope = "snsapi_userinfo"
             req.state = "treasureship_wx_login"
-
             App.iwxapi.sendReq(req)
         }
     }
@@ -89,7 +88,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
 
                 it.showSuccess?.let {
                     xPopup.dismiss()
-
+                    finish()
                     if (!JPushInterface.isPushStopped(this@LoginActivity)){
                         JPushInterface.resumePush(this@LoginActivity)
                     }

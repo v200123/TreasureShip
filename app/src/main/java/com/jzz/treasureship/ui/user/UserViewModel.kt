@@ -6,11 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
-import com.jzz.treasureship.model.bean.Qualification
-import com.jzz.treasureship.model.bean.UploadImgBean
-import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.model.api.HttpHelp
+import com.jzz.treasureship.model.bean.*
 import com.jzz.treasureship.model.repository.UserRepository
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ErrorState
+import com.lc.mybaselibrary.out
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,7 +54,7 @@ class UserViewModel(val repository: UserRepository, val provider: CoroutinesDisp
             }
         }
     }
-
+    val userType = MutableLiveData<UserAuthTypeBean>()
     private fun emitUserUiState(
         showLoading: Boolean = false,
         showError: String? = null,
@@ -276,6 +277,27 @@ class UserViewModel(val repository: UserRepository, val provider: CoroutinesDisp
                 }
             }
         }
+    }
+
+    fun getType(){
+        "开始请求了".out(true)
+        launchTask {
+
+             HttpHelp.getRetrofit().getAuthType(BaseRequestBody())
+                 .apply {
+                     if(success)
+                     {
+                         userType.value = this.result
+                     }
+                     else{
+                         mStateLiveData.value = ErrorState("请求错误")
+                     }
+                 }
+
+
+        }
+
+
     }
 
     private fun emitQualificationState(

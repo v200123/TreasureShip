@@ -26,12 +26,13 @@ abstract class BaseRetrofitClient {
                 .readTimeout(30, TimeUnit.SECONDS)
 
             builder.apply {
+
                 addInterceptor(CommonInterceptor())
                 addInterceptor(
                         LoggingInterceptor.Builder().loggable(BuildConfig.DEBUG)
                             .loggable(BuildConfig.DEBUG)
                             .setLevel(Level.BASIC)
-                            .log(Platform.INFO)
+                            .log(Platform.WARN)
                             .request("Request")
                             .response("Response")
                             .build()

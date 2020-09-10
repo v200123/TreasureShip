@@ -45,7 +45,7 @@ class CommonInterceptor : Interceptor {
     private fun rebuildPostRequest(request: Request): Request {
         val signParams: MutableMap<String, String?> = HashMap() // 假设你的项目需要对参数进行签名
         val originalRequestBody: RequestBody = request.body!!
-        var newRequestBody: RequestBody?
+        var newRequestBody: RequestBody
 
         // 传统表单
         if (originalRequestBody is FormBody) {
@@ -170,10 +170,8 @@ class CommonInterceptor : Interceptor {
                     header.put("os", "android")
                     header.put("pageNum", 1)
                     header.put("pageSize", 20)
-
                     jsonObject.put("header", header)
                 }
-
                 // ToDo 此处可对参数做签名处理
                 /**
                  * String sign = SignUtil.sign(signParams);
@@ -185,18 +183,7 @@ class CommonInterceptor : Interceptor {
                 e.printStackTrace()
             }
         }
-//        val accessObj = GsonUtils.fromJson(
-//            PreferenceUtils(
-//                PreferenceUtils.USER_GSON,
-//                ""
-//            ).getValue(PreferenceUtils.USER_GSON, ""),
-//            User::class.java
-//        )
-
         val access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
-//        val accessObj = GsonUtils.fromJson(access, User::class.java)
-
-//        val accessToken = accessObj?.accessToken.toString()
         return if (access.isBlank() or ("null" == access) or request.url.toString().contains("/api/v1/smsCode/sendCode")) {
             request.newBuilder()
                 .addHeader("Accept", "*/*")
@@ -225,7 +212,7 @@ class CommonInterceptor : Interceptor {
      * 对get请求做统一参数处理
      */
     private fun rebuildGetRequest(request: Request): Request {
-        if (commonParams == null || commonParams!!.size == 0) {
+        if (commonParams == null || commonParams!!.isEmpty()) {
             return request
         }
         val url: String = request.url.toString()

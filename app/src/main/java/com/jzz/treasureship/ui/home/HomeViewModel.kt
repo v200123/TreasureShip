@@ -286,7 +286,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
             val result = repository.addPraise(commentId, videoId)
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
-                    emitOperateUiState(false, null, "评论点赞成功！")
+                    emitOperateUiState(false, null, "评论点赞成功")
                 } else {
                     emitOperateUiState(false, "失败!${result.result?.message}")
                 }
@@ -643,11 +643,11 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
     val questionnarieState: LiveData<QuestionarieModel>
         get() = _questionnarieState
 
-    //获取未答题目
+    //获取未答题目,同时可以获取到题库已经抢红包开始的时间
     fun getQuestionnaire() {
         emitQuestionsUiState(true)
         viewModelScope.launch(Dispatchers.Main) {
-            val result = repository.getQuestionnaire()
+            val result: Result<JzzResponse<QuestionnaireResponseVo>> = repository.getQuestionnaire()
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
                     emitQuestionsUiState(false, null, result.result.result)
