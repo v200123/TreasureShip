@@ -17,7 +17,7 @@ import com.jzz.treasureship.ui.ranking.RankingViewModel
 import com.jzz.treasureship.ui.search.SearchViewModel
 import com.jzz.treasureship.ui.shopcar.ShopCarViewModel
 import com.jzz.treasureship.ui.trace.TraceViewModel
-import com.jzz.treasureship.ui.user.UserViewModel
+import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.ui.wallet.WalletViewModel
 import com.jzz.treasureship.ui.withdraw.WithdrawViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel

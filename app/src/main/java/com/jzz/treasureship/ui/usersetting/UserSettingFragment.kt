@@ -1,15 +1,10 @@
 package com.jzz.treasureship.ui.usersetting
 
-import android.graphics.Color
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.core.view.marginStart
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
@@ -28,7 +23,7 @@ import com.jzz.treasureship.ui.ranking.RankingFragment
 import com.jzz.treasureship.ui.setting.SettingFragment
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.ui.user.UserInfoFragment
-import com.jzz.treasureship.ui.user.UserViewModel
+import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.Dialog_identification_tip
@@ -36,7 +31,6 @@ import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user_setting.*
-import kotlinx.android.synthetic.main.home_search.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class UserSettingFragment : BaseVMFragment<UserViewModel>() {

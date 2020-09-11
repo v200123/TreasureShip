@@ -6,7 +6,7 @@
 
         <variable
             name="userModel"
-            type="com.jzz.treasureship.ui.user.UserViewModel" />
+            type="com.jzz.treasureship.ui.auth.viewmodel.UserViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,14 +44,23 @@
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
-        <GridLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_type"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="67dp"
+            android:layout_marginEnd="32dp"
             android:columnCount="3"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintBottom_toTopOf="@+id/roundButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintVertical_bias="0.0" />
 
         <com.xuexiang.xui.widget.button.roundbutton.RoundButton
-            android:id="@+id/roundButton"
+            android:enabled="true"
+            android:id="@+id/btn_auth_next"
             android:layout_width="345dp"
             android:layout_height="44dp"
             android:textColor="@color/white"

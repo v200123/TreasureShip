@@ -40,15 +40,14 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
     }
 
     override fun onResp(baseResp: BaseResp) {
-        if (baseResp != null) {
             //认证授权的响应
             if (baseResp is SendAuth.Resp) {
                 //响应的类型是授权类型
                 if (baseResp.getType() === ConstantsAPI.COMMAND_SENDAUTH) {
                     when (baseResp.errCode) {
                         BaseResp.ErrCode.ERR_OK -> {
-                            val state = (baseResp as SendAuth.Resp).state
-                            val code = (baseResp as SendAuth.Resp).code
+                            val state = baseResp.state
+                            val code = baseResp .code
                             if (!TextUtils.isEmpty(state)) {
                                 //当state和此前设置的req.state相同是就证明请求成功。
                                 if (state == "treasureship_wx_login") {
@@ -98,7 +97,6 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
                 }
             }
         }
-    }
 
     override fun onReq(baseReq: BaseReq?) {
 

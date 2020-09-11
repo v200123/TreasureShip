@@ -24,17 +24,19 @@ android {
     }
 
     dexOptions{
-        javaMaxHeapSize = "1g"
-        incremental true
-        threadCount = 10
+        javaMaxHeapSize = "2g"
+    //        incremental true
+//        threadCount = 5
         preDexLibraries = true
     }
 
     lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
+        quiet true
         abortOnError false
+//        checkReleaseBuilds false
+//        // Or, if you prefer, you can continue to check for errors in release builds,
+//        // but continue the build even when errors are found:
+//        abortOnError false
     }
 
     signingConfigs {
@@ -92,6 +94,7 @@ android {
     }
     buildTypes {
         release {
+
             buildConfigField("String","BaseUrl","\"http://bj.jzzchina.com\"")
             minifyEnabled true //混淆
             // Zipalign优化
@@ -101,6 +104,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            ext.alwaysUpdateBuildId = false
 //        buildConfigField("String","BaseUrl","\"http://bj.jzzchina.com\"")
             buildConfigField("String","BaseUrl","\"http://119.3.125.1:9602\"")
             signingConfig signingConfigs.debug
@@ -250,7 +254,7 @@ dependencies {
 //    implementation "com.jakewharton.timber:timber:4.7.1"
     implementation 'com.github.xuexiangjys:XUpdate:2.0.1'
     implementation 'com.zhy:okhttputils:2.6.2'
-
+    implementation 'com.github.xuexiangjys:citypicker:1.0.1'
     implementation VersionControllor.dependance.xui
     debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:3.2.0'
     releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:3.2.0'

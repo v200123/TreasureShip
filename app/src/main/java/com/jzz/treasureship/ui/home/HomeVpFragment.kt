@@ -110,7 +110,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 //            }
             mViewModel.getVideoList(mTab!!.id!!, pageNum)
             mViewModel.getAd()
-            mViewModel.getQuestionnaire()
+//            mViewModel.getQuestionnaire()
         }
         srl_Videos.setEnableLoadMore(true)
         srl_Videos.setOnLoadMoreListener {

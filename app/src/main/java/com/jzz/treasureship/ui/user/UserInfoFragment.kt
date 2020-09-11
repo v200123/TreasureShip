@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
@@ -26,9 +25,9 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.activity.ClipImageActivity
 import com.jzz.treasureship.ui.address.ChooseAddressFragment
+import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.PreferenceUtils
@@ -73,7 +72,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
     }
 
     private val mModifyNickNameFragment by lazy { ModifyNickNameFragment.newInstance() }
-    private val mAuthenticationFragment by lazy { AuthenticationFragment.newInstance() }
+//    private val mAuthenticationFragment by lazy { AuthenticationFragment.newInstance() }
     private val mAddressFragment by lazy { ChooseAddressFragment.newInstance() }
 
     //调用照相机返回图片文件

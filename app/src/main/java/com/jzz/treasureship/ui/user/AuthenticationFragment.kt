@@ -1,9 +1,6 @@
 package com.jzz.treasureship.ui.user
 
-import android.Manifest
 import android.Manifest.permission.*
-import android.app.Activity.RESULT_OK
-import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -14,22 +11,24 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
-import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.UploadImgBean
+import com.jzz.treasureship.model.bean.UserAuthTypeBean
+import com.jzz.treasureship.ui.auth.AuthInformationActivity
+import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.RealPathFromUriUtils
-import com.lc.mybaselibrary.out
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
@@ -40,16 +39,19 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
+import q.rorbin.badgeview.DisplayUtil
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
 
-class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.PermissionCallbacks {
+class AuthenticationFragment : BaseVMActivity<UserViewModel>(),
+    EasyPermissions.PermissionCallbacks {
     companion object {
         //请求相机,半身照
         private const val REQUEST_CAPTURE_HALF_BODY = 101
+
         //请求相机,证书
         private const val REQUEST_CAPTURE_CERT = 100
         private const val REQUEST_PERMISSION_WRITE_STORAGE = 102
@@ -57,25 +59,50 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
         private const val REQUEST_PICK = 104//请求相册
         private const val REQUEST_PERMISSION_CAMERA = 105//请求相机
 
-        fun newInstance(): AuthenticationFragment {
-            return AuthenticationFragment()
-        }
+
     }
+
+    private val mAdapter by lazy { AuthAdapter(this) }
 
     //调用照相机返回图片文件
     private var tempFile: File? = null
+
     //0:资质证书，1：半身照
     private var whichImg = -1
 
     private var certBean: UploadImgBean? = null
     private var halfBodyBean: UploadImgBean? = null
-
+    private var nowSelectPosition = 0
 
     override fun getLayoutResId() = R.layout.fragment_mine_authentication
 
     override fun initVM(): UserViewModel = getViewModel()
 
     override fun initView() {
+
+        btn_auth_next.setOnClickListener {
+            mContext.start<AuthInformationActivity> {
+                putExtra(
+                    AuthInformationActivity.occuId,
+                    mViewModel.userType.value?.mList?.get(nowSelectPosition)?.mId
+                )
+            }
+
+        }
+
+        rv_type.apply {
+            adapter = mAdapter
+            layoutManager = GridLayoutManager(mContext, 3)
+        }
+        mAdapter.onItemClickListener =
+            BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+                if(nowSelectPosition != position) {
+                    mAdapter.notifyItemChanged(nowSelectPosition, "unSelect")
+                    mAdapter.notifyItemChanged(position, "select")
+                    nowSelectPosition = position
+                }
+            }
+
 
         tv_title.text = ""
         rlback.setOnClickListener {
@@ -109,8 +136,8 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
 
     override fun startObserve() {
 
-        mViewModel.userType.observe(this,{
-            it.toString().out(true)
+        mViewModel.userType.observe(this, {
+            mAdapter.setNewData(it.mList)
 
         })
 
@@ -135,18 +162,7 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
                     when (whichImg) {
                         0 -> {
                             certBean = it
-//                            tv_cert.visibility = View.INVISIBLE
-//                            iv_imgCert.visibility = View.VISIBLE
-//                            Glide.with(mContext)
-//                                .load(it.url!!.replace("bj.jzzchina.com", "119.3.125.1")).into(iv_imgCert)
 
-//                            iv_imgCert.visibility = View.VISIBLE
-//                            Glide.with(context!!).asBitmap()
-//                                .load(it.url!!).into(object : SimpleTarget<Bitmap>() {
-//                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-//                                        iv_imgCert.setImageBitmap(resource)
-//                                    }
-//                                })
                         }
                         1 -> {
                             halfBodyBean = it
@@ -191,7 +207,6 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
             })
         }
     }
-
 
 
     /**
@@ -244,7 +259,10 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
                     val img = Uri.fromFile(tempFile)
                     var bmp = BitmapFactory.decodeFile(img.path)
                     if (bmp == null) {
-                        bmp = getBitmapFromUri(mContext, this.getImageContentUri(mContext, img.path!!)!!)
+                        bmp = getBitmapFromUri(
+                            mContext,
+                            this.getImageContentUri(mContext, img.path!!)!!
+                        )
                     }
                     compressImage(bmp)?.let { mViewModel.uploadImg(it) }
                 }
@@ -255,7 +273,10 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
                     val img = Uri.fromFile(tempFile)
                     var bmp = BitmapFactory.decodeFile(img.path)
                     if (bmp == null) {
-                        bmp = getBitmapFromUri(mContext, this.getImageContentUri(mContext, img.path!!)!!)
+                        bmp = getBitmapFromUri(
+                            mContext,
+                            this.getImageContentUri(mContext, img.path!!)!!
+                        )
                     }
                     compressImage(bmp)?.let { mViewModel.uploadImg(it) }
                 }
@@ -267,7 +288,10 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
                         val path = RealPathFromUriUtils.getRealPathFromUri(mContext, data.data)
                         var bmp = BitmapFactory.decodeFile(path)
                         if (bmp == null) {
-                            bmp = getBitmapFromUri(mContext, this.getImageContentUri(mContext, path!!)!!)
+                            bmp = getBitmapFromUri(
+                                mContext,
+                                this.getImageContentUri(mContext, path!!)!!
+                            )
                         }
                         compressImage(bmp)?.let {
                             mViewModel.uploadImg(it)
@@ -291,7 +315,11 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
         while (baos.toByteArray().size / 1024 > 500) { //循环判断如果压缩后图片是否大于500kb,大于继续压缩
             baos.reset() //重置baos即清空baos
             options -= 10 //每次都减少10
-            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos) //这里压缩options%，把压缩后的数据存放到baos中
+            bitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                options,
+                baos
+            ) //这里压缩options%，把压缩后的数据存放到baos中
             val length: Long = baos.toByteArray().size.toLong()
         }
         val format = SimpleDateFormat("yyyyMMddHHmmss")
@@ -346,7 +374,12 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
             }
 
             layout_go2Pics.setOnClickListener {
-                if (!EasyPermissions.hasPermissions(it.context, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)) {
+                if (!EasyPermissions.hasPermissions(
+                        it.context,
+                        READ_EXTERNAL_STORAGE,
+                        WRITE_EXTERNAL_STORAGE
+                    )
+                ) {
                     EasyPermissions.requestPermissions(
                         this@AuthenticationFragment,
                         "需要读写本地文件权限",
@@ -390,7 +423,7 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
                 gotoCamera()
             }
         } else if (requestCode == REQUEST_PERMISSION_READ_STORAGE) {
-            if (grantResults[0] ==  PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 gotoPhoto()
             }
         }
@@ -411,7 +444,8 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
             if (File(path).exists()) {
                 val values = ContentValues()
                 values.put(MediaStore.Images.Media.DATA, path)
-                return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
+                return context.getContentResolver()
+                    .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
             } else {
                 return null
             }
@@ -425,4 +459,52 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(), EasyPermissions.
         parcelFileDescriptor.close()
         return image
     }
+
+
+    class AuthAdapter(var activity: AppCompatActivity) :
+        BaseQuickAdapter<UserAuthTypeBean.Type, BaseViewHolder>(R.layout.item_user_type) {
+        private val _72dp = DisplayUtil.dp2px(activity, 72f)
+        private val _65dp = DisplayUtil.dp2px(activity, 65f)
+        override fun convert(helper: BaseViewHolder, item: UserAuthTypeBean.Type) {
+            if (helper.layoutPosition == 0) {
+                Glide.with(activity).asDrawable().load(item.mIconSelectedPath)
+                    .override(
+                        _72dp, _65dp
+                    ).into(helper.getView(R.id.iv_item_type))
+            } else {
+                Glide.with(activity).asDrawable().load(item.mIconPath).override(
+                    _72dp, _65dp
+                ).into(helper.getView(R.id.iv_item_type))
+            }
+
+            helper.setText(R.id.tv_item_type, item.mOccupationName)
+        }
+
+        override fun convertPayloads(
+            helper: BaseViewHolder,
+            item: UserAuthTypeBean.Type,
+            payloads: MutableList<Any>
+        ) {
+            super.convertPayloads(helper, item, payloads)
+            if(payloads.isEmpty())
+                convert(helper,item)
+            else{
+                val mType = payloads[0] as String
+                if(mType == "select")
+                {
+                    Glide.with(activity).asDrawable().load(item.mIconSelectedPath)
+                        .override(
+                            _72dp, _65dp
+                        ).into(helper.getView(R.id.iv_item_type))
+                }
+                else{
+                    Glide.with(activity).asDrawable().load(item.mIconPath)
+                        .override(
+                            _72dp, _65dp
+                        ).into(helper.getView(R.id.iv_item_type))
+                }
+            }
+        }
+    }
+
 }

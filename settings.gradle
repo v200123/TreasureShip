@@ -1,5 +1,5 @@
-include ':app'
 includeBuild 'versionPlugin'
+include ':app'
 include ':myBaseLibrary'
 rootProject.name='TreasureShip'
 //

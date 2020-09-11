@@ -5,7 +5,7 @@
 
         <variable
             name="userViewModel"
-            type="com.jzz.treasureship.ui.user.UserViewModel" />
+            type="com.jzz.treasureship.ui.auth.viewmodel.UserViewModel" />
     </data>
 
     <LinearLayout

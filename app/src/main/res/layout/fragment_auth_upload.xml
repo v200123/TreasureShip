@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lc.mybaselibrary.ShapeConstraintLayout
+        app:shapeSolidColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:shapeCornersRadius="8dp" >
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="22dp"
+            android:text="医学生"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="医学生" />
+
+        <TextView
+            android:id="@+id/tv_authupload_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textSize="11dp"
+            android:textColor="@color/blue_108D99"
+            android:layout_marginBottom="2dp"
+            android:drawableEnd="@drawable/ico_change"
+            android:drawablePadding="3dp"
+            android:text="切换"
+            app:layout_constraintBottom_toBottomOf="@+id/textView12"
+            app:layout_constraintStart_toEndOf="@+id/textView12"
+            tools:text="医学生" />
+
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="11dp"
+            android:text="例如工牌等资料"
+            android:textColor="@color/red_cc0814"
+            android:textSize="11dp"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+
+        <TextView
+            android:textColor="@color/blue_108D99"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="15dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ico_example_01"
+            android:text="示例"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_marginBottom="23dp"
+            android:id="@+id/iv_authupload_image01"
+            android:layout_width="150dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/textView13"
+            tools:src="@drawable/ic_clock_clocked" />
+
+        <ImageView
+            tools:src  = "@drawable/ic_clock_clocked"
+            android:id="@+id/iv_authupload_image02"
+            android:layout_marginStart="15dp"
+            android:layout_width="150dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_authupload_image01"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+    </com.lc.mybaselibrary.ShapeConstraintLayout>
+
+    <com.lc.mybaselibrary.ShapeConstraintLayout
+        app:shapeSolidColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:shapeCornersRadius="8dp" >
+
+        <TextView
+            android:id="@+id/textView_idCard_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="22dp"
+            android:text="二代身份证"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="医学生" />
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="5dp"-->
+<!--            android:textSize="11dp"-->
+<!--            android:textColor="@color/blue_108D99"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:drawableEnd="@drawable/ico_change"-->
+<!--            android:drawablePadding="3dp"-->
+<!--            android:text="切换"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/textView12"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/textView12"-->
+<!--            tools:text="医学生" />-->
+
+
+        <TextView
+            android:id="@+id/textView_idCard_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="11dp"
+            android:text="请上传人像面"
+            android:textColor="@color/red_cc0814"
+            android:textSize="11dp"
+            app:layout_constraintStart_toStartOf="@+id/textView_idCard_01"
+            app:layout_constraintTop_toBottomOf="@+id/textView_idCard_01" />
+
+
+        <TextView
+            android:textColor="@color/blue_108D99"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="15dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ico_example_01"
+            android:text="示例"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_marginBottom="23dp"
+            android:id="@+id/iv_authupload_idCard_image01"
+            android:layout_width="150dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView_idCard_02"
+            app:layout_constraintTop_toBottomOf="@+id/textView_idCard_02"
+            tools:src="@drawable/ic_clock_clocked" />
+
+<!--        <ImageView-->
+<!--            tools:src  = "@drawable/ic_clock_clocked"-->
+<!--            android:id="@+id/iv_authupload_image02"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="84dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/iv_authupload_image01"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textView13" />-->
+    </com.lc.mybaselibrary.ShapeConstraintLayout>
+    <TextView
+        android:textSize="14dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginStart="12dp"
+        android:text="*上传时请确保图片内容清晰、完整、无遮挡"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

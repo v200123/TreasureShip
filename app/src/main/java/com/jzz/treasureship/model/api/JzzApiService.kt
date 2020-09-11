@@ -413,4 +413,7 @@ interface JzzApiService {
      */
     @POST("/api/v1/userOccupation/getUserOccupation")
     suspend fun getAuthType(@Body body: BaseRequestBody):JzzResponse<UserAuthTypeBean>
+
+    @POST("/api/v1/userOccupation/getUserOccupationCredentials")
+    suspend fun getOccupationType(@Body body: BaseRequestBody):JzzResponse<OccupationBean>
 }

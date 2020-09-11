@@ -1,4 +1,4 @@
-package com.jzz.treasureship.ui.user
+package com.jzz.treasureship.ui.auth.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

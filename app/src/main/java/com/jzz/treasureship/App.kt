@@ -47,8 +47,8 @@ class App : Application() {
         DoraemonKit.install(this)
         CONTEXT = applicationContext
         initAutoSize()
-        val crashHandler: CrashHandler4SaveLog2File = CrashHandler4SaveLog2File.getInstance()
-        crashHandler.init(CONTEXT)
+//        val crashHandler: CrashHandler4SaveLog2File = CrashHandler4SaveLog2File.getInstance()
+//        crashHandler.init(CONTEXT)
         startKoin {
             androidContext(this@App)
             modules(appModule)
