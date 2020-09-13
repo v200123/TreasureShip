@@ -4,16 +4,24 @@ import android.R.anim
 import android.content.Context
 import android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE
 import android.widget.Toast
+import com.blankj.utilcode.util.GsonUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.CityPlace
+import com.jzz.treasureship.model.bean.CityPlaces
 import com.jzz.treasureship.ui.auth.viewmodel.AuthBaseInfoViewModel
+import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.view.CustomAddPickerBottomPopup
 import com.lc.mybaselibrary.out
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.interfaces.SimpleCallback
 import com.xuexiang.citypicker.CityPicker
 import com.xuexiang.citypicker.adapter.OnLocationListener
 import com.xuexiang.citypicker.adapter.OnPickListener
 import com.xuexiang.citypicker.model.City
 import com.xuexiang.citypicker.model.LocateState
 import com.xuexiang.citypicker.model.LocatedCity
+import kotlinx.android.synthetic.main.fragment_add_address.*
 import kotlinx.android.synthetic.main.fragment_base_information.*
 
 
@@ -23,6 +31,11 @@ import kotlinx.android.synthetic.main.fragment_base_information.*
  *@Auth: 29579
  **/
 class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false) {
+    private var allPlace by PreferenceUtils(PreferenceUtils.ALL_PLACES, "")
+
+    var topAddressObj: CityPlace? = null
+    var midAddressObj: CityPlace? = null
+    var lastAddressObj: CityPlace? = null
 
     override fun getLayoutResId(): Int = R.layout.fragment_base_information
 
@@ -35,29 +48,35 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
         }
 
         fl_baseinfo_address.setOnClickListener {
-            CityPicker.from(this)
-                .enableAnimation(true)
-                .setOnPickListener(object : OnPickListener {
-                    override fun onPick(position: Int, data: City) {
-                        et_base_address.setText( "${data.province} \t${data.name} ")
+            if (allPlace.isBlank()) {
+                mViewModel.getCityPlaces()
+            } else {
+                val places = GsonUtils.fromJson(allPlace, CityPlaces::class.java)
+
+                XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
+
+                    override fun onDismiss() {
+                        val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                        if (lastAddress.isNotBlank()) {
+                            lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
+                        }
+
+                        val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                        if (topAddress.isNotBlank()) {
+                            topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
+                        }
+
+                        val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                        if (midAddress.isNotBlank()) {
+                            midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+                        }
+
+                        tv_adress.text =
+                            "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
                     }
 
-                    override fun onCancel() {
-
-                    }
-
-                    override fun onLocate(locationListener: OnLocationListener) {
-
-                        //开始定位，这里模拟一下定位
-//                        Handler().postDelayed(Runnable {
-//                            locationListener.onLocationChanged(
-//                                LocatedCity("深圳", "广东", "101280601"),
-//                                LocateState.SUCCESS
-//                            )
-//                        }, 3000)
-                    }
-                })
-                .show()
+                }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
+            }
         }
 
 
@@ -67,6 +86,33 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
     }
 
     override fun startObserve() {
+        mViewModel.CityPlacesLiveData.observe(this,{
+            allPlace = GsonUtils.toJson(it.list)
+            XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
+
+                override fun onDismiss() {
+                    val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                    if (lastAddress.isNotBlank()) {
+                        lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
+                    }
+
+                    val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                    if (topAddress.isNotBlank()) {
+                        topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
+                    }
+
+                    val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                    if (midAddress.isNotBlank()) {
+                        midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+                    }
+
+                    tv_adress.text =
+                        "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
+                }
+
+            }).asCustom(CustomAddPickerBottomPopup(mContext, it)).show()
+        })
+
     }
 
     override fun initListener() {

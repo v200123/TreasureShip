@@ -19,9 +19,7 @@ class AddressRepository : BaseRepository() {
     //请求获取默认收货地址
     private suspend fun requestCityPlaces(): Result<JzzResponse<CityPlaces>> {
         val root = JSONObject()
-
         val body = JSONObject()
-
         root.put("body", body)
 
         val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())

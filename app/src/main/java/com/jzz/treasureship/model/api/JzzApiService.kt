@@ -16,6 +16,13 @@ interface JzzApiService {
     suspend fun getCityPlaces(@Body body: RequestBody): JzzResponse<CityPlaces>
 
     /**
+     * 城市地址：获取全部地点,重写了传入的参数
+     */
+    @POST("/api/v1/city/getPlaces")
+    suspend fun getCityPlaces02(@Body body: BaseRequestBody): JzzResponse<CityPlaces>
+
+
+    /**
      * 登录相关：绑定手机
      */
     @POST("/api/v1/common/bindMobile")
