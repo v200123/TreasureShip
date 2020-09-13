@@ -16,7 +16,7 @@ class image(
     @SerializedName("backImage1")
     var mBackImage1: String = "", // http://oss.jzzchina.com/identity/bg/gp_bg.png
     @SerializedName("backImage2")
-    var mBackImage2: String = "", // null
+    var mBackImage2: String? = "", // null
     @SerializedName("createTime")
     var mCreateTime: Any = Any(), // null
     @SerializedName("exampleImages")

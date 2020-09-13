@@ -21,10 +21,7 @@ class AuthBaseInfoViewModel : BaseViewModel() {
     val CityPlacesLiveData = MutableLiveData<CityPlaces>()
 
     fun getCityPlaces() {
-        viewModelScope.launch(Dispatchers.Main) {
-
-
-
+        launchTask {
             val result = HttpHelp.getRetrofit().getCityPlaces02(BaseRequestBody())
             if(result.success)
             {

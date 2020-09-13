@@ -36,6 +36,7 @@
             android:drawablePadding="14dp"
             android:text="基本信息"
             android:textSize="17dp"
+            android:drawableTop="@drawable/ico_auth_now"
             app:layout_constraintEnd_toStartOf="@+id/tv_authinfor_02"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -51,6 +52,7 @@
             android:drawablePadding="14dp"
             android:text="执照信息"
             android:textSize="17dp"
+            android:drawableTop="@drawable/ico_auth_unslect"
             app:layout_constraintEnd_toStartOf="@+id/tv_authinfor_03"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tv_authinfor_01"
@@ -58,6 +60,7 @@
             tools:drawableTop="@drawable/ico_auth_unslect" />
 
         <TextView
+            android:drawableTop="@drawable/ico_auth_unslect"
             android:id="@+id/tv_authinfor_03"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

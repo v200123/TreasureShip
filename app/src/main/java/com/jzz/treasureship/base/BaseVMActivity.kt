@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.lc.mybaselibrary.LoadState
+import com.lxj.xpopup.XPopup
 
 abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true) : AppCompatActivity() {
 
@@ -16,6 +18,14 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = initVM()
+
+        mViewModel.mStateLiveData.observe(this,{
+            if(it is LoadState)
+            {
+                XPopup.Builder(mContext).dismissOnBackPressed(false).dismissOnTouchOutside(false)
+                    .asLoading()
+            }
+        })
         startObserve()
         if (_useBinding) {
             mBinding = DataBindingUtil.setContentView<ViewDataBinding>(this, getLayoutResId())

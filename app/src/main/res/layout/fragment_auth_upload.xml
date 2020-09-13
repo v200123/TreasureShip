@@ -14,7 +14,7 @@
         app:shapeCornersRadius="8dp" >
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/tv_authUpLoad_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -35,8 +35,8 @@
             android:drawableEnd="@drawable/ico_change"
             android:drawablePadding="3dp"
             android:text="切换"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
-            app:layout_constraintStart_toEndOf="@+id/textView12"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_authUpLoad_title"
+            app:layout_constraintStart_toEndOf="@+id/tv_authUpLoad_title"
             tools:text="医学生" />
 
 
@@ -49,8 +49,8 @@
             android:text="例如工牌等资料"
             android:textColor="@color/red_cc0814"
             android:textSize="11dp"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            app:layout_constraintStart_toStartOf="@+id/tv_authUpLoad_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_authUpLoad_title" />
 
 
         <TextView
@@ -167,6 +167,7 @@
 <!--            app:layout_constraintTop_toBottomOf="@+id/textView13" />-->
     </com.lc.mybaselibrary.ShapeConstraintLayout>
     <TextView
+        android:id="@+id/tv_first_red"
         android:textSize="14dp"
         android:layout_marginTop="19dp"
         android:layout_marginStart="12dp"

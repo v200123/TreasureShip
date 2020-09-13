@@ -87,7 +87,7 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
 
     override fun startObserve() {
         mViewModel.CityPlacesLiveData.observe(this,{
-            allPlace = GsonUtils.toJson(it.list)
+            allPlace = GsonUtils.toJson(it)
             XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
 
                 override fun onDismiss() {
@@ -105,7 +105,6 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
                     if (midAddress.isNotBlank()) {
                         midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
                     }
-
                     tv_adress.text =
                         "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
                 }

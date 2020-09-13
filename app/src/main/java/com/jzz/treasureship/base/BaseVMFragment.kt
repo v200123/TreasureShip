@@ -12,6 +12,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.jzz.treasureship.utils.BackHandlerHelper
 import com.jzz.treasureship.utils.FragmentBackHandler
+import com.lc.mybaselibrary.LoadState
+import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 
 
@@ -39,12 +41,21 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mViewModel = initVM()
         initView()
         initData()
         startObserve()
         initListener()
-        super.onViewCreated(view, savedInstanceState)
+
+        mViewModel.mStateLiveData.observe(this,{
+            if(it is LoadState)
+            {
+                XPopup.Builder(mContext).dismissOnBackPressed(false).dismissOnTouchOutside(false)
+                    .asLoading().show()
+            }
+        })
+
     }
 
     abstract fun getLayoutResId(): Int

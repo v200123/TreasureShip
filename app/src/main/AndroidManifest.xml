@@ -76,7 +76,7 @@
         <activity android:name=".ui.bind.BindPhoneActivity" />
         <activity android:name=".ui.user.AuthenticationFragment" />
         <activity android:name=".ui.coupon.CouponActivity" />
-        <activity android:name=".ui.auth.AuthInformationActivity" android:theme="@style/CityPickerTheme" />
+        <activity android:name=".ui.auth.AuthInformationActivity" />
         <!-- 1.这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
             android:name=".service.PushService"
