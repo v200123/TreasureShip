@@ -42,6 +42,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+//        ImageSelector.setImageEngine(GlideEngine())
         XUI.init(this); //初始化UI框架
         XUI.debug(true);  //开启UI框架调试日志
         DoraemonKit.install(this)

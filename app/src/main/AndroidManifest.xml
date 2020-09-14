@@ -38,7 +38,8 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.jzz.treasureship.fileProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -77,6 +78,7 @@
         <activity android:name=".ui.user.AuthenticationFragment" />
         <activity android:name=".ui.coupon.CouponActivity" />
         <activity android:name=".ui.auth.AuthInformationActivity" />
+        <activity android:name=".ui.auth.DepartmentSreachActivity" />
         <!-- 1.这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
             android:name=".service.PushService"

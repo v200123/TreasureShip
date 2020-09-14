@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:showIn="@layout/dialog_simple_list">
+
+    <TextView
+        android:id="@+id/tv_common_simple_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="36dp"
+        android:paddingBottom="29dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        tools:text="医师资格证" />
+
+    <View
+        android:id="@+id/common_simple_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:background="@color/e5" />
+</LinearLayout>

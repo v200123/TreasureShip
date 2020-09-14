@@ -257,8 +257,9 @@ dependencies {
 //    implementation "com.jakewharton.timber:timber:4.7.1"
     implementation 'com.github.xuexiangjys:XUpdate:2.0.1'
     implementation 'com.zhy:okhttputils:2.6.2'
-    implementation 'com.github.xuexiangjys:citypicker:1.0.1'
+//    implementation 'com.github.xuexiangjys:citypicker:1.0.1'
     implementation VersionControllor.dependance.xui
+//    implementation VersionControllor.dependance.imageSelector
     debugImplementation ('com.didichuxing.doraemonkit:doraemonkit:3.2.0')
     {
         exclude group: 'androidx.databinding'

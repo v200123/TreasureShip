@@ -8,4 +8,4 @@ import com.jzz.treasureship.model.bean.body
  *@describe:
  *@Auth: 29579
  **/
-class getOccupationBody(val userOccupationId:String) : body()
+class getOccupationBody(val userOccupationId:Int) : body()

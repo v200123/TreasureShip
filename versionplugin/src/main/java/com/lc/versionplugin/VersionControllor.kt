@@ -35,6 +35,8 @@ private object version{
     val fileVersion = "1.0.2"
     val xuiVersion = "1.1.5"
     val materialVersion = "material-rc01"
+//    https://github.com/JackLiaoJH/ImageSelect
+    val imageChoiseVersion = "1.2.1"
 
 }
 
@@ -61,6 +63,7 @@ private object version{
 //        文件选择器
         val FILE= "com.sky.filePicker:filePicker:${version.fileVersion}"
         val xui = "com.github.xuexiangjys:XUI:${xuiVersion}"
+        val imageSelector = "com.github.JackLiaoJH:ImageSelect:${version.imageChoiseVersion}"
     }
 
     object oppo{

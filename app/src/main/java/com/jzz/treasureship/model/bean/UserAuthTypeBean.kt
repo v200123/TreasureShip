@@ -20,7 +20,7 @@ class UserAuthTypeBean(
         @SerializedName("iconSelectedPath")
         var mIconSelectedPath: String = "", // string
         @SerializedName("id")
-        var mId: String = "0", // 0
+        var mId: Int= 0, // 0
         @SerializedName("isEnable")
         var mIsEnable: Int = 0, // 0
         @SerializedName("occupationName")

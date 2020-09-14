@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.bean.JzzResponse
 import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.StateActionEvent
@@ -13,6 +14,7 @@ import okhttp3.internal.ignoreIoExceptions
 
 typealias LaunchBlock = suspend CoroutineScope.() -> Unit
 typealias Cancel = (e: Exception) -> Unit
+
 open class BaseViewModel : ViewModel() {
 
     val mStateLiveData = MutableLiveData<StateActionEvent>()
@@ -26,6 +28,13 @@ open class BaseViewModel : ViewModel() {
 
     )
 
+    fun <T> JzzResponse<T>.resultCheck(block: (T?) -> Unit, errorMsg: (msg: String) -> Unit) {
+        if (this.success) {
+            block(this.result)
+        } else {
+            errorMsg(this.message)
+        }
+    }
 
     fun launchTask(cancel: Cancel? = null, block: LaunchBlock) {//使用协程封装统一的网络请求处理
         viewModelScope.launch {
@@ -109,7 +118,11 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    inline fun <T : Any> checkResult(result: Result<T>, success: (T) -> Unit, error: (String?) -> Unit) {
+    inline fun <T : Any> checkResult(
+        result: Result<T>,
+        success: (T) -> Unit,
+        error: (String?) -> Unit
+    ) {
         if (result is Result.Success) {
             result.result?.let {
                 success(it)

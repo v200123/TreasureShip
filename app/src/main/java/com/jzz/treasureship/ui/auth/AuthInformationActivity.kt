@@ -4,15 +4,21 @@ import android.annotation.SuppressLint
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat.getMinimumHeight
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
+import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.auth.adapter.AuthInfoAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.AuthInforViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
+import com.jzz.treasureship.view.dialog_auth_confirm
 import com.lc.mybaselibrary.out
+import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_auth_information.*
 import kotlinx.android.synthetic.main.include_title.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  *@date: 2020/9/11
@@ -30,11 +36,11 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
 
     override fun initView() {
         tv_title.text = "认证信息"
-        model.occuID = intent.getStringExtra(occuId) ?: "1"
+        model.mConfirmBody.mOccupationId= intent.getIntExtra(occuId,0)
         vp_authinfor.adapter = AuthInfoAdapter(supportFragmentManager)
         vp_authinfor.isEnabled = false
         btn_baseinfo_next.setOnClickListener {
-            vp_authinfor.setCurrentItem(vp_authinfor.currentItem++, true)
+            vp_authinfor.setCurrentItem(++vp_authinfor.currentItem, true)
         }
 
         vp_authinfor.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -44,11 +50,15 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                "我进来了".out()
+
             }
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
+                    btn_baseinfo_next.text = "下一步"
+                    btn_baseinfo_next.setOnClickListener {
+                        vp_authinfor.setCurrentItem(++vp_authinfor.currentItem, true)
+                    }
                     tv_authinfor_01.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_now)!!.apply {
@@ -75,6 +85,24 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     )
                 }
                 if (position == 1) {
+
+                    btn_baseinfo_next.apply {
+                        text = "提交审核"
+                        setOnClickListener {
+                        mViewModel.confirm(model.mConfirmBody)
+                        }
+                    }
+
+                    tv_authinfor_01.setCompoundDrawables(
+                        null,
+                        ContextCompat.getDrawable(mContext, R.drawable.icon_withdraw_unselected)!!
+                            .apply {
+                                setTint(ContextCompat.getColor(mContext, R.color.blue_normal))
+                                setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            },
+                        null,
+                        null
+                    )
                     tv_authinfor_02.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_now)!!.apply {
@@ -83,9 +111,46 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                         null,
                         null
                     )
+                    tv_authinfor_03.setCompoundDrawables(
+                        null,
+                        ContextCompat.getDrawable(mContext, R.drawable.ico_auth_unslect)!!.apply {
+                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                        },
+                        null,
+                        null
+                    )
 //                    ico_auth_now
                 }
-
+                if (position == 2) {
+                    tv_authinfor_01.setCompoundDrawables(
+                        null,
+                        ContextCompat.getDrawable(mContext, R.drawable.icon_withdraw_unselected)!!
+                            .apply {
+                                setTint(ContextCompat.getColor(mContext, R.color.blue_normal))
+                                setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            },
+                        null,
+                        null
+                    )
+                    tv_authinfor_02.setCompoundDrawables(
+                        null,
+                        ContextCompat.getDrawable(mContext, R.drawable.icon_withdraw_unselected)!!
+                            .apply {
+                                setTint(ContextCompat.getColor(mContext, R.color.blue_normal))
+                                setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            },
+                        null,
+                        null
+                    )
+                    tv_authinfor_03.setCompoundDrawables(
+                        null,
+                        ContextCompat.getDrawable(mContext, R.drawable.ico_auth_now)!!.apply {
+                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                        },
+                        null,
+                        null
+                    )
+                }
                 "当前这是第$position 个流程了".out(true)
             }
 
@@ -102,6 +167,17 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
     }
 
     override fun startObserve() {
+
+        mViewModel.qualLiveData.observe(this,{
+                    val show =
+                        XPopup.Builder(mContext).asCustom(dialog_auth_confirm(mContext)).show()
+            show.delayDismiss(3000)
+            lifecycleScope.launch {
+                delay(4000)
+                finish()
+            }
+
+        })
     }
 
     override fun initVM(): AuthInforViewModel = AuthInforViewModel()

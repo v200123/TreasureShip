@@ -421,6 +421,16 @@ interface JzzApiService {
     @POST("/api/v1/userOccupation/getUserOccupation")
     suspend fun getAuthType(@Body body: BaseRequestBody):JzzResponse<UserAuthTypeBean>
 
+    /**
+     *
+     */
     @POST("/api/v1/userOccupation/getUserOccupationCredentials")
     suspend fun getOccupationType(@Body body: BaseRequestBody):JzzResponse<OccupationBean>
+       @POST("/api/v1/hospitalDepartment/getHospitalDepartment")
+    suspend fun getHospitalType(@Body body: BaseRequestBody):JzzResponse<DepartmentBean>
+
+    @POST("/api/v1/user/savePersonalQualification")
+    suspend fun uploadInformation(@Body body: BaseRequestBody):JzzResponse<Qualification>
+
+
 }

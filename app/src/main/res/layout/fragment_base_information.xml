@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_base_name"
            android:background="@null"
             android:minWidth="105dp"
             android:hint="请输入真实名字"
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <EditText
+                android:enabled="false"
                 android:background="@null"
                 android:id="@+id/et_base_address"
                 android:minWidth="105dp"
@@ -75,7 +77,7 @@
                 android:layout_height="wrap_content"/>
             <EditText
                 android:background="@null"
-                android:enabled="false"
+                android:id="@+id/et_base_carName"
                 android:autofillHints="请输入真实信息"
                 android:minWidth="105dp"
                 android:hint="请输入真实信息"
@@ -86,6 +88,7 @@
                 android:layout_height="wrap_content"/>
         </FrameLayout>
         <FrameLayout
+            android:id="@+id/fl_baseinfo_department"
             android:padding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -95,6 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <EditText
+                android:id="@+id/tv_department_name"
+                android:enabled="false"
                 android:background="@null"
                 android:minWidth="105dp"
                 android:hint="请选择科室"

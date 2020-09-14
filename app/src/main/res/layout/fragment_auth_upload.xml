@@ -54,6 +54,7 @@
 
 
         <TextView
+            android:id="@+id/tv_example_01"
             android:textColor="@color/blue_108D99"
             android:layout_marginTop="19dp"
             android:layout_marginEnd="15dp"
@@ -134,6 +135,7 @@
 
 
         <TextView
+            android:id="@+id/tv_example_02"
             android:textColor="@color/blue_108D99"
             android:layout_marginTop="19dp"
             android:layout_marginEnd="15dp"
@@ -151,10 +153,10 @@
             android:layout_width="150dp"
             android:layout_height="84dp"
             android:layout_marginTop="15dp"
+            android:src="@drawable/image_id_card"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView_idCard_02"
-            app:layout_constraintTop_toBottomOf="@+id/textView_idCard_02"
-            tools:src="@drawable/ic_clock_clocked" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_idCard_02" />
 
 <!--        <ImageView-->
 <!--            tools:src  = "@drawable/ic_clock_clocked"-->

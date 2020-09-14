@@ -1,26 +1,27 @@
 package com.jzz.treasureship.ui.auth
 
 import android.R.anim
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import com.blankj.utilcode.util.GsonUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.CityPlace
 import com.jzz.treasureship.model.bean.CityPlaces
 import com.jzz.treasureship.ui.auth.viewmodel.AuthBaseInfoViewModel
+import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
 import com.lc.mybaselibrary.out
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.interfaces.SimpleCallback
-import com.xuexiang.citypicker.CityPicker
-import com.xuexiang.citypicker.adapter.OnLocationListener
-import com.xuexiang.citypicker.adapter.OnPickListener
-import com.xuexiang.citypicker.model.City
-import com.xuexiang.citypicker.model.LocateState
-import com.xuexiang.citypicker.model.LocatedCity
 import kotlinx.android.synthetic.main.fragment_add_address.*
 import kotlinx.android.synthetic.main.fragment_base_information.*
 
@@ -31,8 +32,16 @@ import kotlinx.android.synthetic.main.fragment_base_information.*
  *@Auth: 29579
  **/
 class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false) {
-    private var allPlace by PreferenceUtils(PreferenceUtils.ALL_PLACES, "")
 
+
+    companion object {
+        const val result = 500
+        const val EXTRA_POSITION = "com.position"
+        const val EXTRA_NAME = "com.name"
+    }
+
+    private val activityViewModel by activityViewModels<CommonDataViewModel>()
+    private var allPlace by PreferenceUtils(PreferenceUtils.ALL_PLACES, "")
     var topAddressObj: CityPlace? = null
     var midAddressObj: CityPlace? = null
     var lastAddressObj: CityPlace? = null
@@ -45,6 +54,37 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
         xll_raduis.apply {
             radius = 24
             showDividers = SHOW_DIVIDER_MIDDLE
+        }
+
+        et_base_name.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                activityViewModel.mConfirmBody.mRealName = s.toString()
+            }
+        })
+
+        et_base_carName.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+                activityViewModel.mConfirmBody.mOrganizationName = s.toString()
+
+            }
+        })
+
+
+        fl_baseinfo_department.setOnClickListener {
+            startActivityForResult(Intent(mContext, DepartmentSreachActivity::class.java), 500)
         }
 
         fl_baseinfo_address.setOnClickListener {
@@ -71,8 +111,12 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
                             midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
                         }
 
-                        tv_adress.text =
-                            "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
+                        et_base_address.setText("${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}")
+                        activityViewModel.mConfirmBody.apply {
+                            this.mAreaProvince = topAddressObj!!.id
+                            this.mAreaCity = midAddressObj!!.id
+                            this.mAreaDistrict = lastAddressObj!!.id
+                        }
                     }
 
                 }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
@@ -82,11 +126,21 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 500) {
+            if (requestCode == result && data != null) {
+                tv_department_name.setText(data.getStringExtra(EXTRA_NAME)!!)
+                activityViewModel.mConfirmBody.mDepartmentId = data.getIntExtra(EXTRA_POSITION,1)
+            }
+        }
+    }
+
     override fun initData() {
     }
 
     override fun startObserve() {
-        mViewModel.CityPlacesLiveData.observe(this,{
+        mViewModel.CityPlacesLiveData.observe(this, {
             allPlace = GsonUtils.toJson(it)
             XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
 
@@ -105,8 +159,12 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
                     if (midAddress.isNotBlank()) {
                         midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
                     }
-                    tv_adress.text =
-                        "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
+                    et_base_address.setText("${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}")
+                    activityViewModel.mConfirmBody.apply {
+                        this.mAreaProvince = topAddressObj!!.id
+                        this.mAreaCity = midAddressObj!!.id
+                        this.mAreaDistrict = lastAddressObj!!.id
+                    }
                 }
 
             }).asCustom(CustomAddPickerBottomPopup(mContext, it)).show()
