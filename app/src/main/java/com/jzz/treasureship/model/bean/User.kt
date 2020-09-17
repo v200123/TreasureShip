@@ -12,11 +12,12 @@ data class User(
     val hospitalName: String?,
     val id: Int?,
     val mobile: String?,
-    val nickName: String?,
+    val nickName: String,
     val sex: String?,
     val street: String?,
     val tags: String?,
     val username: String?,
     val wxOpenid: String?,
-    val wxUnionid: String?
+    val wxUnionid: String?,
+    val firstPassTip: Int
 )

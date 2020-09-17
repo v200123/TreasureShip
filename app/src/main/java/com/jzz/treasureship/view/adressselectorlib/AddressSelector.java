@@ -408,8 +408,8 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
             public MyViewHolder(View itemView) {
                 super(itemView);
                 this.itemView = itemView;
-                tv = (TextView) itemView.findViewById(R.id.item_address_tv);
-                img = (ImageView) itemView.findViewById(R.id.item_address_img);
+                tv = itemView.findViewById(R.id.item_address_tv);
+                img = itemView.findViewById(R.id.item_address_img);
             }
         }
     }

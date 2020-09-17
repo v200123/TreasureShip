@@ -17,9 +17,9 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.User
-import com.jzz.treasureship.utils.MoneyUtil
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.CenterPopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.tencent.mm.opensdk.modelmsg.SendAuth
@@ -84,14 +84,14 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                 }
                 if (deleteLastChar) {
                     // 设置新的截取的字符串
-                    edit_price.setText(s.toString().substring(0, s.toString().length - 1));
+                    edit_price.setText(s.toString().substring(0, s.toString().length - 1))
                     // 光标强制到末尾
-                    edit_price.setSelection(edit_price.text.length);
+                    edit_price.setSelection(edit_price.text.length)
                 }
                 // 以小数点开头，前面自动加上 "0"
                 if (s.toString().startsWith(".")) {
-                    edit_price.setText("0$s");
-                    edit_price.setSelection(edit_price.text.length);
+                    edit_price.setText("0$s")
+                    edit_price.setSelection(edit_price.text.length)
                 }
             }
 
@@ -143,8 +143,8 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                 } else {
                     //提现对话框
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss() {
-                            super.onDismiss()
+                        override fun onDismiss(popupView: BasePopupView) {
+                            super.onDismiss(popupView)
                             if (confirmWithdraw) {
                                 mViewModel.askWithdraw(edit_price.text.toString())
                             }
@@ -194,7 +194,8 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                 it.showSuccess?.let {
                     xPopup.dismiss()
                     userJson = GsonUtils.toJson(it)
-                    Glide.with(context!!).load(it.avatar).apply(RequestOptions.bitmapTransform(CircleCrop())).into(icon_avatar)
+                    Glide.with(context!!).load(it.avatar).apply(RequestOptions.bitmapTransform(CircleCrop()))
+                        .into(icon_avatar)
                     tv_wx_name.text = it.nickName
 
                 }
@@ -215,6 +216,9 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                     confirmWithdraw = false
                     ToastUtils.showShort("${it}")
                     activity!!.supportFragmentManager.popBackStack()
+                    mViewModel.getCouponUse()
+
+
                 }
 
                 it.showError?.let { err ->
@@ -223,6 +227,10 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                 }
             })
         }
+
+        mViewModel.isUse.observe(this, {
+            App.dialogHelp.showWithdrawSuccess()
+        })
     }
 
     override fun initListener() {

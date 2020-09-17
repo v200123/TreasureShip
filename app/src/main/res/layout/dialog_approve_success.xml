@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="365dp"
+        android:layout_height="414dp"
+        android:scaleType="center"
+        android:src="@drawable/bg_approve_success"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_approve_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="170dp"
+        android:text="恭喜您：叶重阳\n您的资质已认证成功"
+        android:textColor="#FF26CAD3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="您的20元现金及50元无门槛代金券\n已发放，快去使用吧~"
+        android:textColor="#FF575656"
+        app:layout_constraintStart_toStartOf="@+id/tv_approve_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_approve_name" />
+
+    <Button
+        android:id="@+id/btn_approve_money"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/btn_color_bg"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="立即提现 >"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <Button
+        android:id="@+id/btn_approve_buy"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/btn_color_bg"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="立即下单 >"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/btn_approve_money"
+        app:layout_constraintTop_toTopOf="@+id/btn_approve_money" />
+
+    <ImageView
+        android:id="@+id/iv_approve_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/ico_close_cricle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="7dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

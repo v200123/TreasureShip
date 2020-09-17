@@ -114,7 +114,7 @@ class CustomCommentBottomPopup(
                 toWho = "输入内容评论视频"
                 et_comments.hint = toWho
                 //et_comments.requestFocus()
-                et_comments.clearFocus();
+                et_comments.clearFocus()
                 val imm: InputMethodManager? =
                     context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
                 imm?.hideSoftInputFromWindow(et_comments.windowToken, 0)

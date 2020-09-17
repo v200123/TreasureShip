@@ -2,13 +2,9 @@ package com.jzz.treasureship.wxapi
 
 import android.app.Activity
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
-import com.jzz.treasureship.ui.activity.PaySuccessActivity
-import com.jzz.treasureship.utils.PreferenceUtils
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
@@ -23,14 +19,14 @@ class WXPayEntryActivity : Activity(), IWXAPIEventHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        api = App.iwxapi;
-        api.handleIntent(intent, this);
+        api = App.iwxapi
+        api.handleIntent(intent, this)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        setIntent(intent);
-        api.handleIntent(intent, this);
+        setIntent(intent)
+        api.handleIntent(intent, this)
     }
 
     override fun onResp(baseResp: BaseResp?) {

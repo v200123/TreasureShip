@@ -42,10 +42,10 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
      * 初始化组件
      */
     public void initView() {
-        clipViewLayout1 = (ClipViewLayout) findViewById(R.id.clipViewLayout1);
-        clipViewLayout2 = (ClipViewLayout) findViewById(R.id.clipViewLayout2);
-        btnCancel = (TextView) findViewById(R.id.btn_cancel);
-        btnOk = (TextView) findViewById(R.id.bt_ok);
+        clipViewLayout1 = findViewById(R.id.clipViewLayout1);
+        clipViewLayout2 = findViewById(R.id.clipViewLayout2);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnOk = findViewById(R.id.bt_ok);
         //设置点击事件监听器
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);

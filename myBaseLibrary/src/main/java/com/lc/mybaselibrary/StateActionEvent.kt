@@ -12,4 +12,6 @@ object LoadState : StateActionEvent()
 
 object SuccessState : StateActionEvent()
 
+object NeedLoginState : StateActionEvent()
+
 class ErrorState(val message: String?) : StateActionEvent()

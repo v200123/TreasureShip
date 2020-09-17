@@ -10,8 +10,7 @@ data class TabBean(val id: Int, val title: String?, val type: Int, val count: In
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)

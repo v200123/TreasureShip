@@ -107,7 +107,7 @@ class WelcomeGuideActivity : AppCompatActivity(), OnPageChangeListener {
         val len = imageIdArray.size
         for (i in 0 until len) { //new ImageView并设置全屏和图片资源
             val imageView = ImageView(this)
-            imageView.setLayoutParams(params)
+            imageView.layoutParams = params
             imageView.setBackgroundResource(imageIdArray[i])
             //将ImageView加入到集合中
             (viewList as ArrayList<View>).add(imageView)

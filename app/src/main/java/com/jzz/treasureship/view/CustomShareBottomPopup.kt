@@ -83,7 +83,7 @@ class CustomShareBottomPopup(
             msg.title = title
             msg.description = description
 
-            val thumbBmp = BitmapFactory.decodeResource(this.context.resources, R.mipmap.ic_launcher);
+            val thumbBmp = BitmapFactory.decodeResource(this.context.resources, R.mipmap.ic_launcher)
             msg.thumbData = thumbBmp.changeImage()
 
             //构造一个Req
@@ -97,10 +97,10 @@ class CustomShareBottomPopup(
             //调用api接口，发送数据到微信
             when (type) {
                 SHARE_TYPE.Type_WXSceneSession -> {
-                    req.scene = WXSceneSession;
+                    req.scene = WXSceneSession
                 }
                 SHARE_TYPE.Type_WXSceneTimeline -> {
-                    req.scene = WXSceneTimeline;
+                    req.scene = WXSceneTimeline
                 }
             }
             App.iwxapi.sendReq(req)

@@ -5,12 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
-import com.lc.mybaselibrary.ErrorState
-import com.lc.mybaselibrary.LoadState
-import com.lc.mybaselibrary.StateActionEvent
-import com.lc.mybaselibrary.SuccessState
+import com.lc.mybaselibrary.*
 import kotlinx.coroutines.*
-import okhttp3.internal.ignoreIoExceptions
 
 typealias LaunchBlock = suspend CoroutineScope.() -> Unit
 typealias Cancel = (e: Exception) -> Unit
@@ -28,10 +24,15 @@ open class BaseViewModel : ViewModel() {
 
     )
 
-    fun <T> JzzResponse<T>.resultCheck(block: (T?) -> Unit, errorMsg: (msg: String) -> Unit) {
+    fun <T> JzzResponse<T>.resultCheck(block: (T?) -> Unit, errorMsg: (msg: String) -> Unit = {mStateLiveData
+        .postValue(ErrorState(it))}) {
         if (this.success) {
             block(this.result)
         } else {
+            if(this.code == 401)
+            {
+                mStateLiveData.value = NeedLoginState
+            }
             errorMsg(this.message)
         }
     }
@@ -131,4 +132,7 @@ open class BaseViewModel : ViewModel() {
             error(result.exception.message)
         }
     }
+
+
+
 }

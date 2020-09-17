@@ -58,7 +58,7 @@ class AddressbookViewModel(val repository: AddressBookRepository, val provider: 
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitMembersStatusState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitMembersStatusState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitMembersStatusState(false, "失败!${result.result?.message}")
@@ -116,7 +116,7 @@ class AddressbookViewModel(val repository: AddressBookRepository, val provider: 
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitGoodsState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitGoodsState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitGoodsState(false, "失败!${result.result?.message}")
@@ -178,7 +178,7 @@ class AddressbookViewModel(val repository: AddressBookRepository, val provider: 
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitNoticeState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitNoticeState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitNoticeState(false, "失败!${result.result?.message}")

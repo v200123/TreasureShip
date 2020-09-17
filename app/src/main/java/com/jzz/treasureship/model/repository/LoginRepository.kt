@@ -1,18 +1,17 @@
 package com.jzz.treasureship.model.repository
 
-import android.util.Log
-import cn.jpush.android.api.JPushInterface
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
-import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.JzzApiService
 import com.jzz.treasureship.model.api.JzzRetrofitClient
-import com.jzz.treasureship.model.bean.*
+import com.jzz.treasureship.model.bean.JzzResponse
+import com.jzz.treasureship.model.bean.QuestionnaireResponseVo
+import com.jzz.treasureship.model.bean.UpdateAppBean
+import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.utils.PreferenceUtils
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
@@ -96,7 +95,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
         body.put("userName", userName.trim())
 
         root.put("body", body)
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.registerByCode(requestBody)
         return executeResponse(response, {
             if (response.code != 200) {
@@ -123,7 +122,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
         body.put("userName", userName.replace(" ", ""))
 
         root.put("body", body)
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.loginByCode(requestBody)
 
         return executeResponse(
@@ -153,7 +152,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
         body.put("mobile", mobile.trim())
 
         root.put("body", body)
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.bindMobile(requestBody)
 
         return executeResponse(
@@ -185,7 +184,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.sendSmsCode(requestBody)
 
         return executeResponse(
@@ -209,7 +208,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.wxLogin(requestBody)
 
         return executeResponse(
@@ -243,7 +242,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.checkUpdate(requestBody)
 
         return executeResponse(response)
@@ -261,7 +260,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = JzzRetrofitClient.service.getQuestionnaire(requestBody)
         return executeResponse(response)
     }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
 import com.jzz.treasureship.R
@@ -12,12 +11,7 @@ import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.DepartmentBean
 import com.jzz.treasureship.ui.auth.adapter.SearchAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.DepartmentSreachViewModel
-import com.jzz.treasureship.view.adressselectorlib.OnItemClickListener
-import com.lc.mybaselibrary.out
 import kotlinx.android.synthetic.main.activity_department_search.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  *@date: 2020/9/14
@@ -39,7 +33,6 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
         mAdapter.setOnItemClickListener(object :
             com.didichuxing.doraemonkit.widget.bravh.listener.OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                "点击事件生效了".out()
                 setResult(500, Intent().apply {
                     putExtra(
                         AuthBaseInformationFragment.EXTRA_POSITION,

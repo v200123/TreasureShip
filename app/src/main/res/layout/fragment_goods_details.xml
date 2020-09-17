@@ -10,13 +10,14 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/gv"
@@ -63,11 +64,11 @@
 
                             <ImageView
                                 android:id="@+id/iv_share"
-                                android:layout_marginEnd="10dp"
-                                android:layout_gravity="right"
-                                android:src="@drawable/icon_share_goods"
                                 android:layout_width="40dp"
-                                android:layout_height="40dp" />
+                                android:layout_height="40dp"
+                                android:layout_gravity="right"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/icon_share_goods" />
                         </com.youth.banner.Banner>
                     </RelativeLayout>
 
@@ -92,29 +93,28 @@
 
                                 <TextView
                                     android:id="@+id/tv_price"
-                                    android:text="¥0.00"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:text="¥0.00"
                                     android:textColor="#ffcc0814"
                                     android:textSize="23sp" />
 
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:layout_gravity="bottom"-->
-<!--                                    android:layout_marginStart="17dp"-->
-<!--                                    android:background="@drawable/goods_lowest_text_shape"-->
-<!--                                    android:drawableEnd="@drawable/icon_goods_detail_lowest_price"-->
-<!--                                    android:gravity="center"-->
-<!--                                    android:text="全网最低价"-->
-<!--                                    android:textAlignment="center"-->
-<!--                                    android:textColor="#ffcc0814"-->
-<!--                                    android:textSize="11sp" />-->
+                                <!--                                <TextView-->
+                                <!--                                    android:layout_width="wrap_content"-->
+                                <!--                                    android:layout_height="wrap_content"-->
+                                <!--                                    android:layout_gravity="bottom"-->
+                                <!--                                    android:layout_marginStart="17dp"-->
+                                <!--                                    android:background="@drawable/goods_lowest_text_shape"-->
+                                <!--                                    android:drawableEnd="@drawable/icon_goods_detail_lowest_price"-->
+                                <!--                                    android:gravity="center"-->
+                                <!--                                    android:text="全网最低价"-->
+                                <!--                                    android:textAlignment="center"-->
+                                <!--                                    android:textColor="#ffcc0814"-->
+                                <!--                                    android:textSize="11sp" />-->
                             </LinearLayout>
 
                             <TextView
-                                android:visibility="invisible"
                                 android:id="@+id/tv_goCompare"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -123,7 +123,8 @@
                                 android:drawableEnd="@drawable/icon_goods_detail_goto"
                                 android:text="去比价"
                                 android:textColor="#ff666666"
-                                android:textSize="12sp" />
+                                android:textSize="12sp"
+                                android:visibility="invisible" />
                         </LinearLayout>
 
                         <TextView
@@ -177,71 +178,148 @@
                                 android:textSize="12sp" />
                         </LinearLayout>
 
+
+                    </LinearLayout>
+
+                    <com.lc.mybaselibrary.ShapeLinearLayout
+                        app:shapeCornersRadius="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                       app:shapeSolidColor="@color/white"
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="1.5dp"
-                            android:layout_marginTop="15dp"
-                            android:background="@color/white"
-                            android:orientation="horizontal"
-                            android:paddingStart="16.5dp"
-                            android:paddingTop="17.5dp"
-                            android:paddingBottom="18dp">
+                            android:padding="15dp"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="发货 "
-                                android:textColor="#ff111111"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:text="商家"
+                                android:textColor="#FF121212"
+                                android:textSize="15dp"
+                                android:typeface="normal" />
 
                             <TextView
-                                android:id="@+id/tv_compony"
+                                tools:text = "北京金紫竹科技有限公司"
+                                android:layout_marginStart="21dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:textColor="#ff333333"
-                                android:textSize="12sp" />
+                                android:layout_height="wrap_content"/>
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+                                    <ImageView
+                                        android:src="@drawable/icon_goto"
+                                        android:layout_gravity="end"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+                                </FrameLayout>
                         </LinearLayout>
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/layout_Logistics"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5.5dp"
-                        android:background="@color/white"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="2dp">
-
-                        <TextView
+                        <LinearLayout
+                            android:padding="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:paddingStart="16.5dp"
-                            android:text="物流"
-                            android:textColor="#ff111111"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:layout_height="wrap_content">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:visibility="gone"
-                            android:id="@+id/rcv_Logistics"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="运费"
+                                android:textColor="#FF121212"
+                                android:textSize="15dp"
+                                android:typeface="normal" />
+
+                            <TextView
+                                tools:text = "包邮"
+                                android:layout_marginStart="21dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </com.lc.mybaselibrary.ShapeLinearLayout>
+
+
+                    <com.lc.mybaselibrary.ShapeLinearLayout
+                        app:shapeCornersRadius="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        app:shapeSolidColor="@color/white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginEnd="15dp"
-                            android:layout_marginBottom="14dp" />
-                    </LinearLayout>
+                            android:padding="15dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="规格"
+                                android:textColor="#FF121212"
+                                android:textSize="15dp"
+                                android:typeface="normal" />
+
+                            <TextView
+                                android:text="请选择"
+                                tools:text = "北京金紫竹科技有限公司"
+                                android:layout_marginStart="21dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <ImageView
+                                    android:src="@drawable/icon_goto"
+                                    android:layout_gravity="end"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </FrameLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:padding="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="参数"
+                                android:textColor="#FF121212"
+                                android:textSize="15dp"
+                                android:typeface="normal" />
+
+                            <TextView
+                                android:text="商品参数详情"
+                                tools:text = "北京金紫竹科技有限公司"
+                                android:layout_marginStart="21dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <ImageView
+                                    android:src="@drawable/icon_goto"
+                                    android:layout_gravity="end"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </FrameLayout>
+                        </LinearLayout>
+                    </com.lc.mybaselibrary.ShapeLinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2.5dp"
                         android:background="@color/white"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="fill_parent"
@@ -279,7 +357,8 @@
                             android:layout_height="wrap_content"
                             android:background="@color/white"
                             android:orientation="horizontal"
-                            android:padding="15dp">
+                            android:padding="15dp"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -319,11 +398,11 @@
                             android:textStyle="bold" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:layout_weight="2"
                             android:id="@+id/rcv_skus"
-                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="2" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -499,8 +578,8 @@
                         android:background="@color/white"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:visibility="gone"
-                        android:padding="12dp">
+                        android:padding="12dp"
+                        android:visibility="gone">
 
                         <View
                             android:layout_width="0dp"
@@ -553,7 +632,6 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="12.5dp"
                     android:drawableTop="@drawable/icon_goods_detail_customer_service"
-                    android:text="客服"
                     android:textAlignment="center"
                     android:textColor="#ff666666"
                     android:textSize="11sp" />
@@ -565,28 +643,26 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="21.5dp"
                     android:drawableTop="@drawable/icon_goods_detail_shopcar"
-                    android:text="购物车"
                     android:textAlignment="center"
                     android:textColor="#ff666666"
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#FFCDCBCE">
 
-                <TextView
+
+                <com.lc.mybaselibrary.ShapeTextView
+                    app:shapeCornersRadius="20dp"
+                    app:shapeSolidColor="#FFF0A923"
                     android:id="@+id/tv_addCart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
+
                     android:text="加入购物车"
-                    android:textColor="#ffffffff"
+                    android:textColor="#FFF0A923"
                     android:textSize="13sp" />
-            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

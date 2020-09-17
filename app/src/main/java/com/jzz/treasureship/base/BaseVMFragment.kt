@@ -10,23 +10,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.utils.BackHandlerHelper
 import com.jzz.treasureship.utils.FragmentBackHandler
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.SuccessState
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
+import kotlinx.android.synthetic.main.include_title.*
 
 
 abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true) : Fragment(), FragmentBackHandler {
-    private val mLoading  by lazy { XPopup.Builder(mContext).dismissOnBackPressed(false)
-        .dismissOnTouchOutside(false)
-        .asLoading() }
+    private val mLoading by lazy {
+        XPopup.Builder(mContext).dismissOnBackPressed(false)
+            .dismissOnTouchOutside(false)
+            .asLoading()
+    }
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     protected lateinit var mViewModel: VM
     var mActivity: Activity? = null
-    lateinit var mContext:Context
+    lateinit var mContext: Context
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,21 +50,28 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel = initVM()
+        try {
+            rlback.setOnClickListener { mActivity!!.onBackPressed() }
+        } catch (e: Exception) {
+
+        }
         initView()
         initData()
         startObserve()
         initListener()
 
-        mViewModel.mStateLiveData.observe(this,{
-            if(it is LoadState)
-            {
+
+
+        mViewModel.mStateLiveData.observe(this, {
+            if (it is LoadState) {
                 mLoading.show()
             }
-            if(it is SuccessState)
-            {
+            if (it is SuccessState) {
                 mLoading.dismiss()
             }
-
+            if (it is Error) {
+                ToastUtils.showShort(it.message)
+            }
         })
 
     }

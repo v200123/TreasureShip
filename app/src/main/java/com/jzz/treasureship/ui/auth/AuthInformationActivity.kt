@@ -1,12 +1,15 @@
 package com.jzz.treasureship.ui.auth
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Build
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat.getMinimumHeight
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
-import com.blankj.utilcode.util.ToastUtils
+import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
+import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.auth.adapter.AuthInfoAdapter
@@ -14,7 +17,10 @@ import com.jzz.treasureship.ui.auth.viewmodel.AuthInforViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
 import com.jzz.treasureship.view.dialog_auth_confirm
 import com.lc.mybaselibrary.out
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlinx.android.synthetic.main.activity_auth_information.*
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.coroutines.delay
@@ -35,8 +41,10 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
 
 
     override fun initView() {
+        setStatueColor()
         tv_title.text = "认证信息"
-        model.mConfirmBody.mOccupationId= intent.getIntExtra(occuId,0)
+        rlback.setOnClickListener { finish() }
+        model.mConfirmBody.mOccupationId = intent.getIntExtra(occuId, 0)
         vp_authinfor.adapter = AuthInfoAdapter(supportFragmentManager)
         vp_authinfor.isEnabled = false
         btn_baseinfo_next.setOnClickListener {
@@ -85,11 +93,10 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     )
                 }
                 if (position == 1) {
-
                     btn_baseinfo_next.apply {
                         text = "提交审核"
                         setOnClickListener {
-                        mViewModel.confirm(model.mConfirmBody)
+                            mViewModel.confirm(model.mConfirmBody)
                         }
                     }
 
@@ -168,17 +175,42 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
 
     override fun startObserve() {
 
-        mViewModel.qualLiveData.observe(this,{
-                    val show =
-                        XPopup.Builder(mContext).asCustom(dialog_auth_confirm(mContext)).show()
+        mViewModel.qualLiveData.observe(this, {
+            val show =
+                XPopup.Builder(mContext).hasShadowBg(true)
+                    .setPopupCallback(object : SimpleCallback() {
+
+                        override fun onDismiss(popupView: BasePopupView) {
+                            super.onDismiss(popupView)
+                            lifecycleScope.launch {
+                                delay(200)
+                                start<AuthConfirmSuccessActivity> { flags = Intent.FLAG_ACTIVITY_CLEAR_TASK }
+                                finish()
+                            }
+
+                        }
+
+
+                    })
+                    .asCustom(
+                        dialog_auth_confirm
+                            (mContext)
+                    ).show()
             show.delayDismiss(3000)
-            lifecycleScope.launch {
-                delay(4000)
-                finish()
-            }
 
         })
     }
 
     override fun initVM(): AuthInforViewModel = AuthInforViewModel()
+
+    fun setStatueColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+        StateAppBar.setStatusBarColor(this, ContextCompat.getColor(this, R.color.white))
+        StatusBarUtils.StatusBarLightMode(this)
+
+    }
+
 }

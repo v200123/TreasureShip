@@ -16,5 +16,6 @@ data class Data(
     val payTime: Int?,
     val shopName: String?,
     val signTime: String?,
-    val userMoney: Double?
+    val userMoney: Double?,
+   val orderRepurchase:Int
 )

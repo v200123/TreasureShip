@@ -15,7 +15,7 @@ import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.fragment_wallet_vp.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class WalletVpFragment() : BaseVMFragment<WalletViewModel>() {
+class WalletVpFragment : BaseVMFragment<WalletViewModel>() {
 
 
     companion object {

@@ -69,7 +69,7 @@ public class PhoneEditText extends androidx.appcompat.widget.AppCompatEditText i
                     return "";
                 }
                 //这里是当光标移动到非末尾位置进行输入操作时，返回空字符
-                else if (getPhoneText().toString().length() == 11) {
+                else if (getPhoneText().length() == 11) {
                     return "";
                 } else {
                     return null;

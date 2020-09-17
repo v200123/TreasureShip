@@ -29,4 +29,11 @@
         <attr name="civ_border_overlay" format="boolean" />
         <attr name="civ_fill_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="BaseDialog">
+        <attr name="setTopImage" format="reference"/>
+        <attr name="setBottomImage" format="reference"/>
+        <attr name="bottomWidth" format="dimension"/>
+        <attr name="bottomHight" format="dimension"/>
+    </declare-styleable>
 </resources>

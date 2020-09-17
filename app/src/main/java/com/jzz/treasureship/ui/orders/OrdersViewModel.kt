@@ -42,7 +42,7 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitOrdersGoPayState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitOrdersGoPayState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitOrdersGoPayState(false, "失败!${result.result?.message}")
@@ -102,7 +102,7 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitOrdersGoPayState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitOrdersGoPayState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitOrdersGoPayState(false, "失败!${result.result?.message}")
@@ -161,7 +161,7 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitOrderStatusState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitOrderStatusState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitOrderStatusState(false, "失败!${result.result?.message}")
@@ -221,7 +221,7 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitComfirmReceiveState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitComfirmReceiveState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitComfirmReceiveState(false, "失败!${result.result?.message}")
@@ -280,7 +280,7 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             wxCode =""
                             userInfo=""
                             access=""
-                            emitNoticeReceiveState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitNoticeReceiveState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitNoticeReceiveState(false, "失败!${result.result?.message}")

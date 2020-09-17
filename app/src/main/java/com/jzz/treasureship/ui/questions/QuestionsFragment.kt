@@ -21,6 +21,7 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CheckRewardDialog
 import com.jzz.treasureship.view.NoticeGetRewardDialog
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_answer_questions.*
@@ -181,8 +182,8 @@ class QuestionsFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let {
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss() {
-                            super.onDismiss()
+                        override fun onDismiss(popupView: BasePopupView) {
+                            super.onDismiss(popupView)
                             if (go2Wallet) {
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(WalletFragment.javaClass.name)

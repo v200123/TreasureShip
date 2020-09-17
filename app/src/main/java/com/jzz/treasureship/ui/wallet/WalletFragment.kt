@@ -15,9 +15,6 @@ import com.jzz.treasureship.ui.withdraw.WithdrawFragment
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_wallet.*
-import kotlinx.android.synthetic.main.fragment_mine_wallet.rcv_wallets
-import kotlinx.android.synthetic.main.fragment_mine_wallet.srl_wallets
-import kotlinx.android.synthetic.main.fragment_wallet_vp.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class WalletFragment : BaseVMFragment<WalletViewModel>() {
@@ -43,65 +40,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
         iv_walletBack.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
         }
-//
-//        for ((index) in titles.withIndex()) {
-//            fragments.add(WalletVpFragment.newInstance(index))
-//        }
-//        walletTablayout.run {
-//            setSelectedTabIndicatorColor(this.resources.getColor(R.color.blue_light))
-//            setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//                override fun onTabReselected(tab: TabLayout.Tab?) {
-//
-//                }
-//
-//                override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                    val view = tab!!.customView
-//                    if (null == view) {
-//                        tab.setCustomView(R.layout.custom_tab_layout_text)
-//                    }
-//                    val textView: TextView = tab.customView!!.findViewById(R.id.tab_item_textview)
-//                    textView.text = titles[tab.position]
-//                    textView.setTextColor(context.resources.getColor(R.color.gray999))
-//                    textView.typeface = Typeface.DEFAULT
-//                }
-//
-//                override fun onTabSelected(tab: TabLayout.Tab?) {
-//                    val view = tab!!.customView
-//                    if (null == view) {
-//                        tab.setCustomView(R.layout.custom_tab_layout_text)
-//                    }
-//                    val textView: TextView = tab.customView!!.findViewById(R.id.tab_item_textview)
-//                    textView.text = titles[tab.position]
-//                    textView.setTextColor(context.resources.getColor(R.color.blue_light))
-//                    textView.typeface = Typeface.DEFAULT_BOLD
-//                }
-//
-//            })
-//        }
 
-//        val mAdapter = object : FragmentStateAdapter(this) {
-//            override fun createFragment(position: Int): Fragment {
-//                if (!fragments[position].isAdded){
-//                    return fragments[position]
-//                }
-//                return Fragment()
-//            }
-//
-//            override fun getItemCount(): Int {
-//                return fragments.size
-//            }
-//        }
-//        walletViewpager.offscreenPageLimit = fragments.size
-//        walletViewpager.isSaveEnabled = false
-//        walletViewpager.adapter = mAdapter
-//
-//        TabLayoutMediator(walletTablayout, walletViewpager, true,
-//            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-//                if (position >= titles.size) {
-//                    return@TabConfigurationStrategy
-//                }
-//                tab.text = titles[position]
-//            }).attach()
 
         srl_wallets.setOnRefreshListener {
             pageNum = 1

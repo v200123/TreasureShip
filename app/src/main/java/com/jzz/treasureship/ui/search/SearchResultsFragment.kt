@@ -36,6 +36,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.*
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
@@ -218,7 +219,8 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
                     loading.dismiss()
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
 
-                        override fun onDismiss() {
+                        override fun onDismiss(popupView: BasePopupView) {
+
                             val id by PreferenceUtils(PreferenceUtils.CLICKED_COLLECT_ID, -1)
                             if (id != -1) {
                                 mViewModel.addCollect(categoryId = id, remark = "", videoId = currentVideoID)
@@ -291,8 +293,8 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
                         notifyDataSetChanged()
                     }
                     XPopup.Builder(this@SearchResultsFragment.context).setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss() {
-                            super.onDismiss()
+                        override fun onDismiss(popupView: BasePopupView) {
+                            super.onDismiss(popupView)
                             commentsAdapter.run {
                                 setNewData(null)
                                 notifyDataSetChanged()
@@ -352,17 +354,17 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onPause() {
         super.onPause()
-        GSYVideoManager.onPause();
+        GSYVideoManager.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        GSYVideoManager.releaseAllVideos();
+        GSYVideoManager.releaseAllVideos()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        GSYVideoManager.releaseAllVideos();
+        GSYVideoManager.releaseAllVideos()
     }
 
     inner class SearchResultAdapter(layoutResId: Int = R.layout.item_video) :

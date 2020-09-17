@@ -65,10 +65,6 @@ class CustomContacterDrawerPopupView(context: Context, goods: ArrayList<DataXX>)
         }
     }
 
-    override fun onDismiss() {
-        super.onDismiss()
-    }
-
     inner class ContacterGoodsAdapter(layoutResId: Int = R.layout.layout_item_contacter_goods) :
         BaseBindAdapter<DataXX>(layoutResId, BR.dataXX) {
 

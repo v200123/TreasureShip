@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -56,12 +57,16 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
     companion object {
         //请求相机
         private const val REQUEST_CAPTURE = 100
+
         //请求相册
         private val REQUEST_PICK = 101
+
         //请求截图
         private val REQUEST_CROP_PHOTO = 102
+
         //请求访问外部存储
         private val READ_EXTERNAL_STORAGE_REQUEST_CODE = 103
+
         //请求写入外部存储
         private val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 104
         private var mBindWeChat = false
@@ -72,7 +77,8 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
     }
 
     private val mModifyNickNameFragment by lazy { ModifyNickNameFragment.newInstance() }
-//    private val mAuthenticationFragment by lazy { AuthenticationFragment.newInstance() }
+
+    //    private val mAuthenticationFragment by lazy { AuthenticationFragment.newInstance() }
     private val mAddressFragment by lazy { ChooseAddressFragment.newInstance() }
 
     //调用照相机返回图片文件
@@ -105,7 +111,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
 //        if (!hidden) {
-            mViewModel.getUserInfo()
+        mViewModel.getUserInfo()
 //        }
     }
 
@@ -162,7 +168,11 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(UserInfoFragment.javaClass.name)
                                     .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(R.id.frame_content, mModifyNickNameFragment, mModifyNickNameFragment.javaClass.name)
+                                    .add(
+                                        R.id.frame_content,
+                                        mModifyNickNameFragment,
+                                        mModifyNickNameFragment.javaClass.name
+                                    )
                                     .commit()
                             }
                         }
@@ -175,7 +185,11 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(UserInfoFragment.javaClass.name)
                                     .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(R.id.frame_content, mModifyNickNameFragment, mModifyNickNameFragment.javaClass.name)
+                                    .add(
+                                        R.id.frame_content,
+                                        mModifyNickNameFragment,
+                                        mModifyNickNameFragment.javaClass.name
+                                    )
                                     .commit()
                             }
                         }
@@ -195,7 +209,11 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(UserInfoFragment.javaClass.name)
                                     .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(R.id.frame_content, mModifyNickNameFragment, mModifyNickNameFragment.javaClass.name)
+                                    .add(
+                                        R.id.frame_content,
+                                        mModifyNickNameFragment,
+                                        mModifyNickNameFragment.javaClass.name
+                                    )
                                     .commit()
                             }
                         }
@@ -207,7 +225,11 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(UserInfoFragment.javaClass.name)
                                     .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(R.id.frame_content, mModifyNickNameFragment, mModifyNickNameFragment.javaClass.name)
+                                    .add(
+                                        R.id.frame_content,
+                                        mModifyNickNameFragment,
+                                        mModifyNickNameFragment.javaClass.name
+                                    )
                                     .commit()
                             }
                         }
@@ -226,7 +248,9 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                 }
 
                 lin_mine_audit.setOnClickListener {
-                mContext.start<AuthenticationFragment> {  }
+                    mContext.start<AuthenticationFragment> {
+                        setFlags(FLAG_ACTIVITY_NEW_TASK)
+                    }
                 }
 
                 lin_receiveAddress.setOnClickListener {
@@ -258,7 +282,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                     //Glide.with(context!!).load(it.url!!.replace("bj.jzzchina.com", "119.3.125.1")).into(avatar)
 //                    Glide.with(context!!).load(it.url!!).into(avatar)
 
-                    mViewModel.modifiedInfo(it.url,null)
+                    mViewModel.modifiedInfo(it.url, null)
                     mViewModel.getUserInfo()
                 }
             })
@@ -285,7 +309,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
         when (requestCode) {
             REQUEST_CAPTURE -> {
                 if (resultCode == RESULT_OK) {
-                    gotoClipActivity(Uri.fromFile(tempFile));
+                    gotoClipActivity(Uri.fromFile(tempFile))
                 }
             }
             REQUEST_PICK -> {
@@ -302,7 +326,8 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         val path = RealPathFromUriUtils.getRealPathFromUri(context, data.data)
-                        if (path.toLowerCase().endsWith("png") or path.toLowerCase().endsWith("jpeg") or path.toLowerCase().endsWith(
+                        if (path.toLowerCase().endsWith("png") or path.toLowerCase()
+                                .endsWith("jpeg") or path.toLowerCase().endsWith(
                                 "jpg"
                             )
                         ) {
@@ -334,7 +359,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
     private fun gotoCamera() {
         //创建拍照存储的图片文件
         tempFile = File(
-            FileUtil.checkDirPath(Environment.getExternalStorageDirectory().getPath().toString() + "/image/"),
+            FileUtil.checkDirPath(Environment.getExternalStorageDirectory().path.toString() + "/image/"),
             System.currentTimeMillis().toString() + ".jpg"
         )
         //跳转到调用系统相机

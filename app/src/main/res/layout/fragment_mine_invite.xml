@@ -47,6 +47,12 @@
                 android:textColor="#fffffefe"
                 android:textSize="14sp"
                 android:visibility="invisible" />
+            <ImageView
+                android:id="@+id/iv_small_red"
+                android:layout_gravity="center"
+                android:src="@drawable/ico_small_redenvelope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <ScrollView

@@ -44,7 +44,7 @@ class CustomSetNoticePopup(context: Context) : CenterPopupView(context) {
                 calendar.set(year, monthOfYear, dayOfMonth)
 
                 val format = SimpleDateFormat("yyyy年MM月dd日")
-                val formatTime = format.format(calendar.getTime())
+                val formatTime = format.format(calendar.time)
 
                 dateString = "$formatTime"
             }
@@ -91,8 +91,8 @@ class CustomSetNoticePopup(context: Context) : CenterPopupView(context) {
             val picker = mSpinners.getChildAt(i) as NumberPicker
             val pickerFields = NumberPicker::class.java.declaredFields
             for (pf in pickerFields) {
-                if (pf.getName().equals("mSelectionDivider")) {
-                    pf.setAccessible(true)
+                if (pf.name.equals("mSelectionDivider")) {
+                    pf.isAccessible = true
                     try {
                         pf.set(picker, ColorDrawable(Color.parseColor("#26C8D7"))) //设置分割线颜色
                     } catch (e: IllegalArgumentException) {
@@ -112,12 +112,12 @@ class CustomSetNoticePopup(context: Context) : CenterPopupView(context) {
         val llFirst = timePicker.getChildAt(0) as LinearLayout
         // 获取 NumberPicker
         val mSpinners = llFirst.getChildAt(1) as LinearLayout
-        for (i in 0 until mSpinners.getChildCount()) {
+        for (i in 0 until mSpinners.childCount) {
             if (mSpinners.getChildAt(i) is NumberPicker) {
                 val pickerFields: Array<Field> = NumberPicker::class.java.declaredFields
                 for (pf in pickerFields) {
-                    if (pf.getName().equals("mSelectionDivider")) {
-                        pf.setAccessible(true)
+                    if (pf.name.equals("mSelectionDivider")) {
+                        pf.isAccessible = true
                         try {
                             pf.set(mSpinners.getChildAt(i), ColorDrawable(Color.parseColor("#26C8D7")))
                         } catch (e: java.lang.IllegalArgumentException) {

@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -35,7 +36,6 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  *@date: 2020/9/11
@@ -49,6 +49,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
     private var firstImage: String = ""
     private var secondImage: String = ""
     private var thirdImage: String = ""
+    private lateinit var mOccupation: image
 
     //    当前上传图片的位置为0，1，2
     private var nowPosition = 0
@@ -65,6 +66,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         mViewModel.occupationData.observe(this, { occupa ->
             val mList = occupa.mList
             mImageList = occupa.mList
+            mOccupation = mList[0]
 //            用于取第一个的资质的
             val firstOccupation = mList[0]
             activityModel.mConfirmBody.apply {
@@ -73,17 +75,29 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             }
 
             iv_authupload_image01.setOnClickListener {
-                imageChoice()
+                if (firstImage.isBlank())
+                    imageChoice()
+                else {
+                    otherImageChoice(it as ImageView)
+                }
                 nowPosition = 0
             }
 
             iv_authupload_image02.setOnClickListener {
-                imageChoice()
+                if (secondImage.isBlank())
+                    imageChoice()
+                else {
+                    otherImageChoice(it as ImageView)
+                }
                 nowPosition = 1
             }
             iv_authupload_idCard_image01.setOnClickListener {
-                imageChoice()
-                nowPosition = 3
+                if (thirdImage.isBlank())
+                    imageChoice()
+                else {
+                    otherImageChoice(it as ImageView)
+                }
+                nowPosition = 2
             }
 
             tv_example_01.setOnClickListener {
@@ -111,7 +125,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
 //            }
             if (firstOccupation.mBackImage2 != null) {
                 Glide.with(this).asDrawable().load(firstOccupation.mBackImage2)
-                    .into(iv_authupload_image01)
+                    .into(iv_authupload_image02)
             }
             if (mList.size == 1) {
                 tv_authupload_change.visibility = View.GONE
@@ -149,6 +163,8 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
      * 切换资质后的图片重置
      */
     private fun cleanInformation(image: image) {
+        tv_authUpLoad_title.text = image.mTitle
+        mOccupation = image
         activityModel.mConfirmBody.mQualificationImages = ""
         Glide.with(this).asDrawable().load(image.mBackImage1).into(iv_authupload_image01)
         activityModel.mConfirmBody.apply {
@@ -162,7 +178,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         }
 
         if (image.mBackImage2 != null) {
-            Glide.with(this).asDrawable().load(image.mBackImage1).into(iv_authupload_image02)
+            Glide.with(this).asDrawable().load(image.mBackImage2).into(iv_authupload_image02)
         } else {
             iv_authupload_image02.visibility = View.GONE
         }
@@ -172,7 +188,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         XPopup.Builder(mContext).asCustom(
             DialogSimpleList(
                 mContext,
-                arrayOf("从手机选择", "拍摄")
+                arrayOf("从手机相册选择", "拍摄")
             ).apply {
                 click = {
                     if (it == 0) {
@@ -185,6 +201,47 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             }
         ).show()
 
+    }
+
+
+    fun otherImageChoice(view: ImageView) {
+        XPopup.Builder(mContext).asCustom(
+            DialogSimpleList(
+                mContext,
+                arrayOf("删除", "查看大图", "从手机相册选择", "拍摄")
+            ).apply {
+                click = {
+                    if (it == 0) {
+
+                        when (nowPosition) {
+                            0 -> {
+                                firstImage = ""
+                                Glide.with(this).asDrawable().load(mOccupation.mBackImage1).into(view)
+                            }
+                            1 -> {
+                                secondImage = ""
+                                Glide.with(this).asDrawable().load(mOccupation.mBackImage2).into(view)
+                            }
+                            2 -> {
+                                thirdImage = ""
+                                Glide.with(this).asDrawable()
+                                    .load(ContextCompat.getDrawable(mContext, R.drawable.image_id_card)).into(view)
+                            }
+                        }
+
+                    }
+                    if (it == 1) {
+                        XPopup.Builder(mContext).asImageViewer(view, view.drawable, ImageLoader()).show()
+                    }
+                    if (it == 2) {
+                        gotoPhoto()
+                    }
+                    if (it == 3)
+                        gotoCamera()
+                    this.dismiss()
+                }
+            }
+        ).show()
     }
 
 
@@ -289,7 +346,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             if (File(path).exists()) {
                 val values = ContentValues()
                 values.put(MediaStore.Images.Media.DATA, path)
-                return context.getContentResolver()
+                return context.contentResolver
                     .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
             } else {
                 return null
@@ -326,7 +383,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
 
 
             }
-            if (nowPosition == 3) {
+            if (nowPosition == 2) {
                 Glide.with(this).asDrawable().load(it.url).into(iv_authupload_idCard_image01)
                 thirdImage = it.url
                 activityModel.mConfirmBody.mIdcardImg = it.url

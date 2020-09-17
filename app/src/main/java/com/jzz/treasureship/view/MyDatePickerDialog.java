@@ -52,7 +52,7 @@ public class MyDatePickerDialog extends AlertDialog implements DatePicker.OnDate
         // this);
         // setButtonPanelLayoutHint(LAYOUT_HINT_SIDE);
 
-        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
+        mDatePicker = view.findViewById(R.id.datePicker);
         // TODO 设置显示的最大值范围
         mDatePicker.setMaxDate(System.currentTimeMillis() - 1000L);
         mDatePicker.init(year, monthOfYear, dayOfMonth, this);

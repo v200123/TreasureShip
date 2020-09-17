@@ -30,6 +30,8 @@
     <color name="pink">#FFFFC0CB</color>
     <!-- 猩红 -->
     <color name="crimson">#FFDC143C</color>
+    <color name="red_db32223">#FFDB3223</color>
+
     <!-- 脸红的淡紫色 -->
     <color name="lavenderBlush">#FFFFF0F5</color>
     <!-- 苍白的紫罗兰红色 -->

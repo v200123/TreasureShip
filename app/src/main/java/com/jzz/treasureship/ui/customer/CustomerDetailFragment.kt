@@ -22,6 +22,7 @@ import com.jzz.treasureship.view.CustomCheckCommissionPopup
 import com.jzz.treasureship.view.CustomCheckDoctorAdvicePopup
 import com.jzz.treasureship.view.CustomSetNoticePopup
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -101,8 +102,8 @@ class CustomerDetailFragment : BaseVMFragment<OrdersViewModel>() {
 
         iv_remind.setOnClickListener {
             XPopup.Builder(it.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss() {
-                    super.onDismiss()
+                override fun onDismiss(popupView: BasePopupView) {
+                    super.onDismiss(popupView)
                     val noticeTime by PreferenceUtils(PreferenceUtils.NOTICE_TIME, "")
 
                     var noticeType by PreferenceUtils(PreferenceUtils.NOTICE_TYPE, -1)

@@ -15,6 +15,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_address.*
@@ -49,7 +50,8 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
 
                 XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
 
-                    override fun onDismiss() {
+                    override fun onDismiss(popupView: BasePopupView) {
+//                        super.onDismiss(popupView)
                         val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
                         if (lastAddress.isNotBlank()) {
                             lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
@@ -78,7 +80,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                 midAddressObj?.let { mid ->
                     lastAddressObj?.let { last ->
                         mViewModel.addAddress(
-                            et_name.text.toString(), et_mobile.getPhoneText(), et_mxadress.text.toString(),
+                            et_name.text.toString(), et_mobile.phoneText, et_mxadress.text.toString(),
                             top, mid, last, if (cb_defult_addr.isChecked) {
                                 1
                             } else {
@@ -112,7 +114,8 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
 
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
 
-                        override fun onDismiss() {
+                        override fun onDismiss(popupView: BasePopupView) {
+//                            super.onDismiss(popupView)
                             val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
                             if (lastAddress.isNotBlank()) {
                                 lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
@@ -139,7 +142,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                             midAddressObj?.let { mid ->
                                 lastAddressObj?.let { last ->
                                     mViewModel.addAddress(
-                                        et_name.text.toString(), et_mobile.getPhoneText(), et_mxadress.text.toString(),
+                                        et_name.text.toString(), et_mobile.phoneText, et_mxadress.text.toString(),
                                         top, mid, last, if (cb_defult_addr.isChecked) {
                                             1
                                         } else {
@@ -204,7 +207,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                 midAddressObj?.let { mid ->
                     lastAddressObj?.let { last ->
                         mViewModel.addAddress(
-                            et_name.text.toString(), et_mobile.getPhoneText(), et_mxadress.text.toString(),
+                            et_name.text.toString(), et_mobile.phoneText, et_mxadress.text.toString(),
                             top, mid, last, if (cb_defult_addr.isChecked) {
                                 1
                             } else {

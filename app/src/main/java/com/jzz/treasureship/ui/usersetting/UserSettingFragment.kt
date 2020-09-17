@@ -29,12 +29,13 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.Dialog_identification_tip
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.impl.FullScreenPopupView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user_setting.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class UserSettingFragment : BaseVMFragment<UserViewModel>() {
-
+    var isShow by PreferenceUtils(PreferenceUtils.auth_is_show,false)
     companion object {
         fun newInstance(): UserSettingFragment {
             return UserSettingFragment()
@@ -56,10 +57,17 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
     override fun initVM(): UserViewModel = getViewModel()
 
     override fun initView() {
-
         fl_setting_card.setOnClickListener {
             mContext.start<CouponActivity> {  }
         }
+        if(!isShow)
+        {
+            XPopup.Builder(mContext).hasShadowBg(true).asCustom(object : FullScreenPopupView(mContext){
+                override fun getImplLayoutId(): Int = R.layout.layout_unauth_tips
+            }).show()
+            isShow = true
+        }
+
         activity!!.nav_view.visibility = View.VISIBLE
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
 

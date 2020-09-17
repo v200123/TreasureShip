@@ -16,6 +16,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_address.*
@@ -71,7 +72,7 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
             mAddress = address
             et_name.setText(address!!.consignee!!)
             et_mobile.setText(address.mobile!!)
-            tv_adress.text = "${address!!.provinceName} ${address!!.cityName} ${address!!.districtName}"
+            tv_adress.text = "${address.provinceName} ${address.cityName} ${address.districtName}"
             et_mxadress.setText(address.address)
 
             cb_defult_addr.isChecked = address.isDefault == 1
@@ -101,7 +102,8 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
 
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
 
-                        override fun onDismiss() {
+                        override fun onDismiss(popupView: BasePopupView) {
+//                            super.onDismiss(popupView)
                             val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
                             if (lastAddress.isNotBlank()) {
                                 lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)

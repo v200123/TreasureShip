@@ -51,7 +51,7 @@ class CommonInterceptor : Interceptor {
         if (originalRequestBody is FormBody) {
             val builder = FormBody.Builder()
             val requestBody = request.body as FormBody
-            val fieldSize = requestBody.size ?: 0
+            val fieldSize = requestBody.size
             for (i in 0 until fieldSize) {
                 builder.add(requestBody.name(i), requestBody.value(i))
                 signParams[requestBody.name(i)] = requestBody.value(i)
@@ -188,13 +188,13 @@ class CommonInterceptor : Interceptor {
             request.newBuilder()
                 .addHeader("Accept", "*/*")
                 .method(request.method, newRequestBody)
-                .build();
+                .build()
         } else {
             request.newBuilder()
                 .addHeader("Accept", "*/*")
                 .addHeader("accessToken", access)
                 .method(request.method, newRequestBody)
-                .build();
+                .build()
         }
     }
 

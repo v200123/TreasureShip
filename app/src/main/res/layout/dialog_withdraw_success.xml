@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:src="@drawable/bg_withdraw_success"
+        android:id="@+id/iv_withdraw"
+        android:adjustViewBounds="true"
+        android:layout_width="wrap_content"
+        android:layout_height="414dp"/>
+
+    <ImageView
+        android:layout_marginTop="38dp"
+        android:layout_gravity="bottom|center"
+        android:src="@drawable/ico_close_cricle"
+        android:id="@+id/iv_withdraw_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

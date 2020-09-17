@@ -6,7 +6,6 @@ import com.lc.versionplugin.VersionControllor.version.koinVersion
 import com.lc.versionplugin.VersionControllor.version.xuiVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.internal.impldep.com.esotericsoftware.minlog.Log
 
 /**
  *@author LC
@@ -37,7 +36,7 @@ private object version{
     val materialVersion = "material-rc01"
 //    https://github.com/JackLiaoJH/ImageSelect
     val imageChoiseVersion = "1.2.1"
-
+    val xpopVersion = "2.0.11"
 }
 
  object AndroidX {
@@ -64,6 +63,9 @@ private object version{
         val FILE= "com.sky.filePicker:filePicker:${version.fileVersion}"
         val xui = "com.github.xuexiangjys:XUI:${xuiVersion}"
         val imageSelector = "com.github.JackLiaoJH:ImageSelect:${version.imageChoiseVersion}"
+//        弹窗  @{link:https://github.com/li-xiaojun/XPopup}
+        val xpop = "com.lxj:xpopup:${version.xpopVersion}"
+
     }
 
     object oppo{

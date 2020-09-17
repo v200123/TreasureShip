@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +20,6 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
-import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.PhoneUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
@@ -47,6 +45,7 @@ import com.jzz.treasureship.view.CustomPropertyPopup
 import com.jzz.treasureship.view.CustomSkuBottomPopup
 import com.jzz.treasureship.view.SlideDetailsLayout
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
@@ -117,16 +116,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
                 .commit()
         }
 
-        rcv_Logistics.run {
-            layoutManager = LinearLayoutManager(context).also {
-                it.orientation = LinearLayoutManager.HORIZONTAL
-            }
 
-            addressLogisticsAdapter.setNewData(addressLogisticsList)
-            addressLogisticsAdapter.notifyDataSetChanged()
-
-            adapter = addressLogisticsAdapter
-        }
 
         dialog.setContentView(R.layout.item_img)
 
@@ -359,14 +349,14 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             EasyPermissions.requestPermissions(
                 this, "获取通话权限以拨打联系客服",
                 RC_CALL_PERM, Manifest.permission.CALL_PHONE
-            );
+            )
         }
 
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -410,7 +400,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
 
     private fun initUi(goodsDetail: GoodsDetail) {
         tv_goodsName.text = goodsDetail.goodsName
-        tv_compony.text = goodsDetail.shopName
+//        tv_compony.text = goodsDetail.shopName
         tv_price.text = "¥${goodsDetail.goodsSku[0].price}"
 
         if (goodsDetail.goodsSku[0].isParity == 0) {
@@ -445,11 +435,11 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         }
 
 
-        if (goodsDetail.goodsType == 0) {
-            layout_Logistics.visibility = View.GONE
-        } else {
-            layout_Logistics.visibility = View.VISIBLE
-        }
+//        if (goodsDetail.goodsType == 0) {
+//            layout_Logistics.visibility = View.GONE
+//        } else {
+//            layout_Logistics.visibility = View.VISIBLE
+//        }
 
         detail_banner.apply {
             setBannerStyle(BannerConfig.NUM_INDICATOR)
@@ -465,8 +455,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         rcv_skus.setOnClickListener {
             val skuPopup = CustomSkuBottomPopup(view!!.context, goodsDetail)
             XPopup.Builder(view!!.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss() {
-                    super.onDismiss()
+                override fun onDismiss(popupView: BasePopupView) {
+                    super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
                     val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
 
@@ -496,8 +486,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         layout_chooseGoods.setOnClickListener {
             val skuPopup = CustomSkuBottomPopup(view!!.context, goodsDetail)
             XPopup.Builder(view!!.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss() {
-                    super.onDismiss()
+                override fun onDismiss(popupView: BasePopupView) {
+                    super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
                     val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
 
@@ -664,8 +654,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             Log.d("selectGoods", goodsDetail.toString())
             val skuPopup = CustomSkuBottomPopup(view.context, goodsDetail)
             XPopup.Builder(view.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss() {
-                    super.onDismiss()
+                override fun onDismiss(popupView: BasePopupView) {
+                    super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
                     val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
 
@@ -719,8 +709,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         tv_addCart.setOnClickListener { view ->
             val skuPopup = CustomSkuBottomPopup(view.context, goodsDetail)
             XPopup.Builder(view.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss() {
-                    super.onDismiss()
+                override fun onDismiss(popupView: BasePopupView) {
+                    super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
                     val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
                     selectedGoods?.let {
@@ -786,7 +776,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             val shareMsg = WXMediaMessage(webpage)
             shareMsg.title = goodsDetail.goodsName
             shareMsg.description = "我在宝舰上发现了一个不错的商品，快来看看吧。"
-            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher);
+            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher)
             shareMsg.thumbData = thumbBmp.changeImage()
 
             val req = SendMessageToWX.Req()
@@ -794,7 +784,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             req.message = shareMsg
 
             req.userOpenId = userObj.wxOpenid
-            req.scene = SendMessageToWX.Req.WXSceneSession;
+            req.scene = SendMessageToWX.Req.WXSceneSession
 
             val share = App.iwxapi.sendReq(req)
             if (share) {

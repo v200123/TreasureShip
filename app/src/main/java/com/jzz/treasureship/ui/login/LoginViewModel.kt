@@ -93,8 +93,7 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
                     if (it.result == null && it.code !== 200) {
                         val user = User(
                             "", "", "", -1, "", "", "",
-                            "", "", -1, "", "", "", "", "", "", "", ""
-                        )
+                            "", "", -1, "", "", "", "", "", "", "", "",0)
                         emitUiState(showSuccess = user, enableLoginButton = true)
                     } else {
                         emitUiState(showSuccess = it.result, enableLoginButton = true)

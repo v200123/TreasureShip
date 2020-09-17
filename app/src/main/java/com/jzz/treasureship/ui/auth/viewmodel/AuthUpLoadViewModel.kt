@@ -8,9 +8,11 @@ import com.jzz.treasureship.model.bean.OccupationBean
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.ui.auth.authRequestBody.getOccupationBody
 import com.lc.mybaselibrary.ErrorState
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 /**
@@ -35,15 +37,17 @@ class AuthUpLoadViewModel : BaseViewModel() {
 
     fun uploadImg(image: File) {
             launchTask {
+                runBlocking {
+                    val requestFile = image.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                    val filePart = MultipartBody.Part.createFormData("file", image.name, requestFile)
+                    val uploadFile = HttpHelp.getRetrofit().uploadFile(filePart)
+                    uploadFile.resultCheck({
+                        ImageResultData.postValue(it)
+                    },{
+                        mStateLiveData.postValue(ErrorState("上传失败，请重试"))
+                    })
+                }
 
-                val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), image)
-                val filePart = MultipartBody.Part.createFormData("file", image.name, requestFile)
-                val uploadFile = HttpHelp.getRetrofit().uploadFile(filePart)
-                uploadFile.resultCheck({
-                    ImageResultData.postValue(it)
-                },{
-                    mStateLiveData.postValue(ErrorState("上传失败，请重试"))
-                })
             }
 
 

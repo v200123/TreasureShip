@@ -16,14 +16,14 @@ class BackHandlerHelper {
          * @see .handleBackPress
          */
         fun handleBackPress(fragmentManager: FragmentManager): Boolean {
-            val fragments: List<Fragment> = fragmentManager.getFragments() ?: return false
+            val fragments: List<Fragment> = fragmentManager.fragments
             for (i in fragments.indices.reversed()) {
                 val child: Fragment = fragments[i]
                 if (isFragmentBackHandled(child)) {
                     return true
                 }
             }
-            if (fragmentManager.getBackStackEntryCount() > 0) {
+            if (fragmentManager.backStackEntryCount > 0) {
                 fragmentManager.popBackStack()
                 return true
             }
@@ -31,7 +31,7 @@ class BackHandlerHelper {
         }
 
         fun handleBackPress(fragment: Fragment): Boolean {
-            return handleBackPress(fragment.getChildFragmentManager())
+            return handleBackPress(fragment.childFragmentManager)
         }
 
         fun handleBackPress(fragmentActivity: FragmentActivity): Boolean {
@@ -44,8 +44,8 @@ class BackHandlerHelper {
          * @return 如果处理了back键则返回 **true**
          */
         fun isFragmentBackHandled(fragment: Fragment?): Boolean {
-            return (fragment != null && fragment.isVisible()
-                    && fragment.getUserVisibleHint() //for ViewPager
+            return (fragment != null && fragment.isVisible
+                    && fragment.userVisibleHint //for ViewPager
                     && fragment is FragmentBackHandler
                     && (fragment as FragmentBackHandler).onBackPressed())
         }

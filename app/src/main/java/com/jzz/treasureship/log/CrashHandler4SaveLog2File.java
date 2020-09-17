@@ -12,6 +12,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -100,7 +101,6 @@ public class CrashHandler4SaveLog2File implements UncaughtExceptionHandler {
         } catch (Error e) {
             // TODO: handle exception
         }
-        ;
         return imei;
     }
 
@@ -119,7 +119,7 @@ public class CrashHandler4SaveLog2File implements UncaughtExceptionHandler {
     private String readLocalFile(String filePath) throws IOException {
         File file = new File(filePath);
         InputStreamReader isr = new InputStreamReader(
-                new FileInputStream(file), "UTF-8");
+                new FileInputStream(file), StandardCharsets.UTF_8);
         BufferedReader br = new BufferedReader(isr);
         String str = "";
         String mimeTypeLine = null;
@@ -218,10 +218,7 @@ public class CrashHandler4SaveLog2File implements UncaughtExceptionHandler {
         @Override
         public boolean accept(File pathname) {
             // TODO Auto-generated method stub
-            if (pathname.getName().endsWith(".txt")) {
-                return true;
-            }
-            return false;
+            return pathname.getName().endsWith(".txt");
         }
 
     }

@@ -25,6 +25,7 @@ import com.jzz.treasureship.view.CheckRewardDialog
 import com.jzz.treasureship.view.NoticeGetRewardDialog
 import com.jzz.treasureship.view.StartQuestionsDialog
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -63,12 +64,12 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        GSYVideoManager.releaseAllVideos();
+        GSYVideoManager.releaseAllVideos()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        GSYVideoManager.releaseAllVideos();
+        GSYVideoManager.releaseAllVideos()
     }
 
     private var currentPage = 0
@@ -188,8 +189,8 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                             }
                             else
                             XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                                override fun onDismiss() {
-                                    super.onDismiss()
+                                override fun onDismiss(popupView: BasePopupView) {
+                                    super.onDismiss(popupView)
                                     if (startAnswer) {
                                         activity!!.supportFragmentManager.beginTransaction()
                                             .addToBackStack(HomeVpFragment.javaClass.name)
@@ -266,8 +267,8 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let {
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss() {
-                            super.onDismiss()
+                        override fun onDismiss(popupView: BasePopupView) {
+                            super.onDismiss(popupView)
                             if (go2Wallet) {
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(WalletFragment.javaClass.name)

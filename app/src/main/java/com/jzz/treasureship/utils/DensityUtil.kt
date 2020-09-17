@@ -17,7 +17,7 @@ object DensityUtil {
     fun dp2px(context: Context, dpVal: Float): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, dpVal,
-            context.getResources().getDisplayMetrics()
+            context.resources.displayMetrics
         ).toInt()
     }
 
@@ -31,7 +31,7 @@ object DensityUtil {
     fun sp2px(context: Context, spVal: Float): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_SP, spVal,
-            context.getResources().getDisplayMetrics()
+            context.resources.displayMetrics
         ).toInt()
     }
 
@@ -43,7 +43,7 @@ object DensityUtil {
      * @return
      */
     fun px2dp(context: Context, pxVal: Float): Float {
-        val scale: Float = context.getResources().getDisplayMetrics().density
+        val scale: Float = context.resources.displayMetrics.density
         return pxVal / scale
     }
 
@@ -55,6 +55,6 @@ object DensityUtil {
      * @return
      */
     fun px2sp(context: Context, pxVal: Float): Float {
-        return pxVal / context.getResources().getDisplayMetrics().scaledDensity
+        return pxVal / context.resources.displayMetrics.scaledDensity
     }
 }

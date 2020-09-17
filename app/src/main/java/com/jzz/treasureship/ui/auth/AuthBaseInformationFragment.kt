@@ -1,13 +1,9 @@
 package com.jzz.treasureship.ui.auth
 
-import android.R.anim
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.blankj.utilcode.util.GsonUtils
 import com.jzz.treasureship.R
@@ -18,11 +14,9 @@ import com.jzz.treasureship.ui.auth.viewmodel.AuthBaseInfoViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
-import com.lc.mybaselibrary.out
-import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
-import kotlinx.android.synthetic.main.fragment_add_address.*
 import kotlinx.android.synthetic.main.fragment_base_information.*
 
 
@@ -95,7 +89,8 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
 
                 XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
 
-                    override fun onDismiss() {
+                    override fun onDismiss(popupView: BasePopupView) {
+//                        super.onDismiss(popupView)
                         val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
                         if (lastAddress.isNotBlank()) {
                             lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
@@ -144,7 +139,8 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
             allPlace = GsonUtils.toJson(it)
             XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
 
-                override fun onDismiss() {
+                override fun onDismiss(popupView: BasePopupView) {
+                    super.onDismiss(popupView)
                     val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
                     if (lastAddress.isNotBlank()) {
                         lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)

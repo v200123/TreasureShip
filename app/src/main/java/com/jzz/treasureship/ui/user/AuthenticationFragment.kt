@@ -82,9 +82,9 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(),
 
         btn_auth_next.setOnClickListener {
             mContext.start<AuthInformationActivity> {
+
                 putExtra(
-                    AuthInformationActivity.occuId,
-                    mViewModel.userType.value?.mList?.get(nowSelectPosition)?.mId
+                    AuthInformationActivity.occuId, mViewModel.userType.value?.mList?.get(nowSelectPosition)?.mId
                 )
             }
 
@@ -443,7 +443,7 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(),
             if (File(path).exists()) {
                 val values = ContentValues()
                 values.put(MediaStore.Images.Media.DATA, path)
-                return context.getContentResolver()
+                return context.contentResolver
                     .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
             } else {
                 return null

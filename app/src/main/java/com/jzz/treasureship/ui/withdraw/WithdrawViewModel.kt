@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.repository.WithdrawRepository
-import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -129,4 +129,19 @@ class WithdrawViewModel(val repository: WithdrawRepository, val provider: Corout
         val enableLoginButton: Boolean,
         val needLogin: Boolean
     )
+    val isUse  = MutableLiveData<Boolean>()
+    fun getCouponUse(){
+        launchTask { HttpHelp.getRetrofit().couponIsUse().resultCheck({
+            isUse.postValue(it!!.get("couponStatus").asInt == 1)
+        }) }
+    }
+    val canWithDraw = MutableLiveData<String>()
+    fun getWallet(){
+        launchTask{
+            HttpHelp.getRetrofit().getBalance02().resultCheck({
+                canWithDraw.postValue(it!!.balance)
+            })
+        }
+    }
+
 }

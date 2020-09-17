@@ -14,6 +14,7 @@ import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.utils.PreferenceUtils
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
 class RewardRepository(private val service: JzzApiService) : BaseRepository() {
@@ -34,7 +35,7 @@ class RewardRepository(private val service: JzzApiService) : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.receiveRedEnvelope(requestBody)
 
         return executeResponse(response)

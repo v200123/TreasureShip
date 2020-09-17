@@ -149,7 +149,7 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onPause() {
         super.onPause()
-        GSYVideoManager.onPause();
+        GSYVideoManager.onPause()
     }
 
     override fun onResume() {

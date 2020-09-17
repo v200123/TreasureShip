@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.video_layout_normal.view.*
 
 
 class CustomVideoPlayer : StandardGSYVideoPlayer {
-    constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag) {}
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
     override fun getLayoutId(): Int {
         return R.layout.video_layout_normal

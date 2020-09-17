@@ -21,7 +21,7 @@ class CountDownTimerUtils
     override fun onTick(millisUntilFinished: Long) {
         val text = millisUntilFinished / 1000
         mTextView.isClickable = false //设置不可点击
-        mTextView.setText("$text s 后重新获取") //设置倒计时显示时间和文字
+        mTextView.text = "$text s 后重新获取" //设置倒计时显示时间和文字
         mTextView.setTextColor(Color.parseColor("#FFA3A3A3")) //设置字体的颜色
     }
 

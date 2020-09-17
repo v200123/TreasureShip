@@ -45,7 +45,8 @@ class PreferenceUtils<T>(val name: String, private val default: T) : ReadWritePr
         const val goto_wallet = "goto_wallet"
         const val get_reward = "get_reward"
         const val open_reward = "open_reward"
-
+        const val everyday_invite_dialog = "invite_dialog"
+        const val auth_is_show= "auth_dialog"
     }
 
     private val prefs: SharedPreferences by lazy {
@@ -76,11 +77,11 @@ class PreferenceUtils<T>(val name: String, private val default: T) : ReadWritePr
     fun <T> getValue(name: String, default: T): T = with(prefs) {
         val res: Any = when (default) {
             is Long -> getLong(name, default)
-            is String -> this!!.getString(name, default)!!
+            is String -> this.getString(name, default)!!
             is Int -> getInt(name, default)
             is Boolean -> getBoolean(name, default)
             is Float -> getFloat(name, default)
-            else -> deSerialization(this!!.getString(name, serialize(default))!!)
+            else -> deSerialization(this.getString(name, serialize(default))!!)
         }
         return res as T
     }

@@ -12,8 +12,7 @@ data class Parity(
         parcel.readString(),
         parcel.readString(),
         parcel.readDouble()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(imageUrl)

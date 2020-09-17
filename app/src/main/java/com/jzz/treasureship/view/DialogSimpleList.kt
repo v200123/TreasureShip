@@ -3,12 +3,10 @@ package com.jzz.treasureship.view
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
-import androidx.core.view.forEach
 import com.jzz.treasureship.R
 import com.lxj.xpopup.core.BottomPopupView
-import com.lxj.xpopup.impl.BottomListPopupView
-import com.xuexiang.xui.widget.button.roundbutton.RoundButton
 import com.xuexiang.xui.widget.layout.XUILinearLayout
 
 /**
@@ -42,6 +40,9 @@ class DialogSimpleList(context: Context, var list: Array<String>) : BottomPopupV
 
         }
 
+        findViewById<Button>(R.id.btn_simple_cancel).setOnClickListener {
+            this.dismiss()
+        }
 //        findViewById<TextView>(R.id.tv_simple_01).apply {
 //            text = list[0]
 //            setOnClickListener { click(0) }

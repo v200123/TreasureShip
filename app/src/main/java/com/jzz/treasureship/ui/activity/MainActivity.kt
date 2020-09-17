@@ -13,21 +13,18 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.PathUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
-import com.azhon.appupdate.manager.DownloadManager
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.addressbook.AddressBookFragment
 import com.jzz.treasureship.ui.home.HomeFragment
-import com.jzz.treasureship.ui.home.HomeVpFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.ui.msg.MsgFragment
@@ -49,7 +46,7 @@ import java.io.File
 import kotlin.math.roundToInt
 
 
-public class MainActivity : BaseVMActivity<LoginViewModel>() {
+class MainActivity : BaseVMActivity<LoginViewModel>() {
 
 
     val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
@@ -69,7 +66,7 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
             val extra = intent?.getStringExtra(KEY_EXTRAS)
             Log.d("sendBroadcast", extra)
             val json = JSONObject(extra)
-            when (json?.get("msgType")) {
+            when (json.get("msgType")) {
                 1, "1" -> {
                     //答题抢红包
                 }
@@ -142,6 +139,7 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
 
     override fun onResume() {
         super.onResume()
+
         val preferenceUtils = PreferenceUtils(PreferenceUtils.USER_GSON, "")
         if (preferenceUtils.contains(PreferenceUtils.USER_GSON))
             if (preferenceUtils.getValue(PreferenceUtils.USER_GSON, "") != "")
@@ -154,6 +152,9 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
 //        params.systemUiVisibility =
 //            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE
 //        window.setAttributes(params)
+        btn_onclick.setOnClickListener {
+//            App.dialogHelp.showRedEnvelopeOpen(1,2f)
+        }
         intent?.let {
             val gotoWhere = intent.getStringExtra("goTo")
             if (gotoWhere == "orders") {
@@ -283,7 +284,7 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
             userState.observe(this@MainActivity, Observer {
 
                 it.showSuccess?.let {
-                    Log.e("userInfo", "refresh user info success:${it.toString()}")
+                    Log.e("userInfo", "refresh user info success:$it")
                 }
 
                 it.showError?.let { err ->
@@ -325,7 +326,7 @@ public class MainActivity : BaseVMActivity<LoginViewModel>() {
 
                                         override fun onError(throwable: Throwable?) {
                                             HProgressDialogUtils.cancel()
-                                        }
+                                    }
                                     })
                             }, {}, true).show()
                     } else {

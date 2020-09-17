@@ -356,7 +356,7 @@ class HomeRepository : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.getQuestionnaire(requestBody)
         return executeResponse(response)
     }
@@ -376,7 +376,7 @@ class HomeRepository : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.submitQuestionnaire(requestBody)
         return executeResponse(response)
     }
@@ -393,7 +393,7 @@ class HomeRepository : BaseRepository() {
 
         root.put("body", body)
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.receiveRedEnvelope(requestBody)
         return executeResponse(response)
     }
@@ -408,7 +408,7 @@ class HomeRepository : BaseRepository() {
         val root = JSONObject()
         val body = JSONObject()
         root.put("body", body)
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), root.toString())
+        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
         val response = service.getAdList(requestBody)
         return executeResponse(response)
     }

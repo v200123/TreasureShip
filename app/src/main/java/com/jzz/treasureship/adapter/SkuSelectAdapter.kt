@@ -29,7 +29,7 @@ class SkuSelectAdapter(layoutResId: Int = R.layout.item_sku) :
         helper.setText(R.id.tv_itemName, item.specValue)
         /*设置选中状态*/
         if (helper.adapterPosition == SelectedNavItem.selectedNavItem) {
-            helper.getView<ImageView>(R.id.tv_logo).background = mContext.resources.getDrawable(R.drawable.sku_select);
+            helper.getView<ImageView>(R.id.tv_logo).background = mContext.resources.getDrawable(R.drawable.sku_select)
         } else {
             helper.getView<ImageView>(R.id.tv_logo).background = null
         }

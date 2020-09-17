@@ -43,7 +43,7 @@ class AddressViewModel(val repository: AddressRepository, val provider: Coroutin
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitCityPlacesState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitCityPlacesState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitCityPlacesState(false, "失败!${result.result?.message}")
@@ -290,7 +290,7 @@ class AddressViewModel(val repository: AddressRepository, val provider: Coroutin
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitAddressPageListState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitAddressPageListState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitAddressPageListState(false, "失败!${result.result?.message}")
@@ -352,8 +352,8 @@ class AddressViewModel(val repository: AddressRepository, val provider: Coroutin
                             access = ""
                             emitDelAddressPageListState(
                                 false,
-                                "失败!${result.result?.message}",
-                                "失败!${result.result?.message}",
+                                "失败!${result.result.message}",
+                                "失败!${result.result.message}",
                                 false,
                                 false,
                                 true

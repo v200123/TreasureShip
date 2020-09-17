@@ -3,12 +3,15 @@ package com.jzz.treasureship.ui.invite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.JsonObject
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.InvitedList
 import com.jzz.treasureship.model.repository.InviteRespository
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ErrorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -49,6 +52,18 @@ class InviteViewModel(val repository: InviteRespository, val provider: Coroutine
             }
         }
     }
+    val redEnvelopOpen = MutableLiveData<JsonObject>()
+    fun getMoney()
+    {
+        launchTask { val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()
+        inviteMoney.resultCheck({
+
+            it?.let {
+                redEnvelopOpen.postValue(it)
+            }
+
+        },{ErrorState(it)})}
+    }
 
     //邀请明细
     private fun emitInvitedListState(
@@ -73,4 +88,17 @@ class InviteViewModel(val repository: InviteRespository, val provider: Coroutine
         val isRefresh: Boolean, // 刷新
         val needLogin: Boolean? = null
     )
+
+    val mCountData = MutableLiveData<Int>()
+    fun getCount(){
+        launchTask{
+            val inviteCount = HttpHelp.getRetrofit().getInviteCount()
+            inviteCount.resultCheck({
+                mCountData.postValue( it!!.get("inviteRewardCount").asInt)
+            },{
+                mStateLiveData.postValue(ErrorState(it))
+            })
+        }
+    }
+
 }

@@ -145,7 +145,7 @@ class AddDoctorAdvicesFragment : BaseVMFragment<PaypalViewModel>() {
                             val msg = WXMediaMessage(webpage)
                             msg.title = "支付"
                             msg.description = "前往微信支付吧"
-                            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher);
+                            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher)
                             msg.thumbData = thumbBmp.changeImage()
                             //构造一个Req
                             val req = SendMessageToWX.Req()
@@ -153,7 +153,7 @@ class AddDoctorAdvicesFragment : BaseVMFragment<PaypalViewModel>() {
                             req.message = msg
 
                             req.userOpenId = userObj.wxOpenid
-                            req.scene = SendMessageToWX.Req.WXSceneSession;
+                            req.scene = SendMessageToWX.Req.WXSceneSession
 
                             val share = App.iwxapi.sendReq(req)
                             if (share) {

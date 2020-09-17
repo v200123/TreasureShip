@@ -41,6 +41,7 @@ import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.*
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.lxj.xpopup.interfaces.XPopupCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -306,22 +307,27 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         .dismissOnBackPressed(true)
                         .dismissOnTouchOutside(true)
                         .setPopupCallback(object : XPopupCallback {
-                            override fun onCreated() {
+
+                            override fun onCreated(popupView: BasePopupView?) {
                             }
 
-                            override fun beforeShow() {
+                            override fun beforeShow(popupView: BasePopupView?) {
                             }
 
-                            override fun onShow() {
+                            override fun onShow(popupView: BasePopupView?) {
                                 Log.d("TAG", "onShow:回调发生了 ")
                                 popStatus.isOpen = true
                             }
 
-                            override fun onDismiss() {
+                            override fun onDismiss(popupView: BasePopupView?) {
                                 popStatus.isOpen = false
                             }
 
-                            override fun onBackPressed(): Boolean {
+                            override fun beforeDismiss(popupView: BasePopupView?) {
+                            }
+
+                            override fun onBackPressed(popupView: BasePopupView?): Boolean {
+
                                 Log.d("TAG", "onBackPressed:哈哈哈哈哈 ")
                                 return true
                             }
@@ -433,13 +439,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         1 -> {
                             //未答题
                             if (System.currentTimeMillis() in it.receiveDate!!.startDateTimeInMillis - 10000 until it.receiveDate.startDateTimeInMillis + 10000) {
-                                mContext.startService(Intent(mContext,RewardService::class.java).apply {
-                                    putExtra(RewardService.TestQuestions,it.questionnaire)
+                                mContext.startService(Intent(mContext, RewardService::class.java).apply {
+                                    putExtra(RewardService.TestQuestions, it.questionnaire)
                                 })
                             } else
                                 XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                                    override fun onDismiss() {
-                                        super.onDismiss()
+                                    override fun onDismiss(popupView: BasePopupView) {
+                                        super.onDismiss(popupView)
                                         if (startAnswer) {
                                             activity!!.supportFragmentManager.beginTransaction()
                                                 .addToBackStack(HomeVpFragment.javaClass.name)
@@ -529,8 +535,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                     reward.redEnvelopeRecord.let { record ->
                         record.amount?.let { amount ->
                             XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                                override fun onDismiss() {
-                                    super.onDismiss()
+                                override fun onDismiss(popupView: BasePopupView) {
+                                    super.onDismiss(popupView)
                                     if (go2Wallet) {
                                         activity!!.supportFragmentManager.beginTransaction()
                                             .addToBackStack(WalletFragment.javaClass.name)
@@ -716,8 +722,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
             helper.getView<CustomVideoPlayer>(R.id.video_player).iv_tsbMore.setOnClickListener {
                 XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
-                    override fun onDismiss() {
-                        super.onDismiss()
+                    override fun onDismiss(popupView: BasePopupView) {
+                        super.onDismiss(popupView)
                         var moveVideo by PreferenceUtils(PreferenceUtils.MOVE_VIDEO, false)
                         var delVideo by PreferenceUtils(PreferenceUtils.DEL_VIDEO, false)
 

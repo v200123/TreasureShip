@@ -7,6 +7,7 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
@@ -84,7 +85,7 @@ class UserRepository : BaseRepository() {
 
     private suspend fun requestUploadImg(img: File): Result<JzzResponse<UploadImgBean>> {
 
-        val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), img)
+        val requestFile = img.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         val filePart = MultipartBody.Part.createFormData("file", img.name, requestFile)
         val response = JzzRetrofitClient.service.uploadFile(filePart)
 

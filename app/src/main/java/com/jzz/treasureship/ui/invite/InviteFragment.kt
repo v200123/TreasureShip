@@ -1,16 +1,13 @@
 package com.jzz.treasureship.ui.invite
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
-import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
-import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.InvitedAdapter
 import com.jzz.treasureship.base.BaseVMFragment
@@ -46,6 +43,8 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
     override fun initView() {
         activity!!.nav_view.visibility = View.GONE
 
+
+
         iv_inviteBack.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
         }
@@ -66,7 +65,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             msg.title = "好友邀请"
             msg.description = "宝舰医疗全新的购物体验"
             val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher)
-            msg.thumbData =thumbBmp.changeImage()
+            msg.thumbData = thumbBmp.changeImage()
 
 
             //构造一个Req
@@ -75,7 +74,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             req.message = msg
 
             req.userOpenId = userObj.wxOpenid
-            req.scene = SendMessageToWX.Req.WXSceneSession;
+            req.scene = SendMessageToWX.Req.WXSceneSession
 
             val isShare = App.iwxapi.sendReq(req)
 
@@ -103,7 +102,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             val msg = WXMediaMessage(webpage)
             msg.title = "App分享"
             msg.description = "医护小伙伴一起来分享"
-            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher);
+            val thumbBmp = BitmapFactory.decodeResource(context!!.resources, R.mipmap.ic_launcher)
             msg.thumbData = thumbBmp.changeImage()
 
 
@@ -113,7 +112,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             req.message = msg
 
             req.userOpenId = userObj.wxOpenid
-            req.scene = SendMessageToWX.Req.WXSceneTimeline;
+            req.scene = SendMessageToWX.Req.WXSceneTimeline
 
             val isShare = App.iwxapi.sendReq(req)
 
@@ -148,6 +147,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
 
     override fun initData() {
         mViewModel.getInvitedList()
+        mViewModel.getCount()
     }
 
     override fun startObserve() {
@@ -162,9 +162,9 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
                     xPopup.dismiss()
                     allInvitedList = it.data as ArrayList<DataXXXX>
                     val list = ArrayList<DataXXXX>(3)
-                    if (it.data!!.size > 3) {
+                    if (it.data.size > 3) {
                         for (i in 0..3) {
-                            list.add(it.data[i]!!)
+                            list.add(it.data[i])
                         }
                         mAdapter.setNewData(list)
                         mAdapter.notifyDataSetChanged()
@@ -186,7 +186,30 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
                     }
                 }
             })
+            mCountData.observe(this@InviteFragment, { count ->
+                if (count == 0) {
+                    iv_small_red.setOnClickListener {
+                        App.dialogHelp.showInvite()
+                    }
+                } else {
+                    iv_small_red.setOnClickListener {
+                        App.dialogHelp.showRedEnvelopeClose(count) {
+                        mViewModel.getMoney()
+                        }
+                    }
+                }
+            })
+            redEnvelopOpen.observe(this@InviteFragment, {
+                App.dialogHelp.showRedEnvelopeOpen(
+                    it.get("inviteRewardCount").asInt,
+                    it.get("inviteRewardAmount").asFloat
+                ){
+                    mViewModel.getMoney()
+                }
+            })
         }
+
+
     }
 
     override fun initListener() {

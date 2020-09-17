@@ -27,6 +27,7 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomContacterDrawerPopupView
 import com.jzz.treasureship.view.CustomNoticeDialog
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_address_book.*
@@ -139,8 +140,8 @@ class AddressBookFragment : BaseVMFragment<AddressbookViewModel>() {
                 .into(view!!.rootView.findViewById(R.id.iv_countSort))
 
             XPopup.Builder(it.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss() {
-                    super.onDismiss()
+                override fun onDismiss(popupView: BasePopupView) {
+                    super.onDismiss(popupView)
                     if (contacterGoods != -1) {
                         mGoodsList[contacterGoods].let { dataXX ->
                             mViewModel.getMemberList(-1, -1, -1, dataXX.name, 1)
@@ -254,8 +255,8 @@ class AddressBookFragment : BaseVMFragment<AddressbookViewModel>() {
             R.id.iv_clock -> {
                 currentPosition = position
                 XPopup.Builder(view.context).setPopupCallback(object : SimpleCallback() {
-                    override fun onDismiss() {
-                        super.onDismiss()
+                    override fun onDismiss(popupView: BasePopupView) {
+                        super.onDismiss(popupView)
                         val cancleNotice by PreferenceUtils(PreferenceUtils.CANCLE_NOTICE, false)
                         if (cancleNotice) {
                             mViewModel.setNotice(mAdapter.getItem(position)!!.id!!, 2, "")

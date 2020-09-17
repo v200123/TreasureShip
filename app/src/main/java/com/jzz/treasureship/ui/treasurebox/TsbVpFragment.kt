@@ -29,6 +29,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.*
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
@@ -199,7 +200,8 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                     xPopup.dismiss()
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
 
-                        override fun onDismiss() {
+                        override fun onDismiss(popupView: BasePopupView) {
+//                            super.onDismiss(popupView)
                             val id by PreferenceUtils(PreferenceUtils.CLICKED_COLLECT_ID, -1)
                             if (id != -1) {
 //                                mViewModel.addCollect(categoryId = id, remark = "", videoId = currentVideoID)
@@ -373,7 +375,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                     override fun onEnterFullscreen(url: String, vararg objects: Any) {
                         super.onEnterFullscreen(url, *objects)
                         GSYVideoManager.instance().isNeedMute = false
-                        GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_4_3);
+                        GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_4_3)
                     }
 
                     override fun onClickStartIcon(url: String?, vararg objects: Any?) {
@@ -429,8 +431,8 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
             helper.getView<CustomVideoPlayer>(R.id.video_player).iv_tsbMore.setOnClickListener {
                 XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
-                    override fun onDismiss() {
-                        super.onDismiss()
+                    override fun onDismiss(popupView: BasePopupView) {
+                        super.onDismiss(popupView)
                         var moveVideo by PreferenceUtils(PreferenceUtils.MOVE_VIDEO, false)
                         var delVideo by PreferenceUtils(PreferenceUtils.DEL_VIDEO, false)
 

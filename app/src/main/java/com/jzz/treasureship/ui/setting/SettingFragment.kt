@@ -187,14 +187,14 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
             EasyPermissions.requestPermissions(
                 this, "获取通话权限以拨打联系客服",
                 RC_CALL_PERM, Manifest.permission.CALL_PHONE
-            );
+            )
         }
 
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {

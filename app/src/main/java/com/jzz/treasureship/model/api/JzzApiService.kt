@@ -4,8 +4,10 @@ import com.google.gson.JsonObject
 import com.jzz.treasureship.model.bean.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface JzzApiService {
 
@@ -354,6 +356,12 @@ interface JzzApiService {
     suspend fun getBalance(@Body body: RequestBody): JzzResponse<WalletBalance>
 
     /**
+     * 我的钱包：余额信息
+     */
+    @POST("/api/v1/accountRecords/balance")
+    suspend fun getBalance02(@Body body: BaseRequestBody = BaseRequestBody()): JzzResponse<WalletBalance>
+
+    /**
      * 我的钱包：列表
      */
     @POST("/api/v1/accountRecords/list")
@@ -432,5 +440,28 @@ interface JzzApiService {
     @POST("/api/v1/user/savePersonalQualification")
     suspend fun uploadInformation(@Body body: BaseRequestBody):JzzResponse<Qualification>
 
+    @POST("/api/v1/common/firstPassTip")
+    suspend fun notificationServerPass(@Body body: BaseRequestBody):JsonObject
 
+    @POST("/api/v1/user/inviteRewardCount")
+    suspend fun getInviteCount(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
+
+    @POST("/api/v1/user/inviteReward")
+    suspend fun getInviteMoney(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
+
+    @POST("/api/v1/order/firstOrderReward")
+    suspend fun getIsFirst(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<OrderRewardFirstBean>
+
+    /**
+     *
+     */
+    @POST("/api/v1/order/receiveFirstOrderReward")
+    suspend fun openOrderRed(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
+
+    /**
+     * 获取认证后的优惠券是否使用
+     */
+
+    @POST("/api/withdraw/firstPassCouponStatus")
+    suspend fun couponIsUse(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
 }

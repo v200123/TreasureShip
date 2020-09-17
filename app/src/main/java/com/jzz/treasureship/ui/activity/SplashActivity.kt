@@ -1,13 +1,11 @@
 package com.jzz.treasureship.ui.activity
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
 import com.jzz.treasureship.R
@@ -15,11 +13,12 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomComfirmLicDialog
 import com.jzz.treasureship.view.CustomReComfirmLicDialog
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlin.system.exitProcess
 
 
-class SplashActivity : Activity() {
+class SplashActivity : AppCompatActivity() {
     private val FIRST_BOOT by PreferenceUtils(PreferenceUtils.FIRST_BOOT, true)
     private var alreadyNoticeLic by PreferenceUtils(PreferenceUtils.ALREADY_LIC, false)
     private var acceptLic by PreferenceUtils(PreferenceUtils.ACCEPT_LIC, false)
@@ -34,8 +33,8 @@ class SplashActivity : Activity() {
                 XPopup.Builder(this).dismissOnTouchOutside(false)
                     .dismissOnBackPressed(false)
                     .setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss() {
-                            super.onDismiss()
+                        override fun onDismiss(popupView: BasePopupView) {
+                            super.onDismiss(popupView)
                             //如果通过了用户的隐私权限协议
                             if (acceptLic) {
                                 startActivity(Intent(this@SplashActivity, WelcomeGuideActivity::class.java))
@@ -45,15 +44,14 @@ class SplashActivity : Activity() {
                                 XPopup.Builder(this@SplashActivity).dismissOnTouchOutside(false)
                                     .dismissOnBackPressed(false)
                                     .setPopupCallback(object : SimpleCallback() {
-                                        override fun onDismiss() {
-                                            super.onDismiss()
-                                            if (acceptLic) {
-                                                startActivity(
-                                                    Intent(
-                                                        this@SplashActivity,
-                                                        WelcomeGuideActivity::class.java
-                                                    )
+                                        override fun onDismiss(popupView: BasePopupView) {
+                                            super.onDismiss(popupView)
+                                            if (acceptLic) { startActivity(
+                                                Intent(
+                                                    this@SplashActivity,
+                                                    WelcomeGuideActivity::class.java
                                                 )
+                                            )
                                                 finish()
                                                 return
                                             } else {

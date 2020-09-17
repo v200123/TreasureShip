@@ -6,13 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.*
 import com.jzz.treasureship.model.repository.PaypalRepository
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import org.json.JSONObject
 
 class PaypalViewModel(val repository: PaypalRepository, val provider: CoroutinesDispatcherProvider) : BaseViewModel() {
@@ -42,7 +42,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
                                 wxCode = ""
                                 userInfo = ""
                                 access = ""
-                                emitAddressUiState(false, "失败!${result.result?.message}", null, false, false, true)
+                                emitAddressUiState(false, "失败!${result.result.message}", null, false, false, true)
                             }
                             else -> {
                                 emitAddressUiState(false, "失败!${result.result?.message}")
@@ -101,7 +101,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitOrderState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitOrderState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitOrderState(false, "失败!${result.result?.message}")
@@ -156,7 +156,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitDirectBuyUiState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitDirectBuyUiState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitDirectBuyUiState(false, "失败!${result.result?.message}")
@@ -215,7 +215,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitDirectBuyUiState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitDirectBuyUiState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitDirectBuyUiState(false, "失败!${result.result?.message}")
@@ -251,7 +251,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitAdviceUiState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitAdviceUiState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitAdviceUiState(false, "失败!${result.result?.message}")
@@ -310,7 +310,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitAgreementUiState(false, "失败!${result.result?.message}", null, false, false, true)
+                            emitAgreementUiState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitAgreementUiState(false, "失败!${result.result?.message}")
@@ -366,10 +366,10 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
                             var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
-                            emitOrderStatusState(false, "失败!${result.result?.message}", null, false, false, true)
+                            wxCode = ""
+                            userInfo = ""
+                            access = ""
+                            emitOrderStatusState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
                             emitOrderStatusState(false, "失败!${result.result?.message}")
@@ -381,7 +381,29 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
             }
         }
     }
+    val firstBean = MutableLiveData<OrderRewardFirstBean>()
+    fun getFirst() {
+        launchTask {
+            HttpHelp.getRetrofit().getIsFirst(BaseRequestBody()).resultCheck({
+                    it?.apply {
+                        firstBean.postValue(this)
+                    }
+            })
+        }
+    }
 
+    val redAmount = MutableLiveData<Float>()
+
+    fun getFirstRed(){
+        launchTask {
+        HttpHelp.getRetrofit().openOrderRed(BaseRequestBody()).resultCheck({
+                it?.apply {
+                    redAmount.value =  get("inviteRewardAmount").asFloat
+                }
+        })
+    }
+
+    }
     private fun emitOrderStatusState(
         showLoading: Boolean = false,
         showError: String? = null,

@@ -1,24 +1,24 @@
 package com.jzz.treasureship
 
+import android.app.Activity
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.appcompat.app.AppCompatActivity
+import cn.jiguang.analytics.page.ActivityLifecycle
 import cn.jpush.android.api.JPushInterface
-import com.blankj.utilcode.util.ToastUtils
 import com.didichuxing.doraemonkit.DoraemonKit
 import com.jzz.treasureship.constants.Constants
-import com.jzz.treasureship.log.CrashHandler4SaveLog2File
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.service.OKHttpUpdateHttpService
+import com.jzz.treasureship.ui.DialogHelp
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.xuexiang.xui.XUI
 import com.xuexiang.xupdate.XUpdate
-import com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION
-import com.xuexiang.xupdate.utils.UpdateUtils
 import me.jessyan.autosize.AutoSizeConfig
 import me.jessyan.autosize.unit.Subunits
 import org.koin.android.ext.koin.androidContext
@@ -30,23 +30,27 @@ import kotlin.properties.Delegates
 
 
 class App : Application() {
+    private   var curActivity: AppCompatActivity? = null
     companion object {
         var CONTEXT: Context by Delegates.notNull()
         lateinit var CURRENT_USER: User
         lateinit var iwxapi: IWXAPI
-
+       lateinit var dialogHelp:DialogHelp
         fun getAppContext(): Context {
             return CONTEXT
         }
     }
 
+
     override fun onCreate() {
         super.onCreate()
-//        ImageSelector.setImageEngine(GlideEngine())
-        XUI.init(this); //初始化UI框架
-        XUI.debug(true);  //开启UI框架调试日志
-        DoraemonKit.install(this)
+
         CONTEXT = applicationContext
+//        ImageSelector.setImageEngine(GlideEngine())
+        XUI.init(this) //初始化UI框架
+        XUI.debug(true)  //开启UI框架调试日志
+        DoraemonKit.install(this)
+        registerActivity()
         initAutoSize()
 //        val crashHandler: CrashHandler4SaveLog2File = CrashHandler4SaveLog2File.getInstance()
 //        crashHandler.init(CONTEXT)
@@ -110,7 +114,7 @@ class App : Application() {
             val sc: SSLContext = SSLContext.getInstance("TLS")
             // trustAllCerts信任所有的证书
             sc.init(null, trustAllCerts, SecureRandom())
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory())
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
             HttpsURLConnection.setDefaultHostnameVerifier(object : HostnameVerifier {
                 override fun verify(hostname: String?, session: SSLSession?): Boolean {
                     return true
@@ -133,6 +137,20 @@ class App : Application() {
         XUpdate.get()
             .setIUpdateHttpService(OKHttpUpdateHttpService())
             .init(this) //这个必须初始化
-
     }
+
+    fun registerActivity(){
+        registerActivityLifecycleCallbacks(object : ActivityLifecycle() {
+            override fun onActivityResumed(activity: Activity) {
+                curActivity = activity as AppCompatActivity
+                dialogHelp = DialogHelp(activity)
+            }
+
+            override fun onActivityPaused(activity: Activity) {
+                curActivity = null
+            }
+
+        })
+    }
+
 }

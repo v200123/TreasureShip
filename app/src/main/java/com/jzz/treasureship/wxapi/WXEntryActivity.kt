@@ -28,15 +28,15 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         api = App.iwxapi
-        api.handleIntent(getIntent(), this);
+        api.handleIntent(intent, this)
 
     }
 
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        setIntent(intent);
-        api.handleIntent(intent, this);
+        setIntent(intent)
+        api.handleIntent(intent, this)
     }
 
     override fun onResp(baseResp: BaseResp) {

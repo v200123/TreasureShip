@@ -16,7 +16,7 @@ import com.lc.mybaselibrary.out
  *@describe:
  *@Auth: 29579
  **/
-class RewardService() : Service() {
+class RewardService : Service() {
     private var count: Int = 0
     companion object{
         const val TestQuestions = "com.TestQuestions"

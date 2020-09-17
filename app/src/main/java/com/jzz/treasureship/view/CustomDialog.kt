@@ -14,8 +14,8 @@ import com.jzz.treasureship.R
 
 
 class CustomDialog : Dialog {
-    constructor(context: Context?) : super(context!!) {}
-    constructor(context: Context?, theme: Int) : super(context!!, theme) {}
+    constructor(context: Context?) : super(context!!)
+    constructor(context: Context?, theme: Int) : super(context!!, theme)
 
     class Builder(context: Context) {
         private val context //上下文对象
@@ -191,9 +191,7 @@ class CustomDialog : Dialog {
                 }
             } else {
 // if no confirm button just set the visibility to GONE
-                (layout.findViewById(R.id.cancel_btn) as Button).setVisibility(
-                    View.GONE
-                )
+                (layout.findViewById(R.id.cancel_btn) as Button).visibility = View.GONE
             }
             // set the content message
             if (message != null) {

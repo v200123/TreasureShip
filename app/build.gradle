@@ -24,7 +24,7 @@ android {
     }
 
     dexOptions{
-        javaMaxHeapSize = "2g"
+        javaMaxHeapSize = "1g"
     //        incremental true
 //        threadCount = 5
         preDexLibraries = true
@@ -41,6 +41,7 @@ android {
 
     signingConfigs {
         debug {
+
             storeFile file('./JzzChinaKeyStore.keystore')
             storePassword 'LTLAjcouPwULSOFl'
             keyAlias = 'TreasureShip'
@@ -104,6 +105,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            multiDexEnabled false
+            crunchPngs false
+            ext.enableCrashlytics = false
             ext.alwaysUpdateBuildId = false
 //        buildConfigField("String","BaseUrl","\"http://bj.jzzchina.com\"")
             buildConfigField("String","BaseUrl","\"http://119.3.125.1:9602\"")
@@ -224,7 +228,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:annotations:4.11.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
-    implementation 'com.lxj:xpopup:1.8.10-x'
+//    implementation 'com.lxj:xpopup:1.8.10-x'
 
     //微信sdk
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
@@ -265,6 +269,8 @@ dependencies {
         exclude group: 'androidx.databinding'
     }
     releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:3.2.0'
+    implementation VersionControllor.dependance.xpop
+
 }
 
 

@@ -16,7 +16,7 @@ class BaseRequestBody(MyBody:body = body(),MyHeader:header = header())  {
     @SerializedName("header")
 var mHead = MyHeader
 }
-open class body()
+open class body
 open class header(val os:String = "android"
              ,val pageNum : Int= 1
              ,val pageSize:Int = 20)
