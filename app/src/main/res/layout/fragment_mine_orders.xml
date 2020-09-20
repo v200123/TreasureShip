@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.jzz.treasureship.ui.orders.OrdersViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_title" />
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/ordersTablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            android:background="@color/white"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorColor="#26C8D7"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="#26C8D7"
+            app:tabTextColor="#999999" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/ordersTablayout"
+            android:background="#EEEEEE" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/ordersViewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_below="@id/ordersTablayout" />
+    </LinearLayout>
+</layout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lc.mybaselibrary.ShapeLinearLayout
+    android:id="@+id/ll_addView_01"
+    android:padding="15dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:shapeSolidColor="@color/white"
+    app:shapeCornersTopLeftRadius="8dp"
+    app:shadowCornersTopRightRadius="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.lc.mybaselibrary.ShapeButton
+        android:id="@+id/btn_coupon_confirm"
+        android:text="确认"
+        app:shapeCornersRadius="22dp"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        android:gravity="center"
+        app:shapeSolidColor="@color/blue_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</com.lc.mybaselibrary.ShapeLinearLayout>

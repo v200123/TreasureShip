@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xuexiang.xui.widget.layout.XUILinearLayout
+
+    android:id="@+id/xll_radius_01"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<!--    <include layout="@layout/common_simple_text" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_simple_02"-->
+<!--        android:textSize="17dp"-->
+<!--        tools:text="医师资格证"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:gravity="center"-->
+<!--        android:paddingTop="36dp"-->
+<!--        android:paddingBottom="29dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"/>-->
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        android:id="@+id/btn_simple_cancel"
+        app:rb_radius="22dp"
+        app:rb_backgroundColor="@color/blue_normal"
+        app:rb_isRadiusAdjustBounds="true"
+        android:text="取消"
+        android:textColor="@color/white"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:textSize="19dp"
+        android:layout_marginBottom="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"/>
+</com.xuexiang.xui.widget.layout.XUILinearLayout>

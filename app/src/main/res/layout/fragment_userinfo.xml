@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="userModel"
+            type="com.jzz.treasureship.ui.auth.viewmodel.UserViewModel" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#EEEEEE" />
+
+
+        <LinearLayout
+            android:id="@+id/lin_mine_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="28dp"
+                    android:src="@drawable/icon_default_avatar" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="22.5dp"
+                    android:drawableEnd="@drawable/icon_check_more"
+                    android:gravity="center|end"
+                    android:text="修改头像"
+                    android:textColor="#ff999999"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="21.5dp"
+                android:background="#EEEEEE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_mine_modifyName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:text="姓名"
+                    android:textColor="#ff111111"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="22.5dp"
+                    android:drawableEnd="@drawable/icon_check_more"
+                    android:gravity="center|end"
+                    android:textColor="#ff999999"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="21.5dp"
+                android:background="#EEEEEE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_income"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:text="账号"
+                    android:textColor="#ff111111"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_accountNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center|end"
+                    android:drawableTint="@color/transparent"
+                    android:drawableEnd="@drawable/icon_check_more"
+                    android:textColor="#ff999999"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="21.5dp"
+                    android:background="#EEEEEE" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="21.5dp"
+                android:background="#EEEEEE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_wxBind"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:text="微信"
+                    android:textColor="#ff111111"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_bindWx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="21.5dp"
+                    android:gravity="center|end"
+                    android:drawableEnd="@drawable/icon_check_more"
+                    android:textColor="#ff999999"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="21.5dp"
+                    android:background="#EEEEEE" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="21.5dp"
+                android:background="#EEEEEE" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#EEEEEE" />
+
+        <LinearLayout
+            android:id="@+id/lin_mine_audit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:text="我的认证信息"
+                android:textColor="#ff111111"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_auditStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="22.5dp"
+                android:drawableEnd="@drawable/icon_check_more"
+                android:gravity="right|center"
+                android:textColor="#E60012"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="353.5dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="21.5dp"
+            android:background="#EEEEEE" />
+
+        <LinearLayout
+            android:id="@+id/lin_receiveAddress"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:text="我的收货地址"
+                android:textColor="#ff111111"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="22.5dp"
+                android:drawableRight="@drawable/icon_check_more"
+                android:gravity="right|center"
+                android:textColor="#111111"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

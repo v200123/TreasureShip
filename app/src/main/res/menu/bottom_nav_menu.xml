@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:contentDescription="@string/title_home"
+        android:icon="@drawable/home_nav_home_icon_selected"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_treasure_box"
+        android:contentDescription="@string/title_treasure_box"
+        android:icon="@drawable/icon_treasure_box_normal"
+        android:title="@string/title_treasure_box" />
+
+    <item
+        android:id="@+id/navigation_address_book"
+        android:contentDescription="@string/title_address_book"
+        android:visible="false"
+        android:icon="@drawable/icon_addressbook_normal"
+        android:title="@string/title_address_book" />
+
+    <item
+        android:id="@+id/navigation_user_settings"
+        android:contentDescription="@string/title_user_setting"
+        android:icon="@drawable/icon_mine_normal"
+        android:title="@string/title_user_setting" />
+</menu>

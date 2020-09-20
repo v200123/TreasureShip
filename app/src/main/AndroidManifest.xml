@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.jzz.treasureship">
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/xuiTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon,android:theme">
+        <activity android:name=".ui.reward.QuestionsActivity"/>
+        <activity android:name=".ui.activity.WelcomeGuideActivity" />
+        <activity android:name=".ui.activity.PaySuccessActivity" />
+        <activity android:name=".BigImageActivity" />
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="375" />
+
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="667" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.jzz.treasureship.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity android:name=".ui.activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.MainActivity"/>
+        <activity android:name=".ui.register.RegisterActivity" />
+
+        <activity android:name=".ui.license.LicenseActivity" />
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="net.sourceforge.simcpux"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="net.sourceforge.simcpux"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".ui.activity.ClipImageActivity" />
+        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.bind.BindPhoneActivity" />
+        <activity android:name=".ui.user.AuthenticationFragment" android:taskAffinity="com.lc.task" />
+        <activity android:name=".ui.coupon.CouponActivity" />
+        <activity android:name=".ui.auth.AuthInformationActivity" />
+        <activity android:name=".ui.auth.DepartmentSreachActivity" />
+        <activity android:name=".ui.auth.AuthConfirmSuccessActivity" >
+        </activity>
+        <activity android:name=".ui.withdraw.WithdrawActivity" />
+        <activity android:name=".ui.goods.GoodsQualificationActivity" />
+        <activity android:name=".ui.coupon.CouponShopFragment" />
+        <!-- 1.这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
+        <service
+            android:name=".service.PushService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service> <!-- 2.用户自定义接收消息器,所有你想要知道的消息都在这里 -->
+        <receiver android:name=".receiver.PushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

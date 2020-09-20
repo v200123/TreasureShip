@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="addressLogisticData"
+            type="com.jzz.treasureship.model.bean.AddressLogisticsBean" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/show_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/image"
+            android:padding="5dp"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/show_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image"
+            android:layout_alignEnd="@id/image"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="-20dp"
+            android:padding="5dp"
+            android:text="日本发货"
+            android:textColor="#333333"
+            android:textSize="12sp" />
+
+        <View
+            android:id="@+id/line_normal"
+            android:layout_width="35dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:background="#F5F5F5" />
+
+        <View
+            android:id="@+id/line_highlight"
+            android:layout_width="35dp"
+            android:layout_height="3dp"
+            android:layout_centerVertical="true"
+            android:background="@color/colorAccent"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/show_title"
+            android:layout_toEndOf="@id/line_normal"
+            android:background="@drawable/logistics_normal" />
+
+        <View
+            android:id="@+id/line_normal2"
+            android:layout_width="35dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/image"
+            android:background="#F5F5F5" />
+
+        <View
+            android:id="@+id/line_highlight2"
+            android:layout_width="35dp"
+            android:layout_height="3dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/image"
+            android:background="@color/colorAccent"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,42 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.4.0'
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven {url "https://jitpack.io"}
+//        maven {
+//            url 'http://nexus3.lilchain.com/repository/maven-releases/'
+//        }
+
+        jcenter() {
+            url 'http://jcenter.bintray.com/'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.baidu.mobstat:mtj-circle-plugin:1.4.0'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven {url "https://jitpack.io"}
+//        maven {
+//            url 'http://nexus3.lilchain.com/repository/maven-releases/'
+//        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+

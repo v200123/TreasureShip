@@ -1,0 +1,48 @@
+includeBuild 'versionPlugin'
+include ':app'
+include ':myBaseLibrary'
+rootProject.name='TreasureShip'
+//
+//gradle.addBuildListener(new BuildListener() {
+//    Long startTime,endTime
+//    @Override
+//    void buildStarted(Gradle gradle) {
+//
+//    }
+//
+//    @Override
+//    void settingsEvaluated(Settings settings) {
+//        startTime = System.currentTimeMillis()
+//        println "当前状态为：settingsEvaluated"
+//
+//    }
+//
+//    @Override
+//    void projectsLoaded(Gradle gradle) {
+//        println "当前状态为：projectsLoaded"
+//
+//    }
+//
+//    @Override
+//    void projectsEvaluated(Gradle gradle) {
+//        println "当前状态为：projectsEvaluated"
+//
+//    }
+//
+//    @Override
+//    void buildFinished(BuildResult result) {
+//
+//        println "当前状态为：buildFinished"
+//
+//        endTime = System.currentTimeMillis()
+//        println "当前的编译总耗时:${endTime - startTime}ms"
+//
+//
+//    }
+////    }
+//
+//    @Override
+//    void beforeSettings(Settings settings) {
+//        super.beforeSettings(settings)
+//    }
+//})

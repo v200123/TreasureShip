@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_shape"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_go2takePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拍照"
+            android:textColor="#26C8D7"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="14.5dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="15.5dp"
+        android:background="#FFE5E5E5" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_go2Pics"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="从手机相册选择"
+            android:textColor="#26C8D7"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="14.5dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="15.5dp"
+        android:background="#FFE5E5E5" />
+
+    <LinearLayout
+        android:id="@+id/layout_dissmiss"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="17.5dp"
+            android:src="@drawable/icon_cancle_collect" />
+    </LinearLayout>
+</LinearLayout>
