@@ -69,8 +69,6 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
         if (USER_JSON.isNotBlank()) {
             val userJson = GsonUtils.fromJson(USER_JSON, User::class.java)
 
-
-
             userJson?.let {
                 if( it.auditStatus == 1)
                 {
@@ -84,10 +82,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
                     btn_usersetting_auth.setOnClickListener {
                         mContext.start<AuthenticationFragment> {  }
                     }
-
                 }
-
-
 
                 if (userJson.nickName.isNullOrBlank()) {
                     tv_name.text = userJson.username

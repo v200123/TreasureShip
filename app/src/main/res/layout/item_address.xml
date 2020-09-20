@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,12 +9,16 @@
             type="com.jzz.treasureship.model.bean.Address" />
     </data>
 
-    <LinearLayout
+    <com.lc.mybaselibrary.ShapeLinearLayout
+
         android:id="@+id/layout_addressItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/address_item_bg_shape"
+        app:shapeSolidColor="@color/white"
+        app:shapeCornersRadius="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
         android:paddingBottom="8dp">
 
@@ -117,5 +122,5 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-    </LinearLayout>
+    </com.lc.mybaselibrary.ShapeLinearLayout>
 </layout>

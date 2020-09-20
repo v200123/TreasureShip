@@ -10,6 +10,7 @@ import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -19,10 +20,7 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CartSelectGoodsAdapter
 import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.CartGoodsSku
-import com.jzz.treasureship.model.bean.Coupon
-import com.jzz.treasureship.model.bean.Order
-import com.jzz.treasureship.model.bean.ReceiveAddress
+import com.jzz.treasureship.model.bean.*
 import com.jzz.treasureship.ui.activity.PaySuccessActivity
 import com.jzz.treasureship.ui.address.ChooseAddressFragment
 import com.jzz.treasureship.ui.license.LicenseActivity
@@ -51,6 +49,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
     private val isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
     var tmpAddress by PreferenceUtils(PreferenceUtils.SELECTED_ADDRESS, "")
     private lateinit var mCoupon: MutableList<Coupon>
+//    private  var mCouponId = 0
 
     //private val isAudit = 1
     private var mOrderId = -1
@@ -94,9 +93,6 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initView() {
         activity!!.nav_view.visibility = View.GONE
-
-
-
         ll_view.background = context!!.getDrawable(R.drawable.toolbar_bg)
         StateAppBar.setStatusBarLightMode(
             this.activity,
@@ -190,7 +186,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         layout_Address.visibility = View.VISIBLE
 
                         tv_name.text =
-                            "${selectedAddress!!.mConsignee}\t\t${selectedAddress!!.mMobile}"
+                            "${selectedAddress?.mConsignee ?: ""}\t\t${selectedAddress?.mMobile ?: ""}"
 
                         tv_address_province.text = address.mProvinceName
                         tv_address_city.text = address.mCityName
@@ -228,19 +224,20 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
                 directBuyUiModel.showSuccess?.let {
                     mCoupon = it.mCouponList.toMutableList()
-                    mCoupon.add(0, Coupon().apply {
-                        mCouponName = "不使用"
-                    })
                     if (mCoupon.isNullOrEmpty()) {
+                        mOccupationBean = Coupon(mCouponId = null)
                         tv_paypal_coupon.text = "暂无可用优惠券"
                         tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                     } else {
+                        mCoupon.add(0, Coupon().apply {
+                            mCouponName = "不使用"
+                        })
                         tv_paypal_coupon.text = "选择优惠券"
                         tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                     }
 
-                    if(it.mCouponId>0)
-                    {
+                    if (it.mCouponId > 0) {
+                        mOccupationBean = Coupon(mCouponId = it.mCouponId)
                         tv_paypal_coupon.text = "-￥${it.mCouponValue}"
                         tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                     }
@@ -336,12 +333,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         tv_tax.text = "¥${tmpTax.stripTrailingZeros().toPlainString()}"
                     }
 
-                    val payPrice = MoneyUtil.moneyAdd(it.mTotalMoney.toString(), "0")
+                    val payPrice = MoneyUtil.moneyAdd(it.mPayMoney.toString(), "0")
                     val tmpPayPrice = BigDecimal(payPrice)
                     if (tmpPayPrice.compareTo(BigDecimal.ZERO) == 0) {
                         val span = SpannableString("应付:￥0.00").apply {
                             setSpan(
-                                AbsoluteSizeSpan(19, true),
+                                AbsoluteSizeSpan(12, true),
                                 0,
                                 2,
                                 Spannable.SPAN_INCLUSIVE_INCLUSIVE
@@ -349,17 +346,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         }
                         tv_payPrice.setText(span)
                     } else {
+                        //有疑问
                         val span02 = SpannableString(
-                            "应付:￥${
-                                MoneyUtil.moneySub(
-                                    tmpPayPrice,
-                                    BigDecimal(it.mOrderDiscountMoney.toString())
-                                )
-                                    .stripTrailingZeros().toPlainString()
-                            }"
+                            "应付:￥${tmpPayPrice.stripTrailingZeros().toPlainString()}"
                         ).apply {
                             setSpan(
-                                AbsoluteSizeSpan(19, true),
+                                AbsoluteSizeSpan(12, true),
                                 0,
                                 2,
                                 Spannable.SPAN_INCLUSIVE_INCLUSIVE
@@ -398,18 +390,13 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                                     cartGoodsSku?.let {
 
                                                         val detail: JSONObject = JSONObject()
-
                                                         detail.put("cartId", cartGoodsSku.mCartId)
                                                         detail.put("skuId", cartGoodsSku.mSkuId)
                                                         detail.put("count", cartGoodsSku.mCount)
-
                                                         details.put(detail)
                                                     }
                                                 }
-                                                orderParamItem.put(
-                                                    "couponId",
-                                                    mOccupationBean.mCouponId
-                                                )
+
                                                 orderParamItem.put("details", details)
                                                 orderParamItem.put("shopId", shop.mShopId)
                                             }
@@ -417,6 +404,10 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                         }
                                         body.put("orderParams", orderParams)
                                     }
+                                    body.put(
+                                        "couponId",
+                                        "${if (mOccupationBean.mCouponId == 0) null else mOccupationBean.mCouponId}"
+                                    )
                                     body.put("orderType", 1)
                                     body.put("receiveAddressId", selectedAddress?.mId ?: -1)
                                 }
@@ -513,7 +504,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         }
                         //立即微信支付
                         1 -> {
-                            weChatPay(it)
+                            if (it.totalFee == 0.00) {
+                                mOrderId = -1
+                                startActivity(Intent(context, PaySuccessActivity::class.java))
+                            } else {
+                                weChatPay(it)
+                            }
                         }
                         else -> Log.e("wtf", "unknow pay type:${mPayType}")
                     }
@@ -542,36 +538,29 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
         ll_paypal_voucher.setOnClickListener {
             if (!mCoupon.isNullOrEmpty()) {
                 tv_paypal_coupon.setTextColor(Color.parseColor("#FFCC0814"))
+                if (mOccupationBean.mCouponId != null && mOccupationBean.mCouponId != 0) {
+                    mCoupon.forEach {
+                        if (mOccupationBean.mCouponId == it.mCouponId) {
+                            it.isSelector = true
+                        }
+                    }
+                }
                 XPopup.Builder(mContext)
                     .setPopupCallback(object : SimpleCallback() {
                         override fun onDismiss(popupView: BasePopupView?) {
                             super.onDismiss(popupView)
                             val filter = mCoupon.filter { it.isSelector }
                             if (filter.isEmpty()) {
+                                AreadyPprice(null)
                                 tv_paypal_coupon.text = "不使用优惠券"
                                 tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                             } else {
                                 mOccupationBean = filter[0]
-                                if(mOccupationBean.mCouponName == "不使用")
-                                {
+                                AreadyPprice(null)
+                                if (mOccupationBean.mCouponName == "不使用") {
                                     tv_paypal_coupon.text = "不使用优惠劵"
-                                }
-                                else{
-
-                                    arguments?.let {
-                                        when (it.get("type")) {
-                                            //直接购
-                                            1 -> mViewModel.directBuy(it.getInt("count"), it.getInt("skuId"),
-                                                mOccupationBean.mCouponId)
-                                            //购物车结算
-                                            2 -> it.getString("shops")?.let { shops ->
-                                                mViewModel.cartSettlement(shops,"${mOccupationBean.mCouponId}")
-                                            }
-                                            else -> {
-                                                ToastUtils.showShort("未知结算类型")
-                                            }
-                                        }
-                                    }
+                                } else {
+                                    AreadyPprice("${mOccupationBean.mCouponId}")
 //                                    mViewModel.directBuy(it.getInt("count"), it.getInt("skuId"),)
 
 
@@ -610,6 +599,25 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                     mChooseAddressFragment.javaClass.name
                 )
                 .commit()
+        }
+    }
+
+    private fun AreadyPprice(couponId: String?) {
+        arguments?.let {
+            when (it.get("type")) {
+                //直接购
+                1 -> mViewModel.directBuy(
+                    it.getInt("count"), it.getInt("skuId"),
+                    mOccupationBean.mCouponId
+                )
+                //购物车结算
+                2 -> it.getString("shops")?.let { shops ->
+                    mViewModel.cartSettlement(shops, couponId)
+                }
+                else -> {
+                    ToastUtils.showShort("未知结算类型")
+                }
+            }
         }
     }
 

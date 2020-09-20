@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.jzz.treasureship.ui.address.AddressViewModel" />
@@ -17,8 +19,8 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -42,24 +44,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:textColorHint="#FFCCCCCC"
                     android:background="@color/white"
                     android:hint="请输入收货人真实姓名"
+                    android:textColorHint="#FFCCCCCC"
                     android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="1dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_marginRight="23.5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="23.5dp"
                     android:text="手机号码    "
                     android:textColor="#FF111111"
                     android:textSize="15sp" />
@@ -70,26 +72,26 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:inputType="phone"
-                    android:textColorHint="#FFCCCCCC"
                     android:background="@color/white"
                     android:hint="请输入收货人手机号"
+                    android:inputType="phone"
+                    android:textColorHint="#FFCCCCCC"
                     android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="1dp"
                 android:id="@+id/lin_address"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_marginRight="23.5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="23.5dp"
                     android:text="所在地区    "
                     android:textColor="#FF111111"
                     android:textSize="15sp" />
@@ -100,29 +102,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:textColorHint="#FFCCCCCC"
                     android:background="@color/white"
                     android:hint="请选择所在地区"
+                    android:textColorHint="#FFCCCCCC"
                     android:textSize="12sp" />
 
                 <ImageView
-                    android:src="@drawable/icon_add_address_go_select"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_add_address_go_select" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="1dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_marginEnd="23.5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="23.5dp"
                     android:text="收货人地址"
                     android:textColor="#FF111111"
                     android:textSize="15sp" />
@@ -133,9 +135,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:textColorHint="#FFCCCCCC"
                     android:background="@color/white"
                     android:hint="请填写详细地址"
+                    android:textColorHint="#FFCCCCCC"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -170,13 +172,19 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <Button
+        <com.lc.mybaselibrary.ShapeButton
             android:id="@+id/btn_saveAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="6dp"
             android:background="#FF26C8D7"
+            android:gravity="center"
             android:text="保存"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="18sp"
+            app:shapeCornersRadius="20dp"
+            app:shapeSolidColor="@color/blue_normal" />
     </LinearLayout>
 </layout>

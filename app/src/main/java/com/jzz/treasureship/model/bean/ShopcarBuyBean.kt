@@ -50,7 +50,7 @@ class Coupon(
     @SerializedName("couponEndTime")
     var mCouponEndTime: String = "", // string
     @SerializedName("couponId")
-    var mCouponId: Int = 0, // 0
+    var mCouponId: Int? = 0, // 0
     @SerializedName("couponName")
     var mCouponName: String = "", // string
     @SerializedName("couponNumber")

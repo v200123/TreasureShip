@@ -11,6 +11,7 @@ import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.Data03
 import com.jzz.treasureship.model.bean.header
 import com.jzz.treasureship.ui.coupon.viewModel.CouponShopViewModel
+import com.lc.mybaselibrary.out
 import kotlinx.android.synthetic.main.fragment_coupon_shop.*
 import kotlinx.android.synthetic.main.include_title.*
 import java.math.RoundingMode
@@ -36,6 +37,7 @@ class CouponShopFragment : BaseVMActivity<CouponShopViewModel>(false) {
         }
         mAdapter.loadMoreModule.apply {
             setOnLoadMoreListener {
+                "上啦回调调用了".out(true)
                 mViewModel.getList(BaseRequestBody( MyHeader = header(pageNum = nowPosition)))
             }
             isEnableLoadMore = true
@@ -50,7 +52,7 @@ class CouponShopFragment : BaseVMActivity<CouponShopViewModel>(false) {
 
     override fun startObserve() {
         mViewModel.mCouponData.observe(this,{
-            mAdapter.addData(it.mData)
+
             if(it.mTotalPages == nowPosition)
             {
                 mAdapter.loadMoreModule.loadMoreEnd()
@@ -58,6 +60,7 @@ class CouponShopFragment : BaseVMActivity<CouponShopViewModel>(false) {
                 mAdapter.loadMoreModule.loadMoreComplete()
                 nowPosition ++
             }
+            mAdapter.addData(it.mData)
         })
     }
 
