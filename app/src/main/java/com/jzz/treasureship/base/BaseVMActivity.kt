@@ -35,6 +35,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     //    每日弹窗的记录
     private var isInviteDialog by PreferenceUtils(PreferenceUtils.everyday_invite_dialog, "")
+    private var isAuthDialog by PreferenceUtils(PreferenceUtils.auth_is_show, "")
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     lateinit var mViewModel: VM
@@ -106,7 +107,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
                     isInviteDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
                 } else {
 
-                    val split = isInviteDialog.split("\\s")
+                    val split = isInviteDialog.split(",")
                     if (split[0].toInt() != calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
                             Calendar.DAY_OF_MONTH
                         )
@@ -122,6 +123,26 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
                 lifecycleScope.launch {
                     HttpHelp.getRetrofit().notificationServerPass(BaseRequestBody())
                 }
+            }
+
+            if(user.auditStatus == -1)
+            {
+                if(!PreferenceUtils("", "").contains(PreferenceUtils.auth_is_show))
+                {
+                    App.dialogHelp.showType()
+                    isAuthDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                }
+                else{
+                    val split = isInviteDialog.split(",")
+                    if (split[0].toInt() != calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
+                            Calendar.DAY_OF_MONTH
+                        )
+                    ) {
+                        App.dialogHelp.showType()
+                    }
+                    isAuthDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                }
+
             }
 
         }

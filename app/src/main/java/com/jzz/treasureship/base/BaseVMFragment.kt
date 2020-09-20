@@ -1,6 +1,5 @@
 package com.jzz.treasureship.base
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,7 +28,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     protected lateinit var mViewModel: VM
-    var mActivity: Activity? = null
+    var mActivity: AppCompatActivity? = null
     lateinit var mContext: Context
 
     override fun onAttach(context: Context) {
@@ -62,7 +61,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
 
 
 
-        mViewModel.mStateLiveData.observe(this, {
+        mViewModel.mStateLiveData.observe(viewLifecycleOwner, {
             if (it is LoadState) {
                 mLoading.show()
             }

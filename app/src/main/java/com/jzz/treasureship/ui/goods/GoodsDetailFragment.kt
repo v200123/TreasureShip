@@ -6,7 +6,10 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
 import android.util.Log
 import android.view.*
 import android.webkit.JavascriptInterface
@@ -15,7 +18,6 @@ import android.webkit.WebViewClient
 import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -40,10 +42,7 @@ import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.changeImage
-import com.jzz.treasureship.view.CustomComparePricePopup
-import com.jzz.treasureship.view.CustomPropertyPopup
-import com.jzz.treasureship.view.CustomSkuBottomPopup
-import com.jzz.treasureship.view.SlideDetailsLayout
+import com.jzz.treasureship.view.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -69,7 +68,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
     private lateinit var mWindow: Window
     private var goodsId: Int = -1
     private val dialog: Dialog by lazy { Dialog(context!!, R.style.edit_AlertDialog_style) }
-
+    private var JsonString:String = ""
     companion object {
         const val RC_CALL_PERM = 122
 
@@ -100,12 +99,20 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
     override fun initView() {
         activity!!.nav_view.visibility = View.GONE
 
+        gooddetails_shop.setOnClickListener {
+            mContext.startActivity(GoodsQualificationActivity.newInstance(mContext,0,JsonString))
+        }
+
+        ll_goodsDetails_parameter.setOnClickListener {
+            mContext.startActivity(GoodsQualificationActivity.newInstance(mContext,1,JsonString))
+        }
+
         this.mWindow = activity!!.window
 
         fab_up.hide()
 
         tv_cart.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            mActivity!!.supportFragmentManager.beginTransaction()
                 .addToBackStack(GoodsDetailFragment.javaClass.name)
                 .hide(this)//隐藏当前Fragment
                 .add(
@@ -149,6 +156,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
 
                 viewModel.showSuccess?.let { goodsDetail ->
                     addCartPopup.dismiss()
+                    JsonString =  GsonUtils.toJson(goodsDetail)
                     initUi(goodsDetail)
                 }
 
@@ -329,6 +337,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
 
     class JavaScriptInterface(context: Context) {
         private val context: Context = context
+
         //点击图片回调方法
         //必须添加注解,否则无法响应
         @JavascriptInterface
@@ -398,8 +407,23 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         }
     }
 
+    // TODO: 2020/9/17 如何判断是境外商品
     private fun initUi(goodsDetail: GoodsDetail) {
-        tv_goodsName.text = goodsDetail.goodsName
+
+        tv_good_details_name.text = goodsDetail.shopName
+        tv_goods_fare.text = if (goodsDetail.shippingFee == 0)
+            "包邮"
+        else
+            goodsDetail.shippingFee.toString()
+        if (goodsDetail.goodsType == 1) {
+            ll_showAndHide.visibility = View.VISIBLE
+            view_1.visibility = View.VISIBLE
+            val apply = SpannableString("境外商品\t" + goodsDetail.goodsName).apply {
+                setSpan(RadiusSpan(Color.parseColor("#FFF0A823"), 9, context), 0, 3, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            }
+            tv_goodsName.setText(apply)
+        } else
+            tv_goodsName.text = goodsDetail.goodsName
 //        tv_compony.text = goodsDetail.shopName
         tv_price.text = "¥${goodsDetail.goodsSku[0].price}"
 
@@ -407,12 +431,11 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             tv_goCompare.visibility = View.GONE
         } else {
             tv_goCompare.visibility = View.VISIBLE
-
             priceCompareAdapter.setNewData(goodsDetail.goodsSku[0].parityList)
             priceCompareAdapter.notifyDataSetChanged()
 
             tv_goCompare.setOnClickListener {
-                XPopup.Builder(it.context).asCustom(CustomComparePricePopup(context!!, priceCompareAdapter))
+                XPopup.Builder(it.context).asCustom(CustomComparePricePopup(mContext, priceCompareAdapter))
                     .show()
             }
         }
@@ -420,7 +443,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         rcv_skus.run {
             layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku.size)
             adapter = skuListAdapter
-            isLayoutFrozen = true
+            suppressLayout(true)
         }
         skuListAdapter.setNewData(goodsDetail.goodsSku)
         skuListAdapter.notifyDataSetChanged()
@@ -434,13 +457,6 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             }
         }
 
-
-//        if (goodsDetail.goodsType == 0) {
-//            layout_Logistics.visibility = View.GONE
-//        } else {
-//            layout_Logistics.visibility = View.VISIBLE
-//        }
-
         detail_banner.apply {
             setBannerStyle(BannerConfig.NUM_INDICATOR)
             setBannerAnimation(Transformer.BackgroundToForeground)
@@ -452,7 +468,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             start()
         }
 
-        rcv_skus.setOnClickListener {
+        ll_choice_norm.setOnClickListener {
             val skuPopup = CustomSkuBottomPopup(view!!.context, goodsDetail)
             XPopup.Builder(view!!.context).setPopupCallback(object : SimpleCallback() {
                 override fun onDismiss(popupView: BasePopupView) {
@@ -548,12 +564,10 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             } else {
                 callService(goodsDetail.companyPhone)
             }
-
         }
 
         iv_useNote.setOnClickListener {
             dialog.setCanceledOnTouchOutside(true)
-
             //val test = arrayListOf<String>("http://119.3.125.1/upload/default/20200225/1582606192758.jpg","http://119.3.125.1/upload/default/20200225/1582606192779.jpg")
             val list = ArrayList<ImageView>(goodsDetail.instructionsPictureList.size)
             for (ele in goodsDetail.instructionsPictureList) {
@@ -612,11 +626,11 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             val list = ArrayList<ImageView>(goodsDetail.specialDescriptionPictureList.size)
             for (ele in goodsDetail.specialDescriptionPictureList) {
                 val img = ImageView(context)
-                Glide.with(context!!).load(ele).into(img)
+                Glide.with(this).load(ele).into(img)
                 list.add(img)
             }
             if (list.size > 0) {
-                val mAdapter = ImgAdapter(context!!, list)
+                val mAdapter = ImgAdapter(mContext, list)
                 val vp = dialog.findViewById<ViewPager>(R.id.img_vp)
                 vp.adapter = mAdapter
 
@@ -768,9 +782,11 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             val shareGoodsUrl = "http://bj.jzzchina.com/goods/detail?id=${goodsDetail.goodsId}&uid=${userObj.id}"
             val webpage = WXWebpageObject()
             val shareUrl =
-                "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe5dee58a24f8a244&redirect_uri=${URLEncoder.encode(
-                    "$shareGoodsUrl", "utf-8"
-                )}&response_type=code&scope=snsapi_userinfo#wechat_redirect"
+                "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe5dee58a24f8a244&redirect_uri=${
+                    URLEncoder.encode(
+                        "$shareGoodsUrl", "utf-8"
+                    )
+                }&response_type=code&scope=snsapi_userinfo#wechat_redirect"
             webpage.webpageUrl = shareUrl
 
             val shareMsg = WXMediaMessage(webpage)
@@ -792,7 +808,6 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             } else {
                 Log.d("wx share", "微信分享失败")
             }
-
 
 
             //构造一个Req

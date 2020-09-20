@@ -26,7 +26,8 @@ android {
     dexOptions{
         javaMaxHeapSize = "1g"
     //        incremental true
-//        threadCount = 5
+        threadCount = 5
+        maxProcessCount 8
         preDexLibraries = true
     }
 

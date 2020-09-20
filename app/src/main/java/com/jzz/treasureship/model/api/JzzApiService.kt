@@ -305,7 +305,7 @@ interface JzzApiService {
      * 收货地址管理：获取默认购物地址
      */
     @POST("/api/v1/receiveAddress/getPayAddress")
-    suspend fun getPayAddress(@Body body: RequestBody): JzzResponse<Address>
+    suspend fun getPayAddress(@Body body: RequestBody): JzzResponse<ReceiveAddress>
 
     /**
      * 收货地址管理：修改收货地址
@@ -464,4 +464,9 @@ interface JzzApiService {
 
     @POST("/api/withdraw/firstPassCouponStatus")
     suspend fun couponIsUse(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
+
+    @POST("/api/v1/coupon/getCouponList")
+    suspend fun getCouponList(@Body body: BaseRequestBody) : JzzResponse<CouponBean>
+    @POST("/api/v1/goods/pageRecommendGoods")
+    suspend fun getRecommendGoods(@Body body: BaseRequestBody):JzzResponse<CouponShopBean>
 }

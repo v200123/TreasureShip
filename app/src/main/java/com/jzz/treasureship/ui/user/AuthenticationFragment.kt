@@ -54,7 +54,7 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(),
 
         //请求相机,证书
         const val REQUEST_CAPTURE_CERT = 100
-        private const val REQUEST_PERMISSION_WRITE_STORAGE = 102
+        const val REQUEST_PERMISSION_WRITE_STORAGE = 102
         const val REQUEST_PERMISSION_READ_STORAGE = 103
         const val REQUEST_PICK = 104//请求相册
         const val REQUEST_PERMISSION_CAMERA = 105//请求相机
@@ -78,11 +78,10 @@ class AuthenticationFragment : BaseVMActivity<UserViewModel>(),
 
     override fun initVM(): UserViewModel = getViewModel()
 
-    override fun initView() {
+    override fun initView() {rv_type
 
         btn_auth_next.setOnClickListener {
             mContext.start<AuthInformationActivity> {
-
                 putExtra(
                     AuthInformationActivity.occuId, mViewModel.userType.value?.mList?.get(nowSelectPosition)?.mId
                 )

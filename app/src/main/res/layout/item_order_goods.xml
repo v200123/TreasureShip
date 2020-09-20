@@ -13,17 +13,27 @@
     </data>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24.5dp"
         android:layout_marginEnd="23dp"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_orderGoods_name"
+            android:textSize="14dp"
+          android:textStyle="bold"
+            android:gravity="center"
+            android:drawableStart="@drawable/ico_shop"
+            android:text="贝利达官方自营店"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="10dp"
+            android:paddingTop="20dp"
             android:paddingBottom="10dp">
 
             <LinearLayout

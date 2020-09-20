@@ -4,8 +4,8 @@ import android.content.Context
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.R
+import com.jzz.treasureship.ui.coupon.CouponShopFragment
 import com.jzz.treasureship.ui.withdraw.WithdrawActivity
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.CenterPopupView
@@ -21,11 +21,12 @@ class Dialog_approve_success(context: Context,var userName:String) : CenterPopup
     override fun onCreate() {
         super.onCreate()
         findViewById<Button>(R.id.btn_approve_money).setOnClickListener {
-            this.dismiss()
             context.start<WithdrawActivity> {  }
+            this.dismiss()
         }
         findViewById<Button>(R.id.btn_approve_buy).setOnClickListener {
-            ToastUtils.showShort("還沒設置")
+            context.start<CouponShopFragment> {  }
+            this.dismiss()
         }
         findViewById<ImageView>(R.id.iv_approve_success).setOnClickListener {
                 this.dismiss()

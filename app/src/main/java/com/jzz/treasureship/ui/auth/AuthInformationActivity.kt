@@ -63,6 +63,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
+                    dash_view.level = 0
                     btn_baseinfo_next.text = "下一步"
                     btn_baseinfo_next.setOnClickListener {
                         vp_authinfor.setCurrentItem(++vp_authinfor.currentItem, true)
@@ -93,6 +94,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     )
                 }
                 if (position == 1) {
+                    dash_view.level = 1
                     btn_baseinfo_next.apply {
                         text = "提交审核"
                         setOnClickListener {
@@ -129,6 +131,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
 //                    ico_auth_now
                 }
                 if (position == 2) {
+                    dash_view.level = 2
                     tv_authinfor_01.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.icon_withdraw_unselected)!!

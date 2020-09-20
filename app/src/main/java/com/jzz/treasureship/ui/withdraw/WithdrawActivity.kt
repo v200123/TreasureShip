@@ -108,9 +108,9 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
 //            }
 
             val value = BigDecimal(edit_price.text.toString())
-            val minValue = BigDecimal("1.00")
+            val minValue = BigDecimal("0.03")
             if (value < minValue) {
-                ToastUtils.showShort("最低提现金额：1元")
+                ToastUtils.showShort("最低提现金额：3分")
                 return@setOnClickListener
             }
 

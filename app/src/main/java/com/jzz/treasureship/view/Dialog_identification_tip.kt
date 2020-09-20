@@ -24,7 +24,7 @@ class Dialog_identification_tip(context: Context) : CenterPopupView(context) {
     override fun onCreate() {
         super.onCreate()
         findViewById<View>(R.id.btn_positive).setOnClickListener {
-            Log.d("TAG", "dialog onCreate: 跳转到宁外一个界面 ")
+
         }
         findViewById<View>(R.id.iv_idenDialog_close).setOnClickListener {
             this.dismiss()

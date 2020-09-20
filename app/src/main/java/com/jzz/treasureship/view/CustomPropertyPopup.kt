@@ -6,12 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.GoodsPropertiesAdapter
 import com.jzz.treasureship.model.bean.GoodsAttribute
+import com.jzz.treasureship.model.bean.GoodsDetail
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.dialog_goods_properties.view.*
 import kotlin.math.roundToInt
 
-class CustomPropertyPopup(context:Context,goodsAttributeList:List<GoodsAttribute>) : BottomPopupView(context) {
+class CustomPropertyPopup(context:Context,goodsAttributeList:List<GoodsDetail.GoodsAttribute>) : BottomPopupView(context) {
 
     private val mList = goodsAttributeList
 

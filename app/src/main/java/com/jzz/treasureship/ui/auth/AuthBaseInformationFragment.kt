@@ -106,11 +106,12 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
                             midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
                         }
 
-                        et_base_address.setText("${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}")
+                        et_base_address.setText("${topAddressObj?.areaName?:""} ${midAddressObj?.areaName?:""} " +
+                                "${lastAddressObj?.areaName?:""}")
                         activityViewModel.mConfirmBody.apply {
-                            this.mAreaProvince = topAddressObj!!.id
-                            this.mAreaCity = midAddressObj!!.id
-                            this.mAreaDistrict = lastAddressObj!!.id
+                            this.mAreaProvince = topAddressObj?.id ?:0
+                            this.mAreaCity = midAddressObj?.id?:0
+                            this.mAreaDistrict = lastAddressObj?.id?:0
                         }
                     }
 

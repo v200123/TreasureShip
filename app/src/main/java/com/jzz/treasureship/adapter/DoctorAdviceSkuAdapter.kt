@@ -18,7 +18,7 @@ class DoctorAdviceSkuAdapter(layoutResId: Int = R.layout.layout_add_doctor_advic
     override fun convert(helper: BindViewHolder, item: CartGoodsSku) {
         super.convert(helper, item)
 
-        helper.getView<TextView>(R.id.tv_name).text = item.name
-        helper.getView<TextView>(R.id.tv_count).text = item.count.toString()
+        helper.getView<TextView>(R.id.tv_name).text = item.mName
+        helper.getView<TextView>(R.id.tv_count).text = item.mCount.toString()
     }
 }

@@ -3,7 +3,6 @@ package com.jzz.treasureship.adapter
 import com.bumptech.glide.Glide
 import com.jzz.treasureship.BR
 import com.jzz.treasureship.R
-import com.jzz.treasureship.model.bean.CartGoodsSku
 import com.jzz.treasureship.model.bean.GoodsSkuX
 
 class OrdersChildAdapter (layoutResId: Int = R.layout.item_order_goods) :

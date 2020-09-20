@@ -1,5 +1,6 @@
 package com.jzz.treasureship.ui.auth
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +38,7 @@ import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.fragment_auth_upload.*
 import kotlinx.android.synthetic.main.item_card_unuse.*
 import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,12 +69,40 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
     override fun initVM(): AuthUpLoadViewModel = AuthUpLoadViewModel()
 
     override fun initView() {
+
+        tv_first_red.setText(SpannableString(tv_first_red.text).apply {
+            setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
+                0,
+                0,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
+            setSpan(AbsoluteSizeSpan(12, true), 0, 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        })
+
+
+
+
         mViewModel.occupationData.observe(this, { occupa ->
             val mList = occupa.mList
             mImageList = occupa.mList
             mOccupation = mList[0]
 //            用于取第一个的资质的
             val firstOccupation = mList[0]
+            if (firstOccupation.mRemark1.isNotEmpty()) {
+                tv_auth_upload_remark.setText(SpannableString("*" + firstOccupation.mRemark1).apply {
+                    setSpan(
+                        ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
+                        0,
+                        0,
+                        Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                    )
+                    setSpan(AbsoluteSizeSpan(12, true), 0, 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                })
+            }
+            else{
+                tv_auth_upload_remark.visibility = View.GONE
+            }
             activityModel.mConfirmBody.apply {
                 mOccupationConfigId = firstOccupation.mId
                 mOccupationId = firstOccupation.mOccupationId
@@ -166,6 +200,22 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         tv_authUpLoad_title.text = image.mTitle
         mOccupation = image
         activityModel.mConfirmBody.mQualificationImages = ""
+        firstImage = ""
+        secondImage = ""
+        if (image.mRemark1.isNotEmpty()) {
+            tv_auth_upload_remark.setText(SpannableString("*" + image.mRemark1).apply {
+                setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
+                    0,
+                    0,
+                    Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                setSpan(AbsoluteSizeSpan(12, true), 0, 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            })
+        }else{
+            tv_auth_upload_remark.visibility = View.GONE
+        }
+
         Glide.with(this).asDrawable().load(image.mBackImage1).into(iv_authupload_image01)
         activityModel.mConfirmBody.apply {
             mOccupationConfigId = image.mId
@@ -178,6 +228,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         }
 
         if (image.mBackImage2 != null) {
+            iv_authupload_image02.visibility = View.VISIBLE
             Glide.with(this).asDrawable().load(image.mBackImage2).into(iv_authupload_image02)
         } else {
             iv_authupload_image02.visibility = View.GONE
@@ -192,9 +243,9 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             ).apply {
                 click = {
                     if (it == 0) {
-                        gotoPhoto()
+                        getFileAuth()
                     } else {
-                        gotoCamera()
+                        getCameraAuth()
                     }
                     this.dismiss()
                 }
@@ -216,28 +267,36 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
                         when (nowPosition) {
                             0 -> {
                                 firstImage = ""
-                                Glide.with(this).asDrawable().load(mOccupation.mBackImage1).into(view)
+                                Glide.with(this).asDrawable().load(mOccupation.mBackImage1)
+                                    .into(view)
                             }
                             1 -> {
                                 secondImage = ""
-                                Glide.with(this).asDrawable().load(mOccupation.mBackImage2).into(view)
+                                Glide.with(this).asDrawable().load(mOccupation.mBackImage2)
+                                    .into(view)
                             }
                             2 -> {
                                 thirdImage = ""
                                 Glide.with(this).asDrawable()
-                                    .load(ContextCompat.getDrawable(mContext, R.drawable.image_id_card)).into(view)
+                                    .load(
+                                        ContextCompat.getDrawable(
+                                            mContext,
+                                            R.drawable.image_id_card
+                                        )
+                                    ).into(view)
                             }
                         }
 
                     }
                     if (it == 1) {
-                        XPopup.Builder(mContext).asImageViewer(view, view.drawable, ImageLoader()).show()
+                        XPopup.Builder(mContext).asImageViewer(view, view.drawable, ImageLoader())
+                            .show()
                     }
                     if (it == 2) {
-                        gotoPhoto()
+                        getFileAuth()
                     }
                     if (it == 3)
-                        gotoCamera()
+                        getCameraAuth()
                     this.dismiss()
                 }
             }
@@ -394,6 +453,41 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
     override fun initListener() {
     }
 
+
+    private fun getCameraAuth(){
+        val perms = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (!EasyPermissions.hasPermissions(mContext, *perms)) {
+            EasyPermissions.requestPermissions(
+                this,
+                "需要权限",
+                AuthenticationFragment.REQUEST_PERMISSION_CAMERA,
+                *perms
+            )
+        } else {
+            gotoCamera()
+        }
+    }
+
+    private fun getFileAuth(){
+        if (!EasyPermissions.hasPermissions(
+                mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        ) {
+            EasyPermissions.requestPermissions(
+                this,
+                "需要读写本地文件权限",
+                AuthenticationFragment.REQUEST_PERMISSION_WRITE_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        } else {
+            gotoPhoto()
+        }
+
+    }
+
     /**
      * 跳转到照相机
      */
@@ -419,10 +513,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         }
 //            0 -> {
         startActivityForResult(intent, AuthenticationFragment.REQUEST_CAPTURE_CERT)
-//            }
-//            1 -> {
-//                startActivityForResult(intent, AuthenticationFragment.REQUEST_CAPTURE_HALF_BODY)
-//            }
+
     }
 
 

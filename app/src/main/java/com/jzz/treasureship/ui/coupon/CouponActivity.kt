@@ -1,6 +1,5 @@
 package com.jzz.treasureship.ui.coupon
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jzz.treasureship.R
@@ -14,5 +13,7 @@ class CouponActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coupon)
+
+
     }
 }

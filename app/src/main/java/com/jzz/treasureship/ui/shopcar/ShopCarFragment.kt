@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.math.MathUtils
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,15 +24,12 @@ import com.jzz.treasureship.model.bean.CartGoodsSku
 import com.jzz.treasureship.model.bean.CartList
 import com.jzz.treasureship.model.bean.Shop
 import com.jzz.treasureship.ui.activity.MainActivity
-import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.utils.MoneyUtil
-import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.include_title.*
-import kotlinx.android.synthetic.main.item_shopcar_goods.*
 import kotlinx.android.synthetic.main.shop_car_fragment.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -138,11 +134,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                 spcs.shops[i].isSelected = 1
                             }
 
-                            for (j in spcs.shops[i].cartGoodsSkuList?.indices!!) {
+                            for (j in spcs.shops[i].mCartGoodsSkuList?.indices!!) {
                                 if (selected) {
-                                    spcs.shops[i].cartGoodsSkuList?.get(j)?.isSelected = 0
+                                    spcs.shops[i].mCartGoodsSkuList?.get(j)?.isSelected = 0
                                 } else {
-                                    spcs.shops[i].cartGoodsSkuList?.get(j)?.isSelected = 1
+                                    spcs.shops[i].mCartGoodsSkuList?.get(j)?.isSelected = 1
                                 }
                             }
                         }
@@ -157,41 +153,39 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                             val details: JSONArray = JSONArray()
                             if (shop.isSelected == 1) {
                                 //选中店铺，则该店铺下方的商品全选
-                                shop.cartGoodsSkuList?.let { cartGoodsSkus ->
+                                shop.mCartGoodsSkuList?.let { cartGoodsSkus ->
                                     for (cartGoodsSku in cartGoodsSkus) {
                                         cartGoodsSku?.let {
                                             val detail: JSONObject = JSONObject()
 
-                                            detail.put("cartId", cartGoodsSku.cartId)
-                                            detail.put("skuId", cartGoodsSku.skuId)
-                                            detail.put("count", cartGoodsSku.count)
+                                            detail.put("cartId", cartGoodsSku.mCartId)
+                                            detail.put("mSkuId", cartGoodsSku.mSkuId)
+                                            detail.put("mCount", cartGoodsSku.mCount)
 
                                             details.put(detail)
                                         }
                                     }
                                     if (details.length() > 0) {
                                         shopItem.put("details", details)
-                                        shopItem.put("shopId", shop.shopId)
+                                        shopItem.put("shopId", shop.mShopId)
                                     }
                                 }
                             } else {
                                 //未选中店铺，遍历商品列表，只有选中的商品才加入
-                                shop.cartGoodsSkuList?.let { goodsSkuList ->
+                                shop.mCartGoodsSkuList?.let { goodsSkuList ->
                                     val details: JSONArray = JSONArray()
                                     for (goods in goodsSkuList) {
                                         if (goods?.isSelected == 1) {
                                             val detail: JSONObject = JSONObject()
-
-                                            detail.put("cartId", goods.cartId)
-                                            detail.put("skuId", goods.skuId)
-                                            detail.put("count", goods.count)
-
+                                            detail.put("cartId", goods.mCartId)
+                                            detail.put("mSkuId", goods.mSkuId)
+                                            detail.put("mCount", goods.mCount)
                                             details.put(detail)
                                         }
                                     }
                                     if (details.length() > 0) {
                                         shopItem.put("details", details)
-                                        shopItem.put("shopId", shop.shopId)
+                                        shopItem.put("shopId", shop.mShopId)
                                     }
                                 }
                             }
@@ -211,11 +205,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                     var tmp: String? = "0.00"
                     for (ele in cartAdapter.data) {
 
-                        for (item in ele.cartGoodsSkuList!!) {
+                        for (item in ele.mCartGoodsSkuList!!) {
                             if (item!!.isSelected == 1) {
                                 tmp = MoneyUtil.moneyAdd(
                                     tmp,
-                                    MoneyUtil.moneyMul(item.price.toString(), item.count.toString())
+                                    MoneyUtil.moneyMul(item.mPrice.toString(), item.mCount.toString())
                                 )
                             }
                         }
@@ -248,8 +242,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
 
         override fun convert(helper: BaseViewHolder, item: Shop?) {
             item?.let {
-                helper.setText(R.id.cb_shop_car_all, item.shopName)
-
+                helper.setText(R.id.cb_shop_car_all, item.mShopName)
                 val cbShop: CheckBox = helper.getView(R.id.cb_shop_car_all)
                 cbShop.isChecked = item.isSelected == 1
 
@@ -260,7 +253,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                         0
                     }
 
-                    for (element in spcs.shops[helper.adapterPosition].cartGoodsSkuList!!) {
+                    for (element in spcs.shops[helper.adapterPosition].mCartGoodsSkuList!!) {
                         element!!.isSelected = if (cbShop.isChecked) {
                             1
                         } else {
@@ -286,7 +279,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                     isNestedScrollingEnabled = false
 
                     val goodsAdapter = CartOrderChildAdapter(helper.adapterPosition, R.layout.item_shopcar_goods)
-                    goodsAdapter.setNewData(item.cartGoodsSkuList)
+                    goodsAdapter.setNewData(item.mCartGoodsSkuList)
                     adapter = goodsAdapter
 
                     goodsAdapter.notifyDataSetChanged()
@@ -294,11 +287,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                 var tmp: String? = "0.00"
                 for (ele in cartAdapter.data) {
 
-                    for (item in ele.cartGoodsSkuList!!) {
+                    for (item in ele.mCartGoodsSkuList!!) {
                         if (item!!.isSelected == 1) {
                             tmp = MoneyUtil.moneyAdd(
                                 tmp,
-                                MoneyUtil.moneyMul(item.price.toString(), item.count.toString())
+                                MoneyUtil.moneyMul(item.mPrice.toString(), item.mCount.toString())
                             )
                         }
                     }
@@ -346,7 +339,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                             helper.getView<LinearLayout>(R.id.layout_delGoods).setOnClickListener {
                                 layout!!.toggle()
 
-                                mViewModel.deleteGoods(goodsSku.cartId)
+                                mViewModel.deleteGoods(goodsSku.mCartId)
                             }
                         }
 
@@ -360,7 +353,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                 val cbGoods: CheckBox = helper.getView(R.id.cb_shopcar_good)
                 cbGoods.isChecked = item.isSelected == 1
                 cbGoods.setOnClickListener {
-                    spcs.shops[positionShop].cartGoodsSkuList?.get(helper.adapterPosition)?.isSelected =
+                    spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.adapterPosition)?.isSelected =
                         if (cbGoods.isChecked) {
                             1
                         } else {
@@ -369,7 +362,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
 
                     //改变这个商品的选中状态后，遍历看是否全部选中，若全部选中则改变店铺的选中状态
                     val goodsList = ArrayList<Boolean>()
-                    for (element in spcs.shops[positionShop].cartGoodsSkuList!!) {
+                    for (element in spcs.shops[positionShop].mCartGoodsSkuList!!) {
                         element?.let {
                             if (it.isSelected == 1) {
                                 goodsList.add(true)
@@ -396,12 +389,12 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                     notifyDataSetChanged()
                 }
 
-                helper.setText(R.id.tv_shopcar_good_name, goodsSku.name)
+                helper.setText(R.id.tv_shopcar_good_name, goodsSku.mName)
 
                 val icon: ImageView = helper.getView(R.id.iv_shopcar_good_cover)
-                Glide.with(mContext).load(goodsSku.imageUrl).into(icon)
+                Glide.with(mContext).load(goodsSku.mImageUrl).into(icon)
 
-                helper.setText(R.id.et_shopcar_good_num, goodsSku.count.toString())
+                helper.setText(R.id.et_shopcar_good_num, goodsSku.mCount.toString())
                 val etNum: EditText = helper.getView(R.id.et_shopcar_good_num)
                 etNum.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
@@ -415,19 +408,20 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                             }
                             0 -> {
                                 XPopup.Builder(context).asConfirm("删除商品", "确认将物品从购物车删除？", "取消", "删除", {
-                                    mViewModel.deleteGoods(spcs.shops[positionShop].cartGoodsSkuList?.get(helper.adapterPosition)?.cartId!!)
+                                    mViewModel.deleteGoods(spcs.shops[positionShop].mCartGoodsSkuList?.get(helper
+                                        .adapterPosition).mCartId)
                                 }, {}, false).show()
                             }
                             in 1..99 -> {
-                                spcs.shops[positionShop].cartGoodsSkuList?.get(helper.adapterPosition)?.count = number
+                                spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.adapterPosition).mCount = number
                                 var tmp: String? = "0.00"
                                 for (ele in cartAdapter.data) {
 
-                                    for (item in ele.cartGoodsSkuList!!) {
+                                    for (item in ele.mCartGoodsSkuList!!) {
                                         if (item!!.isSelected == 1) {
                                             tmp = MoneyUtil.moneyAdd(
                                                 tmp,
-                                                MoneyUtil.moneyMul(item.price.toString(), item.count.toString())
+                                                MoneyUtil.moneyMul(item.mPrice.toString(), item.mCount.toString())
                                             )
                                         }
                                     }
@@ -439,26 +433,26 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                         }
                     }
 
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, mCount: Int, after: Int) {
                     }
 
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, mCount: Int) {
                     }
 
                 })
 
-                helper.setText(R.id.tv_specsv_num, goodsSku.stock.toString())
-                helper.setText(R.id.tv_specsv_name, goodsSku.specValue)
+//                helper.setText(R.id.tv_specsv_num, goodsSku.stock.toString())
+                helper.setText(R.id.tv_specsv_name, goodsSku.mSpecValue)
 
-                helper.setText(R.id.tv_goods_price, "¥${goodsSku.price}")
+                helper.setText(R.id.tv_goods_price, "¥${goodsSku.mPrice}")
 
                 val add: TextView = helper.getView(R.id.tv_shopcar_good_add)
                 add.setOnClickListener {
 
-                    spcs.shops[positionShop].cartGoodsSkuList?.get(helper.layoutPosition)?.count!!.plus(1)
+                    spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.layoutPosition)?.mCount!!.plus(1)
                     Log.d("caicaicai", "click")
                     etNum.setText(
-                        "${spcs.shops[positionShop].cartGoodsSkuList?.get(helper.layoutPosition)?.count!!.plus(
+                        "${spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.layoutPosition)?.mCount!!.plus(
                             1
                         )}"
                     )
@@ -467,11 +461,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                     var tmp: String? = "0.00"
                     for (ele in cartAdapter.data) {
 
-                        for (item in ele.cartGoodsSkuList!!) {
+                        for (item in ele.mCartGoodsSkuList!!) {
                             if (item!!.isSelected == 1) {
                                 tmp = MoneyUtil.moneyAdd(
                                     tmp,
-                                    MoneyUtil.moneyMul(item.price.toString(), item.count.toString())
+                                    MoneyUtil.moneyMul(item.mPrice.toString(), item.mCount.toString())
                                 )
                             }
                         }
@@ -482,10 +476,10 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
 
                 val sub: TextView = helper.getView(R.id.tv_shopcar_good_sub)
                 sub.setOnClickListener {
-                    if (spcs.shops[positionShop].cartGoodsSkuList?.get(helper.layoutPosition)?.count!! > 0) {
-                        spcs.shops[positionShop].cartGoodsSkuList?.get(helper.layoutPosition)?.count!!.minus(1)
+                    if (spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.layoutPosition)?.mCount!! > 0) {
+                        spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.layoutPosition)?.mCount!!.minus(1)
                         etNum.setText(
-                            "${spcs.shops[positionShop].cartGoodsSkuList?.get(helper.layoutPosition)?.count!!.minus(
+                            "${spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.layoutPosition)?.mCount!!.minus(
                                 1
                             )}"
                         )
@@ -493,11 +487,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                         var tmp: String? = "0.00"
                         for (ele in cartAdapter.data) {
 
-                            for (item in ele.cartGoodsSkuList!!) {
+                            for (item in ele.mCartGoodsSkuList!!) {
                                 if (item!!.isSelected == 1) {
                                     tmp = MoneyUtil.moneyAdd(
                                         tmp,
-                                        MoneyUtil.moneyMul(item.price.toString(), item.count.toString())
+                                        MoneyUtil.moneyMul(item.mPrice.toString(), item.mCount.toString())
                                     )
                                 }
                             }

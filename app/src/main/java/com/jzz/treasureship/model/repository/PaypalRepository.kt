@@ -1,7 +1,5 @@
 package com.jzz.treasureship.model.repository
 
-import android.util.Log
-import com.blankj.utilcode.util.GsonUtils
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.JzzRetrofitClient
 import com.jzz.treasureship.model.bean.*
@@ -13,7 +11,7 @@ import org.json.JSONObject
 class PaypalRepository : BaseRepository() {
 
     //获取默认收货地址
-    suspend fun getPayAddress(): Result<JzzResponse<Address>> {
+    suspend fun getPayAddress(): Result<JzzResponse<ReceiveAddress>> {
         return safeApiCall(
             call = { requestPayAdrress() },
             errorMessage = "获取默认收货地址请求失败!"
@@ -21,7 +19,7 @@ class PaypalRepository : BaseRepository() {
     }
 
     //请求获取默认收货地址
-    private suspend fun requestPayAdrress(): Result<JzzResponse<Address>> {
+    private suspend fun requestPayAdrress(): Result<JzzResponse<ReceiveAddress>> {
         val root = JSONObject()
         val body = JSONObject()
 
@@ -47,17 +45,17 @@ class PaypalRepository : BaseRepository() {
         return executeResponse(response)
     }
 
-    suspend fun getDirectBuy(count: Int, skuId: Int): Result<JzzResponse<ShopcarBuyBean>> {
-        return safeApiCall(call = { requestGetDirectBuy(count, skuId) }, errorMessage = "直接购买失败")
+    suspend fun getDirectBuy(count: Int, skuId: Int,cartId:Int?): Result<JzzResponse<ShopcarBuyBean>> {
+        return safeApiCall(call = { requestGetDirectBuy(count, skuId,cartId) }, errorMessage = "直接购买失败")
     }
 
-    private suspend fun requestGetDirectBuy(count: Int, skuId: Int): Result<JzzResponse<ShopcarBuyBean>> {
+    private suspend fun requestGetDirectBuy(count: Int, skuId: Int,cartId:Int?): Result<JzzResponse<ShopcarBuyBean>> {
         val root = JSONObject()
         val body = JSONObject()
 
         body.put("count", count)
         body.put("skuId", skuId)
-
+        body.put("couponId",cartId)
         root.put("body", body)
         val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
@@ -67,16 +65,17 @@ class PaypalRepository : BaseRepository() {
         )
     }
 
-    suspend fun cartSettlement(shops: String): Result<JzzResponse<ShopcarBuyBean>> {
-        return safeApiCall(call = { requestCartSettlement(shops) }, errorMessage = "购物车结算请求失败")
+    suspend fun cartSettlement(shops: String,couponId:String?): Result<JzzResponse<ShopcarBuyBean>> {
+        return safeApiCall(call = { requestCartSettlement(shops,couponId) }, errorMessage = "购物车结算请求失败")
     }
 
-    private suspend fun requestCartSettlement(shops: String): Result<JzzResponse<ShopcarBuyBean>> {
+    private suspend fun requestCartSettlement(shops: String,couponId:String?): Result<JzzResponse<ShopcarBuyBean>> {
         val root = JSONObject()
         val body = JSONObject()
         val shopsJson = JSONArray(shops)
 
         body.put("shops", shopsJson)
+        body.put("couponId ", couponId)
 
         root.put("body", body)
         val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())

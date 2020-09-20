@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.jzz.treasureship">
 
-
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -82,6 +82,8 @@
         <activity android:name=".ui.auth.AuthConfirmSuccessActivity" >
         </activity>
         <activity android:name=".ui.withdraw.WithdrawActivity" />
+        <activity android:name=".ui.goods.GoodsQualificationActivity" />
+        <activity android:name=".ui.coupon.CouponShopFragment" />
         <!-- 1.这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
             android:name=".service.PushService"

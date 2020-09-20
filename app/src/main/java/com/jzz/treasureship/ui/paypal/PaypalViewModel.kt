@@ -60,7 +60,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     private fun emitAddressUiState(
         showLoading: Boolean = false,
         showError: String? = null,
-        showSuccess: Address? = null,
+        showSuccess: ReceiveAddress? = null,
         showEnd: Boolean = false,
         isRefresh: Boolean = false,
         needLogin: Boolean? = null
@@ -73,7 +73,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     data class PayAddressUiModel(
         val showLoading: Boolean,
         val showError: String?,
-        val showSuccess: Address?,
+        val showSuccess: ReceiveAddress?,
         val showEnd: Boolean, // 加载更多
         val isRefresh: Boolean, // 刷新
         val needLogin: Boolean? = null
@@ -82,7 +82,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     private val _orderState = MutableLiveData<OrderModel>()
     val orderState: LiveData<OrderModel>
         get() = _orderState
-
+//创建订单
     fun createOrder(body: JSONObject) {
         emitOrderState(true)
         viewModelScope.launch(Dispatchers.Main) {
@@ -138,10 +138,10 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
         val needLogin: Boolean? = null
     )
 
-    fun directBuy(count: Int, skuId: Int) {
+    fun directBuy(count: Int, skuId: Int,cartId:Int? = null) {
         emitDirectBuyUiState(true)
         viewModelScope.launch(Dispatchers.Main) {
-            val result = repository.getDirectBuy(count, skuId)
+            val result = repository.getDirectBuy(count, skuId,cartId)
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
                     emitDirectBuyUiState(false, null, result.result.result)
@@ -197,10 +197,10 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     )
 
     //购物车结算
-    fun cartSettlement(body: String) {
+    fun cartSettlement(body: String,couponId:String? = null) {
         emitDirectBuyUiState(true)
         viewModelScope.launch(Dispatchers.Main) {
-            val result = repository.cartSettlement(body)
+            val result = repository.cartSettlement(body,couponId)
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
                     emitDirectBuyUiState(false, null, result.result.result)
