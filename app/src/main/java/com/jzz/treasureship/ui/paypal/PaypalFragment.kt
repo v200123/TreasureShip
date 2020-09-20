@@ -43,7 +43,6 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.math.BigDecimal
 
 class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
-
     private val mChooseAddressFragment by lazy { ChooseAddressFragment.newInstance() }
     private val cartSelectedAdapter by lazy { CartSelectGoodsAdapter() }
     private val isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
@@ -98,7 +97,6 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             this.activity,
             context!!.resources.getColor(R.color.blue_normal)
         )
-
         tv_title.text = "订单支付"
         rlback.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
@@ -115,8 +113,6 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             selectedAddress = GsonUtils.fromJson(tmpAddress, ReceiveAddress::class.java)
         }
 
-        val string = arguments?.getString("shops")
-        val mShop = GsonUtils.fromJson(string, JSONArray::class.java)
         arguments?.let {
             //获取默认地址
             mViewModel.getPayAddress()
@@ -230,7 +226,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                     } else {
                         mCoupon.add(0, Coupon().apply {
-                            mCouponName = "不使用"
+                            mCouponName = "不使用优惠券"
                         })
                         tv_paypal_coupon.text = "选择优惠券"
                         tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
@@ -555,15 +551,16 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                 tv_paypal_coupon.text = "不使用优惠券"
                                 tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                             } else {
-                                mOccupationBean = filter[0]
-                                AreadyPprice(null)
-                                if (mOccupationBean.mCouponName == "不使用") {
+                                val coupon = filter[0]
+                                if (coupon.mCouponName == "不使用") {
                                     tv_paypal_coupon.text = "不使用优惠劵"
+                                    AreadyPprice(null)
                                 } else {
-                                    AreadyPprice("${mOccupationBean.mCouponId}")
+                                    if(coupon.mCouponId != mOccupationBean.mCouponId?:-1 ) {
+                                        mOccupationBean = coupon
+                                        AreadyPprice("${mOccupationBean.mCouponId}")
+                                    }
 //                                    mViewModel.directBuy(it.getInt("count"), it.getInt("skuId"),)
-
-
                                     tv_paypal_coupon.setTextColor(Color.parseColor("#FFCC0814"))
                                     tv_paypal_coupon.text = "-￥${filter[0].mCouponValue}"
                                 }

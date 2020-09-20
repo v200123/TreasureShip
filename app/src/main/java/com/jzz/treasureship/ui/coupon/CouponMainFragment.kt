@@ -32,6 +32,7 @@ class CouponMainFragment : Fragment(R.layout.fragment_main_coupon) {
         tv_title.text = "我的卡券"
         iv_leftBack.setOnClickListener { (mContext as FragmentActivity).onBackPressed() }
         tab_main_coupon.setTabTitles(arrayOf("未使用","已使用","已过期"))
+        vp_coupon.offscreenPageLimit = 2
         tab_main_coupon.setViewPager(vp_coupon,object : FragmentPagerAdapter(childFragmentManager,
             BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getCount(): Int  = 3

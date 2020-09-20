@@ -159,8 +159,8 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                             val detail: JSONObject = JSONObject()
 
                                             detail.put("cartId", cartGoodsSku.mCartId)
-                                            detail.put("mSkuId", cartGoodsSku.mSkuId)
-                                            detail.put("mCount", cartGoodsSku.mCount)
+                                            detail.put("skuId", cartGoodsSku.mSkuId)
+                                            detail.put("count", cartGoodsSku.mCount)
 
                                             details.put(detail)
                                         }
@@ -178,8 +178,8 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                         if (goods?.isSelected == 1) {
                                             val detail: JSONObject = JSONObject()
                                             detail.put("cartId", goods.mCartId)
-                                            detail.put("mSkuId", goods.mSkuId)
-                                            detail.put("mCount", goods.mCount)
+                                            detail.put("SkuId", goods.mSkuId)
+                                            detail.put("count", goods.mCount)
                                             details.put(detail)
                                         }
                                     }
@@ -302,7 +302,6 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
 
         }
     }
-
     //内层商品
     inner class CartOrderChildAdapter(positionShop: Int, layoutResId: Int = R.layout.item_shopcar_goods) :
         BaseQuickAdapter<CartGoodsSku, BaseViewHolder>(layoutResId) {

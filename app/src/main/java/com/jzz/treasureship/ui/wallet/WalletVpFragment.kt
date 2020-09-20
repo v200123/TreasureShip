@@ -28,7 +28,7 @@ class WalletVpFragment : BaseVMFragment<WalletViewModel>() {
         }
     }
 
-    private val mAdapter by lazy { WalletAdapter() }
+    private val mAdapter by lazy { WalletAdapter(mContext) }
     private var mPosition: Int? = null
     private var pageNum = 1
     private val list: ArrayList<DataXXX> = ArrayList()
@@ -168,7 +168,7 @@ class WalletVpFragment : BaseVMFragment<WalletViewModel>() {
                                 list.add(ele!!)
                             }
                             mAdapter.run {
-                                setNewData(list)
+                                setList(this.data)
                                 notifyDataSetChanged()
                             }
                         } else {
@@ -182,7 +182,7 @@ class WalletVpFragment : BaseVMFragment<WalletViewModel>() {
                             list.add(ele!!)
                         }
                         mAdapter.run {
-                            setNewData(list)
+                            setList(this.data)
                             notifyDataSetChanged()
                         }
                         srl_wallets.finishRefresh(0)

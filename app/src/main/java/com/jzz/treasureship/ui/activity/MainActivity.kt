@@ -24,6 +24,7 @@ import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.addressbook.AddressBookFragment
+import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
@@ -53,7 +54,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     private var curFragment by PreferenceUtils(PreferenceUtils.CUR_FRAGMENT, "")
     private var mCurrentFragment = Fragment()
     private val mPopStatus by viewModels<DialogStatusViewModel>()
-
     //    private val mHomeFragment by lazy { HomeFragment.newInstance() }
     private val mTsbFragment by lazy { TreasureBoxFragment.newInstance() }
     private val mAddressBookFragment by lazy { AddressBookFragment.newInstance() }
@@ -155,6 +155,10 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         btn_onclick.setOnClickListener {
 //            App.dialogHelp.showRedEnvelopeOpen(1,2f)
         }
+
+
+
+
         intent?.let {
             val gotoWhere = intent.getStringExtra("goTo")
             if (gotoWhere == "orders") {
@@ -216,6 +220,15 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                     }
                 }
             }
+        }
+
+        val stringExtra = intent.getStringExtra(GoodsId)
+
+
+        if(stringExtra !=null){
+            supportFragmentManager.beginTransaction().replace(R.id.frame_content, GoodsDetailFragment.newInstance
+                (stringExtra)).commit()
+
         }
 
     }
@@ -375,6 +388,8 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     companion object {
         @kotlin.jvm.JvmField
         var isForeground: Boolean = false
+        const val GoodsId = "com.goodsId"
+
 
         const val MESSAGE_RECEIVED_ACTION = "com.jzz.treasureship.MESSAGE_RECEIVED_ACTION"
         const val KEY_TITLE = "title"

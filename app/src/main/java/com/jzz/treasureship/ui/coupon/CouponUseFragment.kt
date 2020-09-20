@@ -2,6 +2,7 @@ package com.jzz.treasureship.ui.coupon
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
 import com.didichuxing.doraemonkit.widget.bravh.listener.OnItemChildClickListener
@@ -47,6 +48,8 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
 
         mAdapter.loadMoreModule.apply {
             isEnableLoadMore = true
+            isEnableLoadMoreIfNotFullPage = false
+            isAutoLoadMore = false
             setOnLoadMoreListener(object : OnLoadMoreListener {
                 override fun onLoadMore() {
                     mViewModel.getCouponList(
@@ -60,23 +63,23 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
         }
         mAdapter.setEmptyView(R.layout.rv_empty_01)
 
-        mAdapter.setOnItemChildClickListener(object : OnItemChildClickListener{
-            override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-            mContext.start<CouponShopFragment> {  }
-            }
 
-        })
 
     }
 
     override fun initData() {
-        mViewModel.getCouponList(BaseRequestBody(CouponBody(arguments?.getInt(mCouponType) ?: 1), header(pageNum = nowPosition, pageSize = 20)))
+        mViewModel.getCouponList(
+            BaseRequestBody(
+                CouponBody(arguments?.getInt(mCouponType) ?: 1),
+                header(pageNum = nowPosition, pageSize = 20)
+            )
+        )
     }
 
     override fun startObserve() {
         mViewModel.couponData.observe(this, {
             mAdapter.addData(it.mData)
-            if (it.mTotalElements == nowPosition) {
+            if (it.mTotalPages == nowPosition) {
                 mAdapter.loadMoreModule.loadMoreEnd()
             } else {
                 ++nowPosition
@@ -88,6 +91,15 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
     }
 
     override fun initListener() {
+        mAdapter.setOnItemChildClickListener(object : OnItemChildClickListener {
+            override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+                val data01 = adapter.data[position] as Data01
+                mContext.start<CouponShopActivity> {
+                }
+
+            }
+
+        })
     }
 
 
@@ -98,31 +110,40 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
         }
 
         override fun convert(holder: BaseViewHolder, item: Data01) {
-            if(type ==1)
-            holder.setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName).setText(
-                R.id.textView11,
-                item.mCouponStartTime + "-" + item.mCouponEndTime
-            )
-            if(type == 2)
-            {
-                holder.setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName).setText(
-                    R.id.textView11,
-                    item.mCouponEndTime + "\t\t已过期")
+            if (type == 1) {
+                holder.setBackgroundResource(R.id.imageView, R.drawable.ico_unusecard_bg)
+                    .setGone(R.id.btn_goto_shop, false)
+                    .setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName)
+                    .setText(
+                        R.id.textView11,item.mCouponStartTime + "-" + item.mCouponEndTime
+                    )
             }
-            if(type == 3)
-            {
-                holder.setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName).setText(
-                    R.id.textView11,
-                    item.mCouponUseTime  + "\t\t已使用")
+            if (type == 2) {
+                holder.setBackgroundResource(R.id.imageView, R.drawable.ico_usecard_bg)
+                    .setGone(R.id.btn_goto_shop, true)
+                    .setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName).setText(
+                        R.id.textView11,
+                        item.mCouponUseTime + "\t\t已使用"
+                    )
+
             }
-            if(type!=1){
-                holder.setBackgroundResource(R.id.imageView,R.drawable.ico_usecard_bg)
-                holder.setGone(R.id.btn_goto_shop,true)
+            if (type == 3) {
+                holder.setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName)
+                    .setText(
+                        R.id.textView11, item.mCouponEndTime + "\t\t已过期"
+                    )
+
             }
-            else{
-                holder.setBackgroundResource(R.id.imageView,R.drawable.ico_unusecard_bg)
-                holder.setGone(R.id.btn_goto_shop,false)
+            holder.getView<TextView>(R.id.tv_card_unuse_content).apply {
+              text = item.mCouponRemark
+                if(this.lineCount>1)
+                {
+                    holder.setGone(R.id.iv_card_see_more,false)
+                }else{
+                    holder.setGone(R.id.iv_card_see_more,true)
+                }
             }
+
 
         }
 

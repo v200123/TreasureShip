@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -39,45 +40,64 @@
                 android:textColor="@color/black"
                 android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/tv_withDraw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="23dp"
-                android:gravity="center"
-                android:text="明细"
-                android:textSize="14sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_withDraw"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginEnd="23dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="明细"-->
+<!--                android:textSize="14sp" />-->
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="133dp"
             android:background="@drawable/bg_get_money"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="33dp"
-                android:layout_marginTop="41dp"
+                android:layout_marginTop="30dp"
                 android:text="可提现金额"
                 android:textColor="#fffffefe"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
+                android:layout_marginTop="13dp"
                 android:id="@+id/tv_money"
-                android:layout_marginStart="33dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="66dp"
                 android:textColor="#fffffefe"
                 android:textSize="36sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView20"
+                app:layout_constraintTop_toBottomOf="@+id/textView20"
+                tools:text="dfsfsfssf" />
 
+            <com.lc.mybaselibrary.ShapeButton
+                android:id="@+id/btn_withDraw"
+                android:layout_width="77dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="36dp"
+                android:gravity="center"
+                android:text="提现"
+                android:textColor="#FF22A7B3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeCornersRadius="20dp"
+                app:shapeSolidColor="@color/white" />
 
 
             <LinearLayout
@@ -86,7 +106,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
 
                 <TextView
                     android:visibility="gone"
@@ -105,7 +126,7 @@
                     android:textColor="#ffffffff"
                     android:textSize="14sp" />
             </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <!--        <com.google.android.material.tabs.TabLayout-->

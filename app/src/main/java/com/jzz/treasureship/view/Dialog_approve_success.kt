@@ -5,7 +5,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.coupon.CouponShopFragment
+import com.jzz.treasureship.ui.coupon.CouponShopActivity
 import com.jzz.treasureship.ui.withdraw.WithdrawActivity
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.CenterPopupView
@@ -25,7 +25,7 @@ class Dialog_approve_success(context: Context,var userName:String) : CenterPopup
             this.dismiss()
         }
         findViewById<Button>(R.id.btn_approve_buy).setOnClickListener {
-            context.start<CouponShopFragment> {  }
+            context.start<CouponShopActivity> {  }
             this.dismiss()
         }
         findViewById<ImageView>(R.id.iv_approve_success).setOnClickListener {

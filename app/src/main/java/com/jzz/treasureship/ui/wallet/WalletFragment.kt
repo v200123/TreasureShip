@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class WalletFragment : BaseVMFragment<WalletViewModel>() {
 
-    private val mAdapter by lazy { WalletAdapter() }
+    private val mAdapter by lazy { WalletAdapter(mContext) }
     private var pageNum = 1
     private val list: ArrayList<DataXXX> = ArrayList()
 
@@ -89,7 +89,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
                     tv_money.text = balance.balance
                     tv_totalRevenue.text = balance.totalMoney
 
-                    tv_withDraw.setOnClickListener {
+                    btn_withDraw.setOnClickListener {
                         activity!!.supportFragmentManager.beginTransaction()
                             .addToBackStack(this@WalletFragment.javaClass.name)
                             .hide(this@WalletFragment)//隐藏当前Fragment
@@ -129,7 +129,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
                                 list.add(ele!!)
                             }
                             mAdapter.run {
-                                setNewData(list)
+                               setList(this.data)
                                 notifyDataSetChanged()
                             }
                         } else {
@@ -143,7 +143,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
                             list.add(ele!!)
                         }
                         mAdapter.run {
-                            setNewData(list)
+                            setList(this.data)
                             notifyDataSetChanged()
                         }
                         srl_wallets.finishRefresh(0)

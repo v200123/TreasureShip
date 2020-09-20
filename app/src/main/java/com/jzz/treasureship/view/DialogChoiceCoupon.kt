@@ -7,7 +7,6 @@ import android.widget.TextView
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.Coupon
 import com.lc.mybaselibrary.ShapeLinearLayout
-import com.lc.mybaselibrary.out
 import com.lxj.xpopup.core.BottomPopupView
 import kotlinx.android.synthetic.main.dialog_coupon.view.*
 
@@ -31,12 +30,12 @@ class DialogChoiceCoupon(context: Context, var mCoupon: MutableList<Coupon>) : B
         findViewById<ShapeLinearLayout>(R.id.ll_addView_01).apply {
             mCoupon.forEachIndexed { i: Int, coupon: Coupon ->
                 val inflate = LayoutInflater.from(context).inflate(R.layout.item_coupon, this, false)
-                inflate.findViewById<TextView>(R.id.textView18).text = coupon.mCouponName
+                inflate.findViewById<TextView>(R.id.textView18).text =if( coupon.mCouponName == "不使用优惠券")
+                    "不使用优惠券" else "${coupon.mCouponValue}元优惠券"
                 inflate.findViewById<CheckBox>(R.id.cb_coupon).apply {
                     isChecked = coupon.isSelector
                     checkList.add(this)
                 }.setOnClickListener {
-                    "当前的按钮状态为${(it as CheckBox).isChecked}".out()
                     for (mCou in mCoupon) {
                         mCou.isSelector = false
                     }

@@ -469,4 +469,8 @@ interface JzzApiService {
     suspend fun getCouponList(@Body body: BaseRequestBody) : JzzResponse<CouponBean>
     @POST("/api/v1/goods/pageRecommendGoods")
     suspend fun getRecommendGoods(@Body body: BaseRequestBody):JzzResponse<CouponShopBean>
+    @POST("/api/v1/banner/getBannerList")
+    suspend fun getCouponBanner(@Body body: BaseRequestBody):JzzResponse<CouponBannerBean>
+
+
 }

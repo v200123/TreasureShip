@@ -138,7 +138,8 @@
 
                             <EditText
                                 android:id="@+id/et_shopcar_good_num"
-                                android:layout_width="22dp"
+                                android:layout_width="30dp"
+                                android:maxWidth="60dp"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/cart_num_text_shape"
                                 android:inputType="number"
