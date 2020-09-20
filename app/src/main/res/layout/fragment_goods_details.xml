@@ -717,6 +717,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="4dp"
+                android:layout_marginEnd="21dp"
                 android:gravity="center"
                 android:text="立即购买"
                 android:textColor="@color/white"

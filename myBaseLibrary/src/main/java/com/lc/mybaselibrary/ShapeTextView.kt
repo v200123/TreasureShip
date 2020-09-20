@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
  *@describe:
  *@Auth: 29579
  **/
-class ShapeTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+open class ShapeTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     AppCompatTextView(context, attrs, defStyleAttr) {
     var shapeBuilder: ShapeBuilder? = null
     var attributeSetData: AttributeSetData = AttributeSetData()

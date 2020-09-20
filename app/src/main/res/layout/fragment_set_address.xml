@@ -23,37 +23,27 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <com.scwang.smartrefresh.layout.header.ClassicsHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_addressList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                app:srlClassicsSpinnerStyle="Translate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_addAddress"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:background="#FF26C8D7">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="141dp"
-                android:drawableLeft="@drawable/icon_address_add"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:text="新增地址"
-                android:textColor="@color/white" />
-        </LinearLayout>
+        <com.lc.mybaselibrary.DrawableTextView
+        android:id="@+id/layout_addAddress"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:drawableStart="@drawable/icon_address_add"
+            android:gravity="center_vertical"
+            android:drawablePadding="15dp"
+            android:text="新增地址"
+            android:textColor="@color/white"
+            app:shapeCornersRadius="20dp"
+            app:shapeSolidColor="@color/blue_normal" />
+
     </LinearLayout>
 </layout>
