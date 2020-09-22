@@ -29,7 +29,7 @@
             android:paddingLeft="21.5dip"
             android:paddingRight="15.0dip">
 
-            <ImageView
+            <com.jzz.treasureship.view.NoTouchImageView
                 android:id="@+id/iv_leftBack"
                 android:layout_width="10.0dip"
                 android:layout_height="18.0dip"

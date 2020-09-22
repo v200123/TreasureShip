@@ -1,6 +1,7 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
+import android.view.View
 import com.jzz.treasureship.R
 import com.jzz.treasureship.view.viewGroup.BaseDialog
 import com.lxj.xpopup.core.CenterPopupView
@@ -18,8 +19,12 @@ class DialogRedEnvelopeClose(context: Context,var count:Int,var block:() -> Unit
         tv_redEnvelopeClose_count.text = "您还有${count}次抽奖机会"
         findViewById<BaseDialog>(R.id.dialog_open_red_close).setOnClickListener {
             this.dismiss()
+        }
+        findViewById<View>(R.id.view_close).setOnClickListener {
+            this.dismiss()
             block()
         }
+
     }
 
 }

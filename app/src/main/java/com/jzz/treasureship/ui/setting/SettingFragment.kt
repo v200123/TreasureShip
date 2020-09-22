@@ -3,6 +3,7 @@ package com.jzz.treasureship.ui.setting
 import android.Manifest
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -13,6 +14,7 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.coupon.CouponActivity
 import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
@@ -59,7 +61,7 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         rlback.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
-        }
+    }
 
 
 
@@ -78,11 +80,10 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
                     wxCodeBind = ""
                     ToastUtils.showShort("已退出系统")
 //                    activity!!.supportFragmentManager.popBackStack()
-                    activity!!.supportFragmentManager.beginTransaction()
+                    (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                         .addToBackStack(SettingFragment.javaClass.name)
-                        .hide(this)//隐藏当前Fragment
-                        .add(R.id.frame_content, HomeFragment.newInstance(), HomeFragment.javaClass.name)
-                        .commit()
+                        .hide(this).commit()
+                    (mContext as MainActivity).switchToHome()
                     if (!JPushInterface.isPushStopped(App.CONTEXT)){
                         JPushInterface.stopPush(App.CONTEXT)
                     }

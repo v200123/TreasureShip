@@ -24,6 +24,7 @@ import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.addressbook.AddressBookFragment
+import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
@@ -34,6 +35,7 @@ import com.jzz.treasureship.ui.usersetting.UserSettingFragment
 import com.jzz.treasureship.utils.BackHandlerHelper
 import com.jzz.treasureship.utils.HProgressDialogUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.out
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.xuexiang.xupdate.XUpdate
@@ -48,12 +50,10 @@ import kotlin.math.roundToInt
 
 class MainActivity : BaseVMActivity<LoginViewModel>() {
 
-
     val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     private var curFragment by PreferenceUtils(PreferenceUtils.CUR_FRAGMENT, "")
     private var mCurrentFragment = Fragment()
     private val mPopStatus by viewModels<DialogStatusViewModel>()
-
     //    private val mHomeFragment by lazy { HomeFragment.newInstance() }
     private val mTsbFragment by lazy { TreasureBoxFragment.newInstance() }
     private val mAddressBookFragment by lazy { AddressBookFragment.newInstance() }
@@ -89,7 +89,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             return
         }
 
-
         if (supportFragmentManager.backStackEntryCount == 0) {
             val currentTIme = System.currentTimeMillis()
             if (lastBackPressTime == -1L || currentTIme - lastBackPressTime >= 2000) {
@@ -105,6 +104,15 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             when (supportFragmentManager.findFragmentById(R.id.frame_content)) {
                 is MsgFragment -> {
                     super.onBackPressed()
+                }
+                is GoodsDetailFragment ->{
+                    if(intent.getStringExtra(GoodsId)!=null)
+                    finish()
+                    else{
+                        if (!BackHandlerHelper.handleBackPress(this)) {
+                            super.onBackPressed()
+                        }
+                    }
                 }
                 is HomeFragment,
                 is TreasureBoxFragment,
@@ -146,6 +154,8 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                 mViewModel.getUserInfo()
     }
 
+
+
     override fun initView() {
 //        val window: Window = window
 //        val params: WindowManager.LayoutParams = window.getAttributes()
@@ -155,6 +165,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         btn_onclick.setOnClickListener {
 //            App.dialogHelp.showRedEnvelopeOpen(1,2f)
         }
+
         intent?.let {
             val gotoWhere = intent.getStringExtra("goTo")
             if (gotoWhere == "orders") {
@@ -181,7 +192,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         nav_view.itemIconTintList = null
         switchToHome()
         nav_view.setOnNavigationItemSelectedListener { item: MenuItem ->
-            resetToDefaultIcon()
             if (!isLogin) {
                 switchToLogin()
                 return@setOnNavigationItemSelectedListener false
@@ -218,9 +228,39 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             }
         }
 
+        val stringExtra = intent.getStringExtra(GoodsId)
+        if(stringExtra !=null){
+            supportFragmentManager.beginTransaction().replace(R.id.frame_content, GoodsDetailFragment.newInstance
+                (stringExtra)).commit()
+        }
+
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val stringExtra = intent?.getStringExtra(GoodsId)
+        if(stringExtra !=null){
+            supportFragmentManager.beginTransaction().replace(R.id.frame_content, GoodsDetailFragment.newInstance
+                (stringExtra)).commit()
+        }
+        intent?.let {
+            val gotoWhere = intent.getStringExtra("goTo")
+            if (gotoWhere == "orders") {
+                switchFragment(
+                    OrdersFragment.newInstance("HomeFragment"),
+                    OrdersFragment.javaClass.name
+                )
+            }
+        }
+
+
+
+    }
     private fun switchToMine() {
+        resetToDefaultIcon()
+        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
+        mineItem.setIcon(R.drawable.icon_mine_selected)
+        mineItem.setChecked(true)
         switchFragment(mMineFragment, UserSettingFragment.javaClass.name)
     }
 
@@ -229,18 +269,41 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     }
 
     private fun switchToAddressBook() {
+        resetToDefaultIcon()
+        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
+        addressBookItem.setIcon(R.drawable.icon_addressbook_selected)
+        addressBookItem.setChecked(true)
         switchFragment(mAddressBookFragment, AddressBookFragment.javaClass.name)
     }
 
     private fun switchToTsb() {
+        resetToDefaultIcon()
+        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
+        tsbItem.setIcon(R.drawable.icon_treasure_box_selected)
+        tsbItem.setChecked(true)
         switchFragment(mTsbFragment, TreasureBoxFragment.javaClass.name)
     }
 
-    private fun switchToHome() {
+    public fun switchToHome() {
+        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
+        homeItem.setIcon(R.drawable.home_nav_home_icon_selected)
+        homeItem.setChecked(true)
         switchFragment(HomeFragment.newInstance(), HomeFragment.javaClass.name)
     }
 
     private fun switchFragment(targetFragment: Fragment, tag: String) {
+        val currentFragmentStr = mCurrentFragment.javaClass.name
+        val targetFragmentStr = targetFragment.javaClass.name
+
+        Log.e("currentFragmentStr", currentFragmentStr)
+        Log.e("targetFragmentStr", targetFragmentStr)
+
+        val result = currentFragmentStr.equals(targetFragmentStr)
+
+        if(result){
+            return
+        }
+
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
 
         //如果要显示的targetFragment没有添加过
@@ -264,9 +327,13 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
 
         homeItem.setIcon(R.drawable.home_nav_home_icon_normal)
+        homeItem.setChecked(false)
         tsbItem.setIcon(R.drawable.icon_treasure_box_normal)
+        tsbItem.setChecked(false)
         addressBookItem.setIcon(R.drawable.icon_addressbook_normal)
+        addressBookItem.setChecked(false)
         mineItem.setIcon(R.drawable.icon_mine_normal)
+        mineItem.setChecked(false)
     }
 
 
@@ -284,7 +351,9 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             userState.observe(this@MainActivity, Observer {
 
                 it.showSuccess?.let {
+
                     Log.e("userInfo", "refresh user info success:$it")
+                    "当前的用户登录的accessToken为:${it.accessToken}".out()
                 }
 
                 it.showError?.let { err ->
@@ -375,6 +444,8 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     companion object {
         @kotlin.jvm.JvmField
         var isForeground: Boolean = false
+        const val GoodsId = "com.goodsId"
+
 
         const val MESSAGE_RECEIVED_ACTION = "com.jzz.treasureship.MESSAGE_RECEIVED_ACTION"
         const val KEY_TITLE = "title"

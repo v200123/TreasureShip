@@ -1,11 +1,14 @@
 package com.jzz.treasureship.adapter
 
+import android.graphics.Color
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.jzz.treasureship.BR
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.GoodsDetail
-import com.jzz.treasureship.model.bean.GoodsSku
+import com.jzz.treasureship.utils.SelectedNavItem
+import com.lc.mybaselibrary.ShapeTextView
 
 class SkuSelectAdapter(layoutResId: Int = R.layout.item_sku) :
     BaseBindAdapter<GoodsDetail.GoodsSku>(layoutResId, BR.goodsSku) {
@@ -27,14 +30,22 @@ class SkuSelectAdapter(layoutResId: Int = R.layout.item_sku) :
         Glide.with(helper.itemView.context).load(item.skuImg).into(helper.getView(R.id.tv_logo))
         helper.setText(R.id.tv_itemName, item.specValue)
         /*设置选中状态*/
-//        if (helper.adapterPosition == SelectedNavItem.selectedNavItem) {
-//            helper.getView<ImageView>(R.id.tv_logo).background = mContext.resources.getDrawable(R.drawable.sku_select)
-//        } else {
-//            helper.getView<ImageView>(R.id.tv_logo).background = null
-//        }
-        helper.itemView.setOnClickListener {
-            onItemClickListener?.onItemClick(helper.itemView, position = helper.adapterPosition)
-        }
+        if (helper.adapterPosition == SelectedNavItem.selectedNavItem) {
+            helper.getView<ShapeTextView>(R.id.tv_itemName).apply {
+                shapeBuilder!!.setShapeSolidColor(Color.parseColor("#FFFBE9EA"))
+                    .setShapeStrokeColor(Color.parseColor("#FFFBE9EA")).into(this)
+                setTextColor(ContextCompat.getColor(mContext, R.color.red))
+            }
+        } else {
+            helper.getView<ShapeTextView>(R.id.tv_itemName).apply {
+                shapeBuilder!!.setShapeSolidColor(Color.parseColor("#FFF5F5F5"))
+                    .setShapeStrokeColor(Color.parseColor("#FFF5F5F5")).into(this)
+                setTextColor(ContextCompat.getColor(mContext, R.color.black_121212))
+            }
+            helper.itemView.setOnClickListener {
+                onItemClickListener?.onItemClick(helper.itemView, position = helper.adapterPosition)
+            }
 
+        }
     }
 }

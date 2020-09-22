@@ -30,8 +30,11 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
             .dismissOnTouchOutside(false)
             .asLoading()
     }
+
     private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     private val userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
+//    认证的弹窗是否显示过
+    private var authShowSuccess by PreferenceUtils(PreferenceUtils.authShowSuccess, false)
 
     //    每日弹窗的记录
     private var isInviteDialog by PreferenceUtils(PreferenceUtils.everyday_invite_dialog, "")
@@ -44,7 +47,6 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = initVM()
-
         try {
             rlback.setOnClickListener { finish() }
         } catch (e: Exception) {
@@ -58,6 +60,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
                 mLoading.delayDismiss(100)
             }
             if (it is ErrorState) {
+                mLoading.delayDismiss(100)
                 ToastUtils.showShort(it.message)
             }
             if (it is NeedLoginState) {
@@ -65,6 +68,9 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
                 var userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
                 var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                 var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
+                isAuthDialog = ""
+                isInviteDialog = ""
+                authShowSuccess = false
                 login = false
                 wxCode = ""
                 userInfo = ""
@@ -101,25 +107,11 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
 //未认证
             val user = GsonUtils.fromJson(userInfo, User::class.java)
             val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
-            if (!PreferenceUtils("", "").contains(PreferenceUtils.everyday_invite_dialog)) {
-                if (isInviteDialog.isBlank()) {
-                    App.dialogHelp.showInvite()
-                    isInviteDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
-                } else {
+            if (user.auditStatus == 1 && user.firstPassTip == 1 &&!authShowSuccess) {
+                authShowSuccess = true
+                App.dialogHelp.showSuccess(user.nickName){
 
-                    val split = isInviteDialog.split(",")
-                    if (split[0].toInt() != calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
-                            Calendar.DAY_OF_MONTH
-                        )
-                    ) {
-                        App.dialogHelp.showInvite()
-                    }
-                    isInviteDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
                 }
-            }
-
-            if (user.auditStatus == 1 && user.firstPassTip == 1) {
-                App.dialogHelp.showSuccess(user.nickName)
                 lifecycleScope.launch {
                     HttpHelp.getRetrofit().notificationServerPass(BaseRequestBody())
                 }
@@ -127,14 +119,14 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
 
             if(user.auditStatus == -1)
             {
-                if(!PreferenceUtils("", "").contains(PreferenceUtils.auth_is_show))
+                if(isAuthDialog.isBlank())
                 {
                     App.dialogHelp.showType()
                     isAuthDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
                 }
                 else{
-                    val split = isInviteDialog.split(",")
-                    if (split[0].toInt() != calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
+                    val split = isAuthDialog.split(",")
+                    if (split[0].toInt() !=calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
                             Calendar.DAY_OF_MONTH
                         )
                     ) {

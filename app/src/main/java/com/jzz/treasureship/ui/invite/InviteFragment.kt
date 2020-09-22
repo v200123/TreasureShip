@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
+import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.InvitedAdapter
 import com.jzz.treasureship.base.BaseVMFragment
@@ -59,8 +60,14 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             val userObj = GsonUtils.fromJson(userJson, User::class.java)
 
             val webpage = WXWebpageObject()
-            webpage.webpageUrl = "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
-
+            // http://119.3.125.1:8090/downLoad/index?type=1&yuserId=429&yType=1
+            if(BuildConfig.DEBUG)
+            {
+                webpage.webpageUrl = "http://119.3.125.1:8090/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            }
+            else {
+                webpage.webpageUrl = "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            }
             val msg = WXMediaMessage(webpage)
             msg.title = "好友邀请"
             msg.description = "宝舰医疗全新的购物体验"
@@ -97,7 +104,13 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             val userObj = GsonUtils.fromJson(userJson, User::class.java)
 
             val webpage = WXWebpageObject()
-            webpage.webpageUrl = "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}"
+            if(BuildConfig.DEBUG)
+            {
+                webpage.webpageUrl = "http://119.3.125.1:8090/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            }
+            else {
+                webpage.webpageUrl = "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            }
 
             val msg = WXMediaMessage(webpage)
             msg.title = "App分享"

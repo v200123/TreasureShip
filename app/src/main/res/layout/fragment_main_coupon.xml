@@ -24,6 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <androidx.viewpager.widget.ViewPager
+        android:background="@color/white"
         android:id="@+id/vp_coupon"
         android:layout_width="match_parent"
         android:layout_height="0dp"

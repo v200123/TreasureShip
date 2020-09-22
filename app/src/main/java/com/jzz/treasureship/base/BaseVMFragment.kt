@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.utils.BackHandlerHelper
 import com.jzz.treasureship.utils.FragmentBackHandler
+import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.SuccessState
 import com.lxj.xpopup.XPopup
@@ -59,8 +60,6 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         startObserve()
         initListener()
 
-
-
         mViewModel.mStateLiveData.observe(viewLifecycleOwner, {
             if (it is LoadState) {
                 mLoading.show()
@@ -68,7 +67,8 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
             if (it is SuccessState) {
                 mLoading.dismiss()
             }
-            if (it is Error) {
+            if (it is ErrorState) {
+                mLoading.delayDismiss(100)
                 ToastUtils.showShort(it.message)
             }
         })

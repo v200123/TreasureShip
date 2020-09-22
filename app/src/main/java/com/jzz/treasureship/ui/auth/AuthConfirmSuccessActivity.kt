@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
 import com.jzz.treasureship.R
+import com.jzz.treasureship.ui.user.AuthenticationActivity
+import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.include_title.*
 
 /**
@@ -20,12 +22,18 @@ class AuthConfirmSuccessActivity : AppCompatActivity(R.layout.activity_confirm_s
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tv_title.text = "审核中"
-        iv_leftBack.setOnClickListener { finish() }
+        rlback.setOnClickListener {
+            this.start<AuthenticationActivity> { putExtra(AuthenticationActivity.NeedFinish,"exit") } }
         rl_title.setBackgroundColor(Color.parseColor("#FFD92A20"))
-
         setStatueColor()
 
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.start<AuthenticationActivity> { putExtra(AuthenticationActivity.NeedFinish,"exit") }
+    }
+
 
     fun setStatueColor()
     {

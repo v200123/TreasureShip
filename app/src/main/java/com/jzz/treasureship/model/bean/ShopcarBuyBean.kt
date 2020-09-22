@@ -70,7 +70,7 @@ class Coupon(
     @SerializedName("couponUseTime")
     var mCouponUseTime: String = "", // string
     @SerializedName("couponValue")
-    var mCouponValue: Int = 0 ,// 0
+    var mCouponValue: Float = 0f ,// 0
     var isSelector : Boolean= false
 )
 

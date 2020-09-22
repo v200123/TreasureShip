@@ -31,6 +31,7 @@ class DialogRedEnvelopOpen(context: Context,var count: Int, var money: Float) : 
         if(count == 0)
         {
             view_click.setOnClickListener {
+                this.dismiss()
                 gotoLottery()
             }
         }else{

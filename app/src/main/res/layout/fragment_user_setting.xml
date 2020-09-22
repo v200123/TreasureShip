@@ -33,6 +33,7 @@
                     android:background="@drawable/usersetting_bg">
 
                     <FrameLayout
+                        android:visibility="gone"
                         android:id="@+id/fl_showtips"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

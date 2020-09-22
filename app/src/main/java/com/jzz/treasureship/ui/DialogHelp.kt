@@ -3,6 +3,8 @@ package com.jzz.treasureship.ui
 import android.content.Context
 import com.jzz.treasureship.view.*
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.interfaces.SimpleCallback
 
 /**
  *@date: 2020/9/16
@@ -19,8 +21,14 @@ class DialogHelp(var context: Context) {
     }
 
     //显示认证成功的界面
-    fun showSuccess(name: String) {
-        XPopup.Builder(context).hasShadowBg(true).asCustom(Dialog_approve_success(context,name))
+    fun showSuccess(name: String,block: () -> Unit) {
+        XPopup.Builder(context).hasShadowBg(true).setPopupCallback(object : SimpleCallback() {
+            override fun onDismiss(popupView: BasePopupView?) {
+                super.onDismiss(popupView)
+                block()
+            }
+        }).asCustom(Dialog_approve_success
+            (context,name))
             .show()
     }
 

@@ -6,9 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
-import com.jzz.treasureship.model.bean.Orders
+import com.jzz.treasureship.model.bean.DataXXX
 import com.jzz.treasureship.model.bean.WalletBalance
-import com.jzz.treasureship.model.bean.WalletList
 import com.jzz.treasureship.model.repository.WalletRespository
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.Dispatchers
@@ -117,7 +116,7 @@ class WalletViewModel(val repository: WalletRespository, val provider: Coroutine
     private fun emitWalletListState(
         showLoading: Boolean = false,
         showError: String? = null,
-        showSuccess: WalletList? = null,
+        showSuccess: DataXXX? = null,
         showEnd: Boolean = false,
         isRefresh: Boolean = false,
         needLogin: Boolean? = null
@@ -130,7 +129,7 @@ class WalletViewModel(val repository: WalletRespository, val provider: Coroutine
     data class WalletListModel(
         val showLoading: Boolean,
         val showError: String?,
-        val showSuccess: WalletList?,
+        val showSuccess: DataXXX?,
         val showEnd: Boolean, // 加载更多
         val isRefresh: Boolean, // 刷新
         val needLogin: Boolean? = null

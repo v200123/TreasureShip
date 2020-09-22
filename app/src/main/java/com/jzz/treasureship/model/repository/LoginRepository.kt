@@ -166,7 +166,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
                     userJson = GsonUtils.toJson(user)
                     if (user != null) {
                         App.CURRENT_USER = user
-                        //accessToken = user.accessToken.toString()
+                        accessToken = user.accessToken!!
                         isAudit = user.auditStatus!!
                     }
                 }
@@ -205,7 +205,6 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
         val body = JSONObject()
 
         body.put("code", code)
-
         root.put("body", body)
 
         val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())

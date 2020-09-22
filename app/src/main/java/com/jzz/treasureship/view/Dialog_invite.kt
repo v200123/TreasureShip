@@ -27,6 +27,7 @@ class Dialog_invite(context: Context) : CenterPopupView(context) {
                 .addToBackStack(null)
                 .replace(R.id.frame_content, InviteFragment.newInstance(), InviteFragment.javaClass.name)
                 .commit()
+            dismiss()
         }
     }
 

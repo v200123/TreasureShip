@@ -1,6 +1,5 @@
 package com.jzz.treasureship.ui.login
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,7 +7,8 @@ import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
-import com.jzz.treasureship.model.bean.*
+import com.jzz.treasureship.model.bean.UpdateAppBean
+import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.repository.LoginRepository
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.Dispatchers
@@ -109,7 +109,6 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
     fun bindMobile(phoneNum: String, codeNum: String) {
         emitUiState(true)
         viewModelScope.launch(provider.computation) {
-
             val result = repository.bindMobile(phoneNum, codeNum)
 
             withContext(provider.main) {

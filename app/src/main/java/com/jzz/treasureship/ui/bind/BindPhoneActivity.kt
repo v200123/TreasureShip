@@ -48,6 +48,7 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
                 }
 
                 it.showSuccess?.let {
+
                     xPopup.dismiss()
                     finish()
                 }

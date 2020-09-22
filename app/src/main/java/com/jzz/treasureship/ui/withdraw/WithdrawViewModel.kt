@@ -8,8 +8,10 @@ import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.model.bean.firstBean
 import com.jzz.treasureship.model.repository.WithdrawRepository
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ErrorState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -37,9 +39,9 @@ class WithdrawViewModel(val repository: WithdrawRepository, val provider: Corout
                                 var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                                 var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                                 login = false
-                                wxCode =""
-                                userInfo=""
-                                access=""
+                                wxCode = ""
+                                userInfo = ""
+                                access = ""
                                 emitUiState(false, "失败!${result.result.message}", null, false, false)
                             }
                             else -> {
@@ -94,9 +96,9 @@ class WithdrawViewModel(val repository: WithdrawRepository, val provider: Corout
                                 var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                                 var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                                 login = false
-                                wxCode =""
-                                userInfo=""
-                                access=""
+                                wxCode = ""
+                                userInfo = ""
+                                access = ""
                                 emitWithDrawState(false, "失败!${result.result.message}", null, false, false)
                             }
                             else -> {
@@ -129,19 +131,28 @@ class WithdrawViewModel(val repository: WithdrawRepository, val provider: Corout
         val enableLoginButton: Boolean,
         val needLogin: Boolean
     )
-    val isUse  = MutableLiveData<Boolean>()
-    fun getCouponUse(){
-        launchTask { HttpHelp.getRetrofit().couponIsUse().resultCheck({
-            isUse.postValue(it!!.get("couponStatus").asInt == 1)
-        }) }
+
+    val isUse = MutableLiveData<firstBean>()
+    fun getCouponUse() {
+        launchTask {
+            HttpHelp.getRetrofit().couponIsUse().resultCheck({
+                isUse.postValue(it)
+            })
+        }
     }
+
     val canWithDraw = MutableLiveData<String>()
-    fun getWallet(){
-        launchTask{
+    fun getWallet() {
+        launchTask({
+            mStateLiveData.postValue(ErrorState("请求取消了"))
+        }) {
             HttpHelp.getRetrofit().getBalance02().resultCheck({
                 canWithDraw.postValue(it!!.balance)
             })
         }
     }
+
+
+
 
 }

@@ -32,7 +32,7 @@ class MsgFragment : BaseVMFragment<MsgViewModel>() {
     }
 
     override fun initView() {
-        iv_leftBack.setOnClickListener {
+        rlback.setOnClickListener {
             mActivity?.onBackPressed()
         }
 

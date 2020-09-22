@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-<include layout="@layout/include_title"/>
-    <TextView
-        android:textColor="#FF111111"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="23dp"
-        android:background="#FFEFDBDC"
-        android:text="已为您筛选优质商品，也可进入首页挑选心仪的产品哦~
-快开启你的购物之旅吧~"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/include_title"
+            app:layout_scrollFlags="noScroll"/>
+        <TextView
+            app:layout_scrollFlags="scroll"
+            android:id="@+id/tv_coupon_shop_content"
+            android:textColor="#FF111111"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="23dp"
+            android:background="#FFEFDBDC"
+            android:text="已为您筛选优质商品，也可进入首页挑选心仪的产品哦~快开启你的购物之旅吧~"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/white"
         android:id="@+id/rv_coupon_shop"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

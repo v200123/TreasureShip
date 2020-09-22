@@ -52,7 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity"/>
+        <activity android:name=".ui.activity.MainActivity" android:launchMode="singleTop"/>
         <activity android:name=".ui.register.RegisterActivity" />
 
         <activity android:name=".ui.license.LicenseActivity" />
@@ -75,7 +75,8 @@
         <activity android:name=".ui.activity.ClipImageActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.bind.BindPhoneActivity" />
-        <activity android:name=".ui.user.AuthenticationFragment" android:taskAffinity="com.lc.task" />
+        <activity android:name=".ui.user.AuthenticationActivity" android:taskAffinity="com.lc.task"
+            android:launchMode="singleTask"/>
         <activity android:name=".ui.coupon.CouponActivity" />
         <activity android:name=".ui.auth.AuthInformationActivity" />
         <activity android:name=".ui.auth.DepartmentSreachActivity" />
@@ -83,7 +84,10 @@
         </activity>
         <activity android:name=".ui.withdraw.WithdrawActivity" />
         <activity android:name=".ui.goods.GoodsQualificationActivity" />
-        <activity android:name=".ui.coupon.CouponShopFragment" />
+        <activity android:name=".ui.coupon.CouponShopActivity" />
+        <activity android:name=".ui.activity.GoodsDetailsAcvitity" />
+        <activity android:name=".ui.activity.ShopCartActivity" />
+        <activity android:name=".ui.activity.OrdersActivity" />
         <!-- 1.这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
             android:name=".service.PushService"

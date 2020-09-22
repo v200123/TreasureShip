@@ -5,7 +5,6 @@ import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.DepartmentBean
-import com.jzz.treasureship.model.bean.OccupationBean
 import com.lc.mybaselibrary.ErrorState
 
 /**
@@ -25,4 +24,7 @@ class DepartmentSreachViewModel : BaseViewModel() {
         })
         }
     }
+
+
+
 }

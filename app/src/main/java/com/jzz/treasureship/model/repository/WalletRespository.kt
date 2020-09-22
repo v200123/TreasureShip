@@ -1,12 +1,10 @@
 package com.jzz.treasureship.model.repository
 
-import android.util.Log
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.JzzRetrofitClient
+import com.jzz.treasureship.model.bean.DataXXX
 import com.jzz.treasureship.model.bean.JzzResponse
-import com.jzz.treasureship.model.bean.OrderExpress
 import com.jzz.treasureship.model.bean.WalletBalance
-import com.jzz.treasureship.model.bean.WalletList
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -31,11 +29,11 @@ class WalletRespository : BaseRepository() {
     }
 
     //列表
-    suspend fun getBalanceList(accountType: Int = -1, pageNum: Int = 1): Result<JzzResponse<WalletList>> {
+    suspend fun getBalanceList(accountType: Int = -1, pageNum: Int = 1): Result<JzzResponse<DataXXX>> {
         return safeApiCall(call = { requestList(accountType, pageNum) }, errorMessage = "钱包列表获取失败！")
     }
 
-    private suspend fun requestList(accountType: Int = -1, pageNum: Int = 1): Result<JzzResponse<WalletList>> {
+    private suspend fun requestList(accountType: Int = -1, pageNum: Int = 1): Result<JzzResponse<DataXXX>> {
         val root = JSONObject()
         val header = JSONObject()
         val body = JSONObject()

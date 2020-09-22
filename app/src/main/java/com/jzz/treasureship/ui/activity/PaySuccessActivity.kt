@@ -1,6 +1,7 @@
 package com.jzz.treasureship.ui.activity
 
 import android.content.Intent
+import android.view.View
 import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
@@ -19,17 +20,13 @@ class PaySuccessActivity : BaseVMActivity<PaypalViewModel>() {
 
     override fun getLayoutResId() = R.layout.layout_pay_success
 
+
     override fun initView() {
-
-
         tv_title.text = ""
-        rlback.setOnClickListener {
-            finish()
-        }
+        rlback.visibility = View.GONE
 
         tv_checkOrder.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("goTo", "orders")
+            val intent = Intent(this, OrdersActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -42,7 +39,7 @@ class PaySuccessActivity : BaseVMActivity<PaypalViewModel>() {
     override fun startObserve() {
         mViewModel.firstBean.observe(this, {
             if (it.mStatus == 1) {
-                App.dialogHelp.showRedEnvelopeClose(it.mCount) {
+                App.dialogHelp.showRedEnvelopeClose(it.mCount+1) {
                     mViewModel.getFirstRed()
                 }
             }

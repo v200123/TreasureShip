@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE
 import androidx.fragment.app.activityViewModels
 import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.CityPlace
@@ -14,6 +15,7 @@ import com.jzz.treasureship.ui.auth.viewmodel.AuthBaseInfoViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
+import com.lc.mybaselibrary.assertRead.Companion.getFromAssets
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -50,7 +52,7 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
             showDividers = SHOW_DIVIDER_MIDDLE
         }
 
-        et_base_name.addTextChangedListener(object :TextWatcher{
+        et_base_name.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -62,7 +64,7 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
             }
         })
 
-        et_base_carName.addTextChangedListener(object :TextWatcher{
+        et_base_carName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -76,47 +78,21 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
             }
         })
 
-
         fl_baseinfo_department.setOnClickListener {
             startActivityForResult(Intent(mContext, DepartmentSreachActivity::class.java), 500)
         }
 
         fl_baseinfo_address.setOnClickListener {
-            if (allPlace.isBlank()) {
+            try {
+                val fromAssets = getFromAssets(mContext,"city.json")
+                val city = GsonUtils.fromJson(fromAssets, CityPlaces::class.java)
+                showAddressSelect(city)
+            } catch (e: Exception) {
+                ToastUtils.showShort("文件下载错误,开始网络请求")
                 mViewModel.getCityPlaces()
-            } else {
-                val places = GsonUtils.fromJson(allPlace, CityPlaces::class.java)
-
-                XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
-
-                    override fun onDismiss(popupView: BasePopupView) {
-//                        super.onDismiss(popupView)
-                        val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
-                        if (lastAddress.isNotBlank()) {
-                            lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
-                        }
-
-                        val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
-                        if (topAddress.isNotBlank()) {
-                            topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
-                        }
-
-                        val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
-                        if (midAddress.isNotBlank()) {
-                            midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
-                        }
-
-                        et_base_address.setText("${topAddressObj?.areaName?:""} ${midAddressObj?.areaName?:""} " +
-                                "${lastAddressObj?.areaName?:""}")
-                        activityViewModel.mConfirmBody.apply {
-                            this.mAreaProvince = topAddressObj?.id ?:0
-                            this.mAreaCity = midAddressObj?.id?:0
-                            this.mAreaDistrict = lastAddressObj?.id?:0
-                        }
-                    }
-
-                }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
             }
+//
+
         }
 
 
@@ -127,7 +103,7 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
         if (resultCode == 500) {
             if (requestCode == result && data != null) {
                 tv_department_name.setText(data.getStringExtra(EXTRA_NAME)!!)
-                activityViewModel.mConfirmBody.mDepartmentId = data.getIntExtra(EXTRA_POSITION,1)
+                activityViewModel.mConfirmBody.mDepartmentId = data.getIntExtra(EXTRA_POSITION, 1)
             }
         }
     }
@@ -156,20 +132,87 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
                     if (midAddress.isNotBlank()) {
                         midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
                     }
-                    et_base_address.setText("${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}")
+                    et_base_address.setText(
+                        "${topAddressObj?.areaName ?: ""} ${midAddressObj?.areaName ?: ""} " +
+                                "${lastAddressObj?.areaName ?: ""}"
+                    )
                     activityViewModel.mConfirmBody.apply {
-                        this.mAreaProvince = topAddressObj!!.id
-                        this.mAreaCity = midAddressObj!!.id
-                        this.mAreaDistrict = lastAddressObj!!.id
+                        this.mAreaProvince = topAddressObj?.id ?: 0
+                        this.mAreaCity = midAddressObj?.id ?: 0
+                        this.mAreaDistrict = lastAddressObj?.id ?: 0
                     }
                 }
 
             }).asCustom(CustomAddPickerBottomPopup(mContext, it)).show()
         })
-
     }
 
     override fun initListener() {
     }
+
+
+    fun showAddressSelect(places: CityPlaces) {
+        XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
+
+            override fun onShow(popupView: BasePopupView?) {
+                super.onShow(popupView)
+                var lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                var topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                var midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                lastAddress = ""
+                topAddress = ""
+                midAddress = ""
+
+            }
+
+            override fun onDismiss(popupView: BasePopupView) {
+//                        super.onDismiss(popupView)
+                val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                if (lastAddress.isNotBlank()) {
+                    lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
+                }
+
+                val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                if (topAddress.isNotBlank()) {
+                    topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
+                }
+
+                val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                if (midAddress.isNotBlank()) {
+                    midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+                }
+
+                et_base_address.setText(
+                    "${topAddressObj?.areaName ?: ""} ${midAddressObj?.areaName ?: ""} " +
+                            "${lastAddressObj?.areaName ?: ""}"
+                )
+                activityViewModel.mConfirmBody.apply {
+                    this.mAreaProvince = topAddressObj?.id ?: 0
+                    this.mAreaCity = midAddressObj?.id ?: 0
+                    this.mAreaDistrict = lastAddressObj?.id ?: 0
+                }
+            }
+
+        }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
+    }
+
+//    fun getFromAssets(fileName: String): String? {
+//        val content: String? = null //结果字符串
+//        try {
+//            val inputReader = InputStreamReader(resources.assets.open(fileName!!))
+//            val bufReader = BufferedReader(inputReader)
+//            var line: String? = ""
+//            val builder = StringBuilder()
+//            while (bufReader.readLine().also { line = it } != null) {
+//                builder.append(line)
+//            }
+//            inputReader.close()
+//            bufReader.close()
+//            return builder.toString()
+//        } catch (e: java.lang.Exception) {
+//            e.printStackTrace()
+//        }
+//        return content
+//    }
 
 }

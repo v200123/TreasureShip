@@ -30,6 +30,11 @@ class DashedView @JvmOverloads constructor(
         color = Color.parseColor("#FF26C8D7")
     }
 
+    private val unSelect = Paint().apply {
+        style = Paint.Style.FILL
+        color = Color.parseColor("#FFD5EDEF")
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         setMeasuredDimension(DisplayUtil.dp2px(context,252f),DisplayUtil.dp2px(context,2f))
@@ -48,7 +53,7 @@ class DashedView @JvmOverloads constructor(
         super.onDraw(canvas)
         canvas.save()
         for(i in 0 until canDrawCount) {
-            canvas.drawRect(0f, 0f, 55f, 10f, mPaint)
+            canvas.drawRect(0f, 0f, 55f, 10f, unSelect)
             canvas.translate(65f, 0f)
         }
         canvas.restore()

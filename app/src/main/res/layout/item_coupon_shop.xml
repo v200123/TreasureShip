@@ -18,6 +18,7 @@
         android:adjustViewBounds="true" />
 
     <TextView
+        android:maxLines="2"
     android:layout_marginStart="6dp"
         android:id="@+id/tv_coupon_shop"
         android:layout_width="wrap_content"
