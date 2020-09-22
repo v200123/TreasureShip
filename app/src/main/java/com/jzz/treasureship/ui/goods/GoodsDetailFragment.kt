@@ -16,6 +16,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.PagerAdapter
@@ -67,7 +68,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
     private var mGoodsDetails: GoodsDetail? = null
     private lateinit var mWindow: Window
     private var goodsId: Int = -1
-    private val dialog: Dialog by lazy { Dialog(context!!, R.style.edit_AlertDialog_style) }
+    private val dialog: Dialog by lazy { Dialog(mContext, R.style.edit_AlertDialog_style) }
     private var JsonString:String = ""
     companion object {
         const val RC_CALL_PERM = 122
@@ -274,7 +275,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         }
 
         iv_back.setOnClickListener {
-            activity!!.supportFragmentManager.popBackStack()
+           (mContext as AppCompatActivity).onBackPressed()
         }
 
         slideDetailsLayout.setOnSlideDetailsListener { status ->
@@ -425,13 +426,13 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         } else
             tv_goodsName.text = goodsDetail.goodsName
 //        tv_compony.text = goodsDetail.shopName
-        tv_price.text = "¥${goodsDetail.goodsSku[0].price}"
+        tv_price.text = "¥${goodsDetail.goodsSku?.get(0)?.price?:"未知"}"
 
-        if (goodsDetail.goodsSku[0].isParity == 0) {
+        if (goodsDetail.goodsSku?.get(0)?.isParity ?: 0 == 0) {
             tv_goCompare.visibility = View.GONE
         } else {
             tv_goCompare.visibility = View.VISIBLE
-            priceCompareAdapter.setNewData(goodsDetail.goodsSku[0].parityList)
+            priceCompareAdapter.setNewData(goodsDetail.goodsSku?.get(0)?.parityList)
             priceCompareAdapter.notifyDataSetChanged()
 
             tv_goCompare.setOnClickListener {
@@ -441,7 +442,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         }
 
         rcv_skus.run {
-            layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku.size)
+            layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku?.size?:1)
             adapter = skuListAdapter
             suppressLayout(true)
         }
@@ -469,8 +470,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
         }
 
         ll_choice_norm.setOnClickListener {
-            val skuPopup = CustomSkuBottomPopup(view!!.context, goodsDetail)
-            XPopup.Builder(view!!.context).setPopupCallback(object : SimpleCallback() {
+            val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail)
+            XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
                 override fun onDismiss(popupView: BasePopupView) {
                     super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
@@ -500,8 +501,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
                 .show()
         }
         layout_chooseGoods.setOnClickListener {
-            val skuPopup = CustomSkuBottomPopup(view!!.context, goodsDetail)
-            XPopup.Builder(view!!.context).setPopupCallback(object : SimpleCallback() {
+            val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail)
+            XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
                 override fun onDismiss(popupView: BasePopupView) {
                     super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")

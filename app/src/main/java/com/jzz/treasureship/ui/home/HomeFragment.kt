@@ -10,13 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
+import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
+import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.service.RewardService
+import com.jzz.treasureship.ui.DialogHelp
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.search.SearchFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
@@ -32,10 +36,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_home_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : BaseVMFragment<HomeViewModel>() {
-
+    private var isInviteDialog by PreferenceUtils(PreferenceUtils.everyday_invite_dialog, "")
+    private val user by PreferenceUtils(PreferenceUtils.USER_GSON,"")
+    private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN,false)
     private val mSearchFragment by lazy { SearchFragment.newInstance() }
     private var curFragment by PreferenceUtils(PreferenceUtils.CUR_FRAGMENT, "")
     val startAnswer by PreferenceUtils(PreferenceUtils.start_answer, false)
@@ -64,6 +72,28 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onResume() {
         super.onResume()
+//        App.dialogHelp.showSuccess("eertertet"){}
+        if(isLogin) {
+            val mUser = GsonUtils.fromJson(user, User::class.java)
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
+            if (mUser.firstPassTip !=1) {
+                if (isInviteDialog.isBlank()) {
+                    if (mUser.auditStatus == 1) {
+                        App.dialogHelp.showInvite()
+                        isInviteDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                    }
+                } else {
+                    val split = isInviteDialog.split(",")
+                    if (split[0].toInt() != calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
+                            Calendar.DAY_OF_MONTH
+                        )
+                    ) {
+                        App.dialogHelp.showInvite()
+                    }
+                    isInviteDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                }
+            }
+        }
         GSYVideoManager.releaseAllVideos()
     }
 
@@ -99,7 +129,6 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
     override fun startObserve() {
         mViewModel.apply {
             homeTabState.observe(this@HomeFragment, Observer {
-
                 it.showSuccess?.let {
                     tabs.clear()
                     fragments.clear()
@@ -165,7 +194,6 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                             currentPage = position
                         }).attach()
                 }
-
                 it.showError?.let { message ->
                     ToastUtils.showShort(if (message.isBlank()) "网络异常" else message)
                 }

@@ -12,6 +12,7 @@ import com.jzz.treasureship.model.bean.DepartmentBean
 import com.jzz.treasureship.ui.auth.adapter.SearchAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.DepartmentSreachViewModel
 import kotlinx.android.synthetic.main.activity_department_search.*
+import kotlinx.android.synthetic.main.include_title.*
 
 /**
  *@date: 2020/9/14
@@ -30,6 +31,8 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
             adapter = mAdapter
             layoutManager = LinearLayoutManager(mContext)
         }
+        tv_title.text = "选择科室"
+        rlback.setOnClickListener { finish() }
         mAdapter.setOnItemClickListener(object :
             com.didichuxing.doraemonkit.widget.bravh.listener.OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {

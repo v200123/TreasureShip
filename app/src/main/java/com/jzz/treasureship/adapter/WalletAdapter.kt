@@ -36,11 +36,13 @@ class WalletAdapter( mContext: Context) :
         holder.setText(R.id.tv_title, item.mTitle)
             .setText(R.id.tv_createTime, item.mCreateTime)
             .setText(R.id.tv_wallet_balance, "余额：" + item.mBalance)
-            .setText(R.id.tv_money, if (item.mMoney < 0) "-${item.mMoney}" else "+${item.mMoney}")
-
-
+            .setText(R.id.tv_money, if (item.mMoney < 0) "${item.mMoney}" else "+${item.mMoney}")
     }
 
+
+    override fun convert(holder: BaseViewHolder, item: Data04, payloads: List<Any>) {
+        super.convert(holder, item, payloads)
+    }
 
 //
 //    override fun convert(helper: BaseBindAdapter.BindViewHolder, item: Data04) {

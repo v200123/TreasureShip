@@ -170,8 +170,12 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
 
         mViewModel.canWithDraw.observe(this,{
             edit_price.hint = "可提现$it"
+            withDrawMoney = BigDecimal(it).toString()
         })
-
+        mViewModel.isUse.observe(this, {
+            if(it.mCouponStatus == 1)
+                App.dialogHelp.showWithdrawSuccess()
+        })
         mViewModel.apply {
             val xPopup = XPopup.Builder(mContext).asLoading()
             userState.observe(this@WithdrawActivity, Observer { it ->
@@ -216,9 +220,9 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
             })
         }
 
-        mViewModel.isUse.observe(this, {
-            App.dialogHelp.showWithdrawSuccess()
-        })
+//        mViewModel.isUse.observe(this, {
+//            App.dialogHelp.showWithdrawSuccess()
+//        })
     }
 
 

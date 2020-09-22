@@ -312,7 +312,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         }
 
         override fun convert(helper: BaseViewHolder, item: CartGoodsSku?) {
-
+        var isInit = false
             item?.let { goodsSku ->
 
                 val swipeLayout: SwipeLayout = helper.getView(R.id.swipeLayout)
@@ -395,51 +395,58 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
 
                 helper.setText(R.id.et_shopcar_good_num, goodsSku.mCount.toString())
                 val etNum: EditText = helper.getView(R.id.et_shopcar_good_num)
-                etNum.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        var number: Int = -1
-                        if (!etNum.text.toString().isBlank()) {
-                            number = etNum.text.toString().toInt()
-                        }
-
-                        when (number) {
-                            -1 -> {
+                if(!isInit) {
+                    etNum.addTextChangedListener(object : TextWatcher {
+                        override fun afterTextChanged(s: Editable?) {
+                            var number: Int = -1
+                            if (!etNum.text.toString().isBlank()) {
+                                number = etNum.text.toString().toInt()
                             }
-                            0 -> {
-                                XPopup.Builder(context).asConfirm("删除商品", "确认将物品从购物车删除？", "取消", "删除", {
-                                    mViewModel.deleteGoods(spcs.shops[positionShop].mCartGoodsSkuList?.get(helper
-                                        .adapterPosition).mCartId)
-                                }, {}, false).show()
-                            }
-                            in 1..99 -> {
-                                spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.adapterPosition).mCount = number
-                                var tmp: String? = "0.00"
-                                for (ele in cartAdapter.data) {
 
-                                    for (item in ele.mCartGoodsSkuList!!) {
-                                        if (item!!.isSelected == 1) {
-                                            tmp = MoneyUtil.moneyAdd(
-                                                tmp,
-                                                MoneyUtil.moneyMul(item.mPrice.toString(), item.mCount.toString())
-                                            )
+                            when (number) {
+                                -1 -> {
+                                }
+                                0 -> {
+                                    XPopup.Builder(context).asConfirm("删除商品", "确认将物品从购物车删除？", "取消", "删除", {
+                                        mViewModel.deleteGoods(
+                                            spcs.shops[positionShop].mCartGoodsSkuList?.get(
+                                                helper
+                                                    .adapterPosition
+                                            ).mCartId
+                                        )
+                                    }, {}, false).show()
+                                }
+                                in 1..99 -> {
+                                    spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.adapterPosition).mCount =
+                                        number
+                                    var tmp: String? = "0.00"
+                                    for (ele in cartAdapter.data) {
+
+                                        for (item in ele.mCartGoodsSkuList!!) {
+                                            if (item!!.isSelected == 1) {
+                                                tmp = MoneyUtil.moneyAdd(
+                                                    tmp,
+                                                    MoneyUtil.moneyMul(item.mPrice.toString(), item.mCount.toString())
+                                                )
+                                            }
                                         }
                                     }
+                                    val totalPrice = BigDecimal(tmp).stripTrailingZeros().toPlainString()
+                                    tv_totalPrice.text = "¥${totalPrice}"
                                 }
-                                val totalPrice = BigDecimal(tmp).stripTrailingZeros().toPlainString()
-                                tv_totalPrice.text = "¥${totalPrice}"
+                                else -> ToastUtils.showShort("不是合理的数量")
                             }
-                            else -> ToastUtils.showShort("不是合理的数量")
                         }
-                    }
 
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, mCount: Int, after: Int) {
-                    }
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, mCount: Int, after: Int) {
+                        }
 
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, mCount: Int) {
-                    }
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, mCount: Int) {
+                        }
 
-                })
-
+                    })
+                    isInit = true
+                }
 //                helper.setText(R.id.tv_specsv_num, goodsSku.stock.toString())
                 helper.setText(R.id.tv_specsv_name, goodsSku.mSpecValue)
 

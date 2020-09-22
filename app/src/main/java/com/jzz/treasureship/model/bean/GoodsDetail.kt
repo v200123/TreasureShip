@@ -1,6 +1,5 @@
 package com.jzz.treasureship.model.bean
 
-import java.io.Serializable
 import com.google.gson.annotations.SerializedName
 
 
@@ -18,7 +17,7 @@ class GoodsDetail(
     @SerializedName("goodsPictureList")
     val goodsPictureList: List<String> = listOf(),
     @SerializedName("goodsSku")
-    val goodsSku: List<GoodsSku> = listOf(),
+    val goodsSku: List<GoodsSku>? = listOf(),
     @SerializedName("goodsType")
     val goodsType: Int = 0, // 0
     @SerializedName("instructionsPictureList")

@@ -56,16 +56,17 @@
                             android:layout_height="300dp">
 
                             <ImageView
+
                                 android:id="@+id/iv_back"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:layout_marginStart="10dp"
                                 android:src="@drawable/icon_goods_detail_back" />
 
                             <ImageView
                                 android:id="@+id/iv_share"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:layout_gravity="right"
                                 android:layout_marginEnd="10dp"
                                 android:src="@drawable/icon_share_goods" />
@@ -139,6 +140,7 @@
                             android:textSize="15sp" />
 
                         <LinearLayout
+                            android:layout_marginBottom="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="14.5dp"
@@ -227,7 +229,7 @@
                         android:layout_marginEnd="18dp"
                         android:background="#CCCCCC"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1px"/>
                         <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -283,7 +285,8 @@
                     <com.lc.mybaselibrary.ShapeLinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:orientation="vertical"
                         app:shapeCornersRadius="8dp"
                         app:shapeSolidColor="@color/white">
@@ -397,7 +400,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
+                            android:layout_height="1px"
                             android:layout_marginStart="14dp"
                             android:layout_marginEnd="16dp"
                             android:background="#CCCCCC" />

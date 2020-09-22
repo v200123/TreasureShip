@@ -31,15 +31,14 @@ class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopu
         super.initPopupContent()
         mCount = et_sku_quantity_input.text.toString().toInt()
 
-        mGoods.goodsSku[0].skuImg.let {
+        mGoods.goodsSku?.get(0)?.skuImg.let {
             Glide.with(context).load(it).into(iv_sku_logo)
         }
 
+        tv_sku_selling_price.text = "¥ ${mGoods.goodsSku?.get(0)?.price}"
+        tv_sku_selling_price_unit.text = "已选：${mGoods.goodsSku?.get(0)?.specValue}"
 
-        tv_sku_selling_price.text = "¥ ${mGoods.goodsSku[0].price}"
-        tv_sku_selling_price_unit.text = "已选：${mGoods.goodsSku[0].specValue}"
-
-        tv_sku_info.text = "库存：${mGoods.goodsSku[0].stock}"
+        tv_sku_info.text = "库存：${mGoods.goodsSku?.get(0)?.stock}"
 
         rv_skuList.run {
             layoutManager = LinearLayoutManager(context).also {
@@ -56,18 +55,18 @@ class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopu
         }
         skuListAdapter.run {
 //            if (SELECTED_SKU.isBlank()){
-                SELECTED_SKU  = GsonUtils.toJson(mGoods.goodsSku[0])
+                SELECTED_SKU  = GsonUtils.toJson(mGoods.goodsSku?.get(0))
 //            }
             this.setOnItemClickListener(object : SkuSelectAdapter.OnItemClickListener {
                 override fun onItemClick(view: View?, position: Int) {
                     SelectedNavItem.setSectedNavItem(position)
                     notifyDataSetChanged()
-                    SELECTED_SKU  = GsonUtils.toJson(mGoods.goodsSku[position])
-                    tv_sku_info.text = "库存：${mGoods.goodsSku[position].stock}"
+                    SELECTED_SKU  = GsonUtils.toJson(mGoods.goodsSku?.get(position))
+                    tv_sku_info.text = "库存：${mGoods.goodsSku?.get(position)?.stock}"
                     Log.d("selectGoods",SELECTED_SKU)
-                    Glide.with(context).load(mGoods.goodsSku[position].skuImg).into(iv_sku_logo)
-                    tv_sku_selling_price.text = "¥ ${mGoods.goodsSku[position].price}"
-                    tv_sku_selling_price_unit.text = "已选：${mGoods.goodsSku[position].specValue}"
+                    Glide.with(context).load(mGoods.goodsSku?.get(position)?.skuImg).into(iv_sku_logo)
+                    tv_sku_selling_price.text = "¥ ${mGoods.goodsSku?.get(position)?.price}"
+                    tv_sku_selling_price_unit.text = "已选：${mGoods.goodsSku?.get(position)?.specValue}"
                 }
             })
             Log.d("selectGoods",SELECTED_SKU)

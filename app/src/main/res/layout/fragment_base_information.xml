@@ -37,6 +37,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </FrameLayout>
+        <View
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="#FFE5E5E5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
         <FrameLayout
             android:id="@+id/fl_baseinfo_address"
             android:padding="15dp"
@@ -47,7 +53,7 @@
                 android:text="现所在区域"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <EditText
+            <com.jzz.treasureship.view.NoTouchEditext
                 android:enabled="false"
                 android:background="@null"
                 android:id="@+id/et_base_address"
@@ -66,6 +72,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </FrameLayout>
+        <View
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="#FFE5E5E5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
         <FrameLayout
             android:padding="15dp"
             android:layout_width="match_parent"
@@ -87,6 +99,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </FrameLayout>
+        <View
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="#FFE5E5E5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
         <FrameLayout
             android:id="@+id/fl_baseinfo_department"
             android:padding="15dp"
@@ -97,7 +115,7 @@
                 android:text="科室"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <EditText
+            <com.jzz.treasureship.view.NoTouchEditext
                 android:id="@+id/tv_department_name"
                 android:enabled="false"
                 android:background="@null"

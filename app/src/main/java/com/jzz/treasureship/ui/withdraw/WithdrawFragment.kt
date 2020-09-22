@@ -54,7 +54,6 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 
     override fun initView() {
         activity!!.nav_view.visibility = View.GONE
-
         tv_title.text = "提现"
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         rlback.setOnClickListener {
@@ -123,11 +122,15 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 //                ToastUtils.showShort("请先仔细阅读《提现服务协议》，并勾选")
 //                return@setOnClickListener
 //            }
-
-            val value = BigDecimal(edit_price.text.toString())
-            val minValue = BigDecimal("1.00")
+            var moneyValue = edit_price.text.toString()
+            if(moneyValue.isBlank())
+            {
+                moneyValue = "0.00"
+            }
+            val value = BigDecimal(moneyValue)
+            val minValue = BigDecimal("0.03")
             if (value < minValue) {
-                ToastUtils.showShort("最低提现金额：1元")
+                ToastUtils.showShort("最低提现金额：3分")
                 return@setOnClickListener
             }
 
@@ -135,7 +138,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
             //0:等于    >0:大于    <0:小于
             val result = value.compareTo(compValue)
             if (result > 0) {
-                ToastUtils.showShort("提现金额不在可提现金额范围内！请确认并重新输入正确的提现金额")
+                ToastUtils.showShort("可提现金额不足")
                 return@setOnClickListener
             } else {
                 if (userObj.wxOpenid.isNullOrBlank()) {
@@ -146,10 +149,10 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                         override fun onDismiss(popupView: BasePopupView) {
                             super.onDismiss(popupView)
                             if (confirmWithdraw) {
-                                mViewModel.askWithdraw(edit_price.text.toString())
+                                mViewModel.askWithdraw(moneyValue)
                             }
                         }
-                    }).asCustom(CustomWithDrawDialog(context!!, edit_price.text.toString())).show()
+                    }).asCustom(CustomWithDrawDialog(context!!, moneyValue)).show()
                     //mViewModel.askWithdraw(edit_price.text.toString())
                 }
             }
@@ -215,7 +218,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                     xPopup.dismiss()
                     confirmWithdraw = false
                     ToastUtils.showShort("${it}")
-                    activity!!.supportFragmentManager.popBackStack()
+
                     mViewModel.getCouponUse()
 
 
@@ -229,7 +232,11 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
         }
 
         mViewModel.isUse.observe(this, {
+            if(it.mCouponStatus == 1)
             App.dialogHelp.showWithdrawSuccess()
+            else {
+                activity!!.supportFragmentManager.popBackStack()
+            }
         })
     }
 
@@ -255,7 +262,6 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                 "¥ ${mWithDrawMoney}"
 
             layout_dissmiss.setOnClickListener {
-
                 this.dismiss()
             }
 

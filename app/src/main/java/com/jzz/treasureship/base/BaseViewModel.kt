@@ -24,20 +24,26 @@ open class BaseViewModel : ViewModel() {
 
     )
 
-    fun <T> JzzResponse<T>.resultCheck(block: (T?) -> Unit, errorMsg: (msg: String) -> Unit = {mStateLiveData
-        .postValue(ErrorState(it))}) {
+    fun <T> JzzResponse<T>.resultCheck(
+        block: (T?) -> Unit, errorMsg: (msg: String) -> Unit = {
+            mStateLiveData
+                .postValue(ErrorState(it))
+        }
+    ) {
         if (this.success) {
             block(this.result)
         } else {
-            if(this.code == 401)
-            {
+            if (this.code == 401) {
                 mStateLiveData.value = NeedLoginState
             }
             errorMsg(this.message)
         }
     }
 
-    fun launchTask(cancel: Cancel? = null, block: LaunchBlock) {//使用协程封装统一的网络请求处理
+    fun launchTask(
+        cancel: Cancel? = { mStateLiveData.postValue(ErrorState("请求取消")) },
+        block: LaunchBlock
+    ) {//使用协程封装统一的网络请求处理
         viewModelScope.launch {
             //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
             try {
@@ -132,7 +138,6 @@ open class BaseViewModel : ViewModel() {
             error(result.exception.message)
         }
     }
-
 
 
 }

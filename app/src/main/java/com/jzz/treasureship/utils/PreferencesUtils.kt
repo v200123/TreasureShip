@@ -48,6 +48,7 @@ class PreferenceUtils<T>(val name: String, private val default: T) : ReadWritePr
         const val everyday_invite_dialog = "invite_dialog"
         const val auth_is_show= "auth_dialog"
         const val no_auth_show = "niauth_show"
+        const val authShowSuccess = "authShowSuccess"
     }
 
     private val prefs: SharedPreferences by lazy {

@@ -422,13 +422,13 @@ class GoodsDetailsAcvitity  : BaseVMActivity<GoodsDetailViewModel>(false), EasyP
         } else
             tv_goodsName.text = goodsDetail.goodsName
 //        tv_compony.text = goodsDetail.shopName
-        tv_price.text = "¥${goodsDetail.goodsSku[0].price}"
+        tv_price.text = "¥${goodsDetail.goodsSku?.get(0)?.price}"
 
-        if (goodsDetail.goodsSku[0].isParity == 0) {
+        if (goodsDetail.goodsSku?.get(0)?.isParity ?: 0 == 0) {
             tv_goCompare.visibility = View.GONE
         } else {
             tv_goCompare.visibility = View.VISIBLE
-            priceCompareAdapter.setNewData(goodsDetail.goodsSku[0].parityList)
+            priceCompareAdapter.setNewData(goodsDetail.goodsSku?.get(0)?.parityList)
             priceCompareAdapter.notifyDataSetChanged()
 
             tv_goCompare.setOnClickListener {
@@ -438,7 +438,7 @@ class GoodsDetailsAcvitity  : BaseVMActivity<GoodsDetailViewModel>(false), EasyP
         }
 
         rcv_skus.run {
-            layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku.size)
+            layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku?.size?:1)
             adapter = skuListAdapter
             suppressLayout(true)
         }

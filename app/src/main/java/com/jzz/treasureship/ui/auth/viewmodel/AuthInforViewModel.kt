@@ -15,15 +15,21 @@ import com.lc.mybaselibrary.ErrorState
  **/
 class AuthInforViewModel : BaseViewModel() {
     val qualLiveData = MutableLiveData<Qualification>()
-    fun confirm(confirmBody: ConfirmBody){
-        launchTask {
-            val uploadInformation =
-                HttpHelp.getRetrofit().uploadInformation(BaseRequestBody((confirmBody)))
-            uploadInformation.resultCheck({
-                qualLiveData.postValue(it)
-            },{
-                mStateLiveData.postValue(ErrorState(it))
-            })
+    fun confirm(confirmBody: ConfirmBody) {
+        val checkAllValue = confirmBody.checkAllValue()
+        if (checkAllValue == "") {
+            launchTask {
+                val uploadInformation =
+                    HttpHelp.getRetrofit().uploadInformation(BaseRequestBody((confirmBody)))
+                uploadInformation.resultCheck({
+                    qualLiveData.postValue(it)
+                }, {
+                    mStateLiveData.postValue(ErrorState(it))
+                })
+            }
+        }
+        else{
+            mStateLiveData.postValue(ErrorState(checkAllValue))
         }
     }
 

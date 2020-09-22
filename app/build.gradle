@@ -28,7 +28,7 @@ android {
     //        incremental true
         threadCount = 3
         maxProcessCount = 5
-        preDexLibraries = true
+
     }
 
     lintOptions {

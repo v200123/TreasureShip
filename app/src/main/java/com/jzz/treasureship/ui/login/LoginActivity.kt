@@ -87,6 +87,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
                 }
 
                 it.showSuccess?.let {
+
                     xPopup.dismiss()
                     finish()
                     if (!JPushInterface.isPushStopped(this@LoginActivity)){

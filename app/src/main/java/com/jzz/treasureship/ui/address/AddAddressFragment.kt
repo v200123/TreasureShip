@@ -14,6 +14,7 @@ import com.jzz.treasureship.model.bean.CityPlaces
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
+import com.lc.mybaselibrary.assertRead.Companion.getFromAssets
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -41,13 +42,20 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
     override fun initView() {
         activity!!.nav_view.visibility = View.GONE
         tv_title.text = "新增地址"
-        StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
+        StateAppBar.setStatusBarLightMode(this.activity, mContext.resources.getColor(R.color.white))
         lin_address.setOnClickListener { view ->
             if (allPlace.isNullOrBlank()) {
-                mViewModel.getCityPlaces()
+                try {
+                    val fromAssets = getFromAssets(mContext, "city.json")
+                    val city = GsonUtils.fromJson(fromAssets, CityPlaces::class.java)
+                    showAddressSelect(city)
+                } catch (e: Exception) {
+                    ToastUtils.showShort("文件下载错误,开始网络请求")
+                    mViewModel.getCityPlaces()
+                }
+
             } else {
                 val places = GsonUtils.fromJson(allPlace, CityPlaces::class.java)
-
                 XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
 
                     override fun onDismiss(popupView: BasePopupView) {
@@ -71,7 +79,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                             "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
                     }
 
-                }).asCustom(CustomAddPickerBottomPopup(context!!, places)).show()
+                }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
             }
         }
 
@@ -93,6 +101,46 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
         }
     }
 
+    private fun showAddressSelect(city: CityPlaces) {
+        XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
+
+            override fun onShow(popupView: BasePopupView?) {
+                super.onShow(popupView)
+                var lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                var topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                var midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                lastAddress = ""
+                topAddress = ""
+                midAddress = ""
+
+            }
+
+            override fun onDismiss(popupView: BasePopupView) {
+//                        super.onDismiss(popupView)
+                val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                if (lastAddress.isNotBlank()) {
+                    lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
+                }
+
+                val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                if (topAddress.isNotBlank()) {
+                    topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
+                }
+
+                val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                if (midAddress.isNotBlank()) {
+                    midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+                }
+
+                tv_adress.text =
+                    "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
+            }
+
+        }).asCustom(CustomAddPickerBottomPopup(mContext, city)).show()
+
+
+    }
+
     override fun initData() {
 
     }
@@ -111,9 +159,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                     var topAddressObj: CityPlace? = null
                     var midAddressObj: CityPlace? = null
                     var lastAddressObj: CityPlace? = null
-
                     XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-
                         override fun onDismiss(popupView: BasePopupView) {
 //                            super.onDismiss(popupView)
                             val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
@@ -135,7 +181,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                                 "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
                         }
 
-                    }).asCustom(CustomAddPickerBottomPopup(context!!, places)).show()
+                    }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
 
                     btn_saveAddress.setOnClickListener {
                         topAddressObj?.let { top ->

@@ -29,7 +29,7 @@ import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.image
 import com.jzz.treasureship.ui.auth.viewmodel.AuthUpLoadViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
-import com.jzz.treasureship.ui.user.AuthenticationFragment
+import com.jzz.treasureship.ui.user.AuthenticationActivity
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.RealPathFromUriUtils
 import com.jzz.treasureship.view.DialogSimpleList
@@ -49,7 +49,7 @@ import java.util.*
  *@Auth: 29579
  **/
 class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
-    private lateinit var mSelectPath: ArrayList<String>
+//    private lateinit var mSelectPath: ArrayList<String>
     private val activityModel by activityViewModels<CommonDataViewModel>()
     private lateinit var mImageList: List<image>
     private var firstImage: String = ""
@@ -70,18 +70,15 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
 
     override fun initView() {
 
-        tv_first_red.setText(SpannableString(tv_first_red.text).apply {
+        tv_first_red.setText(SpannableString("*上传时请确保图片内容清晰、完整、无遮挡").apply {
             setSpan(
                 ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
                 0,
-                0,
+                1,
                 Spannable.SPAN_INCLUSIVE_INCLUSIVE
             )
             setSpan(AbsoluteSizeSpan(12, true), 0, 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         })
-
-
-
 
         mViewModel.occupationData.observe(this, { occupa ->
             val mList = occupa.mList
@@ -107,7 +104,6 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
                 mOccupationConfigId = firstOccupation.mId
                 mOccupationId = firstOccupation.mOccupationId
             }
-
             iv_authupload_image01.setOnClickListener {
                 if (firstImage.isBlank())
                     imageChoice()
@@ -153,14 +149,21 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             Glide.with(this).asDrawable().load(firstOccupation.mBackImage1)
                 .into(iv_authupload_image01)
             tv_authUpLoad_title.text = firstOccupation.mTitle
-//            if(firstOccupation.mImageCount == 1)
-//            {
-//                iv_authupload_image02.visibility = View.GONE
-//            }
+            textView13.text = firstOccupation.mRemark1
+            if(firstOccupation.mBackImage2 == null) {tv_auth_upload_remark.visibility = View.GONE}
+            else{
+                tv_auth_upload_remark.visibility = View.VISIBLE
+                tv_auth_upload_remark.text = firstOccupation.mBackImage2
+            }
+
             if (firstOccupation.mBackImage2 != null) {
                 Glide.with(this).asDrawable().load(firstOccupation.mBackImage2)
                     .into(iv_authupload_image02)
+            }else{
+                iv_authupload_image02.visibility = View.GONE
             }
+
+
             if (mList.size == 1) {
                 tv_authupload_change.visibility = View.GONE
             } else {
@@ -198,6 +201,12 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
      */
     private fun cleanInformation(image: image) {
         tv_authUpLoad_title.text = image.mTitle
+        textView13.text = image.mRemark1
+        if(image.mBackImage2 == null) {tv_auth_upload_remark.visibility = View.GONE}
+        else{
+            tv_auth_upload_remark.visibility = View.VISIBLE
+            tv_auth_upload_remark.text = image.mBackImage2
+        }
         mOccupation = image
         activityModel.mConfirmBody.mQualificationImages = ""
         firstImage = ""
@@ -215,7 +224,6 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         }else{
             tv_auth_upload_remark.visibility = View.GONE
         }
-
         Glide.with(this).asDrawable().load(image.mBackImage1).into(iv_authupload_image01)
         activityModel.mConfirmBody.apply {
             mOccupationConfigId = image.mId
@@ -226,7 +234,6 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
                 .asImageViewer(imageView, image.mExampleImages, ImageLoader())
                 .show()
         }
-
         if (image.mBackImage2 != null) {
             iv_authupload_image02.visibility = View.VISIBLE
             Glide.with(this).asDrawable().load(image.mBackImage2).into(iv_authupload_image02)
@@ -263,7 +270,6 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             ).apply {
                 click = {
                     if (it == 0) {
-
                         when (nowPosition) {
                             0 -> {
                                 firstImage = ""
@@ -307,7 +313,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == AuthenticationFragment.REQUEST_CAPTURE_CERT) {
+        if (requestCode == AuthenticationActivity.REQUEST_CAPTURE_CERT) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val img = Uri.fromFile(tempFile)
                 var bmp = BitmapFactory.decodeFile(img.path)
@@ -321,7 +327,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             }
         }
 
-        if (requestCode == AuthenticationFragment.REQUEST_PICK) {
+        if (requestCode == AuthenticationActivity.REQUEST_PICK) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 if (data != null) {
                     val path = RealPathFromUriUtils.getRealPathFromUri(mContext, data.data)
@@ -460,7 +466,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             EasyPermissions.requestPermissions(
                 this,
                 "需要权限",
-                AuthenticationFragment.REQUEST_PERMISSION_CAMERA,
+                AuthenticationActivity.REQUEST_PERMISSION_CAMERA,
                 *perms
             )
         } else {
@@ -478,7 +484,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             EasyPermissions.requestPermissions(
                 this,
                 "需要读写本地文件权限",
-                AuthenticationFragment.REQUEST_PERMISSION_WRITE_STORAGE,
+                AuthenticationActivity.REQUEST_PERMISSION_WRITE_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
@@ -491,7 +497,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
     /**
      * 跳转到照相机
      */
-    @AfterPermissionGranted(AuthenticationFragment.REQUEST_PERMISSION_CAMERA)
+    @AfterPermissionGranted(AuthenticationActivity.REQUEST_PERMISSION_CAMERA)
     private fun gotoCamera() {
         //创建拍照存储的图片文件
         tempFile = File(
@@ -512,18 +518,18 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile))
         }
 //            0 -> {
-        startActivityForResult(intent, AuthenticationFragment.REQUEST_CAPTURE_CERT)
+        startActivityForResult(intent, AuthenticationActivity.REQUEST_CAPTURE_CERT)
 
     }
 
 
-    @AfterPermissionGranted(AuthenticationFragment.REQUEST_PERMISSION_READ_STORAGE)
+    @AfterPermissionGranted(AuthenticationActivity.REQUEST_PERMISSION_READ_STORAGE)
     private fun gotoPhoto() {
         //跳转到调用系统图库
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(
             Intent.createChooser(intent, "请选择图片"),
-            AuthenticationFragment.REQUEST_PICK
+            AuthenticationActivity.REQUEST_PICK
         )
     }
 

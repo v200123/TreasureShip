@@ -110,10 +110,12 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-//        if (!hidden) {
+        if (!hidden) {
         mViewModel.getUserInfo()
-//        }
+        }
     }
+
+
 
     override fun startObserve() {
 
@@ -150,7 +152,6 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                             val req: SendAuth.Req = SendAuth.Req()
                             req.scope = "snsapi_userinfo"
                             req.state = "treasureship_wx_bind"
-
                             App.iwxapi.sendReq(req)
                         }
                     } else {
@@ -175,11 +176,13 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                                     )
                                     .commit()
                             }
+                            gotoAuth()
                         }
                         0 -> {
                             //审核中
                             tv_auditStatus.text = "审核中"
-                            lin_mine_audit.isEnabled = true
+                            lin_mine_audit.isEnabled = false
+                            lin_mine_audit.setOnClickListener { null }
                             tv_auditStatus.setTextColor(Color.parseColor("#E60012"))
                             lin_mine_modifyName.setOnClickListener {
                                 activity!!.supportFragmentManager.beginTransaction()
@@ -194,11 +197,13 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                             }
                         }
                         1 -> {
+
                             //审核通过
                             tv_auditStatus.text = "已认证"
                             lin_mine_audit.isEnabled = true
                             tv_auditStatus.setTextColor(context!!.resources.getColor(R.color.blue_normal))
                             lin_mine_modifyName.setOnClickListener(null)
+                            gotoAuth()
                         }
                         2 -> {
                             //审核不通过
@@ -216,22 +221,24 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                                     )
                                     .commit()
                             }
+                            gotoAuth()
                         }
                         else -> {
                             tv_auditStatus.text = "未知认证状态${tv_auditStatus}"
                             lin_mine_audit.isEnabled = true
                             tv_auditStatus.setTextColor(Color.parseColor("#E60012"))
-                            lin_mine_modifyName.setOnClickListener {
-                                activity!!.supportFragmentManager.beginTransaction()
-                                    .addToBackStack(UserInfoFragment.javaClass.name)
-                                    .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(
-                                        R.id.frame_content,
-                                        mModifyNickNameFragment,
-                                        mModifyNickNameFragment.javaClass.name
-                                    )
-                                    .commit()
-                            }
+                            gotoAuth()
+//                            lin_mine_modifyName.setOnClickListener {
+//                                activity!!.supportFragmentManager.beginTransaction()
+//                                    .addToBackStack(UserInfoFragment.javaClass.name)
+//                                    .hide(this@UserInfoFragment)//隐藏当前Fragment
+//                                    .add(
+//                                        R.id.frame_content,
+//                                        mModifyNickNameFragment,
+//                                        mModifyNickNameFragment.javaClass.name
+//                                    )
+//                                    .commit()
+//                            }
                         }
                     }
                 }
@@ -247,11 +254,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                     XPopup.Builder(it.context).asCustom(CustomUploadHeaderBottomPopup(it.context)).show()
                 }
 
-                lin_mine_audit.setOnClickListener {
-                    mContext.start<AuthenticationFragment> {
-                        setFlags(FLAG_ACTIVITY_NEW_TASK)
-                    }
-                }
+
 
                 lin_receiveAddress.setOnClickListener {
                     activity!!.supportFragmentManager.beginTransaction()
@@ -465,8 +468,8 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
         if (wxCode.isNotBlank() && mBindWeChat) {
             mViewModel.bindWeChat(wxCode)
             Thread.sleep(200)
-            mViewModel.getUserInfo()
         }
+        mViewModel.getUserInfo()
     }
 
     /**
@@ -507,6 +510,17 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
         for (bm in bitmaps) {
             if (null != bm && !bm.isRecycled) {
                 bm.recycle()
+            }
+        }
+    }
+
+    /**
+     * 前往认证界面
+     */
+    fun gotoAuth(){
+        lin_mine_audit.setOnClickListener {
+            mContext.start<AuthenticationActivity> {
+                setFlags(FLAG_ACTIVITY_NEW_TASK)
             }
         }
     }

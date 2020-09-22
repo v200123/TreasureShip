@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jzz.treasureship.BR
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.Data
-import com.jzz.treasureship.utils.MoneyUtil
 import java.math.BigDecimal
 
 class OrdersVpAdapter(layoutResId: Int = R.layout.item_order) :
@@ -131,11 +130,11 @@ class OrdersVpAdapter(layoutResId: Int = R.layout.item_order) :
         }
 
         var sum = "0.00"
-        for (ele in item.goodsSkuList!!) {
-            sum = MoneyUtil.moneyAdd(sum, ele!!.goodsMoney.toString())
-        }
+//        for (ele in item.goodsSkuList!!) {
+//            sum = MoneyUtil.moneyAdd(sum, ele!!.goodsMoney.toString())
+//        }
         val totalMoney = BigDecimal(sum).stripTrailingZeros().toPlainString()
-        helper.setText(R.id.tv_order_allprice, "共${item.goodsNum}件商品  合计:¥${totalMoney}")
+        helper.setText(R.id.tv_order_allprice, "共${item.goodsNum}件商品  合计:¥${item.payMoney}")
 
         helper.addOnClickListener(R.id.tv_go_pay)
         helper.addOnClickListener(R.id.tv_sure_goods)

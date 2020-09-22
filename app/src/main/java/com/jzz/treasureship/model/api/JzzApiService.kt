@@ -355,6 +355,9 @@ interface JzzApiService {
     @POST("/api/v1/accountRecords/balance")
     suspend fun getBalance(@Body body: RequestBody): JzzResponse<WalletBalance>
 
+
+
+
     /**
      * 我的钱包：余额信息
      */
@@ -365,7 +368,7 @@ interface JzzApiService {
      * 我的钱包：列表
      */
     @POST("/api/v1/accountRecords/list")
-    suspend fun getBalanceList(@Body body: RequestBody): JzzResponse<WalletList>
+    suspend fun getBalanceList(@Body body: RequestBody): JzzResponse<DataXXX>
 
     /**
      * icon_withdraw_comfirm：申请提现接口
@@ -463,7 +466,7 @@ interface JzzApiService {
      */
 
     @POST("/api/withdraw/firstPassCouponStatus")
-    suspend fun couponIsUse(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
+    suspend fun couponIsUse(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<firstBean>
 
     @POST("/api/v1/coupon/getCouponList")
     suspend fun getCouponList(@Body body: BaseRequestBody) : JzzResponse<CouponBean>

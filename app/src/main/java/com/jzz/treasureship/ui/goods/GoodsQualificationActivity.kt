@@ -5,11 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseViewHolder
 import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.GoodsDetail
@@ -44,7 +41,7 @@ class GoodsQualificationActivity : AppCompatActivity(R.layout.activity_goods_qua
         mType = intent.getIntExtra(QualificationType, 0)
         val stringExtra = intent.getStringExtra(QualificationTypeList)
         val good = GsonUtils.fromJson(stringExtra, GoodsDetail::class.java)
-        iv_leftBack.setOnClickListener { finish() }
+        rlback.setOnClickListener { finish() }
         if (mType == 0) {
             tv_title.text = "商家资质"
             ll_qualification_type01.visibility = View.VISIBLE
@@ -60,7 +57,7 @@ class GoodsQualificationActivity : AppCompatActivity(R.layout.activity_goods_qua
             tv_qualification_from.text = if(good.goodsType ==1) "中国" else "境外"
             tv_qualification_type.text = good.goodsAttributeList[0].attrValue
             tv_qualification_features.text = good.goodsAttributeList[0].attrValueName
-            tv_qualification_norm.text = good.goodsSku[0].specValue
+            tv_qualification_norm.text = good.goodsSku?.get(0)?.specValue ?: ""
             Glide.with(this).asDrawable().load(good.instructionsPictureList[0]).into(iv_produce_image01)
             Glide.with(this).asDrawable().load(good.qualificationPictureList[0]).into(iv_produce_image02)
             if(good.specialDescriptionPictureList.isNotEmpty())

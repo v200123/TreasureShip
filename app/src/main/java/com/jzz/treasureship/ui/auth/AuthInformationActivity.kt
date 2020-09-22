@@ -15,12 +15,7 @@ import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.auth.adapter.AuthInfoAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.AuthInforViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
-import com.jzz.treasureship.view.dialog_auth_confirm
-import com.lc.mybaselibrary.out
 import com.lc.mybaselibrary.start
-import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.BasePopupView
-import com.lxj.xpopup.interfaces.SimpleCallback
 import kotlinx.android.synthetic.main.activity_auth_information.*
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.coroutines.delay
@@ -39,11 +34,25 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
         const val occuId = "com.jzz.occuId"
     }
 
+    override fun onBackPressed() {
+        if(vp_authinfor.currentItem == 0)
+        super.onBackPressed()
+        else{
+            vp_authinfor.setCurrentItem(--vp_authinfor.currentItem)
+        }
+
+    }
 
     override fun initView() {
+        StateAppBar.setStatusBarLightMode(this,ContextCompat.getColor(mContext,R.color.white))
+
         setStatueColor()
         tv_title.text = "认证信息"
-        rlback.setOnClickListener { finish() }
+        rlback.setOnClickListener { if(vp_authinfor.currentItem == 0)
+            finish()
+        else{
+            vp_authinfor.setCurrentItem(--vp_authinfor.currentItem)
+        } }
         model.mConfirmBody.mOccupationId = intent.getIntExtra(occuId, 0)
         vp_authinfor.adapter = AuthInfoAdapter(supportFragmentManager)
         vp_authinfor.isEnabled = false
@@ -60,6 +69,8 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
             ) {
 
             }
+
+
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
@@ -161,7 +172,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                         null
                     )
                 }
-                "当前这是第$position 个流程了".out(true)
+
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -179,28 +190,13 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
     override fun startObserve() {
 
         mViewModel.qualLiveData.observe(this, {
-            val show =
-                XPopup.Builder(mContext).hasShadowBg(true)
-                    .setPopupCallback(object : SimpleCallback() {
-
-                        override fun onDismiss(popupView: BasePopupView) {
-                            super.onDismiss(popupView)
                             lifecycleScope.launch {
                                 delay(200)
-                                start<AuthConfirmSuccessActivity> { flags = Intent.FLAG_ACTIVITY_CLEAR_TASK }
+                                start<AuthConfirmSuccessActivity> {
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                }
                                 finish()
                             }
-
-                        }
-
-
-                    })
-                    .asCustom(
-                        dialog_auth_confirm
-                            (mContext)
-                    ).show()
-            show.delayDismiss(3000)
-
         })
     }
 
