@@ -32,7 +32,7 @@ class WalletAdapter( mContext: Context) :
                         .setShapeCornersBottomRightRadius(_8dp)
                     holder.setGone(R.id.view_wallet,true)
                 }
-            }
+            }p
         holder.setText(R.id.tv_title, item.mTitle)
             .setText(R.id.tv_createTime, item.mCreateTime)
             .setText(R.id.tv_wallet_balance, "余额：" + item.mBalance)
