@@ -12,6 +12,9 @@
 /captures
 .externalNativeBuild
 .cxx
+<<<<<<< HEAD
 
 .idea/gradle.xml
 .idea/vcs.xml
+=======
+>>>>>>> 274fdd01a1084d68a02a4c6364e6c6bcbf9e18da

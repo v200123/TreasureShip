@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<<<<<<< HEAD
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -56,6 +57,21 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         app:layout_constraintCircleRadius="8dp"
+=======
+
+<com.lc.mybaselibrary.ShapeConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shapeCornersRadius="8dp"
+    app:shapeSolidColor="#FFF3F3F3"
+    app:shapeType="rectangle">
+
+    <ImageView
+>>>>>>> 274fdd01a1084d68a02a4c6364e6c6bcbf9e18da
 
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -64,7 +80,11 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
+<<<<<<< HEAD
         android:background="@color/white"
+=======
+        android:scaleType="fitXY"
+>>>>>>> 274fdd01a1084d68a02a4c6364e6c6bcbf9e18da
         android:src="@drawable/ico_unusecard_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +118,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
+<<<<<<< HEAD
         android:maxWidth="190dp"
+=======
+        android:text="无门槛代金券"
+>>>>>>> 274fdd01a1084d68a02a4c6364e6c6bcbf9e18da
         android:textColor="@color/black_121212"
         android:textSize="15dp"
         app:layout_constraintStart_toEndOf="@+id/textView7"
@@ -120,7 +144,11 @@
         android:id="@+id/btn_goto_shop"
         android:layout_width="60dp"
         android:layout_height="27dp"
+<<<<<<< HEAD
         android:layout_marginEnd="30dp"
+=======
+        android:layout_marginEnd="46dp"
+>>>>>>> 274fdd01a1084d68a02a4c6364e6c6bcbf9e18da
         android:layout_marginBottom="32dp"
         android:text="去使用"
         android:textColor="@color/white"
@@ -130,6 +158,48 @@
         app:rb_backgroundColor="@color/red"
         app:rb_radius="14dp" />
 
+<<<<<<< HEAD
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
+=======
+    <com.lc.mybaselibrary.ShapeConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:shapeCornersBottomLeftRadius="8dp"
+        app:shapeCornersBottomRightRadius="8dp"
+        app:shapeSolidColor="@color/white">
+
+
+        <TextView
+            android:id="@+id/tv_card_unuse_content"
+            android:layout_width="268dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_card_see_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="9dp"
+            android:src="@drawable/ico_see_more"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </com.lc.mybaselibrary.ShapeConstraintLayout>
+</com.lc.mybaselibrary.ShapeConstraintLayout>
+>>>>>>> 274fdd01a1084d68a02a4c6364e6c6bcbf9e18da
