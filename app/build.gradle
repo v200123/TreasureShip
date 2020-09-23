@@ -26,8 +26,8 @@ android {
     dexOptions{
         javaMaxHeapSize = "1g"
     //        incremental true
-        threadCount = 3
-        maxProcessCount = 5
+        threadCount = 4
+        maxProcessCount = 7
 
     }
 
@@ -271,6 +271,8 @@ dependencies {
     }
     releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:3.2.0'
     implementation VersionControllor.dependance.xpop
+    implementation VersionControllor.AndroidX.flexboxLayout
+    implementation "androidx.preference:preference:1.1.1"
 
 }
 

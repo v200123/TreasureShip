@@ -33,7 +33,7 @@ class App : Application() {
     private   var curActivity: AppCompatActivity? = null
     companion object {
         var CONTEXT: Context by Delegates.notNull()
-        lateinit var CURRENT_USER: User
+      var CURRENT_USER: User? = null
         lateinit var iwxapi: IWXAPI
        lateinit var dialogHelp:DialogHelp
         fun getAppContext(): Context {

@@ -71,6 +71,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 
         tv_withDrawAll.setOnClickListener {
             edit_price.setText(withDrawMoney)
+            edit_price.setSelection(edit_price.text.length)
         }
 
         edit_price.addTextChangedListener(object : TextWatcher {

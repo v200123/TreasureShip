@@ -37,11 +37,6 @@
             app:itemTextColor="@color/selector_bnv"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent" />
-        <Button
-            android:text=""
-            android:id="@+id/btn_onclick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
     </RelativeLayout>
 
 </layout>

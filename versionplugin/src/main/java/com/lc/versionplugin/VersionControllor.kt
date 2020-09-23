@@ -37,6 +37,7 @@ private object version{
 //    https://github.com/JackLiaoJH/ImageSelect
     val imageChoiseVersion = "1.2.1"
     val xpopVersion = "2.0.11"
+    val flexboxVersion = "2.0.1"
 }
 
  object AndroidX {
@@ -45,6 +46,7 @@ private object version{
      val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${version.coroutinesVersion}"
      val viewmodelSavedstate = "androidx.lifecycle:lifecycle-viewmodel-savedstate:${version.lifecycleVersion}"
      val material = "com.google.android.material:${version.materialVersion}"
+     val flexboxLayout ="com.google.android:flexbox:${version.flexboxVersion}"
  }
 
     object koin{

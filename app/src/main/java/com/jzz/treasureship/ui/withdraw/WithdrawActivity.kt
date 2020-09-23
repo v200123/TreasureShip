@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
@@ -55,6 +56,8 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
         val userObj = GsonUtils.fromJson(userJson, User::class.java)
         tv_withDrawAll.setOnClickListener {
             edit_price.setText(withDrawMoney)
+            edit_price.setSelection(edit_price.text.length)
+
         }
 
         edit_price.addTextChangedListener(object : TextWatcher {
@@ -139,7 +142,7 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
         }
 
         if (userObj.wxOpenid.isNullOrBlank()) {
-            Glide.with(this).load(mContext.resources.getDrawable(R.drawable.icon_withdraw_wechat)).into(icon_avatar)
+            Glide.with(this).load(ContextCompat.getDrawable(mContext,R.drawable.icon_withdraw_wechat)).into(icon_avatar)
             tv_wx_name.text = "请绑定微信"
             layout_user_bind.setOnClickListener {
                 if (!App.iwxapi.isWXAppInstalled) {
@@ -157,8 +160,8 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
                 }
             }
         } else {
-            Glide.with(this).load(userObj.avatar).apply(RequestOptions.bitmapTransform(CircleCrop())).into(icon_avatar)
-            tv_wx_name.text = userObj.nickName
+            Glide.with(this).load(userObj.wxAvatar).apply(RequestOptions.bitmapTransform(CircleCrop())).into(icon_avatar)
+            tv_wx_name.text = userObj.wxNickName
         }
     }
 

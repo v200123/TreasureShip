@@ -1,11 +1,14 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
 import com.bumptech.glide.Glide
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.SkuSelectAdapter
 import com.jzz.treasureship.model.bean.GoodsDetail
@@ -30,6 +33,19 @@ class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopu
     override fun initPopupContent() {
         super.initPopupContent()
         mCount = et_sku_quantity_input.text.toString().toInt()
+        et_sku_quantity_input.setSelection(et_sku_quantity_input.text.length)
+        et_sku_quantity_input.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                et_sku_quantity_input.setSelection(s?.length?:0)
+            }
+        })
+
 
         mGoods.goodsSku?.get(0)?.skuImg.let {
             Glide.with(context).load(it).into(iv_sku_logo)
@@ -41,8 +57,8 @@ class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopu
         tv_sku_info.text = "库存：${mGoods.goodsSku?.get(0)?.stock}"
 
         rv_skuList.run {
-            layoutManager = LinearLayoutManager(context).also {
-                it.orientation = LinearLayoutManager.VERTICAL
+            layoutManager = FlexboxLayoutManager(context).apply {
+                flexWrap = FlexWrap.WRAP
             }
 
             skuListAdapter.setNewData(mGoods.goodsSku)

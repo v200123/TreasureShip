@@ -139,8 +139,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
         lin_setting.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .hide(this)//隐藏当前Fragment
-                .add(R.id.frame_content, SettingFragment.newInstance(), SettingFragment.javaClass.name)
+                .replace(R.id.frame_content, SettingFragment.newInstance(), SettingFragment.javaClass.name)
                 .commit()
         }
 

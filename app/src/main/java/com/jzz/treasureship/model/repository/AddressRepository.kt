@@ -2,7 +2,10 @@ package com.jzz.treasureship.model.repository
 
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.JzzRetrofitClient
-import com.jzz.treasureship.model.bean.*
+import com.jzz.treasureship.model.bean.AddressPageList
+import com.jzz.treasureship.model.bean.CityPlace
+import com.jzz.treasureship.model.bean.CityPlaces
+import com.jzz.treasureship.model.bean.JzzResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -120,71 +123,71 @@ class AddressRepository : BaseRepository() {
     }
 
     //修改地址
-    suspend fun updatePayPlace(
-        id: Int,
-        address: String,
-        consignee: String,
-        mobile: String,
-        topCityPlace: CityPlace,
-        midCityPlace: CityPlace,
-        lastCityPlace: CityPlace,
-        isDefault: Int,
-        phone: String = ""
-    ): Result<JzzResponse<Unit>> {
-        return safeApiCall(
-            call = {
-                requestUpdatePayPlace(
-                    id,
-                    address,
-                    consignee,
-                    mobile,
-                    topCityPlace,
-                    midCityPlace,
-                    lastCityPlace,
-                    isDefault,
-                    phone
-                )
-            },
-            errorMessage = "新增收货地址失败!"
-        )
-    }
+//    suspend fun updatePayPlace(
+//        id: Int,
+//        address: String,
+//        consignee: String,
+//        mobile: String,
+//        topCityPlace: CityPlace,
+//        midCityPlace: CityPlace,
+//        lastCityPlace: CityPlace,
+//        isDefault: Int,
+//        phone: String = ""
+//    ): Result<JzzResponse<Unit>> {
+//        return safeApiCall(
+//            call = {
+//                requestUpdatePayPlace(
+//                    id,
+//                    address,
+//                    consignee,
+//                    mobile,
+//                    topCityPlace,
+//                    midCityPlace,
+//                    lastCityPlace,
+//                    isDefault,
+//                    phone
+//                )
+//            },
+//            errorMessage = "新增收货地址失败!"
+//        )
+//    }
 
-    private suspend fun  requestUpdatePayPlace(
-        id: Int,
-        address: String,
-        consignee: String,
-        mobile: String,
-        topCityPlace: CityPlace,
-        midCityPlace: CityPlace,
-        lastCityPlace: CityPlace,
-        isDefault: Int,
-        phone: String = ""
-    ): Result<JzzResponse<Unit>> {
-        val root = JSONObject()
-
-        val body = JSONObject()
-        //详细地址
-        body.put("id", id)
-        body.put("address", address)
-        body.put("city", midCityPlace.id)
-        body.put("cityName", midCityPlace.areaName)
-        body.put("consignee", consignee)
-        body.put("district", lastCityPlace.id)
-        body.put("districtName", lastCityPlace.areaName)
-        body.put("isDefault", isDefault)
-        body.put("mobile", mobile)
-        body.put("phone", phone)
-        body.put("province", topCityPlace.id)
-        body.put("provinceName", topCityPlace.areaName)
-
-
-        root.put("body", body)
-
-        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
-        val response = JzzRetrofitClient.service.updatePayAddress(requestBody)
-
-        return executeResponse(response)
-    }
+//    private suspend fun  requestUpdatePayPlace(
+//        id: Int,
+//        address: String,
+//        consignee: String,
+//        mobile: String,
+//        topCityPlace: CityPlace,
+//        midCityPlace: CityPlace,
+//        lastCityPlace: CityPlace,
+//        isDefault: Int,
+//        phone: String = ""
+//    ): Result<JzzResponse<Unit>> {
+//        val root = JSONObject()
+//
+//        val body = JSONObject()
+//        //详细地址
+//        body.put("id", id)
+//        body.put("address", address)
+//        body.put("city", midCityPlace.id)
+//        body.put("cityName", midCityPlace.areaName)
+//        body.put("consignee", consignee)
+//        body.put("district", lastCityPlace.id)
+//        body.put("districtName", lastCityPlace.areaName)
+//        body.put("isDefault", isDefault)
+//        body.put("mobile", mobile)
+//        body.put("phone", phone)
+//        body.put("province", topCityPlace.id)
+//        body.put("provinceName", topCityPlace.areaName)
+//
+//
+//        root.put("body", body)
+//
+//        val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
+//        val response = JzzRetrofitClient.service.updatePayAddress(requestBody)
+//
+//        return executeResponse(response)
+//    }
 
 
     //添加地址

@@ -461,7 +461,8 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                             }, false).show()
                     } else {
                         mOrderId = -1
-                        startActivity(Intent(context, PaySuccessActivity::class.java))
+                        startActivity(Intent(context, PaySuccessActivity::class.java).putExtra(PaySuccessActivity
+                            .orderMoney,it.payMoney))
                     }
                 }
 
@@ -502,7 +503,8 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         1 -> {
                             if (it.totalFee == 0.00) {
                                 mOrderId = -1
-                                startActivity(Intent(context, PaySuccessActivity::class.java))
+                                startActivity(Intent(context, PaySuccessActivity::class.java).putExtra(PaySuccessActivity
+                                    .orderMoney,"${it.totalFee}"))
                             } else {
                                 weChatPay(it)
                             }

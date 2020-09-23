@@ -10,12 +10,11 @@
             type="com.jzz.treasureship.model.bean.DataXXX" />
     </data>
 
-    <com.lc.mybaselibrary.ShapeConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shape_constraint_wallet"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:shapeSolidColor="@color/white"
-        app:shapeCornersRadius="8dp"
+       android:background="@color/white"
         android:paddingTop="15dp"
         android:paddingEnd="15dp"
         android:layout_width="match_parent"
@@ -76,7 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#EEEEEE"
-            tools:layout_editor_absoluteX="21dp"
-            tools:layout_editor_absoluteY="83dp" />
-    </com.lc.mybaselibrary.ShapeConstraintLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

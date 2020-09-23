@@ -10,7 +10,6 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager2.widget.ViewPager2
 import cn.jpush.android.api.JPushInterface
@@ -64,7 +63,7 @@ class WelcomeGuideActivity : AppCompatActivity(), OnPageChangeListener {
         initViewPager()
         //加载底部圆点
         initPoint()
-        vg!!.getChildAt(0).setBackgroundResource(R.drawable.full_holo)
+//        vg!!.getChildAt(0).setBackgroundResource(R.drawable.full_holo)
     }
 
     /**
@@ -97,7 +96,7 @@ class WelcomeGuideActivity : AppCompatActivity(), OnPageChangeListener {
      */
     private fun initViewPager() {
         //实例化图片资源
-        imageIdArray = intArrayOf(R.drawable.guide_1, R.drawable.guide_2, R.drawable.guide_3)
+        imageIdArray = intArrayOf(R.drawable.img_guide_01, R.drawable.img_guide_02, R.drawable.img_guide_03)
         viewList = ArrayList()
         //获取一个Layout参数，设置为全屏
         val params = LinearLayout.LayoutParams(
@@ -108,6 +107,8 @@ class WelcomeGuideActivity : AppCompatActivity(), OnPageChangeListener {
         for (i in 0 until len) { //new ImageView并设置全屏和图片资源
             val imageView = ImageView(this)
             imageView.layoutParams = params
+//            imageView.adjustViewBounds = true
+//            imageView.scaleType = ImageView.ScaleType.CENTER
             imageView.setBackgroundResource(imageIdArray[i])
             //将ImageView加入到集合中
             (viewList as ArrayList<View>).add(imageView)
@@ -115,7 +116,7 @@ class WelcomeGuideActivity : AppCompatActivity(), OnPageChangeListener {
         //view集合初始化好后，设置Adapter
         guide_vp2.adapter = GuidePageAdapter(viewList)
         //设置滑动监听
-        guide_vp2.setOnPageChangeListener(this)
+        guide_vp2.addOnPageChangeListener(this)
     }
 
     override fun onPageScrolled(

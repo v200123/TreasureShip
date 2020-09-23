@@ -46,10 +46,12 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
         <TextView
+            android:textSize="12dp"
             android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="19dp"
+            android:typeface="monospace"
             android:text="审核时间：工作日9:00-17:30\n非工作日申请审核时间将顺延至下个工作日"
             android:textColor="@color/black_333333"
             app:layout_constraintStart_toStartOf="@+id/textView17"

@@ -1,6 +1,5 @@
 package com.jzz.treasureship.ui.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -75,7 +74,7 @@ class SplashActivity : AppCompatActivity() {
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
-                }, 3 * 1000
+                }, 2 * 1000
             )
         }
     }

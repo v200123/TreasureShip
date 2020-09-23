@@ -4,19 +4,19 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Address(
-    val address: String?,
-    var city: Int?,
-    val cityName: String?,
-    val consignee: String?,
-    val district: Int?,
-    var districtName: String?,
-    val id: Int?,
-    val isDefault: Int?,
-    val mobile: String?,
-    val phone: String?,
-    val province: Int?,
-    var provinceName: String?,
-    val userId: Int?
+    val address: String? = "",
+    var city: Int? = 0,
+    val cityName: String?= "",
+    val consignee: String?= "",
+    val district: Int? = 0,
+    var districtName: String?= "",
+    val id: Int? = 0,
+    val isDefault: Int? = 0,
+    val mobile: String?= "",
+    val phone: String?= "",
+    val province: Int? = 0,
+    var provinceName: String?= "",
+    val userId: Int? = 0
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),

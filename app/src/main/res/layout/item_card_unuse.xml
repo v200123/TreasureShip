@@ -2,24 +2,24 @@
 
 
 <com.lc.mybaselibrary.ShapeConstraintLayout
-
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:shapeCornersRadius="8dp"
-    app:shapeSolidColor="#FFF3F3F3"
+    app:shapeSolidColor="@color/white"
     app:shapeType="rectangle">
 
     <ImageView
-
+        android:background="@color/transparent"
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
+
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/ico_unusecard_bg"
@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
+        android:maxWidth="170dp"
         android:text="无门槛代金券"
         android:textColor="@color/black_121212"
         android:textSize="15dp"
@@ -77,7 +78,7 @@
         android:id="@+id/btn_goto_shop"
         android:layout_width="60dp"
         android:layout_height="27dp"
-        android:layout_marginEnd="46dp"
+        android:layout_marginEnd="35dp"
         android:layout_marginBottom="32dp"
         android:text="去使用"
         android:textColor="@color/white"
