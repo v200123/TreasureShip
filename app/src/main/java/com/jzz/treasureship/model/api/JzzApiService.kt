@@ -2,6 +2,7 @@ package com.jzz.treasureship.model.api
 
 import com.google.gson.JsonObject
 import com.jzz.treasureship.model.bean.*
+import com.jzz.treasureship.ui.upAddressRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -311,7 +312,7 @@ interface JzzApiService {
      * 收货地址管理：修改收货地址
      */
     @POST("/api/v1/receiveAddress/update")
-    suspend fun updatePayAddress(@Body body: RequestBody): JzzResponse<Unit>
+    suspend fun updatePayAddress(@Body body: BaseRequestBody): JzzResponse<Unit>
 
     /**
      * 收货地址管理：设置为默认收货地址

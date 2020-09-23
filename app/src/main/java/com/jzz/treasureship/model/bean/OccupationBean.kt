@@ -32,7 +32,7 @@ class image(
     @SerializedName("remark1")
     var mRemark1: String = "", // 可选择护士执业资格证或工牌
     @SerializedName("remark2")
-    var mRemark2: String = "", // 工牌
+    var mRemark2: String? = "", // 工牌
     @SerializedName("title")
     var mTitle: String = "" // 工牌
 )

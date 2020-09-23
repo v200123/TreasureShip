@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
@@ -15,6 +17,7 @@ import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.auth.adapter.AuthInfoAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.AuthInforViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
+import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.activity_auth_information.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -44,7 +47,10 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
     }
 
     override fun initView() {
-        StateAppBar.setStatusBarLightMode(this,ContextCompat.getColor(mContext,R.color.white))
+        (mContext as AppCompatActivity).window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
+//        StateAppBar.setStatusBarLightMode(this,ContextCompat.getColor(mContext,R.color.white))
 
         setStatueColor()
         tv_title.text = "认证信息"
@@ -70,10 +76,9 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
 
             }
 
-
-
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
+                    tv_authinfor_02.setTextColor(mContext.getResColor(R.color.white))
                     dash_view.level = 0
                     btn_baseinfo_next.text = "下一步"
                     btn_baseinfo_next.setOnClickListener {
@@ -105,6 +110,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     )
                 }
                 if (position == 1) {
+                    tv_authinfor_02.setTextColor(mContext.getResColor(R.color.blue_normal))
                     dash_view.level = 1
                     btn_baseinfo_next.apply {
                         text = "提交审核"

@@ -2,7 +2,7 @@ package com.jzz.treasureship.utils
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.jzz.treasureship.App
 import java.io.*
 import kotlin.properties.ReadWriteProperty
@@ -52,6 +52,7 @@ class PreferenceUtils<T>(val name: String, private val default: T) : ReadWritePr
     }
 
     private val prefs: SharedPreferences by lazy {
+
         PreferenceManager.getDefaultSharedPreferences(App.CONTEXT)
     }
 

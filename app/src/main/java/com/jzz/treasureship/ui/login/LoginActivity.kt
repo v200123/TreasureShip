@@ -87,14 +87,20 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
                 }
 
                 it.showSuccess?.let {
-
                     xPopup.dismiss()
-                    finish()
                     if (!JPushInterface.isPushStopped(this@LoginActivity)){
                         JPushInterface.resumePush(this@LoginActivity)
                     }
                     mobile = it.mobile
                     setAlias(it.id!!)
+                    if (mobile.isNullOrBlank()) {
+                        startActivity(Intent(this@LoginActivity, BindPhoneActivity::class.java))
+                    } else {
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    }
+                    finish()
+                }?:run{
+                    xPopup.dismiss()
                 }
 
                 it.showError?.let { err ->
@@ -129,12 +135,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
             0 -> {
                 logs = "Set tag and alias success"
                 Log.i("JIGUANG", logs)
-                if (mobile.isNullOrBlank()) {
-                    startActivity(Intent(this@LoginActivity, BindPhoneActivity::class.java))
-                } else {
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                }
-                finish()
+
             }
             6002 -> {
                 logs = "Failed to set alias and tags due to timeout. Try again after 60s."

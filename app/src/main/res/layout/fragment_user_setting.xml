@@ -188,6 +188,8 @@
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
                             android:id="@+id/lin_shopcar"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -230,6 +232,8 @@
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -276,6 +280,8 @@
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -359,29 +365,33 @@
                     <FrameLayout
                         android:id="@+id/fl_setting_card"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:paddingTop="4dp">
 
                         <TextView
-                            android:layout_marginStart="21.5dp"
-                            android:drawablePadding="6dp"
-                            android:drawableLeft="@drawable/ico_sale_card"
-                            android:gravity="center_vertical"
-                            android:textSize="16dp"
-                            android:text="我的卡券"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    <ImageView
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="23dp"
-                        android:src="@drawable/icon_check_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="21.5dp"
+                            android:drawableLeft="@drawable/ico_sale_card"
+                            android:drawablePadding="6dp"
+                            android:gravity="center_vertical"
+                            android:text="我的卡券"
+                            android:textSize="16dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="23dp"
+                            android:src="@drawable/icon_check_more" />
+
                         <View
-                            android:layout_marginStart="22dp"
-                            android:layout_gravity="bottom"
-                            android:background="@color/white_eeeeee"
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"/>
+                            android:layout_height="1dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginStart="22dp"
+                            android:layout_marginTop="44dp"
+                            android:background="@color/white_eeeeee" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -392,6 +402,8 @@
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
@@ -416,11 +428,7 @@
                                 android:textSize="16sp" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="353.5dp"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="21.5dp"
-                            android:background="#EEEEEE" />
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -430,9 +438,11 @@
                     android:background="#EEEEEE" />
 
                 <LinearLayout
+                    android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
                     android:id="@+id/lin_setting"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@color/white"
                     android:orientation="horizontal">

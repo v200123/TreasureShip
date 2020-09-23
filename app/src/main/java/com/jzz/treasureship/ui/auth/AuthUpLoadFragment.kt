@@ -38,6 +38,7 @@ import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.fragment_auth_upload.*
 import kotlinx.android.synthetic.main.item_card_unuse.*
 import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.*
 import java.text.SimpleDateFormat
@@ -48,7 +49,7 @@ import java.util.*
  *@describe:
  *@Auth: 29579
  **/
-class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
+class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false),EasyPermissions.PermissionCallbacks {
 //    private lateinit var mSelectPath: ArrayList<String>
     private val activityModel by activityViewModels<CommonDataViewModel>()
     private lateinit var mImageList: List<image>
@@ -69,7 +70,6 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
     override fun initVM(): AuthUpLoadViewModel = AuthUpLoadViewModel()
 
     override fun initView() {
-
         tv_first_red.setText(SpannableString("*上传时请确保图片内容清晰、完整、无遮挡").apply {
             setSpan(
                 ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
@@ -86,8 +86,8 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
             mOccupation = mList[0]
 //            用于取第一个的资质的
             val firstOccupation = mList[0]
-            if (firstOccupation.mRemark1.isNotEmpty()) {
-                tv_auth_upload_remark.setText(SpannableString("*" + firstOccupation.mRemark1).apply {
+            if (!firstOccupation.mRemark2.isNullOrBlank()) {
+                tv_auth_upload_remark.setText(SpannableString("*" + firstOccupation.mRemark2).apply {
                     setSpan(
                         ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
                         0,
@@ -150,11 +150,11 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
                 .into(iv_authupload_image01)
             tv_authUpLoad_title.text = firstOccupation.mTitle
             textView13.text = firstOccupation.mRemark1
-            if(firstOccupation.mBackImage2 == null) {tv_auth_upload_remark.visibility = View.GONE}
-            else{
-                tv_auth_upload_remark.visibility = View.VISIBLE
-                tv_auth_upload_remark.text = firstOccupation.mBackImage2
-            }
+//            if(firstOccupation.mBackImage2 == null) {tv_auth_upload_remark.visibility = View.GONE}
+//            else{
+//                tv_auth_upload_remark.visibility = View.VISIBLE
+//                tv_auth_upload_remark.text = firstOccupation.mBackImage2
+//            }
 
             if (firstOccupation.mBackImage2 != null) {
                 Glide.with(this).asDrawable().load(firstOccupation.mBackImage2)
@@ -202,28 +202,23 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
     private fun cleanInformation(image: image) {
         tv_authUpLoad_title.text = image.mTitle
         textView13.text = image.mRemark1
-        if(image.mBackImage2 == null) {tv_auth_upload_remark.visibility = View.GONE}
+        if(image.mRemark2.isNullOrEmpty()) {tv_auth_upload_remark.visibility = View.GONE}
         else{
             tv_auth_upload_remark.visibility = View.VISIBLE
-            tv_auth_upload_remark.text = image.mBackImage2
+            tv_auth_upload_remark.text = SpannableString("*" + image.mRemark2).apply {
+                setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
+                    0,
+                    1,
+                    Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                )
+                setSpan(AbsoluteSizeSpan(12, true), 0, 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            }
         }
         mOccupation = image
         activityModel.mConfirmBody.mQualificationImages = ""
         firstImage = ""
         secondImage = ""
-        if (image.mRemark1.isNotEmpty()) {
-            tv_auth_upload_remark.setText(SpannableString("*" + image.mRemark1).apply {
-                setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.red_cc0814)),
-                    0,
-                    0,
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE
-                )
-                setSpan(AbsoluteSizeSpan(12, true), 0, 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            })
-        }else{
-            tv_auth_upload_remark.visibility = View.GONE
-        }
         Glide.with(this).asDrawable().load(image.mBackImage1).into(iv_authupload_image01)
         activityModel.mConfirmBody.apply {
             mOccupationConfigId = image.mId
@@ -533,5 +528,35 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false) {
         )
     }
 
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this)
+                .setPositiveButton("确定")
+                .setNegativeButton("取消")
+                .setRationale("没有该权限，此应用程序可能无法正常工作。打开应用设置界面以修改应用权限").setTitle("必需权限").build().show()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        if(requestCode == AuthenticationActivity.REQUEST_PERMISSION_WRITE_STORAGE)
+        {
+            gotoPhoto()
+        }
+        if(requestCode == AuthenticationActivity.REQUEST_PERMISSION_CAMERA)
+        {
+
+        }
+        "我权限授予成功了".out()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
 
 }

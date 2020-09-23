@@ -2,7 +2,8 @@ package com.jzz.treasureship.ui.wallet
 
 import android.content.Intent
 import android.view.View
-import androidx.core.content.ContextCompat
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -11,7 +12,6 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.WalletAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.Data04
-import com.jzz.treasureship.model.bean.DataXXX
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.withdraw.WithdrawFragment
 import com.lc.mybaselibrary.ext.getResColor
@@ -25,7 +25,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
     private val mAdapter by lazy { WalletAdapter(mContext) }
     private var pageNum = 1
     private val list: ArrayList<Data04> = ArrayList()
-
+    val xPopup by lazy {XPopup.Builder(mContext).asLoading()}
     companion object {
         fun newInstance(): WalletFragment {
             return WalletFragment()
@@ -76,7 +76,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
-            val xPopup = XPopup.Builder(this@WalletFragment.context).asLoading()
+
             balanceState.observe(this@WalletFragment, Observer {
                 if (it.showLoading) {
                     xPopup.show()
@@ -168,6 +168,14 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
             pageNum = 1
             mViewModel.getBalanceList(-1, pageNum)
         }
+        else{
+            xPopup.dismiss()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        xPopup.dismiss()
     }
 
 }

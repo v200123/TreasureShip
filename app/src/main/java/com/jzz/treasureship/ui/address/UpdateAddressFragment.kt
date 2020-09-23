@@ -14,6 +14,7 @@ import com.jzz.treasureship.model.bean.Address
 import com.jzz.treasureship.model.bean.CityPlace
 import com.jzz.treasureship.model.bean.CityPlaces
 import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.ui.upAddressRequest
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
 import com.lc.mybaselibrary.assertRead
@@ -31,12 +32,13 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
 
     override fun initVM(): AddressViewModel = getViewModel()
     private var allPlace by PreferenceUtils(PreferenceUtils.ALL_PLACES, "")
+    val loadingPopup  by lazy { XPopup.Builder(context).asLoading() }
 
     var topAddressObj: CityPlace? = null
     var midAddressObj: CityPlace? = null
     var lastAddressObj: CityPlace? = null
 
-    var mAddress: Address? = null
+    lateinit var mAddress: Address
 
     private var addressId: Int = -1
 
@@ -52,26 +54,29 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
 
     override fun initView() {
 
-//        val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
-//        if (lastAddress.isNotBlank()) {
-//            lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
-//        }
-//
-//        val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
-//        if (topAddress.isNotBlank()) {
-//            topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
-//        }
-//
-//        val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
-//        if (midAddress.isNotBlank()) {
-//            midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
-//        }
+        val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+        if (lastAddress.isNotBlank()) {
+            lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
+        }
 
+        val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+        if (topAddress.isNotBlank()) {
+            topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
+        }
+
+        val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+        if (midAddress.isNotBlank()) {
+            midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+        }
         activity!!.nav_view.visibility = View.GONE
         tv_title.text = "修改地址"
         arguments?.let {
             val address = it.getParcelable<Address>("address")
-            mAddress = address
+            mAddress = address?: Address()
+//            lastAddressObj = address.provinceName
+//            topAddressObj = address.cityName
+
+
             et_name.setText(address!!.consignee!!)
             et_mobile.setText(address.mobile!!)
             tv_adress.text = "${address.provinceName} ${address.cityName} ${address.districtName}"
@@ -168,8 +173,14 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
     }
 
     override fun startObserve() {
+
+        mViewModel.addressRusult.observe(this,{
+            loadingPopup.dismiss()
+            activity!!.supportFragmentManager.popBackStack()
+            ToastUtils.showShort("操作成功")
+        })
+
         mViewModel.apply {
-            val loadingPopup = XPopup.Builder(context).asLoading()
             cityPlacesState.observe(this@UpdateAddressFragment, Observer {
 
                 if (it.showLoading) {
@@ -255,14 +266,17 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
         btn_saveAddress.setOnClickListener {
             Log.d("caicaicai", "1:${topAddressObj},2:${midAddressObj},3:${lastAddressObj}")
             mViewModel.updateAddress(
-                addressId,
-                et_name.text.toString(), et_mobile.text.toString().replace(" ", ""), et_mxadress.text.toString(),
-                topAddressObj!!, midAddressObj!!, lastAddressObj!!, if (cb_defult_addr.isChecked) {
-                    1
-                } else {
-                    0
-                }
+                upAddressRequest( et_mxadress.text.toString(), lastAddressObj?.cityId ?: mAddress.city!!,
+                    lastAddressObj?.cityAreaName?: mAddress.cityName!!,
+                    et_name.text.toString(),topAddressObj?.id?: mAddress.district!!,
+                    topAddressObj?.areaName?: mAddress.districtName!!,mAddress.id!!,
+                    if (cb_defult_addr.isChecked) {
+                        1
+                    } else {
+                        0
+                    } , et_mobile.text.toString(),"",)
             )
+
         }
     }
 }

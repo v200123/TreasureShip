@@ -88,8 +88,7 @@ class ChooseAddressFragment : BaseVMFragment<AddressViewModel>() {
             R.id.tv_addr_edit -> {
 
                 activity!!.supportFragmentManager.beginTransaction().addToBackStack(ChooseAddressFragment.javaClass.name).hide(this)
-                    .add(
-                        R.id.frame_content,
+                    .add(R.id.frame_content,
                         UpdateAddressFragment.newInstance(adapter.data[position] as Address),
                         UpdateAddressFragment.javaClass.name
                     ).commit()

@@ -90,11 +90,8 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
 
             withContext(provider.main) {
                 checkResult(result, {
-                    if (it.result == null && it.code !== 200) {
-                        val user = User(
-                            "", "", "", -1, "", "", "",
-                            "", "", -1, "", "", "", "", "", "", "", "",0)
-                        emitUiState(showSuccess = user, enableLoginButton = true)
+                    if (it.result == null && it.code != 200) {
+                        emitUiState(showSuccess = null, enableLoginButton = true)
                     } else {
                         emitUiState(showSuccess = it.result, enableLoginButton = true)
                     }
@@ -162,6 +159,8 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
             val result = repository.wxLogin(code)
             withContext(provider.main) {
                 if (result is Result.Success) {
+                    var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE, "")
+                    wxCode = ""
                     emitUiState(showSuccess = result.result?.result, enableLoginButton = true)
                 } else if (result is Result.Error) {
                     emitUiState(showError = result.exception.message, enableLoginButton = true)

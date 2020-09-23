@@ -162,7 +162,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
                     ToastUtils.showShort("${response.message}")
                 } else {
                     val user = response.result
-                    isLogin = true
+                    isLogin = false
                     userJson = GsonUtils.toJson(user)
                     if (user != null) {
                         App.CURRENT_USER = user
@@ -217,7 +217,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
                     ToastUtils.showShort("${response.message}")
                 } else {
                     val user = response.result
-                    isLogin = true
+                    isLogin = !user!!.mobile.isNullOrBlank()
                     userJson = GsonUtils.toJson(user)
                     if (user != null) {
                         App.CURRENT_USER = user

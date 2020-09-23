@@ -12,7 +12,6 @@ typealias LaunchBlock = suspend CoroutineScope.() -> Unit
 typealias Cancel = (e: Exception) -> Unit
 
 open class BaseViewModel : ViewModel() {
-
     val mStateLiveData = MutableLiveData<StateActionEvent>()
 
     open class BaseUiModel<T>(

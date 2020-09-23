@@ -100,4 +100,6 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onBackPressed(): Boolean {
         return BackHandlerHelper.handleBackPress(this)
     }
+
+
 }

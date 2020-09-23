@@ -19,5 +19,9 @@ data class User(
     val username: String?,
     val wxOpenid: String?,
     val wxUnionid: String?,
-    val firstPassTip: Int
+    val firstPassTip: Int,
+    //微信头像
+    val wxAvatar: String,
+    //微信名称
+    val wxNickName: String,
 )

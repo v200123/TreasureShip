@@ -1,7 +1,5 @@
 package com.jzz.treasureship.ui.address
 
-import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,11 +7,13 @@ import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
-import com.jzz.treasureship.model.bean.Address
+import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.AddressPageList
+import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.CityPlace
 import com.jzz.treasureship.model.bean.CityPlaces
 import com.jzz.treasureship.model.repository.AddressRepository
+import com.jzz.treasureship.ui.upAddressRequest
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -139,70 +139,15 @@ class AddressViewModel(val repository: AddressRepository, val provider: Coroutin
             }
         }
     }
+val addressRusult = MutableLiveData<Boolean>()
+    fun updateAddress(addressRequest:upAddressRequest) {
 
-    fun updateAddress(
-        id: Int,
-        name: String,
-        mobile: String,
-        detailAddress: String,
-        topCityPlace: CityPlace,
-        midCityPlace: CityPlace,
-        lastCityPlace: CityPlace,
-        isDefault: Int,
-        phone: String = ""
-    ) {
-        viewModelScope.launch(Dispatchers.Main) {
-            if (name.isBlank() ||
-                mobile.isBlank() ||
-                detailAddress.isBlank()
-            ) {
-                ToastUtils.showShort("有必要的值未填写")
-                return@launch
-            }
-            val result =
-                repository.updatePayPlace(
-                    id,
-                    detailAddress,
-                    name,
-                    mobile,
-                    topCityPlace,
-                    midCityPlace,
-                    lastCityPlace,
-                    isDefault,
-                    phone
-                )
-            if (result is Result.Success) {
-                if (result.result?.code == 200) {
-                    emitState(false, null, "${result.result.result}")
-                } else {
-                    when (result.result?.code) {
-                        401 -> {
-                            var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE, "")
-                            var userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
-                            var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
-                            var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
-                            login = false
-                            wxCode = ""
-                            userInfo = ""
-                            access = ""
-                            emitState(
-                                false,
-                                "失败!${result.result.message}",
-                                "失败!${result.result.message}",
-                                false,
-                                false,
-                                true
-                            )
-                        }
-                        else -> {
-                            emitState(false, "失败!${result.result?.message}", "失败!${result.result?.message}")
-                        }
-                    }
-                }
-            } else {
-                emitState(false, "操作失败")
-            }
+        launchTask {
+            HttpHelp.getRetrofit().updatePayAddress(BaseRequestBody(addressRequest)).resultCheck({
+                addressRusult.postValue(true)
+            })
         }
+
     }
 
     fun setAddressDefault(id: Int) {

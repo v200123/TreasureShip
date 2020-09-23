@@ -15,7 +15,6 @@ import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.databinding.ActivityRegisterBinding
@@ -29,7 +28,6 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class RegisterActivity : BaseVMActivity<LoginViewModel>() {
-
     override fun getLayoutResId() = R.layout.activity_register
 
     override fun initVM(): LoginViewModel = getViewModel()
@@ -138,6 +136,7 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>() {
                     if (!JPushInterface.isPushStopped(this@RegisterActivity)){
                         JPushInterface.resumePush(this@RegisterActivity)
                     }
+                    finish()
                     startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                 }
 

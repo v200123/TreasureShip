@@ -2,7 +2,9 @@ package com.jzz.treasureship.ui.invite
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
@@ -14,9 +16,11 @@ import com.jzz.treasureship.adapter.InvitedAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.DataXXXX
 import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.changeImage
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
@@ -26,14 +30,18 @@ import kotlinx.android.synthetic.main.fragment_mine_invite.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class InviteFragment : BaseVMFragment<InviteViewModel>() {
-
     private val mInvitedDetailsFragment by lazy { InviteDetailsFragment.newInstance() }
     private val mAdapter by lazy { InvitedAdapter() }
     private var allInvitedList = ArrayList<DataXXXX>()
 
     companion object {
-        fun newInstance(): InviteFragment {
-            return InviteFragment()
+        const val isNeedBackToMain = "isNeedBackToMain"
+        fun newInstance(isNeed:Boolean = false): InviteFragment {
+            return InviteFragment().apply {
+                val bundle = Bundle()
+                bundle.putBoolean(isNeedBackToMain,isNeed)
+                arguments = bundle
+            }
         }
     }
 
@@ -42,11 +50,12 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
     override fun initVM(): InviteViewModel = getViewModel()
 
     override fun initView() {
+        val boolean = arguments?.getBoolean(isNeedBackToMain)?:false
         activity!!.nav_view.visibility = View.GONE
-
-
-
         iv_inviteBack.setOnClickListener {
+            if(boolean)
+                mContext.start<MainActivity> {  }
+                else
             activity!!.supportFragmentManager.popBackStack()
         }
 
@@ -201,10 +210,9 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             })
             mCountData.observe(this@InviteFragment, { count ->
                 if (count == 0) {
-                    iv_small_red.setOnClickListener {
-                        App.dialogHelp.showInvite()
-                    }
+                    iv_small_red.visibility = View.INVISIBLE
                 } else {
+                    iv_small_red.visibility = View.VISIBLE
                     iv_small_red.setOnClickListener {
                         App.dialogHelp.showRedEnvelopeClose(count) {
                         mViewModel.getMoney()
