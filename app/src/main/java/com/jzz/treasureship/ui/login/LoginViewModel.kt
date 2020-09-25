@@ -3,13 +3,16 @@ package com.jzz.treasureship.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import cn.jpush.android.api.JPushInterface
 import com.blankj.utilcode.util.ToastUtils
+import com.jzz.treasureship.App
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.UpdateAppBean
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.repository.LoginRepository
+import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +32,7 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
             val result = repository.getUserInfo()
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
+                    JPushInterface.setAlias(App.CONTEXT,1001,result.result.result!!.id.toString())
                     emitUserUiState(false, null, result.result.result)
                 } else {
                     when (result.result?.code) {
@@ -91,6 +95,7 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
             withContext(provider.main) {
                 checkResult(result, {
                     if (it.result == null && it.code != 200) {
+
                         emitUiState(showSuccess = null, enableLoginButton = true)
                     } else {
                         emitUiState(showSuccess = it.result, enableLoginButton = true)
@@ -118,13 +123,13 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
         }
     }
 
-    fun sendSmsCode(type: Int, userName: String?) {
+    fun sendSmsCode(type: Int, userName: String?, countDown: CountDownTimerUtils) {
         viewModelScope.launch(provider.computation) {
             if (userName.isNullOrBlank()) {
                 ToastUtils.showShort("请先输入电话号码")
             } else {
                 userName.let {
-                    repository.sendSmsCode(type, it)
+                    repository.sendSmsCode(type, it,countDown)
                 }
             }
 

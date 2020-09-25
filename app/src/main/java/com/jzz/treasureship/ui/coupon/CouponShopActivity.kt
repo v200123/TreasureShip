@@ -2,10 +2,12 @@ package com.jzz.treasureship.ui.coupon
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
 import com.didichuxing.doraemonkit.widget.bravh.listener.OnItemClickListener
 import com.didichuxing.doraemonkit.widget.bravh.module.LoadMoreModule
@@ -42,7 +44,7 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
     override fun initVM(): CouponShopViewModel = CouponShopViewModel()
 
     override fun initView() {
-        tv_title.text = "适配商城"
+        tv_title.text = "商品推荐"
         StateAppBar.setStatusBarLightMode(this, mContext.getResColor(R.color.white))
         rv_coupon_shop.apply {
             adapter = mAdapter
@@ -175,7 +177,23 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
                 .item_coupon_shop
         ), LoadMoreModule {
         override fun convert(holder: BaseViewHolder, item: Data03) {
-            Glide.with(fragment).asDrawable().load(item.mPicture).into(holder.getView(R.id.iv_coupon_shop))
+            Glide.with(fragment).asDrawable().apply(
+                RequestOptions().placeholder(
+                    ContextCompat.getDrawable
+                        (
+                        fragment, R
+                        .drawable.icon_sku_unload
+                    )
+                ).error(
+                    ContextCompat.getDrawable
+                        (
+                        fragment, R
+                        .drawable.icon_sku_unload
+                    )
+                )
+            )
+                .load(item.mPicture)
+                .into(holder.getView(R.id.iv_coupon_shop))
             holder.setText(R.id.tv_coupon_shop, item.mGoodsName).setText(
                 R.id.tv_coupon_shop_price, "￥${
                     item.mPrice

@@ -18,6 +18,7 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.CenterPopupView
@@ -35,6 +36,7 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
   
 
     private var withDrawMoney: String? = "0.00"
+    var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
 
     var userJson by PreferenceUtils(PreferenceUtils.USER_GSON, "")
     var confirmWithdraw by PreferenceUtils(PreferenceUtils.COMFIRM_WITHDRAW, false)
@@ -46,7 +48,7 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
     override fun initView() {
 //        activity!!.nav_view.visibility = View.GONE
         tv_title.text = "提现"
-        StateAppBar.setStatusBarLightMode(this, mContext.resources.getColor(R.color.white))
+        StateAppBar.setStatusBarLightMode(this, getResColor(R.color.white))
         rlback.setOnClickListener {
            finish()
         }
@@ -189,6 +191,10 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
                 it.showSuccess?.let {
                     xPopup.dismiss()
                     userJson = GsonUtils.toJson(it)
+                    var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE_BIND, "")
+                    wxCode = ""
+                    userJson = GsonUtils.toJson(it)
+                    access = it.accessToken!!
                     Glide.with(mContext).load(it.avatar).apply(RequestOptions.bitmapTransform(CircleCrop()))
                         .into(icon_avatar)
                     tv_wx_name.text = it.nickName

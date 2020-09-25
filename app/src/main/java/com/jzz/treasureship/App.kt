@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import cn.jiguang.analytics.page.ActivityLifecycle
 import cn.jpush.android.api.JPushInterface
 import com.didichuxing.doraemonkit.DoraemonKit
@@ -32,6 +33,7 @@ import kotlin.properties.Delegates
 class App : Application() {
     private   var curActivity: AppCompatActivity? = null
     companion object {
+
         var CONTEXT: Context by Delegates.notNull()
       var CURRENT_USER: User? = null
         lateinit var iwxapi: IWXAPI

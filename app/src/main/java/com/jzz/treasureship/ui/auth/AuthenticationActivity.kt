@@ -1,4 +1,4 @@
-package com.jzz.treasureship.ui.user
+package com.jzz.treasureship.ui.auth
 
 import android.content.ContentValues
 import android.content.Context
@@ -25,7 +25,6 @@ import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.model.bean.UserAuthTypeBean
 import com.jzz.treasureship.ui.activity.MainActivity
-import com.jzz.treasureship.ui.auth.AuthInformationActivity
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.RealPathFromUriUtils
@@ -194,7 +193,7 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
     /**
      * 跳转到照相机
      */
-    @AfterPermissionGranted(Companion.REQUEST_PERMISSION_CAMERA)
+    @AfterPermissionGranted(REQUEST_PERMISSION_CAMERA)
     private fun gotoCamera() {
         //创建拍照存储的图片文件
         tempFile = File(

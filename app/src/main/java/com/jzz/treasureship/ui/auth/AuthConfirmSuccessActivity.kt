@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
 import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.user.AuthenticationActivity
 import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.include_title.*
 

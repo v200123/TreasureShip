@@ -64,6 +64,7 @@
 
         <com.jzz.treasureship.view.PhoneEditText
             android:id="@+id/et_phoneNum"
+            android:maxLength="6"
             android:layout_width="210dp"
             android:layout_height="20dp"
             android:layout_marginTop="258.04dp"

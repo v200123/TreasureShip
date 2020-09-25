@@ -1,8 +1,5 @@
 package com.jzz.treasureship.adapter
 
-import android.util.Log
-import android.view.View
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,7 +14,6 @@ class CommentsAdapter(layoutResId: Int = R.layout.comment_item_layout) :
         super.convert(helper, item)
         val childAdapter by lazy { CommentsChildAdapter() }
         Glide.with(mContext).load(item.userAvatar).into(helper.getView(R.id.iv_commnet_head))
-
         helper.setText(R.id.tv_comment_name, item.nickName)
         helper.setText(R.id.tv_comment_date, item.createTime)
         helper.setText(R.id.tv_praise_count, "${item.likeCount}")

@@ -299,7 +299,7 @@
 
     <fragment
         android:id="@+id/navigation_mine_authentication"
-        android:name="com.jzz.treasureship.ui.user.AuthenticationActivity"
+        android:name="com.jzz.treasureship.ui.auth.AuthenticationActivity"
         android:label="@string/title_mine_authentication"
         tools:layout="@layout/fragment_mine_authentication" />
 

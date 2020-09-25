@@ -42,7 +42,7 @@ class DialogRedEnvelopOpen(context: Context,var count: Int, var money: Float) : 
 
         val spannableString = SpannableString("${money}元")
         spannableString.setSpan(
-            AbsoluteSizeSpan(32, true),
+            AbsoluteSizeSpan(25, true),
             spannableString.length - 1,
             spannableString.length,
             Spannable.SPAN_INCLUSIVE_INCLUSIVE

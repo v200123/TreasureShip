@@ -28,6 +28,7 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.ui.activity.ClipImageActivity
 import com.jzz.treasureship.ui.address.ChooseAddressFragment
+import com.jzz.treasureship.ui.auth.AuthenticationActivity
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.FileUtil
@@ -200,10 +201,10 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
 
                             //审核通过
                             tv_auditStatus.text = "已认证"
-                            lin_mine_audit.isEnabled = true
+                            lin_mine_audit.isEnabled = false
                             tv_auditStatus.setTextColor(context!!.resources.getColor(R.color.blue_normal))
                             lin_mine_modifyName.setOnClickListener(null)
-                            gotoAuth()
+                            lin_mine_audit.setOnClickListener { null }
                         }
                         2 -> {
                             //审核不通过

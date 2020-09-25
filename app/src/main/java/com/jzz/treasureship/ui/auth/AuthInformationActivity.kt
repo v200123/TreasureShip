@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_auth_information.*
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import q.rorbin.badgeview.DisplayUtil
 
 /**
  *@date: 2020/9/11
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
  **/
 class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
     private val model by viewModels<CommonDataViewModel>()
-
+    private val _22dp by lazy { DisplayUtil.dp2px(mContext,22f) }
 
     companion object {
         const val occuId = "com.jzz.occuId"
@@ -78,7 +79,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
 
             override fun onPageSelected(position: Int) {
                 if (position == 0) {
-                    tv_authinfor_02.setTextColor(mContext.getResColor(R.color.white))
+                    tv_authinfor_02.setTextColor(mContext.getResColor(R.color.gray999 ))
                     dash_view.level = 0
                     btn_baseinfo_next.text = "下一步"
                     btn_baseinfo_next.setOnClickListener {
@@ -87,7 +88,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     tv_authinfor_01.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_now)!!.apply {
-                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            setBounds(0, 0, _22dp, _22dp)
                         },
                         null,
                         null
@@ -95,7 +96,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     tv_authinfor_02.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_unslect)!!.apply {
-                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            setBounds(0, 0, _22dp, _22dp)
                         },
                         null,
                         null
@@ -103,7 +104,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     tv_authinfor_03.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_unslect)!!.apply {
-                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            setBounds(0, 0, _22dp, _22dp)
                         },
                         null,
                         null
@@ -124,7 +125,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                         ContextCompat.getDrawable(mContext, R.drawable.icon_withdraw_unselected)!!
                             .apply {
                                 setTint(ContextCompat.getColor(mContext, R.color.blue_normal))
-                                setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                                setBounds(0, 0, _22dp, _22dp)
                             },
                         null,
                         null
@@ -132,7 +133,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     tv_authinfor_02.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_now)!!.apply {
-                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            setBounds(0, 0, _22dp, _22dp)
                         },
                         null,
                         null
@@ -140,7 +141,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     tv_authinfor_03.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_unslect)!!.apply {
-                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            setBounds(0, 0, _22dp, _22dp)
                         },
                         null,
                         null
@@ -154,7 +155,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                         ContextCompat.getDrawable(mContext, R.drawable.icon_withdraw_unselected)!!
                             .apply {
                                 setTint(ContextCompat.getColor(mContext, R.color.blue_normal))
-                                setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                                setBounds(0, 0, _22dp, _22dp)
                             },
                         null,
                         null
@@ -164,7 +165,7 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                         ContextCompat.getDrawable(mContext, R.drawable.icon_withdraw_unselected)!!
                             .apply {
                                 setTint(ContextCompat.getColor(mContext, R.color.blue_normal))
-                                setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                                setBounds(0, 0, _22dp, _22dp)
                             },
                         null,
                         null
@@ -172,13 +173,12 @@ class AuthInformationActivity : BaseVMActivity<AuthInforViewModel>(false) {
                     tv_authinfor_03.setCompoundDrawables(
                         null,
                         ContextCompat.getDrawable(mContext, R.drawable.ico_auth_now)!!.apply {
-                            setBounds(0, 0, this.minimumWidth, this.minimumHeight)
+                            setBounds(0, 0, _22dp, _22dp)
                         },
                         null,
                         null
                     )
                 }
-
             }
 
             override fun onPageScrollStateChanged(state: Int) {

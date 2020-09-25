@@ -38,11 +38,6 @@ public class PushMessageReceiver extends JPushMessageReceiver {
         try{
             //打开自定义的Activity
             Intent i = new Intent(context, MainActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putString(JPushInterface.EXTRA_NOTIFICATION_TITLE,message.notificationTitle);
-//            bundle.putString(JPushInterface.EXTRA_ALERT,message.notificationContent);
-//            i.putExtras(bundle);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
             context.startActivity(i);
         }catch (Throwable throwable){
@@ -155,7 +150,6 @@ public class PushMessageReceiver extends JPushMessageReceiver {
                 } catch (JSONException e) {
 
                 }
-
             }
             Log.d("sendBroadcast","aaaaaaa");
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);

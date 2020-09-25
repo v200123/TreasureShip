@@ -29,7 +29,6 @@ import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.image
 import com.jzz.treasureship.ui.auth.viewmodel.AuthUpLoadViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
-import com.jzz.treasureship.ui.user.AuthenticationActivity
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.RealPathFromUriUtils
 import com.jzz.treasureship.view.DialogSimpleList

@@ -15,6 +15,7 @@ import com.jzz.treasureship.utils.FragmentBackHandler
 import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.SuccessState
+import com.lc.mybaselibrary.out
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import kotlinx.android.synthetic.main.include_title.*
@@ -90,6 +91,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onResume() {
         super.onResume()
         GSYVideoManager.onResume()
+        "我${this::class.java.name}Fragment进入了".out()
     }
 
     override fun onDestroy() {

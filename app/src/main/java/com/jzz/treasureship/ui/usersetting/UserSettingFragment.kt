@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
@@ -12,11 +13,11 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.User
-import com.jzz.treasureship.ui.auth.AuthInformationActivity
+import com.jzz.treasureship.ui.activity.DialogStatusViewModel
+import com.jzz.treasureship.ui.auth.AuthenticationActivity
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.ui.coupon.CouponActivity
 import com.jzz.treasureship.ui.invite.InviteFragment
@@ -25,7 +26,6 @@ import com.jzz.treasureship.ui.orders.OrdersFragment
 import com.jzz.treasureship.ui.ranking.RankingFragment
 import com.jzz.treasureship.ui.setting.SettingFragment
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
-import com.jzz.treasureship.ui.user.AuthenticationActivity
 import com.jzz.treasureship.ui.user.UserInfoFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
@@ -35,6 +35,8 @@ import kotlinx.android.synthetic.main.fragment_user_setting.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class UserSettingFragment : BaseVMFragment<UserViewModel>() {
+    private val mPopStatus by activityViewModels<DialogStatusViewModel> ()
+
     var isShow by PreferenceUtils(PreferenceUtils.no_auth_show,false)
     companion object {
         fun newInstance(): UserSettingFragment {
@@ -48,6 +50,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
             activity!!.nav_view.visibility = View.VISIBLE
             activity!!.nav_view.menu[3].isChecked = true
             StateAppBar.setStatusBarLightMode(this.activity,ContextCompat.getColor(mContext,R.color.blue_normal))
+            if(!mPopStatus.isOpen)
             mViewModel.getUserInfo()
         }
     }
@@ -58,6 +61,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
 
     override fun onResume() {
         super.onResume()
+        if(!mPopStatus.isOpen)
         mViewModel.getUserInfo()
     }
 

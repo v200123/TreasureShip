@@ -1,12 +1,19 @@
 package com.jzz.treasureship.ui.withdraw
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -17,6 +24,7 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
@@ -33,7 +41,16 @@ import java.math.BigDecimal
 
 class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 
+
+
+    var WxBindCode = MutableLiveData<String>()
+    private val mReciver = WxReceiver(WxBindCode)
+    private val  localManager  by lazy { LocalBroadcastManager.getInstance(mContext) }
+    private val mPopStatus by activityViewModels<DialogStatusViewModel> ()
     companion object {
+
+        const val withDraw = "com.lc.with.draw"
+
         fun newInstance(availableWithdraw: String): WithdrawFragment {
             val f = WithdrawFragment()
             val bundle = Bundle()
@@ -46,6 +63,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
     private var withDrawMoney: String? = "0.00"
 
     var userJson by PreferenceUtils(PreferenceUtils.USER_GSON, "")
+    var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
     var confirmWithdraw by PreferenceUtils(PreferenceUtils.COMFIRM_WITHDRAW, false)
 
     override fun getLayoutResId() = R.layout.fragment_with_draw
@@ -59,6 +77,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
         rlback.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
         }
+        localManager.registerReceiver(mReciver, IntentFilter("WxCode"))
         //TODO 提现服务协议还没有，先屏蔽
         layout_lic.visibility = View.INVISIBLE
 
@@ -161,7 +180,9 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 
         if (userObj.wxOpenid.isNullOrBlank()) {
             Glide.with(this).load(context!!.resources.getDrawable(R.drawable.icon_withdraw_wechat)).into(icon_avatar)
+//            var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE_BIND, "")
             tv_wx_name.text = "请绑定微信"
+//            wxCode = ""
             layout_user_bind.setOnClickListener {
                 if (!App.iwxapi.isWXAppInstalled) {
                     ToastUtils.showShort("未安装微信客户端，无法使用微信授权")
@@ -170,17 +191,22 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                 val req: SendAuth.Req = SendAuth.Req()
                 req.scope = "snsapi_userinfo"
                 req.state = "treasureship_wx_bind"
-
-                val wxReturn = App.iwxapi.sendReq(req)
-                val wxCode by PreferenceUtils(PreferenceUtils.WX_CODE_BIND, "")
-                if (wxReturn and wxCode.isNotBlank()) {
-                    mViewModel.bindWeChat(wxCode)
-                }
+               App.iwxapi.sendReq(req)
+                mPopStatus.isOpen = true
+                WxBindCode.observe(this,{
+                    if(mPopStatus.isOpen)
+                        mViewModel.bindWeChat(it)
+                })
             }
         } else {
-            Glide.with(this).load(userObj.avatar).apply(RequestOptions.bitmapTransform(CircleCrop())).into(icon_avatar)
-            tv_wx_name.text = userObj.nickName
+            Glide.with(this).load(userObj.wxAvatar).apply(RequestOptions.bitmapTransform(CircleCrop())).into(icon_avatar)
+            tv_wx_name.text = userObj.wxNickName
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        localManager.unregisterReceiver(mReciver)
     }
 
     override fun initData() {
@@ -188,6 +214,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
     }
 
     override fun startObserve() {
+
         mViewModel.apply {
             val xPopup = XPopup.Builder(context).asLoading()
             userState.observe(this@WithdrawFragment, Observer { it ->
@@ -198,10 +225,12 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                 it.showSuccess?.let {
                     xPopup.dismiss()
                     userJson = GsonUtils.toJson(it)
-                    Glide.with(context!!).load(it.avatar).apply(RequestOptions.bitmapTransform(CircleCrop()))
+                    access = it.accessToken!!
+                    JPushInterface.setAlias(mContext,1001,it.id.toString())
+                    Glide.with(mContext).load(it.avatar).apply(RequestOptions.bitmapTransform(CircleCrop()))
                         .into(icon_avatar)
                     tv_wx_name.text = it.nickName
-
+                    mPopStatus.isOpen = false
                 }
 
                 it.showError?.let { err ->
@@ -219,10 +248,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
                     xPopup.dismiss()
                     confirmWithdraw = false
                     ToastUtils.showShort("${it}")
-
                     mViewModel.getCouponUse()
-
-
                 }
 
                 it.showError?.let { err ->
@@ -252,9 +278,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 
         override fun initPopupContent() {
             super.initPopupContent()
-
             tv_wantWithDrawMoney.text = "¥ $mWithDrawMoney"
-
 //            val tmp = MoneyUtil.moneyMul("$mWithDrawMoney", "0.2")
 //            tv_taxMoney.text = "¥ ${BigDecimal(tmp).stripTrailingZeros().toPlainString()}"
 
@@ -272,5 +296,12 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
             }
         }
 
+    }
+
+    class WxReceiver(var code:MutableLiveData<String>) : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val stringExtra = intent?.getStringExtra(withDraw)
+            code.postValue(stringExtra)
+        }
     }
 }

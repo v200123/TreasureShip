@@ -10,6 +10,7 @@ import com.jzz.treasureship.model.bean.JzzResponse
 import com.jzz.treasureship.model.bean.QuestionnaireResponseVo
 import com.jzz.treasureship.model.bean.UpdateAppBean
 import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -77,8 +78,8 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
     }
 
     //获取验证码
-    suspend fun sendSmsCode(type: Int, userName: String): Result<JzzResponse<Unit>> {
-        return safeApiCall(call = { requestSmsCode(type, userName.replace(" ", "")) }, errorMessage = "验证码请求失败")
+    suspend fun sendSmsCode(type: Int, userName: String, countDown: CountDownTimerUtils): Result<JzzResponse<Unit>> {
+        return safeApiCall(call = { requestSmsCode(type, userName.replace(" ", ""),countDown) }, errorMessage = "验证码请求失败")
     }
 
     //微信登录
@@ -175,7 +176,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
 
     //请求验证码
     private suspend
-    fun requestSmsCode(type: Int, userName: String): Result<JzzResponse<Unit>> {
+    fun requestSmsCode(type: Int, userName: String, countDown: CountDownTimerUtils): Result<JzzResponse<Unit>> {
         val root = JSONObject()
         val body = JSONObject()
 
@@ -193,6 +194,7 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
                 if (response.code != 200) {
                     ToastUtils.showShort("${response.message}")
                 } else {
+                    countDown.start()
                     ToastUtils.showShort("验证码请求成功")
                 }
             },

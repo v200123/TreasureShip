@@ -15,10 +15,7 @@ import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
-import com.lc.mybaselibrary.ErrorState
-import com.lc.mybaselibrary.LoadState
-import com.lc.mybaselibrary.NeedLoginState
-import com.lc.mybaselibrary.SuccessState
+import com.lc.mybaselibrary.*
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.coroutines.launch
@@ -92,6 +89,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     override fun onResume() {
         super.onResume()
+        "我${this::class.java.name}进来了".out()
         showAuthDialog()
     }
 
@@ -139,4 +137,5 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
 
         }
     }
+
 }

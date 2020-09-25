@@ -254,16 +254,26 @@
 -ignorewarnings
 
 #极光推送
--dontoptimize
--dontpreverify
--dontwarn cn.jpush.**
--keep class cn.jpush.** { *; }
--dontwarn cn.jiguang.**
--keep class cn.jiguang.** { *; }
--keep class cn.jiguang.** { *; }
--keep class * extends cn.jpush.android.service.JPushMessageReceiver{*;}
-
--keep class com.xuexiang.xupdate.entity.** { *; }
+ -dontoptimize
+ -dontpreverify
+ -dontwarn cn.jpush.**
+ -keep class cn.jpush.** { *; }
+ -dontwarn cn.jiguang.**
+ -keep class cn.jiguang.** { *; }
+ -dontwarn cn.com.chinatelecom.**
+ -keep class cn.com.chinatelecom.** { *; }
+ -dontwarn com.ct.**
+ -keep class com.ct.** { *; }
+ -dontwarn a.a.**
+ -keep class a.a.** { *; }
+ -dontwarn com.cmic.**
+ -keep class com.cmic.** { *; }
+ -dontwarn com.unicom.**
+ -keep class com.unicom.** { *; }
+ -dontwarn com.sdk.**
+  -keep class com.sdk.** { *; }
+  -dontwarn com.sdk.**
+  -keep class com.sdk.** { *; }
 
 #注意，如果你使用的是自定义Api解析器解析，还需要给你自定义Api实体配上混淆，如下是本demo中配置的自定义Api实体混淆规则：
 -keep class com.xuexiang.xupdatedemo.entity.** { *; }

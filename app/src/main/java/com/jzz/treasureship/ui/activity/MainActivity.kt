@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -163,13 +164,23 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 
     override fun onResume() {
         super.onResume()
-
-
-
-        if (isLogin)
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(receiver, IntentFilter(MESSAGE_RECEIVED_ACTION))
+//        用于获取当前设置的Alias
+        if (JPushInterface.isPushStopped(this)){
+            JPushInterface.resumePush(this)
+        }
+        JPushInterface.getAlias(mContext,0x3)
+        if (isLogin && !mPopStatus.isOpen) {
             mViewModel.getUserInfo()
+        }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(receiver, IntentFilter(MESSAGE_RECEIVED_ACTION))
+    }
 
     override fun initView() {
 //        val window: Window = window
@@ -177,8 +188,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 //        params.systemUiVisibility =
 //            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE
 //        window.setAttributes(params)
-
-
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(receiver, IntentFilter(MESSAGE_RECEIVED_ACTION))
         isForeground = true
@@ -232,7 +241,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             }
         }
 
-
         intent?.let {
             val stringExtra = it.getStringExtra(GoodsId)
             val gotoInvite = it.getBooleanExtra(gotoInvite, false)
@@ -264,12 +272,11 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
+        switchToHome()
         intent?.let {
             val stringExtra = it.getStringExtra(GoodsId)
             val gotoInvite = it.getBooleanExtra(gotoInvite, false)
             val gotoWhere = intent.getStringExtra("goTo")
-
             if (stringExtra != null) {
                 supportFragmentManager.beginTransaction().replace(
                     R.id.frame_content, GoodsDetailFragment.newInstance
@@ -388,7 +395,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             userState.observe(this@MainActivity, Observer {
 
                 it.showSuccess?.let {
-
+                    JPushInterface.setAlias(applicationContext,1001,it.id.toString())
                     Log.e("userInfo", "refresh user info success:$it")
                     "当前的用户登录的accessToken为:${it.accessToken}".out()
                 }
@@ -483,8 +490,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         var isForeground: Boolean = false
         const val GoodsId = "com.goodsId"
         const val gotoInvite = "com.invite"
-
-
         const val MESSAGE_RECEIVED_ACTION = "com.jzz.treasureship.MESSAGE_RECEIVED_ACTION"
         const val KEY_TITLE = "title"
         const val KEY_MESSAGE = "message"

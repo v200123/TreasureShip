@@ -4,12 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.WindowManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
-import com.jzz.treasureship.ui.activity.MainActivity
-
+import com.jzz.treasureship.ui.withdraw.WithdrawFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
@@ -23,7 +22,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 class WXEntryActivity : Activity(), IWXAPIEventHandler {
 
     private lateinit var api: IWXAPI
-
+    private val localManager = LocalBroadcastManager.getInstance(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -57,9 +56,10 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
                                     finish()
                                 }
                                 if (state == "treasureship_wx_bind") {
+                                    localManager.sendBroadcast(Intent("WxCode").putExtra(WithdrawFragment.withDraw,code))
                                     var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE_BIND, "")
                                     wxCode = code
-                                    finish()
+
                                 }
                             }
                         }

@@ -9,7 +9,6 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
@@ -29,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class RegisterActivity : BaseVMActivity<LoginViewModel>() {
     override fun getLayoutResId() = R.layout.activity_register
-
+    private val countDown by lazy {  CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
     override fun initVM(): LoginViewModel = getViewModel()
 
     override fun initView() {
@@ -44,9 +43,11 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>() {
         StateAppBar.setStatusBarLightMode(this, this.resources.getColor(R.color.white))
         iv_getCode.setOnClickListener {
             if (!et_phoneNum.text.isNullOrBlank()) {
-                CountDownTimerUtils(it as TextView, 60 * 1000, 1000).start()
+                mViewModel.sendSmsCode(1, et_phoneNum.text.toString(),countDown)
+            }else{
+                ToastUtils.showShort("请输入验证码")
             }
-            mViewModel.sendSmsCode(1, et_phoneNum.text.toString())
+
         }
 
         tv_alreadyRegis.setOnClickListener {
@@ -130,12 +131,10 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>() {
 
             uiState.observe(this@RegisterActivity, Observer {
                 if (it.showProgress) showProgressDialog()
-
                 it.showSuccess?.let {
+                    countDown.start()
                     dismissProgressDialog()
-                    if (!JPushInterface.isPushStopped(this@RegisterActivity)){
-                        JPushInterface.resumePush(this@RegisterActivity)
-                    }
+                    JPushInterface.setAlias(applicationContext,1001,it.id.toString())
                     finish()
                     startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                 }

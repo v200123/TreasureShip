@@ -370,20 +370,17 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             tsbUpdate = true
                         }
                         "视频收藏成功" -> {
-//                            if (mTab == 0) {
-//                                tsbUpdate = true
-//                                mViewModel.getNewestVideoList(1)
-//                            } else if (mTab == 1) {
-//                                tsbUpdate = true
-//                                mViewModel.getRecommendVideoList(1)
-//                            }
+                            ToastUtils.showShort("收藏视频成功")
+
                             tsbUpdate = true
                             mViewModel.getVideoList(mTab!!.id!!, 1)
                         }
                         "视频评论成功" -> {
+                            ToastUtils.showShort("评论成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
-                        "点赞成功" -> {
+                        "评论点赞成功" -> {
+                            ToastUtils.showShort("点赞成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
                         else -> {

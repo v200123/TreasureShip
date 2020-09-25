@@ -11,21 +11,21 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.PhoneUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.bumptech.glide.Glide
 import com.jzz.treasureship.App
 import com.jzz.treasureship.BigImageActivity
 import com.jzz.treasureship.R
@@ -43,7 +43,10 @@ import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.changeImage
-import com.jzz.treasureship.view.*
+import com.jzz.treasureship.view.CustomComparePricePopup
+import com.jzz.treasureship.view.CustomSkuBottomPopup
+import com.jzz.treasureship.view.RadiusSpan
+import com.lc.mybaselibrary.out
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -61,7 +64,7 @@ import q.rorbin.badgeview.QBadgeView
 import java.net.URLEncoder
 
 
-class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissions.PermissionCallbacks {
+class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissions.PermissionCallbacks {
 
     private val mShopCarFragment by lazy { ShopCarFragment.newInstance() }
     private var isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
@@ -96,6 +99,11 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
     override fun getLayoutResId() = R.layout.fragment_goods_details
 
     override fun initVM(): GoodsDetailViewModel = getViewModel()
+
+    override fun onResume() {
+        super.onResume()
+        "我${this::class.java.name}\t\tFragment进来了".out()
+    }
 
     override fun initView() {
         activity!!.nav_view.visibility = View.GONE
@@ -269,24 +277,14 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
 
     override fun initListener() {
         fab_up.setOnClickListener {
-            slideDetailsLayout.smoothClose(
-                true
-            )
+
         }
 
         iv_back.setOnClickListener {
            (mContext as AppCompatActivity).onBackPressed()
         }
 
-        slideDetailsLayout.setOnSlideDetailsListener { status ->
-            //当前为图文详情页
-            if (status == SlideDetailsLayout.Status.OPEN) {
-                fab_up.show()
-            } else {
-                //当前为商品详情页
-                fab_up.hide()
-            }
-        }
+
     }
 
     inner class MyWebViewClient : WebViewClient() {
@@ -353,7 +351,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
 
     @AfterPermissionGranted(RC_CALL_PERM)
     private fun callService(phoneNum: String) {
-        if (EasyPermissions.hasPermissions(context!!, Manifest.permission.CALL_PHONE)) {
+        if (EasyPermissions.hasPermissions(mContext, Manifest.permission.CALL_PHONE)) {
             PhoneUtils.call(phoneNum)
         } else {
             EasyPermissions.requestPermissions(
@@ -441,11 +439,11 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             }
         }
 
-        rcv_skus.run {
-            layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku?.size?:1)
-            adapter = skuListAdapter
-            suppressLayout(true)
-        }
+//        rcv_skus.run {
+//            layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku?.size?:1)
+//            adapter = skuListAdapter
+//            suppressLayout(true)
+//        }
         skuListAdapter.setNewData(goodsDetail.goodsSku)
         skuListAdapter.notifyDataSetChanged()
 
@@ -500,64 +498,64 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             }).asCustom(skuPopup)
                 .show()
         }
-        layout_chooseGoods.setOnClickListener {
-            val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail)
-            XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss(popupView: BasePopupView) {
-                    super.onDismiss(popupView)
-                    val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
-                    val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
-
-                    selectedGoods.let {
-                        when (skuPopup.mWhere) {
-                            0 -> {
-                                mViewModel.addCart(skuPopup.mCount, selectedGoods.skuId)
-                            }
-                            1 -> {
-                                when (isAudit) {
-                                    -1 -> {
-                                        ToastUtils.showLong("您还未进行资质认证，请先在设置中提交资质认证并通过认证后再进行购买")
-                                    }
-                                    0 -> {
-                                        ToastUtils.showLong("资质审核中，请联系相关人员通过审核后再进行购买")
-                                    }
-                                    1 -> {
-                                        activity!!.supportFragmentManager.beginTransaction()
-                                            .addToBackStack(GoodsDetailFragment.javaClass.name)
-                                            .hide(
-                                                this@GoodsDetailFragment
-                                            ).add(
-                                                R.id.frame_content,
-                                                PaypalFragment.newInstance(
-                                                    1,
-                                                    skuPopup.mCount,
-                                                    selectedGoods.skuId
-                                                ),
-                                                PaypalFragment.javaClass.name
-                                            ).commit()
-                                    }
-                                    2 -> {
-                                        ToastUtils.showLong("资质审核未通过，请联系相关人员/重新提交资质认证资料，资质审核通过后再进行购买")
-                                    }
-                                    else -> {
-
-                                    }
-                                }
-                            }
-                            else -> {
-
-                            }
-                        }
-                    }
-                }
-            }).asCustom(skuPopup)
-                .show()
-        }
-
-        layout_properties.setOnClickListener {
-            XPopup.Builder(it.context)
-                .asCustom(CustomPropertyPopup(it.context, goodsDetail.goodsAttributeList)).show()
-        }
+//        layout_chooseGoods.setOnClickListener {
+//            val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail)
+//            XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
+//                override fun onDismiss(popupView: BasePopupView) {
+//                    super.onDismiss(popupView)
+//                    val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
+//                    val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
+//
+//                    selectedGoods.let {
+//                        when (skuPopup.mWhere) {
+//                            0 -> {
+//                                mViewModel.addCart(skuPopup.mCount, selectedGoods.skuId)
+//                            }
+//                            1 -> {
+//                                when (isAudit) {
+//                                    -1 -> {
+//                                        ToastUtils.showLong("您还未进行资质认证，请先在设置中提交资质认证并通过认证后再进行购买")
+//                                    }
+//                                    0 -> {
+//                                        ToastUtils.showLong("资质审核中，请联系相关人员通过审核后再进行购买")
+//                                    }
+//                                    1 -> {
+//                                        activity!!.supportFragmentManager.beginTransaction()
+//                                            .addToBackStack(GoodsDetailFragment.javaClass.name)
+//                                            .hide(
+//                                                this@GoodsDetailFragment
+//                                            ).add(
+//                                                R.id.frame_content,
+//                                                PaypalFragment.newInstance(
+//                                                    1,
+//                                                    skuPopup.mCount,
+//                                                    selectedGoods.skuId
+//                                                ),
+//                                                PaypalFragment.javaClass.name
+//                                            ).commit()
+//                                    }
+//                                    2 -> {
+//                                        ToastUtils.showLong("资质审核未通过，请联系相关人员/重新提交资质认证资料，资质审核通过后再进行购买")
+//                                    }
+//                                    else -> {
+//
+//                                    }
+//                                }
+//                            }
+//                            else -> {
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            }).asCustom(skuPopup)
+//                .show()
+//        }
+//
+//        layout_properties.setOnClickListener {
+//            XPopup.Builder(it.context)
+//                .asCustom(CustomPropertyPopup(it.context, goodsDetail.goodsAttributeList)).show()
+//        }
 
         tv_callService.setOnClickListener {
             if (goodsDetail.companyPhone.isNullOrBlank()) {
@@ -567,93 +565,93 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissi
             }
         }
 
-        iv_useNote.setOnClickListener {
-            dialog.setCanceledOnTouchOutside(true)
-            //val test = arrayListOf<String>("http://119.3.125.1/upload/default/20200225/1582606192758.jpg","http://119.3.125.1/upload/default/20200225/1582606192779.jpg")
-            val list = ArrayList<ImageView>(goodsDetail.instructionsPictureList.size)
-            for (ele in goodsDetail.instructionsPictureList) {
-                val img = ImageView(context)
-                Glide.with(context!!).load(ele).into(img)
-                list.add(img)
-            }
-            if (list.size > 0) {
-                val mAdapter = ImgAdapter(context!!, list)
-                val vp = dialog.findViewById<ViewPager>(R.id.img_vp)
-                vp.adapter = mAdapter
+//        iv_useNote.setOnClickListener {
+//            dialog.setCanceledOnTouchOutside(true)
+//            //val test = arrayListOf<String>("http://119.3.125.1/upload/default/20200225/1582606192758.jpg","http://119.3.125.1/upload/default/20200225/1582606192779.jpg")
+//            val list = ArrayList<ImageView>(goodsDetail.instructionsPictureList.size)
+//            for (ele in goodsDetail.instructionsPictureList) {
+//                val img = ImageView(context)
+//                Glide.with(context!!).load(ele).into(img)
+//                list.add(img)
+//            }
+//            if (list.size > 0) {
+//                val mAdapter = ImgAdapter(context!!, list)
+//                val vp = dialog.findViewById<ViewPager>(R.id.img_vp)
+//                vp.adapter = mAdapter
+//
+//                val w: Window = dialog.window!!
+//                val lp: WindowManager.LayoutParams = w.attributes
+//                lp.x = 0
+//                lp.y = 40
+//
+//                dialog.findViewById<ImageView>(R.id.close).setOnClickListener {
+//                    dialog.dismiss()
+//                }
+//                dialog.onWindowAttributesChanged(lp)
+//                dialog.show()
+//            } else {
+//                ToastUtils.showShort("无使用说明，请联系商家！")
+//            }
+//
+//        }
 
-                val w: Window = dialog.window!!
-                val lp: WindowManager.LayoutParams = w.attributes
-                lp.x = 0
-                lp.y = 40
-
-                dialog.findViewById<ImageView>(R.id.close).setOnClickListener {
-                    dialog.dismiss()
-                }
-                dialog.onWindowAttributesChanged(lp)
-                dialog.show()
-            } else {
-                ToastUtils.showShort("无使用说明，请联系商家！")
-            }
-
-        }
-
-        layout_qualification.setOnClickListener {
-            val list = ArrayList<ImageView>(goodsDetail.qualificationPictureList.size)
-            for (ele in goodsDetail.qualificationPictureList) {
-                val img = ImageView(context)
-                Glide.with(context!!).load(ele).into(img)
-                list.add(img)
-            }
-            if (list.size > 0) {
-                val mAdapter = ImgAdapter(context!!, list)
-                val vp = dialog.findViewById<ViewPager>(R.id.img_vp)
-                vp.adapter = mAdapter
-
-                val w: Window = dialog.window!!
-                val lp: WindowManager.LayoutParams = w.attributes
-                lp.x = 0
-                lp.y = 40
-                dialog.findViewById<ImageView>(R.id.close).setOnClickListener {
-                    dialog.dismiss()
-                }
-                dialog.onWindowAttributesChanged(lp)
-                dialog.show()
-            } else {
-                ToastUtils.showShort("无资质说明，请联系商家！")
-            }
-        }
-
-        layout_secureNote.setOnClickListener {
-            val list = ArrayList<ImageView>(goodsDetail.specialDescriptionPictureList.size)
-            for (ele in goodsDetail.specialDescriptionPictureList) {
-                val img = ImageView(context)
-                Glide.with(this).load(ele).into(img)
-                list.add(img)
-            }
-            if (list.size > 0) {
-                val mAdapter = ImgAdapter(mContext, list)
-                val vp = dialog.findViewById<ViewPager>(R.id.img_vp)
-                vp.adapter = mAdapter
-
-                val w: Window = dialog.window!!
-                val lp: WindowManager.LayoutParams = w.attributes
-                lp.x = 0
-                lp.y = 40
-
-                dialog.findViewById<ImageView>(R.id.close).setOnClickListener {
-                    dialog.dismiss()
-                }
-                dialog.onWindowAttributesChanged(lp)
-                dialog.show()
-            } else {
-                ToastUtils.showShort("无安全说明，请联系商家！")
-            }
-        }
+//        layout_qualification.setOnClickListener {
+//            val list = ArrayList<ImageView>(goodsDetail.qualificationPictureList.size)
+//            for (ele in goodsDetail.qualificationPictureList) {
+//                val img = ImageView(context)
+//                Glide.with(context!!).load(ele).into(img)
+//                list.add(img)
+//            }
+//            if (list.size > 0) {
+//                val mAdapter = ImgAdapter(context!!, list)
+//                val vp = dialog.findViewById<ViewPager>(R.id.img_vp)
+//                vp.adapter = mAdapter
+//
+//                val w: Window = dialog.window!!
+//                val lp: WindowManager.LayoutParams = w.attributes
+//                lp.x = 0
+//                lp.y = 40
+//                dialog.findViewById<ImageView>(R.id.close).setOnClickListener {
+//                    dialog.dismiss()
+//                }
+//                dialog.onWindowAttributesChanged(lp)
+//                dialog.show()
+//            } else {
+//                ToastUtils.showShort("无资质说明，请联系商家！")
+//            }
+//        }
+//
+//        layout_secureNote.setOnClickListener {
+//            val list = ArrayList<ImageView>(goodsDetail.specialDescriptionPictureList.size)
+//            for (ele in goodsDetail.specialDescriptionPictureList) {
+//                val img = ImageView(context)
+//                Glide.with(this).load(ele).into(img)
+//                list.add(img)
+//            }
+//            if (list.size > 0) {
+//                val mAdapter = ImgAdapter(mContext, list)
+//                val vp = dialog.findViewById<ViewPager>(R.id.img_vp)
+//                vp.adapter = mAdapter
+//
+//                val w: Window = dialog.window!!
+//                val lp: WindowManager.LayoutParams = w.attributes
+//                lp.x = 0
+//                lp.y = 40
+//
+//                dialog.findViewById<ImageView>(R.id.close).setOnClickListener {
+//                    dialog.dismiss()
+//                }
+//                dialog.onWindowAttributesChanged(lp)
+//                dialog.show()
+//            } else {
+//                ToastUtils.showShort("无安全说明，请联系商家！")
+//            }
+//        }
 
         slidedetails_behind?.settings?.javaScriptEnabled = true
         slidedetails_behind?.webViewClient = MyWebViewClient()
         slidedetails_behind?.addJavascriptInterface(
-            JavaScriptInterface(this@GoodsDetailFragment.context!!),
+            JavaScriptInterface(mContext),
             "imagelistner"
         ) //这个是给图片设置点击监听的，如果你项目需要webview中图片，点击查看大图功能，可以这么添加
 

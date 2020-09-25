@@ -1,8 +1,11 @@
 package com.jzz.treasureship.ui.coupon
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
 import com.didichuxing.doraemonkit.widget.bravh.listener.OnItemChildClickListener
@@ -25,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_common_coupon_used.*
  *@description  描述文件
  */
 class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
-    private val mAdapter by lazy { CouponAdapter(arguments?.getInt(mCouponType) ?: 1) }
+    private val mAdapter by lazy { CouponAdapter(arguments?.getInt(mCouponType) ?: 1,mContext) }
     private var nowPosition = 1
     override fun getLayoutResId(): Int = R.layout.fragment_common_coupon_used
 
@@ -103,15 +106,18 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
     }
 
 
-    class CouponAdapter(var type: Int) : BaseQuickAdapter<Data01, BaseViewHolder>(R.layout.item_card_unuse),
+    class CouponAdapter(var type: Int,var mContext:Context) : BaseQuickAdapter<Data01, BaseViewHolder>(R.layout
+        .item_card_unuse),
         LoadMoreModule {
         init {
             addChildClickViewIds(R.id.btn_goto_shop)
         }
 
         override fun convert(holder: BaseViewHolder, item: Data01) {
+            val imageView = holder.getView<ImageView>(R.id.imageView)
             if (type == 1) {
-                holder.setBackgroundResource(R.id.imageView, R.drawable.ico_unusecard_bg)
+                imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.bg_card_unuse))
+                holder
                     .setGone(R.id.btn_goto_shop, false)
                     .setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName)
                     .setText(
@@ -119,7 +125,8 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
                     )
             }
             if (type == 2) {
-                holder.setBackgroundResource(R.id.imageView, R.drawable.ico_usecard_bg)
+                imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ico_usecard_bg))
+                holder
                     .setGone(R.id.btn_goto_shop, true)
                     .setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName).setText(
                         R.id.textView11,
@@ -128,11 +135,11 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
 
             }
             if (type == 3) {
+                imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ico_usecard_bg))
                 holder.setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName)
                     .setText(
                         R.id.textView11, item.mCouponEndTime + "\t\t已过期"
                     )
-
             }
             holder.getView<TextView>(R.id.tv_card_unuse_content).apply {
               text = item.mCouponRemark

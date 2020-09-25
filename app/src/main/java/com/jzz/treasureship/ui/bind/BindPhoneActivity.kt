@@ -1,7 +1,7 @@
 package com.jzz.treasureship.ui.bind
 
-import android.widget.TextView
 import androidx.lifecycle.Observer
+import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -12,6 +12,7 @@ import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_bind_phone.*
@@ -22,7 +23,7 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
     var userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
     var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
     var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
-
+    private val countDown by lazy { CountDownTimerUtils(tv_sendSms, 60 * 1000, 1000) }
     override fun getLayoutResId() = R.layout.activity_bind_phone
 
     override fun initVM(): LoginViewModel = getViewModel()
@@ -32,7 +33,7 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
         login = false
         userInfo = ""
         wxCode = ""
-        StateAppBar.setStatusBarLightMode(this, this.resources.getColor(R.color.white))
+        StateAppBar.setStatusBarLightMode(this, getResColor(R.color.white))
         btn_bind.setOnClickListener {
                 if (et_phone.text.isNullOrBlank() or et_code.text.isNullOrBlank()) {
                 ToastUtils.showShort("请先输入电话号码/验证码")
@@ -43,16 +44,16 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
 
         tv_sendSms.setOnClickListener {
             if (!et_phone.text.isNullOrBlank()) {
-                CountDownTimerUtils(it as TextView, 60 * 1000, 1000).start()
+                mViewModel.sendSmsCode(4, et_phone.text.toString(), countDown)
             }
-            mViewModel.sendSmsCode(4, et_phone.text.toString())
+            else{
+                ToastUtils.showShort("请输入验证码")
+            }
         }
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
-
 
     }
 
@@ -62,17 +63,18 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
     override fun startObserve() {
         mViewModel.apply {
             val xPopup = XPopup.Builder(this@BindPhoneActivity).asLoading()
-            uiState.observe(this@BindPhoneActivity, Observer {
+            uiState.observe(this@BindPhoneActivity, Observer { it ->
                 if (it.showProgress) {
                     xPopup.show()
                 }
 
-                it.showSuccess?.let {
+                it.showSuccess?.let {user->
                     xPopup.dismiss()
-                    App.CURRENT_USER = it
+                    JPushInterface.setAlias(mContext,1001,user.id.toString())
+                    App.CURRENT_USER = user
                     login = true
-                    userInfo = GsonUtils.toJson(it)
-                    access = it.accessToken!!
+                    userInfo = GsonUtils.toJson(user)
+                    access = user.accessToken!!
                     finish()
                     mContext.start<MainActivity> {  }
                 }

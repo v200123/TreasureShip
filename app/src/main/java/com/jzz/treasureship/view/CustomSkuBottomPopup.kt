@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import com.blankj.utilcode.util.GsonUtils
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexWrap
@@ -102,6 +103,9 @@ class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopu
             mCount += 1
             et_sku_quantity_input.setText("${mCount}")
 
+        }
+        et_sku_quantity_input.setOnClickListener {
+            (it as EditText).isCursorVisible = true
         }
 
         iv_subCount.setOnClickListener {

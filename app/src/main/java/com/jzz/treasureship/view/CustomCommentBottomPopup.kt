@@ -1,25 +1,13 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
-import android.util.Log
-import android.view.KeyEvent
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ToastUtils
-import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseQuickAdapter.OnItemChildClickListener
-import com.jzz.treasureship.BR
 import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.BaseBindAdapter
 import com.jzz.treasureship.adapter.CommentsAdapter
-import com.jzz.treasureship.adapter.CommentsChildAdapter
-import com.jzz.treasureship.model.bean.CommentData
-import com.jzz.treasureship.model.bean.CommentPageList
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
@@ -55,12 +43,8 @@ class CustomCommentBottomPopup(
 
         et_comments.imeOptions = EditorInfo.IME_ACTION_SEND
         et_comments.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                actionId == EditorInfo.IME_ACTION_DONE ||
-                event.action == KeyEvent.ACTION_DOWN &&
-                event.keyCode == KeyEvent.KEYCODE_ENTER
+            if (actionId == EditorInfo.IME_ACTION_SEND
             ) {
-                if (!event.isShiftPressed) {
                     if (et_comments.text.toString().isBlank()) {
                         ToastUtils.showShort("先输入点内容再评论吧")
                     } else {
@@ -71,10 +55,10 @@ class CustomCommentBottomPopup(
                                 -1
                             }
                         )
+                        et_comments.setText("")
                         et_comments.hint = "点击回复评论"
                     }
                     true
-                }
             }
             false
         }
@@ -90,6 +74,7 @@ class CustomCommentBottomPopup(
                         -1
                     }
                 )
+                et_comments.setText("")
             }
         }
     }
@@ -98,7 +83,6 @@ class CustomCommentBottomPopup(
         when (view.id) {
             R.id.iv_praise -> {
                 mViewModel.addPraise(mAdapter.data[position].id, mVideoId)
-                dismiss()
             }
             R.id.tv_comment_content -> {
                 replyId = mAdapter.getItem(position)!!.id
@@ -123,6 +107,6 @@ class CustomCommentBottomPopup(
     }
 
     override fun getMaxHeight(): Int {
-        return (XPopupUtils.getWindowHeight(context) * .75f).roundToInt()
+        return (XPopupUtils.getWindowHeight(context) * .6f).roundToInt()
     }
 }

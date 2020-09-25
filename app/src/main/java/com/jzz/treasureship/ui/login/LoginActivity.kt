@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Message
 import android.util.Log
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import cn.jpush.android.api.TagAliasCallback
@@ -29,7 +28,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
 
     private  var mobile:String? = null
     override fun getLayoutResId() = R.layout.activity_login
-
+   private val countDownTimerUtils by lazy { CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
     override fun initVM(): LoginViewModel = getViewModel()
 
     override fun initView() {
@@ -51,9 +50,11 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
 
         iv_getCode.setOnClickListener {
             if (!et_phoneNum.text.isNullOrBlank()) {
-                CountDownTimerUtils(it as TextView, 60 * 1000, 1000).start()
+                mViewModel.sendSmsCode(2, et_phoneNum.text.toString(), countDownTimerUtils)
             }
-            mViewModel.sendSmsCode(2, et_phoneNum.text.toString())
+          else{
+                ToastUtils.showShort("请输入验证码")
+            }
         }
 
         tv_register.setOnClickListener {
@@ -88,17 +89,19 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
 
                 it.showSuccess?.let {
                     xPopup.dismiss()
-                    if (!JPushInterface.isPushStopped(this@LoginActivity)){
+                    if (JPushInterface.isPushStopped(this@LoginActivity)){
                         JPushInterface.resumePush(this@LoginActivity)
                     }
-                    mobile = it.mobile
                     setAlias(it.id!!)
+                    mobile = it.mobile
+
+                    finish()
                     if (mobile.isNullOrBlank()) {
                         startActivity(Intent(this@LoginActivity, BindPhoneActivity::class.java))
                     } else {
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     }
-                    finish()
+
                 }?:run{
                     xPopup.dismiss()
                 }
@@ -125,7 +128,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
     private fun setAlias(id:Int) {
         // 调用 Handler 来异步设置别名
         Log.d("JIGUANG","Prepare to setAlias")
-//        JPushInterface.setAlias(applicationContext,MSG_SET_ALIAS,id as String)
+        JPushInterface.setAlias(applicationContext,MSG_SET_ALIAS,id.toString())
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, id))
     }
 
