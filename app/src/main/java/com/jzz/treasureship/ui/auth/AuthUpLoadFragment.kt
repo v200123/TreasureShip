@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.jzz.treasureship.BuildConfig

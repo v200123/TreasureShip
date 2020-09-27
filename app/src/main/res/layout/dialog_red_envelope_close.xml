@@ -11,21 +11,21 @@
         android:layout_height="wrap_content"
         app:bottomWidth="29dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:setBottomImage="@drawable/ico_close_cricle"
-        app:setTopImage="@drawable/bg_red_envelope_close" >
-
+        app:setTopImage="@drawable/bg_red_envelope_close">
 
 
     </com.jzz.treasureship.view.viewGroup.BaseDialog>
 
     <View
         android:id="@+id/view_close"
-        android:layout_width="80dp"
+        android:layout_width="120dp"
         android:layout_marginTop="120dp"
         android:layout_marginEnd="50dp"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="@+id/dialog_open_red_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

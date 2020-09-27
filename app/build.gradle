@@ -229,6 +229,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:annotations:4.11.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
+    implementation 'com.github.SheHuan:NiceImageView:1.0.5'
 //    implementation 'com.lxj:xpopup:1.8.10-x'
 
     //微信sdk
@@ -273,7 +274,7 @@ dependencies {
     implementation VersionControllor.dependance.xpop
     implementation VersionControllor.AndroidX.flexboxLayout
     implementation "androidx.preference:preference:1.1.1"
-
+    implementation 'com.github.KuangGang:RoundCorners:1.0.6'
 }
 
 

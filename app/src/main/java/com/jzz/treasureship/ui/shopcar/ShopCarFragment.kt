@@ -306,13 +306,13 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     inner class CartOrderChildAdapter(positionShop: Int, layoutResId: Int = R.layout.item_shopcar_goods) :
         BaseQuickAdapter<CartGoodsSku, BaseViewHolder>(layoutResId) {
         private var positionShop: Int = -1
+        var isInit = false
 
         init {
             this.positionShop = positionShop
         }
 
         override fun convert(helper: BaseViewHolder, item: CartGoodsSku?) {
-        var isInit = false
             item?.let { goodsSku ->
 
                 val swipeLayout: SwipeLayout = helper.getView(R.id.swipeLayout)
@@ -410,18 +410,16 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                     XPopup.Builder(context).asConfirm("删除商品", "确认将物品从购物车删除？", "取消", "删除", {
                                         mViewModel.deleteGoods(
                                             spcs.shops[positionShop].mCartGoodsSkuList?.get(
-                                                helper
-                                                    .adapterPosition
+                                                helper.adapterPosition
                                             ).mCartId
                                         )
                                     }, {}, false).show()
                                 }
-                                in 1..99 -> {
+                                in 1..3 -> {
                                     spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.adapterPosition).mCount =
                                         number
                                     var tmp: String? = "0.00"
                                     for (ele in cartAdapter.data) {
-
                                         for (item in ele.mCartGoodsSkuList!!) {
                                             if (item!!.isSelected == 1) {
                                                 tmp = MoneyUtil.moneyAdd(
@@ -434,7 +432,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                     val totalPrice = BigDecimal(tmp).stripTrailingZeros().toPlainString()
                                     tv_totalPrice.text = "¥${totalPrice}"
                                 }
-                                else -> ToastUtils.showShort("不是合理的数量")
+                                else -> ToastUtils.showShort("限购3件")
                             }
                         }
 
@@ -454,7 +452,6 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
 
                 val add: TextView = helper.getView(R.id.tv_shopcar_good_add)
                 add.setOnClickListener {
-
                     spcs.shops[positionShop].mCartGoodsSkuList?.get(helper.layoutPosition)?.mCount!!.plus(1)
                     Log.d("caicaicai", "click")
                     etNum.setText(
@@ -463,7 +460,6 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                         )}"
                     )
                     notifyDataSetChanged()
-
                     var tmp: String? = "0.00"
                     for (ele in cartAdapter.data) {
 

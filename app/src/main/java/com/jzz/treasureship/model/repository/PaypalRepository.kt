@@ -65,18 +65,16 @@ class PaypalRepository : BaseRepository() {
         )
     }
 
-    suspend fun cartSettlement(shops: String,couponId:String?): Result<JzzResponse<ShopcarBuyBean>> {
+    suspend fun cartSettlement(shops: String,couponId:Int?): Result<JzzResponse<ShopcarBuyBean>> {
         return safeApiCall(call = { requestCartSettlement(shops,couponId) }, errorMessage = "购物车结算请求失败")
     }
 
-    private suspend fun requestCartSettlement(shops: String,couponId:String?): Result<JzzResponse<ShopcarBuyBean>> {
+    private suspend fun requestCartSettlement(shops: String,couponId:Int?): Result<JzzResponse<ShopcarBuyBean>> {
         val root = JSONObject()
         val body = JSONObject()
         val shopsJson = JSONArray(shops)
-
         body.put("shops", shopsJson)
-        body.put("couponId ", couponId)
-
+        body.put("couponId", couponId)
         root.put("body", body)
         val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
 

@@ -3,12 +3,12 @@ package com.jzz.treasureship.ui.invite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonObject
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.InvitedList
+import com.jzz.treasureship.model.bean.OrderRewardFirstBean
 import com.jzz.treasureship.model.repository.InviteRespository
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lc.mybaselibrary.ErrorState
@@ -52,7 +52,7 @@ class InviteViewModel(val repository: InviteRespository, val provider: Coroutine
             }
         }
     }
-    val redEnvelopOpen = MutableLiveData<JsonObject>()
+    val redEnvelopOpen = MutableLiveData<OrderRewardFirstBean>()
     fun getMoney()
     {
         launchTask { val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()

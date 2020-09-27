@@ -10,6 +10,7 @@ import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.*
 import com.jzz.treasureship.model.repository.PaypalRepository
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ErrorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -197,7 +198,7 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     )
 
     //购物车结算
-    fun cartSettlement(body: String,couponId:String? = null) {
+    fun cartSettlement(body: String,couponId:Int? = null) {
         emitDirectBuyUiState(true)
         viewModelScope.launch(Dispatchers.Main) {
             val result = repository.cartSettlement(body,couponId)
@@ -381,25 +382,36 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
             }
         }
     }
+    //首单购买返回的示例
+
     val firstBean = MutableLiveData<OrderRewardFirstBean>()
     fun getFirst() {
         launchTask {
             HttpHelp.getRetrofit().getIsFirst(BaseRequestBody()).resultCheck({
-                    it?.apply {
-                        firstBean.postValue(this)
-                    }
+                        firstBean.postValue(it)
             })
         }
     }
 
-    val redAmount = MutableLiveData<Float>()
+    val redAmount = MutableLiveData<FirOrderRedBean>()
+
+    val redEnvelopOpen = MutableLiveData<OrderRewardFirstBean>()
+    fun getMoney()
+    {
+        launchTask { val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()
+            inviteMoney.resultCheck({
+
+                it?.let {
+                    redEnvelopOpen.postValue(it)
+                }
+
+            },{ ErrorState(it) })}
+    }
 
     fun getFirstRed(){
         launchTask {
         HttpHelp.getRetrofit().openOrderRed(BaseRequestBody()).resultCheck({
-                it?.apply {
-                    redAmount.value =  get("inviteRewardAmount").asFloat
-                }
+              redAmount.postValue(it)
         })
     }
 

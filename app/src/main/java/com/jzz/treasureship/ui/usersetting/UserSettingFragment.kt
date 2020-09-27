@@ -114,7 +114,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
         }
         lin_mine_order.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
+                .addToBackStack("aaa")
                 .hide(this)//隐藏当前Fragment
                 .add(R.id.frame_content, OrdersFragment.newInstance(), OrdersFragment.javaClass.name)
                 .commit()
@@ -265,7 +265,9 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
             })
         }
     }
-
+    fun refreshUser(){
+        mViewModel.getUserInfo()
+    }
     override fun initListener() {
     }
 }

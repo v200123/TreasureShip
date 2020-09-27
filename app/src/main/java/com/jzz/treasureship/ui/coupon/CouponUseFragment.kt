@@ -118,7 +118,7 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
             if (type == 1) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.bg_card_unuse))
                 holder
-                    .setGone(R.id.btn_goto_shop, false)
+                    .setVisible(R.id.btn_goto_shop, true)
                     .setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName)
                     .setText(
                         R.id.textView11,item.mCouponStartTime + "-" + item.mCouponEndTime
@@ -127,7 +127,7 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
             if (type == 2) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ico_usecard_bg))
                 holder
-                    .setGone(R.id.btn_goto_shop, true)
+                    .setVisible(R.id.btn_goto_shop, false)
                     .setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName).setText(
                         R.id.textView11,
                         item.mCouponUseTime + "\t\t已使用"
@@ -136,7 +136,9 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
             }
             if (type == 3) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ico_usecard_bg))
-                holder.setText(R.id.textView7, "${item.mCouponValue}").setText(R.id.textView10, item.mCouponName)
+                holder.setText(R.id.textView7, "${item.mCouponValue}")
+                    .setVisible(R.id.btn_goto_shop, false)
+                    .setText(R.id.textView10, item.mCouponName)
                     .setText(
                         R.id.textView11, item.mCouponEndTime + "\t\t已过期"
                     )

@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:text="¥"
                     android:textColor="#ff111111"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/edit_price"

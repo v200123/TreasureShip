@@ -62,6 +62,8 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 
     private var withDrawMoney: String? = "0.00"
 
+
+
     var userJson by PreferenceUtils(PreferenceUtils.USER_GSON, "")
     var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
     var confirmWithdraw by PreferenceUtils(PreferenceUtils.COMFIRM_WITHDRAW, false)
@@ -298,6 +300,9 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
 
     }
 
+    override fun onBackPressed(): Boolean {
+        return true
+    }
     class WxReceiver(var code:MutableLiveData<String>) : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
             val stringExtra = intent?.getStringExtra(withDraw)

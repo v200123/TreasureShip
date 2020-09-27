@@ -98,8 +98,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
                         activity!!.supportFragmentManager.beginTransaction()
                             .addToBackStack(this@WalletFragment.javaClass.name)
                             .hide(this@WalletFragment)//隐藏当前Fragment
-                            .add(
-                                R.id.frame_content,
+                            .add(R.id.frame_content,
                                 WithdrawFragment.newInstance(balance.balance!!),
                                 WithdrawFragment.javaClass.name
                             )
@@ -171,6 +170,10 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
         else{
             xPopup.dismiss()
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        return true
     }
 
     override fun onPause() {

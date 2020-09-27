@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TreasureShip.iml" filepath="$PROJECT_DIR$/TreasureShip.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TreasureShip.iml" filepath="$PROJECT_DIR$/TreasureShip.iml" group="TreasureShip" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/myBaseLibrary/TreasureShip-myBaseLibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/myBaseLibrary/TreasureShip-myBaseLibrary.iml" group="TreasureShip/myBaseLibrary" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/versionplugin/TreasureShip-versionplugin.iml" filepath="$PROJECT_DIR$/.idea/modules/versionplugin/TreasureShip-versionplugin.iml" group="versionplugin" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="TreasureShip/app" />
       <module fileurl="file://$PROJECT_DIR$/myBaseLibrary/myBaseLibrary.iml" filepath="$PROJECT_DIR$/myBaseLibrary/myBaseLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/versionplugin/versionplugin.iml" filepath="$PROJECT_DIR$/versionplugin/versionplugin.iml" />
     </modules>

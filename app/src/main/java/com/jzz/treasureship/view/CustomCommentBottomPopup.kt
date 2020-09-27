@@ -84,7 +84,7 @@ class CustomCommentBottomPopup(
             R.id.iv_praise -> {
                 mViewModel.addPraise(mAdapter.data[position].id, mVideoId)
             }
-            R.id.tv_comment_content -> {
+            R.id.tv_comment_content_parent -> {
                 replyId = mAdapter.getItem(position)!!.id
                 toWho = "@${mAdapter.getItem(position)!!.nickName}"
                 et_comments.hint = toWho

@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.LinearLayout.SHOW_DIVIDER_MIDDLE
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.R
@@ -84,7 +85,7 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
 
         fl_baseinfo_address.setOnClickListener {
             try {
-                val fromAssets = getFromAssets(mContext,"city.json")
+                val fromAssets = getFromAssets(mContext, "city.json")
                 val city = GsonUtils.fromJson(fromAssets, CityPlaces::class.java)
                 showAddressSelect(city)
             } catch (e: Exception) {
@@ -165,32 +166,58 @@ class AuthBaseInformationFragment : BaseVMFragment<AuthBaseInfoViewModel>(false)
 
             }
 
+
             override fun onDismiss(popupView: BasePopupView) {
+                val isFinish: Boolean
 //                        super.onDismiss(popupView)
-                val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
-                if (lastAddress.isNotBlank()) {
+
+                var lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                var topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                var midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                isFinish =
+                    lastAddress.isNotBlank() && topAddress.isNotBlank() && midAddress.isNotBlank()
+
+                if (isFinish) {
                     lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
-                }
-
-                val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
-                if (topAddress.isNotBlank()) {
                     topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
-                }
-
-                val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
-                if (midAddress.isNotBlank()) {
                     midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+                    activityViewModel.mConfirmBody.apply {
+                        this.mAreaProvince = topAddressObj?.id ?: 0
+                        this.mAreaCity = midAddressObj?.id ?: 0
+                        this.mAreaDistrict = lastAddressObj?.id ?: 0
+                    }
+                    et_base_address.setText(
+                        "${topAddressObj?.areaName ?: ""} ${midAddressObj?.areaName ?: ""} ${lastAddressObj?.areaName ?: ""}"
+                    )
+                    lastAddress = ""
+                    topAddress = ""
+                    midAddress = ""
+                } else {
+                    et_base_address.setHint("请选择所在区域")
                 }
 
-                et_base_address.setText(
-                    "${topAddressObj?.areaName ?: ""} ${midAddressObj?.areaName ?: ""} " +
-                            "${lastAddressObj?.areaName ?: ""}"
-                )
-                activityViewModel.mConfirmBody.apply {
-                    this.mAreaProvince = topAddressObj?.id ?: 0
-                    this.mAreaCity = midAddressObj?.id ?: 0
-                    this.mAreaDistrict = lastAddressObj?.id ?: 0
-                }
+
+//                        super.onDismiss(popupView)
+//                val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+//                if (lastAddress.isNotBlank()) {
+//                    lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
+//                }
+//
+//                val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+//                if (topAddress.isNotBlank()) {
+//                    topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
+//                }
+//
+//                val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+//                if (midAddress.isNotBlank()) {
+//                    midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+//                }
+
+//                et_base_address.setText(
+//                    "${topAddressObj?.areaName ?: ""} ${midAddressObj?.areaName ?: ""} " +
+//                            "${lastAddressObj?.areaName ?: ""}"
+//                )
+
             }
 
         }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()

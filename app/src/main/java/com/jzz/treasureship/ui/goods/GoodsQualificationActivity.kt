@@ -58,10 +58,24 @@ class GoodsQualificationActivity : AppCompatActivity(R.layout.activity_goods_qua
             tv_qualification_type.text = good.goodsAttributeList[0].attrValue
             tv_qualification_features.text = good.goodsAttributeList[0].attrValueName
             tv_qualification_norm.text = good.goodsSku?.get(0)?.specValue ?: ""
-            Glide.with(this).asDrawable().load(good.instructionsPictureList[0]).into(iv_produce_image01)
-            Glide.with(this).asDrawable().load(good.qualificationPictureList[0]).into(iv_produce_image02)
-            if(good.specialDescriptionPictureList.isNotEmpty())
-            Glide.with(this).asDrawable().load(good.specialDescriptionPictureList[0]).into(iv_produce_image03)
+            if(good.instructionsPictureList.isNotEmpty()) {
+                Glide.with(this).asDrawable().load(good.instructionsPictureList[0])
+                    .into(iv_produce_image01)
+            }else{
+                tv_qualification_use.visibility = View.GONE
+            }
+            if(good.qualificationPictureList.isNotEmpty()) {
+                Glide.with(this).asDrawable().load(good.qualificationPictureList[0])
+                    .into(iv_produce_image02)
+            }else{
+                tv_qualification_shop.visibility = View.GONE
+            }
+            if(good.specialDescriptionPictureList.isNotEmpty()) {
+                Glide.with(this).asDrawable().load(good.specialDescriptionPictureList[0])
+                    .into(iv_produce_image03)
+            }else{
+                tv_qualification_safe.visibility = View.GONE
+            }
         }
 
     }

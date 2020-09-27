@@ -4,7 +4,6 @@ import android.content.Intent
 import android.view.View
 import android.widget.CheckBox
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
@@ -19,7 +18,6 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.interfaces.OnConfirmListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home_vp.*
 import kotlinx.android.synthetic.main.fragment_set_address.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -122,7 +120,7 @@ class ChooseAddressFragment : BaseVMFragment<AddressViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
-            val xPopup = XPopup.Builder(this@ChooseAddressFragment.context).asLoading("收货地址获取中。。。")
+            val xPopup = XPopup.Builder(this@ChooseAddressFragment.context).asLoading("收货地址获取中")
             addressPageListState.observe(this@ChooseAddressFragment, Observer {
 
                 if (it.showLoading) {
@@ -232,5 +230,8 @@ class ChooseAddressFragment : BaseVMFragment<AddressViewModel>() {
         if (!hidden) {
             mViewModel.getAddressPageList()
         }
+    }
+    override fun onBackPressed(): Boolean {
+        return true
     }
 }

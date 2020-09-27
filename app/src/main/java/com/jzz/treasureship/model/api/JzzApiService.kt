@@ -2,7 +2,6 @@ package com.jzz.treasureship.model.api
 
 import com.google.gson.JsonObject
 import com.jzz.treasureship.model.bean.*
-import com.jzz.treasureship.ui.upAddressRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -451,7 +450,7 @@ interface JzzApiService {
     suspend fun getInviteCount(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
 
     @POST("/api/v1/user/inviteReward")
-    suspend fun getInviteMoney(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
+    suspend fun getInviteMoney(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<OrderRewardFirstBean>
 
     @POST("/api/v1/order/firstOrderReward")
     suspend fun getIsFirst(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<OrderRewardFirstBean>
@@ -460,7 +459,7 @@ interface JzzApiService {
      *
      */
     @POST("/api/v1/order/receiveFirstOrderReward")
-    suspend fun openOrderRed(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<JsonObject>
+    suspend fun openOrderRed(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<FirOrderRedBean>
 
     /**
      * 获取认证后的优惠券是否使用

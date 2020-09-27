@@ -20,6 +20,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
@@ -379,8 +380,12 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             ToastUtils.showShort("评论成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
-                        "评论点赞成功" -> {
+                        "点赞成功" -> {
                             ToastUtils.showShort("点赞成功")
+                            mViewModel.getCommentList(-1, currentVideoID)
+                        }
+                        "取消点赞" ->{
+                            ToastUtils.showShort("取消点赞成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
                         else -> {

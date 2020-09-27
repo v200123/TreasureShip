@@ -15,17 +15,13 @@ import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.ui.activity.MainActivity
-import com.jzz.treasureship.ui.coupon.CouponActivity
-import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.utils.DataCleanManagerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
-import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_setting.*
-import kotlinx.android.synthetic.main.fragment_user_setting.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -43,6 +39,7 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
     private var accessToken by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN,"")
     private var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE,"")
     private var wxCodeBind by PreferenceUtils(PreferenceUtils.WX_CODE_BIND,"")
+    private var authShowSuccess by PreferenceUtils(PreferenceUtils.authShowSuccess, false)
 
     companion object {
         const val RC_CALL_PERM = 122
@@ -50,6 +47,10 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
         fun newInstance(): SettingFragment {
             return SettingFragment()
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        return true
     }
 
     override fun getLayoutResId() = R.layout.fragment_mine_setting
@@ -78,6 +79,7 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
                     accessToken = ""
                     wxCode = ""
                     wxCodeBind = ""
+                    authShowSuccess = false
                     ToastUtils.showShort("已退出系统")
 //                    activity!!.supportFragmentManager.popBackStack()
                     (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()

@@ -281,7 +281,7 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
         }
 
         iv_back.setOnClickListener {
-           (mContext as AppCompatActivity).onBackPressed()
+           (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
         }
 
 
@@ -470,11 +470,15 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
         ll_choice_norm.setOnClickListener {
             val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail)
             XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
+                override fun onShow(popupView: BasePopupView?) {
+                    super.onShow(popupView)
+                }
+
                 override fun onDismiss(popupView: BasePopupView) {
                     super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
                     val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
-
+                    tv_price.text = "¥${selectedGoods.price}"
                     selectedGoods.let {
                         when (skuPopup.mWhere) {
                             0 -> mViewModel.addCart(skuPopup.mCount, selectedGoods.skuId)
@@ -498,6 +502,7 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
             }).asCustom(skuPopup)
                 .show()
         }
+
 //        layout_chooseGoods.setOnClickListener {
 //            val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail)
 //            XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
@@ -671,7 +676,7 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
                     super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
                     val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
-
+                    tv_price.text = "¥${selectedGoods.price}"
 
                     selectedGoods?.let {
                         when (skuPopup.mWhere) {
@@ -726,6 +731,8 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
                     super.onDismiss(popupView)
                     val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
                     val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
+                    tv_price.text = "¥${selectedGoods.price}"
+
                     selectedGoods?.let {
                         when (skuPopup.mWhere) {
                             0 -> mViewModel.addCart(skuPopup.mCount, selectedGoods.skuId)
@@ -825,6 +832,13 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
 //                //ToastUtils.showLong("分享失败！")
 //            }
         }
+    }
+
+    override fun onDestroy() {
+        var s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
+        s = ""
+        super.onDestroy()
+
     }
 
     private fun buildTransaction(type: String?): String? {

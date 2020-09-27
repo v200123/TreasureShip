@@ -14,6 +14,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -34,6 +35,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.RealPathFromUriUtils
+import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
@@ -109,6 +111,10 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
         mViewModel.getUserInfo()
     }
 
+    override fun onBackPressed(): Boolean {
+        return true
+    }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
@@ -157,6 +163,12 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                         }
                     } else {
                         tv_bindWx.text = "已绑定"
+                        val drawable =
+                            ContextCompat.getDrawable(mContext, R.drawable.icon_check_more)
+                        drawable!!.setBounds(0,0,drawable.minimumWidth,drawable.minimumHeight)
+                        drawable.setTint(mContext.getResColor(R.color.transparent))
+                        tv_bindWx.setCompoundDrawables(null,null,drawable,null)
+                        lin_wxBind.setOnClickListener { null }
                         mBindWeChat = false
                     }
 
@@ -167,15 +179,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                             lin_mine_audit.isEnabled = true
                             tv_auditStatus.setTextColor(Color.parseColor("#E60012"))
                             lin_mine_modifyName.setOnClickListener {
-                                activity!!.supportFragmentManager.beginTransaction()
-                                    .addToBackStack(UserInfoFragment.javaClass.name)
-                                    .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(
-                                        R.id.frame_content,
-                                        mModifyNickNameFragment,
-                                        mModifyNickNameFragment.javaClass.name
-                                    )
-                                    .commit()
+                             null
                             }
                             gotoAuth()
                         }
@@ -185,17 +189,17 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                             lin_mine_audit.isEnabled = false
                             lin_mine_audit.setOnClickListener { null }
                             tv_auditStatus.setTextColor(Color.parseColor("#E60012"))
-                            lin_mine_modifyName.setOnClickListener {
-                                activity!!.supportFragmentManager.beginTransaction()
-                                    .addToBackStack(UserInfoFragment.javaClass.name)
-                                    .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(
-                                        R.id.frame_content,
-                                        mModifyNickNameFragment,
-                                        mModifyNickNameFragment.javaClass.name
-                                    )
-                                    .commit()
-                            }
+//                            lin_mine_modifyName.setOnClickListener {
+//                                activity!!.supportFragmentManager.beginTransaction()
+//                                    .addToBackStack(UserInfoFragment.javaClass.name)
+//                                    .hide(this@UserInfoFragment)//隐藏当前Fragment
+//                                    .add(
+//                                        R.id.frame_content,
+//                                        mModifyNickNameFragment,
+//                                        mModifyNickNameFragment.javaClass.name
+//                                    )
+//                                    .commit()
+//                            }
                         }
                         1 -> {
 
@@ -211,17 +215,17 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                             tv_auditStatus.text = "审核未通过"
                             lin_mine_audit.isEnabled = true
                             tv_auditStatus.setTextColor(Color.parseColor("#E60012"))
-                            lin_mine_modifyName.setOnClickListener {
-                                activity!!.supportFragmentManager.beginTransaction()
-                                    .addToBackStack(UserInfoFragment.javaClass.name)
-                                    .hide(this@UserInfoFragment)//隐藏当前Fragment
-                                    .add(
-                                        R.id.frame_content,
-                                        mModifyNickNameFragment,
-                                        mModifyNickNameFragment.javaClass.name
-                                    )
-                                    .commit()
-                            }
+//                            lin_mine_modifyName.setOnClickListener {
+//                                activity!!.supportFragmentManager.beginTransaction()
+//                                    .addToBackStack(UserInfoFragment.javaClass.name)
+//                                    .hide(this@UserInfoFragment)//隐藏当前Fragment
+//                                    .add(
+//                                        R.id.frame_content,
+//                                        mModifyNickNameFragment,
+//                                        mModifyNickNameFragment.javaClass.name
+//                                    )
+//                                    .commit()
+//                            }
                             gotoAuth()
                         }
                         else -> {
@@ -260,8 +264,8 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                 lin_receiveAddress.setOnClickListener {
                     activity!!.supportFragmentManager.beginTransaction()
                         .addToBackStack(UserInfoFragment.javaClass.name)
-                        .hide(this@UserInfoFragment)//隐藏当前Fragment
-                        .add(R.id.frame_content, mAddressFragment, mAddressFragment.javaClass.name)
+//                        .hide(this@UserInfoFragment)//隐藏当前Fragment
+                        .replace(R.id.frame_content, mAddressFragment, mAddressFragment.javaClass.name)
                         .commit()
                 }
             })
@@ -450,6 +454,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
 
             layout_go2Pics.setOnClickListener {
                 gotoPhoto()
+                dismiss()
             }
 
             layout_dissmiss.setOnClickListener {

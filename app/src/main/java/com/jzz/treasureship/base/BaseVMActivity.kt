@@ -19,7 +19,6 @@ import com.lc.mybaselibrary.*
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.coroutines.launch
-import java.util.*
 
 abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true) : AppCompatActivity() {
     private val mLoading by lazy {
@@ -35,7 +34,6 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     //    每日弹窗的记录
     private var isInviteDialog by PreferenceUtils(PreferenceUtils.everyday_invite_dialog, "")
-    private var isAuthDialog by PreferenceUtils(PreferenceUtils.auth_is_show, "")
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     lateinit var mViewModel: VM
@@ -65,7 +63,6 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
                 var userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
                 var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                 var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
-                isAuthDialog = ""
                 isInviteDialog = ""
                 authShowSuccess = false
                 login = false
@@ -89,7 +86,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     override fun onResume() {
         super.onResume()
-        "我${this::class.java.name}进来了".out()
+        "我${this::class.java.name}\t\t进来了".out()
         showAuthDialog()
     }
 
@@ -104,7 +101,6 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
         if (isLogin) {
 //未认证
             val user = GsonUtils.fromJson(userInfo, User::class.java)
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
             if (user.auditStatus == 1 && user.firstPassTip == 1 &&!authShowSuccess) {
                 authShowSuccess = true
                 App.dialogHelp.showSuccess(user.nickName){
@@ -115,25 +111,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
                 }
             }
 
-            if(user.auditStatus == -1)
-            {
-                if(isAuthDialog.isBlank())
-                {
-                    App.dialogHelp.showType()
-                    isAuthDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
-                }
-                else{
-                    val split = isAuthDialog.split(",")
-                    if (split[0].toInt() !=calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
-                            Calendar.DAY_OF_MONTH
-                        )
-                    ) {
-                        App.dialogHelp.showType()
-                    }
-                    isAuthDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
-                }
 
-            }
 
         }
     }

@@ -97,6 +97,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:paddingStart="10dp"
                     android:id="@+id/tv_adress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

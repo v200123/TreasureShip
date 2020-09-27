@@ -33,6 +33,7 @@
                     android:src="@drawable/icon_wechat" />
 
                 <LinearLayout
+                    android:id="@+id/tv_comment_content_parent"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">

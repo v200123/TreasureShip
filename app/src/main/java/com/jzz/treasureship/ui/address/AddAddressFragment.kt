@@ -56,30 +56,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
 
             } else {
                 val places = GsonUtils.fromJson(allPlace, CityPlaces::class.java)
-                XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-
-                    override fun onDismiss(popupView: BasePopupView) {
-//                        super.onDismiss(popupView)
-                        val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
-                        if (lastAddress.isNotBlank()) {
-                            lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
-                        }
-
-                        val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
-                        if (topAddress.isNotBlank()) {
-                            topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
-                        }
-
-                        val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
-                        if (midAddress.isNotBlank()) {
-                            midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
-                        }
-
-                        tv_adress.text =
-                            "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
-                    }
-
-                }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
+                showAddressSelect(places)
             }
         }
 
@@ -116,24 +93,31 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
             }
 
             override fun onDismiss(popupView: BasePopupView) {
+                val isFinish:Boolean
 //                        super.onDismiss(popupView)
-                val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
-                if (lastAddress.isNotBlank()) {
-                    lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
-                }
 
-                val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
-                if (topAddress.isNotBlank()) {
-                    topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
-                }
+                var lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
+                var topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
+                var midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
+                isFinish =lastAddress.isNotBlank()&&topAddress.isNotBlank()&&midAddress.isNotBlank()
 
-                val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
-                if (midAddress.isNotBlank()) {
-                    midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
-                }
+                    if(isFinish) {
+                        lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
+                        topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
+                        midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
+                        tv_adress.text =
+                            "${topAddressObj?.areaName?:""} ${midAddressObj?.areaName?:""} ${lastAddressObj?.areaName?:""}"
+                        lastAddress = ""
+                        topAddress = ""
+                        midAddress = ""
+                    }
+            else{
+                        tv_adress.setHint("请选择所在区域")
+                    }
 
-                tv_adress.text =
-                    "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
+
+
+
             }
 
         }).asCustom(CustomAddPickerBottomPopup(mContext, city)).show()
@@ -159,30 +143,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                     var topAddressObj: CityPlace? = null
                     var midAddressObj: CityPlace? = null
                     var lastAddressObj: CityPlace? = null
-                    XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss(popupView: BasePopupView) {
-//                            super.onDismiss(popupView)
-                            val lastAddress by PreferenceUtils(PreferenceUtils.LAST_ADDRESS, "")
-                            if (lastAddress.isNotBlank()) {
-                                lastAddressObj = GsonUtils.fromJson(lastAddress, CityPlace::class.java)
-                            }
-
-                            val topAddress by PreferenceUtils(PreferenceUtils.TOP_ADDRESS, "")
-                            if (topAddress.isNotBlank()) {
-                                topAddressObj = GsonUtils.fromJson(topAddress, CityPlace::class.java)
-                            }
-
-                            val midAddress by PreferenceUtils(PreferenceUtils.MID_ADDRESS, "")
-                            if (midAddress.isNotBlank()) {
-                                midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
-                            }
-
-                            tv_adress.text =
-                                "${topAddressObj!!.areaName} ${midAddressObj!!.areaName} ${lastAddressObj!!.areaName}"
-                        }
-
-                    }).asCustom(CustomAddPickerBottomPopup(mContext, places)).show()
-
+                    showAddressSelect(places)
                     btn_saveAddress.setOnClickListener {
                         topAddressObj?.let { top ->
                             midAddressObj?.let { mid ->
@@ -216,7 +177,6 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
             })
 
             addressState.observe(this@AddAddressFragment, Observer {
-
                 if (it.showLoading) {
                     loadingPopup.show()
                 }
@@ -264,5 +224,8 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
                 }
             }
         }
+    }
+    override fun onBackPressed(): Boolean {
+        return true
     }
 }

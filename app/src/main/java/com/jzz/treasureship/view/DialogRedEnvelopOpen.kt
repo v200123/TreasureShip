@@ -6,6 +6,7 @@ import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.widget.TextView
 import com.jzz.treasureship.R
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_red_envelope_open.view.*
 
@@ -14,10 +15,12 @@ import kotlinx.android.synthetic.main.dialog_red_envelope_open.view.*
  *@describe:
  *@Auth: 29579
  **/
-class DialogRedEnvelopOpen(context: Context,var count: Int, var money: Float) : CenterPopupView(context) {
-    lateinit var gotoLottery:()->Unit
+class DialogRedEnvelopOpen(context: Context, var count: Int, var money: String) :
+    CenterPopupView(context) {
+    lateinit var gotoLottery: () -> Unit
+    lateinit var noChange: (view:BasePopupView) -> Unit
     override fun getImplLayoutId(): Int {
-        if(count >0)
+        if (count > 0)
             return R.layout.dialog_red_envelope_open
         else
             return R.layout.dialog_red_envelope_open_nochance
@@ -27,16 +30,15 @@ class DialogRedEnvelopOpen(context: Context,var count: Int, var money: Float) : 
 
     override fun onCreate() {
         super.onCreate()
-
-        if(count == 0)
-        {
+//当没有机会是就会走noChange
+        if (count == 0) {
             view_click.setOnClickListener {
-                this.dismiss()
-                gotoLottery()
+                noChange(this)
+                dismiss()
             }
-        }else{
+        } else {
             view_click.setOnClickListener {
-               this.dismiss()
+                gotoLottery()
             }
         }
 

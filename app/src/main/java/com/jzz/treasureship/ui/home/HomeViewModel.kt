@@ -37,7 +37,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 if (result.result?.code == 200) {
                     emitHomeUiState(false, null, result.result.result)
                 } else {
-                    emitHomeUiState(false, "失败!${result.result?.message}")
+                    emitHomeUiState(false, "${result.result?.message}")
                 }
             } else {
                 emitHomeUiState(false, "推荐列表请求失败")
@@ -54,7 +54,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 if (result.result?.code == 200) {
                     emitHomeUiState(false, null, result.result.result)
                 } else {
-                    emitHomeUiState(false, "失败!${result.result?.message}")
+                    emitHomeUiState(false, "${result.result?.message}")
                 }
             } else {
                 emitHomeUiState(false, "最新列表请求失败")
@@ -70,7 +70,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 if (result.result?.code == 200) {
                     emitHomeUiState(false, null, result.result.result)
                 } else {
-                    emitHomeUiState(false, "失败!${result.result?.message}")
+                    emitHomeUiState(false, "${result.result?.message}")
                 }
             } else {
                 emitHomeUiState(false, "视频列表请求失败")
@@ -163,15 +163,15 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             access = ""
                             emitOperateUiState(
                                 false,
-                                "失败!${result.result.message}",
-                                "失败!${result.result.message}",
+                                "${result.result.message}",
+                                "${result.result.message}",
                                 false,
                                 false,
                                 true
                             )
                         }
                         else -> {
-                            emitOperateUiState(false, "失败!${result.result?.message}")
+                            emitOperateUiState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -202,10 +202,10 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitOperateUiState(false, "失败!${result.result.message}", "null", false, false, true)
+                            emitOperateUiState(false, "${result.result.message}", "null", false, false, true)
                         }
                         else -> {
-                            emitOperateUiState(false, "失败!${result.result?.message}", "null")
+                            emitOperateUiState(false, "${result.result?.message}", "null")
                         }
                     }
                 }
@@ -234,10 +234,10 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitHomeUiState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitHomeUiState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitHomeUiState(false, "失败!${result.result?.message}")
+                            emitHomeUiState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -286,9 +286,9 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
             val result = repository.addPraise(commentId, videoId)
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
-                    emitOperateUiState(false, null, "评论点赞成功")
+                    emitOperateUiState(false, null, result.result.message)
                 } else {
-                    emitOperateUiState(false, "失败!${result.result?.message}")
+                    emitOperateUiState(false, "${result.result?.message}")
                 }
             } else {
                 emitOperateUiState(false, "评论点赞请求失败")
@@ -305,7 +305,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 if (result.result?.code == 200) {
                     emitOperateUiState(false, null, "视频评论成功")
                 } else {
-                    emitOperateUiState(false, "失败!${result.result?.message}")
+                    emitOperateUiState(false, "${result.result?.message}")
                 }
             } else {
                 emitOperateUiState(false, "评论点赞请求失败")
@@ -430,7 +430,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             access = ""
                             emitOperateUiState(
                                 false,
-                                "失败!${result.result.message}",
+                                "${result.result.message}",
                                 null,
                                 false,
                                 false,
@@ -438,7 +438,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             )
                         }
                         else -> {
-                            emitOperateUiState(false, "失败!${result.result?.message}", "失败!${result.result?.message}")
+                            emitOperateUiState(false, "${result.result?.message}", "${result.result?.message}")
                         }
                     }
                 }
@@ -469,15 +469,15 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             access = ""
                             emitOperateUiState(
                                 false,
-                                "失败!${result.result.message}",
-                                "失败!${result.result.message}",
+                                "${result.result.message}",
+                                "${result.result.message}",
                                 false,
                                 false,
                                 true
                             )
                         }
                         else -> {
-                            emitOperateUiState(false, "失败!${result.result?.message}", "失败!${result.result?.message}")
+                            emitOperateUiState(false, "${result.result?.message}", "${result.result?.message}")
                         }
                     }
                 }
@@ -526,7 +526,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 if (result.result?.code == 200) {
                     emitSearchUiState(false, null, result.result.result)
                 } else {
-                    emitSearchUiState(false, "失败!${result.result?.message}")
+                    emitSearchUiState(false, "${result.result?.message}")
                 }
             } else {
                 emitSearchUiState(false, "搜索请求失败")
@@ -578,7 +578,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             access = ""
                             emitOperateUiState(
                                 false,
-                                "失败!${result.result.message}",
+                                "${result.result.message}",
                                 result.result.message,
                                 false,
                                 false,
@@ -586,7 +586,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                             )
                         }
                         else -> {
-                            emitOperateUiState(false, "失败!${result.result?.message}", "失败!${result.result?.message}")
+                            emitOperateUiState(false, "${result.result?.message}", "${result.result?.message}")
                         }
                     }
                 }
@@ -608,7 +608,7 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 if (result.result?.code == 200) {
                     emitHomeTabsUiState(false, null, result.result.result)
                 } else {
-                    emitHomeTabsUiState(false, "失败!${result.result?.message}")
+                    emitHomeTabsUiState(false, "${result.result?.message}")
                 }
             } else {
                 emitHomeTabsUiState(false, "首页分类请求失败")
@@ -654,10 +654,10 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 } else {
                     when (result.result?.code) {
                         401 -> {
-                            emitQuestionsUiState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitQuestionsUiState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitQuestionsUiState(false, "失败!${result.result?.message}")
+                            emitQuestionsUiState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -703,10 +703,10 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 } else {
                     when (result.result?.code) {
                         401 -> {
-                            emitRedEnvUiState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitRedEnvUiState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitRedEnvUiState(false, "失败!${result.result?.message}")
+                            emitRedEnvUiState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -755,10 +755,10 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                         401 -> {
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            emitRewardUiState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitRewardUiState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitRewardUiState(false, "失败!${result.result?.message}")
+                            emitRewardUiState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -804,10 +804,10 @@ class HomeViewModel(val repository: HomeRepository, val provider: CoroutinesDisp
                 } else {
                     when (result.result?.code) {
                         401 -> {
-                            emitAdUiState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitAdUiState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitAdUiState(false, "失败!${result.result?.message}")
+                            emitAdUiState(false, "${result.result?.message}")
                         }
                     }
                 }

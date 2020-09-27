@@ -54,6 +54,6 @@ class CommentsAdapter(layoutResId: Int = R.layout.comment_item_layout) :
         //点外部评论视频
         helper.addOnClickListener(R.id.layout_comment_item)
         //点评论回复评论
-        helper.addOnClickListener(R.id.tv_comment_content)
+        helper.addOnClickListener(R.id.tv_comment_content_parent)
     }
 }

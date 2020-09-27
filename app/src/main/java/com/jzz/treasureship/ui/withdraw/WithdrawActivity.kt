@@ -1,12 +1,15 @@
 package com.jzz.treasureship.ui.withdraw
 
 import android.content.Context
+import android.content.IntentFilter
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -33,7 +36,10 @@ import java.math.BigDecimal
 
 class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
 
-  
+    var WxBindCode = MutableLiveData<String>()
+
+    private val mReciver = WithdrawFragment.WxReceiver(WxBindCode)
+    private val  localManager  by lazy { LocalBroadcastManager.getInstance(mContext) }
 
     private var withDrawMoney: String? = "0.00"
     var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
@@ -52,6 +58,8 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
         rlback.setOnClickListener {
            finish()
         }
+        localManager.registerReceiver(mReciver, IntentFilter("WxCode"))
+
         //TODO 提现服务协议还没有，先屏蔽
         layout_lic.visibility = View.INVISIBLE
 
@@ -173,6 +181,10 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
 
     override fun startObserve() {
 
+        WxBindCode.observe(this,{
+                mViewModel.bindWeChat(it)
+        })
+
         mViewModel.canWithDraw.observe(this,{
             edit_price.hint = "可提现$it"
             withDrawMoney = BigDecimal(it).toString()
@@ -234,7 +246,11 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
 //        })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        localManager.unregisterReceiver(mReciver)
 
+    }
 
     inner class CustomWithDrawDialog(context: Context, withDrawMoney: String) : CenterPopupView(context) {
 

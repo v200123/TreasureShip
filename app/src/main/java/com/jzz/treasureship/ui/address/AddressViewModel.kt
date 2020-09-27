@@ -43,10 +43,10 @@ class AddressViewModel(val repository: AddressRepository, val provider: Coroutin
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitCityPlacesState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitCityPlacesState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitCityPlacesState(false, "失败!${result.result?.message}")
+                            emitCityPlacesState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -127,10 +127,10 @@ class AddressViewModel(val repository: AddressRepository, val provider: Coroutin
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitState(false, "失败!${result.result?.message}")
+                            emitState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -170,15 +170,15 @@ val addressRusult = MutableLiveData<Boolean>()
                             access = ""
                             emitState(
                                 false,
-                                "失败!${result.result.message}",
-                                "失败!${result.result.message}",
+                                "${result.result.message}",
+                                "${result.result.message}",
                                 false,
                                 false,
                                 true
                             )
                         }
                         else -> {
-                            emitState(false, "失败!${result.result?.message}", "失败!${result.result?.message}")
+                            emitState(false, "${result.result?.message}", "${result.result?.message}")
                         }
                     }
                 }
@@ -235,10 +235,10 @@ val addressRusult = MutableLiveData<Boolean>()
                             wxCode = ""
                             userInfo = ""
                             access = ""
-                            emitAddressPageListState(false, "失败!${result.result.message}", null, false, false, true)
+                            emitAddressPageListState(false, "${result.result.message}", null, false, false, true)
                         }
                         else -> {
-                            emitAddressPageListState(false, "失败!${result.result?.message}")
+                            emitAddressPageListState(false, "${result.result?.message}")
                         }
                     }
                 }
@@ -297,15 +297,15 @@ val addressRusult = MutableLiveData<Boolean>()
                             access = ""
                             emitDelAddressPageListState(
                                 false,
-                                "失败!${result.result.message}",
-                                "失败!${result.result.message}",
+                                "${result.result.message}",
+                                "${result.result.message}",
                                 false,
                                 false,
                                 true
                             )
                         }
                         else -> {
-                            emitDelAddressPageListState(false, "失败!${result.result?.message}")
+                            emitDelAddressPageListState(false, "${result.result?.message}")
                         }
                     }
                 }

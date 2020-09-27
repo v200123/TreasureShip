@@ -16,21 +16,24 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.jzz.treasureship.App
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.model.api.HttpHelp
+import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.ui.addressbook.AddressBookFragment
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.invite.InviteFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
-import com.jzz.treasureship.ui.msg.MsgFragment
 import com.jzz.treasureship.ui.orders.OrdersFragment
 import com.jzz.treasureship.ui.treasurebox.TreasureBoxFragment
 import com.jzz.treasureship.ui.usersetting.UserSettingFragment
@@ -38,13 +41,13 @@ import com.jzz.treasureship.utils.BackHandlerHelper
 import com.jzz.treasureship.utils.HProgressDialogUtils
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lc.mybaselibrary.out
-import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate._XUpdate
 import com.xuexiang.xupdate.service.OnFileDownloadListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.io.File
@@ -57,6 +60,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     private var curFragment by PreferenceUtils(PreferenceUtils.CUR_FRAGMENT, "")
     private var mCurrentFragment = Fragment()
     private val mPopStatus by viewModels<DialogStatusViewModel>()
+    private var authShowSuccess by PreferenceUtils(PreferenceUtils.authShowSuccess, false)
 
     //    private val mHomeFragment by lazy { HomeFragment.newInstance() }
     private val mTsbFragment by lazy { TreasureBoxFragment.newInstance() }
@@ -77,6 +81,10 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                 2, "2" -> {
                     //刷新用户信息
                     mViewModel.getUserInfo()
+                    if(mCurrentFragment is UserSettingFragment )
+                    {
+                        (mCurrentFragment as UserSettingFragment).refreshUser()
+                    }
                 }
             }
         }
@@ -88,73 +96,78 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     private var lastBackPressTime = -1L
 
     override fun onBackPressed() {
-        super.onBackPressed()
         if (GSYVideoManager.backFromWindowFull(this)) {
             return
         }
 
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            val currentTIme = System.currentTimeMillis()
-            if (lastBackPressTime == -1L || currentTIme - lastBackPressTime >= 2000) {
-                // 显示提示信息
-                ToastUtils.showShort("再按一次返回键退出宝舰")
-                // 记录时间
-                lastBackPressTime = currentTIme
+//        if (!BackHandlerHelper.handleBackPress(this)) {
+//            super.onBackPressed()
+//        }
+//        else
+
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            supportFragmentManager.popBackStack()
+        } else
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                val currentTIme = System.currentTimeMillis()
+                if (lastBackPressTime == -1L || currentTIme - lastBackPressTime >= 2000) {
+                    // 显示提示信息
+                    ToastUtils.showShort("再按一次返回键退出宝舰")
+                    // 记录时间
+                    lastBackPressTime = currentTIme
+                }
             } else {
-                //退出应用
-                finish()
+                super.onBackPressed()
             }
-        } else {
-            when (supportFragmentManager.findFragmentById(R.id.frame_content)) {
-                is MsgFragment -> {
-                    super.onBackPressed()
-                }
-                is GoodsDetailFragment -> {
-                    if (intent.getStringExtra(GoodsId) != null)
-                        finish()
-                    else {
-                        if (!BackHandlerHelper.handleBackPress(this)) {
-                            super.onBackPressed()
-                        }
-                    }
-                }
-                is InviteFragment ->{
-                    if( intent.getBooleanExtra(gotoInvite, false))
-                    {
-                        mContext.start<MainActivity> {  }
-                    }else{
-                        if (!BackHandlerHelper.handleBackPress(this)) {
-                            super.onBackPressed()
-                        }
-                    }
+//        else {
+//            when (supportFragmentManager.findFragmentById(R.id.frame_content)) {
+//                is MsgFragment -> {
+//                    super.onBackPressed()
+//                }
+//                is GoodsDetailFragment -> {
+//                    if (intent.getStringExtra(GoodsId) != null)
+//                        finish()
+//                    else {
+//                        if (!BackHandlerHelper.handleBackPress(this)) {
+//                            super.onBackPressed()
+//                        }
+//                    }
+//                }
+//                is InviteFragment ->{
+//                    if( intent.getBooleanExtra(gotoInvite, false))
+//                    {
+//                        mContext.start<MainActivity> {  }
+//                    }else{
+//                        if (!BackHandlerHelper.handleBackPress(this)) {
+//                            super.onBackPressed()
+//                        }
+//                    }
+//
+//
+//                }
+//
+//                is HomeFragment,
+//                is TreasureBoxFragment,
+//                is AddressBookFragment,
+//                is UserSettingFragment -> {
+//
+//                    val currentTime = System.currentTimeMillis()
+//                    if (lastBackPressTime == -1L || currentTime - lastBackPressTime >= 2000) {
+//                        // 显示提示信息
+//                        ToastUtils.showShort("再按一次返回键退出宝舰")
+//                        // 记录时间
+//                        lastBackPressTime = currentTime
+//                    } else {
+//                        //退出应用
+//                        finish()
+//                    }
+//                }
+//                else -> {
 
-
-                }
-
-                is HomeFragment,
-                is TreasureBoxFragment,
-                is AddressBookFragment,
-                is UserSettingFragment -> {
-
-                    val currentTime = System.currentTimeMillis()
-                    if (lastBackPressTime == -1L || currentTime - lastBackPressTime >= 2000) {
-                        // 显示提示信息
-                        ToastUtils.showShort("再按一次返回键退出宝舰")
-                        // 记录时间
-                        lastBackPressTime = currentTime
-                    } else {
-                        //退出应用
-                        finish()
-                    }
-                }
-                else -> {
-                    if (!BackHandlerHelper.handleBackPress(this)) {
-                        super.onBackPressed()
-                    }
-                }
-            }
-        }
+//                }
     }
+//        }
+//    }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         //super.onSaveInstanceState(outState, outPersistentState)
@@ -167,10 +180,10 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(receiver, IntentFilter(MESSAGE_RECEIVED_ACTION))
 //        用于获取当前设置的Alias
-        if (JPushInterface.isPushStopped(this)){
+        if (JPushInterface.isPushStopped(this)) {
             JPushInterface.resumePush(this)
         }
-        JPushInterface.getAlias(mContext,0x3)
+        JPushInterface.getAlias(mContext, 0x3)
         if (isLogin && !mPopStatus.isOpen) {
             mViewModel.getUserInfo()
         }
@@ -242,19 +255,23 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         }
 
         intent?.let {
-            val stringExtra = it.getStringExtra(GoodsId)
+            val goodId = it.getStringExtra(GoodsId)
             val gotoInvite = it.getBooleanExtra(gotoInvite, false)
             val gotoWhere = intent.getStringExtra("goTo")
 //            val stringExtra = intent.getStringExtra(GoodsId)
 
-            if (stringExtra != null) {
-                supportFragmentManager.beginTransaction().replace(
+            if (goodId != null) {
+                supportFragmentManager.beginTransaction()
+                    .addToBackStack("")
+                    .replace(
                     R.id.frame_content, GoodsDetailFragment.newInstance
-                        (stringExtra)
+                        (goodId)
                 ).commit()
             }
             if (gotoInvite) {
-                supportFragmentManager.beginTransaction().replace(R.id.frame_content, InviteFragment.newInstance(true))
+                supportFragmentManager.beginTransaction()
+                    .addToBackStack("")
+                    .replace(R.id.frame_content, InviteFragment.newInstance(true))
                     .commit()
             }
 
@@ -289,7 +306,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                     .replace(R.id.frame_content, InviteFragment.newInstance(true), InviteFragment.javaClass.name)
                     .commit()
             }
-
             if (gotoWhere == "orders") {
                 switchFragment(
                     OrdersFragment.newInstance("HomeFragment"),
@@ -395,7 +411,18 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             userState.observe(this@MainActivity, Observer {
 
                 it.showSuccess?.let {
-                    JPushInterface.setAlias(applicationContext,1001,it.id.toString())
+                    JPushInterface.setAlias(applicationContext, 1001, it.id.toString())
+
+                    if (it.auditStatus == 1 && it.firstPassTip == 1 && !authShowSuccess) {
+                        authShowSuccess = true
+                        App.dialogHelp.showSuccess(it.nickName) {
+
+                        }
+                        lifecycleScope.launch {
+                            HttpHelp.getRetrofit().notificationServerPass(BaseRequestBody())
+                        }
+                    }
+
                     Log.e("userInfo", "refresh user info success:$it")
                     "当前的用户登录的accessToken为:${it.accessToken}".out()
                 }
@@ -505,4 +532,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
     }
+
+
+
 }

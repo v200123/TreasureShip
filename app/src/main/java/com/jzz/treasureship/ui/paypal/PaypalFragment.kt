@@ -20,7 +20,10 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CartSelectGoodsAdapter
 import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.*
+import com.jzz.treasureship.model.bean.CartGoodsSku
+import com.jzz.treasureship.model.bean.Coupon
+import com.jzz.treasureship.model.bean.Order
+import com.jzz.treasureship.model.bean.ReceiveAddress
 import com.jzz.treasureship.ui.activity.PaySuccessActivity
 import com.jzz.treasureship.ui.address.ChooseAddressFragment
 import com.jzz.treasureship.ui.license.LicenseActivity
@@ -234,8 +237,10 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
                     if (it.mCouponId > 0) {
                         mOccupationBean = Coupon(mCouponId = it.mCouponId)
-                        tv_paypal_coupon.text = "-￥${it.mCouponValue}"
+                        tv_paypal_coupon.text = "-¥${it.mCouponValue}"
                         tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
+                    }else{
+                        mOccupationBean = Coupon(mCouponId = 0)
                     }
 
                     //返回的收货地址不为空，显示收货地址
@@ -332,7 +337,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                     val payPrice = MoneyUtil.moneyAdd(it.mPayMoney.toString(), "0")
                     val tmpPayPrice = BigDecimal(payPrice)
                     if (tmpPayPrice.compareTo(BigDecimal.ZERO) == 0) {
-                        val span = SpannableString("应付:￥0.00").apply {
+                        val span = SpannableString("应付:¥0.00").apply {
                             setSpan(
                                 AbsoluteSizeSpan(12, true),
                                 0,
@@ -344,7 +349,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                     } else {
                         //有疑问
                         val span02 = SpannableString(
-                            "应付:￥${tmpPayPrice.stripTrailingZeros().toPlainString()}"
+                            "应付:¥${tmpPayPrice.stripTrailingZeros().toPlainString()}"
                         ).apply {
                             setSpan(
                                 AbsoluteSizeSpan(12, true),
@@ -402,7 +407,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                     }
                                     body.put(
                                         "couponId",
-                                        "${if (mOccupationBean.mCouponId == 0) null else mOccupationBean.mCouponId}"
+                                        "${if (mOccupationBean.mCouponId!! <= 0) null else mOccupationBean.mCouponId}"
                                     )
                                     body.put("orderType", 1)
                                     body.put("receiveAddressId", selectedAddress?.mId ?: -1)
@@ -461,6 +466,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                             }, false).show()
                     } else {
                         mOrderId = -1
+                        (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
                         startActivity(Intent(context, PaySuccessActivity::class.java).putExtra(PaySuccessActivity
                             .orderMoney,it.payMoney))
                     }
@@ -554,17 +560,20 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                 tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                             } else {
                                 val coupon = filter[0]
-                                if (coupon.mCouponName == "不使用") {
+                                mOccupationBean = coupon
+                                if (coupon.mCouponName == "不使用优惠券") {
                                     tv_paypal_coupon.text = "不使用优惠劵"
+                                    tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                                     AreadyPprice(null)
                                 } else {
                                     if(coupon.mCouponId != mOccupationBean.mCouponId?:-1 ) {
                                         mOccupationBean = coupon
                                         AreadyPprice("${mOccupationBean.mCouponId}")
                                     }
+
 //                                    mViewModel.directBuy(it.getInt("count"), it.getInt("skuId"),)
                                     tv_paypal_coupon.setTextColor(Color.parseColor("#FFCC0814"))
-                                    tv_paypal_coupon.text = "-￥${filter[0].mCouponValue}"
+                                    tv_paypal_coupon.text = "-¥${filter[0].mCouponValue}"
                                 }
                             }
                         }
@@ -611,7 +620,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                 )
                 //购物车结算
                 2 -> it.getString("shops")?.let { shops ->
-                    mViewModel.cartSettlement(shops, couponId)
+                    mViewModel.cartSettlement(shops, mOccupationBean.mCouponId)
                 }
                 else -> {
                     ToastUtils.showShort("未知结算类型")

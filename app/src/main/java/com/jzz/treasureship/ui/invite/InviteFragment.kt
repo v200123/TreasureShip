@@ -4,8 +4,8 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -22,6 +22,7 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.changeImage
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
@@ -33,7 +34,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
     private val mInvitedDetailsFragment by lazy { InviteDetailsFragment.newInstance() }
     private val mAdapter by lazy { InvitedAdapter() }
     private var allInvitedList = ArrayList<DataXXXX>()
-
+    private var  showRedEnvelopeOpen:BasePopupView? = null
     companion object {
         const val isNeedBackToMain = "isNeedBackToMain"
         fun newInstance(isNeed:Boolean = false): InviteFragment {
@@ -100,7 +101,6 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             } else {
                 //ToastUtils.showLong("分享失败！")
             }
-
         }
 
         tv_share2WxTimeLine.setOnClickListener {
@@ -208,30 +208,39 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
                     }
                 }
             })
-            mCountData.observe(this@InviteFragment, { count ->
+            mCountData.observe(this@InviteFragment) { count ->
                 if (count == 0) {
                     iv_small_red.visibility = View.INVISIBLE
                 } else {
                     iv_small_red.visibility = View.VISIBLE
                     iv_small_red.setOnClickListener {
                         App.dialogHelp.showRedEnvelopeClose(count) {
-                        mViewModel.getMoney()
+                            mViewModel.getMoney()
                         }
                     }
                 }
-            })
-            redEnvelopOpen.observe(this@InviteFragment, {
-                App.dialogHelp.showRedEnvelopeOpen(
-                    it.get("inviteRewardCount").asInt,
-                    it.get("inviteRewardAmount").asFloat
-                ){
+            }
+            redEnvelopOpen.observe(this@InviteFragment) {
+                if(showRedEnvelopeOpen !=null) {
+                    showRedEnvelopeOpen!!.dismiss()
+                }
+                showRedEnvelopeOpen= App.dialogHelp.showRedEnvelopeOpen(
+                    it.mInviteRewardCount,
+                    it.mInviteRewardAmount, {
+                        mViewModel.getCount()
+                    },{
+                        it.dismiss()
+                    }
+                ) {
                     mViewModel.getMoney()
                 }
-            })
+            }
         }
 
 
     }
+
+
 
     override fun initListener() {
     }

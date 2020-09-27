@@ -26,6 +26,7 @@ import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import com.youth.banner.listener.OnBannerListener
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.fragment_coupon_shop.*
 import kotlinx.android.synthetic.main.include_title.*
 import java.math.RoundingMode
@@ -101,7 +102,12 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
 
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val data03 = adapter.data[position] as Data03
-                mContext.start<MainActivity> { putExtra(MainActivity.GoodsId, "${data03.mGoodsId}") }
+                mContext.start<MainActivity> {
+                    putExtra(
+                        MainActivity.GoodsId,
+                        "${data03.mGoodsId}"
+                    )
+                }
             }
 
         })
@@ -118,11 +124,12 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
         mViewModel.mBannerList.observe(this, {
             if (it.mList.isNotEmpty()) {
                 hasBanner = true
-                val BannerParenter = layoutInflater.inflate(R.layout.common_banner, rv_coupon_shop, false)
+                val BannerParenter =
+                    layoutInflater.inflate(R.layout.common_banner, rv_coupon_shop, false)
                 val imageUrl = mutableListOf<String>()
                 mAdapter.removeAllHeaderView()
                 val mBanner = BannerParenter.findViewById<Banner>(R.id.common_banner).apply {
-                    setBannerStyle(BannerConfig.NUM_INDICATOR)
+                    setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                     setBannerAnimation(Transformer.BackgroundToForeground)
                     isAutoPlay(true)
                     setImageLoader(GlideImageLoader())
@@ -178,24 +185,18 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
         ), LoadMoreModule {
         override fun convert(holder: BaseViewHolder, item: Data03) {
             Glide.with(fragment).asDrawable().apply(
-                RequestOptions().placeholder(
+                RequestOptions().placeholder(ContextCompat.getDrawable(fragment, R.drawable.icon_sku_unload)).error(
                     ContextCompat.getDrawable
                         (
                         fragment, R
                         .drawable.icon_sku_unload
                     )
-                ).error(
-                    ContextCompat.getDrawable
-                        (
-                        fragment, R
-                        .drawable.icon_sku_unload
-                    )
-                )
-            )
-                .load(item.mPicture)
+                ).transform(RoundedCornersTransformation(24,0,RoundedCornersTransformation.CornerType.TOP))
+            ).load(item.mPicture)
+
                 .into(holder.getView(R.id.iv_coupon_shop))
             holder.setText(R.id.tv_coupon_shop, item.mGoodsName).setText(
-                R.id.tv_coupon_shop_price, "￥${
+                R.id.tv_coupon_shop_price, "¥${
                     item.mPrice
                         .toBigDecimal().setScale(2, RoundingMode.HALF_DOWN).toPlainString()
                 }"

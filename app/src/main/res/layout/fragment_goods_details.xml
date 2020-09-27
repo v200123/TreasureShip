@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -11,7 +12,6 @@
 
     <FrameLayout
 
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -408,48 +408,50 @@
             </ScrollView>
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@color/white"
             android:orientation="horizontal">
 
-            <LinearLayout
+
+            <ImageView
+                android:id="@+id/tv_callService"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="22dp"
+                android:src="@drawable/icon_goods_detail_customer_service"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/tv_callService"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="12.5dp"
-                    android:src="@drawable/icon_goods_detail_customer_service" />
-
-                <ImageView
-                    android:id="@+id/tv_cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="21.5dp"
-                    android:src="@drawable/icon_goods_detail_shopcar"
-                 />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/tv_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/icon_goods_detail_shopcar"
+                app:layout_constraintStart_toEndOf="@+id/tv_callService"
+                app:layout_constraintTop_toTopOf="@+id/tv_callService" />
 
             <com.lc.mybaselibrary.ShapeTextView
                 android:id="@+id/tv_addCart"
                 android:layout_width="104dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="45dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="6dp"
                 android:gravity="center"
                 android:text="加入购物车"
                 android:textColor="@color/white"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_buyNow"
+                app:layout_constraintTop_toTopOf="parent"
                 app:shapeCornersRadius="20dp"
                 app:shapeSolidColor="#FFF0A923" />
 
@@ -458,17 +460,18 @@
                 android:id="@+id/tv_buyNow"
                 android:layout_width="104dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="21dp"
+                android:layout_marginEnd="22dp"
                 android:gravity="center"
                 android:text="立即购买"
                 android:textColor="@color/white"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_addCart"
+                app:layout_constraintVertical_bias="0.0"
                 app:shapeCornersRadius="20dp"
                 app:shapeSolidColor="#FFCC0814" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_up"
