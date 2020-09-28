@@ -15,7 +15,7 @@ class DialogHelp(var context: Context) {
     /**
      * 未认证的界面
      */
-    fun showType() {
+    fun showNoAuth() {
         XPopup.Builder(context).hasShadowBg(true).asCustom(Dialog_no_auth(context))
             .show()
     }
@@ -45,7 +45,7 @@ class DialogHelp(var context: Context) {
             XPopup.Builder(context).hasShadowBg(true).asCustom(DialogRedEnvelopeClose(context, count) { text() }).show()
     }
 
-    fun showRedEnvelopeOpen(count: Int, money: String, dismiss: () -> Unit,unChange:(view:BasePopupView)->Unit, block:()->Unit):BasePopupView {
+  fun showRedEnvelopeOpen(count: Int, money: String, dismiss: () -> Unit, unChange:(view:BasePopupView)->Unit, block:()->Unit):BasePopupView {
         val show = XPopup.Builder(context).hasShadowBg(true)
             .setPopupCallback(object : SimpleCallback() {
                 override fun onDismiss(popupView: BasePopupView?) {

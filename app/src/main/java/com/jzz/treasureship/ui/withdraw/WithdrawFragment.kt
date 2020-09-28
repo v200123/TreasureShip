@@ -26,6 +26,7 @@ import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ext.getResDrawable
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.CenterPopupView
@@ -83,7 +84,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
         //TODO 提现服务协议还没有，先屏蔽
         layout_lic.visibility = View.INVISIBLE
 
-        val userObj = GsonUtils.fromJson(userJson, User::class.java)
+        var userObj = GsonUtils.fromJson(userJson, User::class.java)
 
         arguments?.let {
             withDrawMoney = it.getString("AvailableWithDraw")
@@ -139,6 +140,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
         }
 
         btn_submint.setOnClickListener {
+            userObj = GsonUtils.fromJson(userJson, User::class.java)
             //TODO 提现服务协议还没有，先屏蔽
 //            if (!cb_protocol.isChecked) {
 //                ToastUtils.showShort("请先仔细阅读《提现服务协议》，并勾选")
@@ -181,7 +183,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
         }
 
         if (userObj.wxOpenid.isNullOrBlank()) {
-            Glide.with(this).load(context!!.resources.getDrawable(R.drawable.icon_withdraw_wechat)).into(icon_avatar)
+            Glide.with(this).load(mContext.getResDrawable(R.drawable.icon_withdraw_wechat)).into(icon_avatar)
 //            var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE_BIND, "")
             tv_wx_name.text = "请绑定微信"
 //            wxCode = ""

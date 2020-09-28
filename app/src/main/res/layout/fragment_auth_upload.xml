@@ -86,14 +86,14 @@
             tools:src="@drawable/ic_clock_clocked" />
 
         <ImageView
-            tools:src  = "@drawable/ic_clock_clocked"
             android:id="@+id/iv_authupload_image02"
-            android:layout_marginStart="15dp"
             android:layout_width="150dp"
             android:layout_height="84dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
             app:layout_constraintStart_toEndOf="@+id/iv_authupload_image01"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            app:layout_constraintTop_toTopOf="@+id/iv_authupload_image01"
+            tools:src="@drawable/ic_clock_clocked" />
 
         <TextView
             android:id="@+id/tv_auth_upload_remark"

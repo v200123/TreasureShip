@@ -92,11 +92,6 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
                 }.show()
             } else {
                 XPopup.Builder(context).asConfirm("", "当前未登录，需要跳转到登录界面进行登录吗？") {
-//                    activity!!.supportFragmentManager.beginTransaction()
-//                        .addToBackStack(SettingFragment.javaClass.name)
-//                        .hide(this)//隐藏当前Fragment
-//                        .add(R.id.frame_content, mLoginFragment, mLoginFragment.javaClass.name)
-//                        .commit()
                     context!!.startActivity(Intent(this.activity!!, LoginActivity::class.java))
                 }.show()
             }

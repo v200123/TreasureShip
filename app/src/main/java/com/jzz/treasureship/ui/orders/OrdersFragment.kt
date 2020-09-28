@@ -167,7 +167,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
                 return fragments.size
             }
         }
-        ordersViewpager.offscreenPageLimit = fragments.size
+        ordersViewpager.offscreenPageLimit = 1
         ordersViewpager.isSaveEnabled = false
         ordersViewpager.adapter = mAdapter
 

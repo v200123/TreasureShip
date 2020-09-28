@@ -509,6 +509,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         1 -> {
                             if (it.totalFee == 0.00) {
                                 mOrderId = -1
+                                (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
                                 startActivity(Intent(context, PaySuccessActivity::class.java).putExtra(PaySuccessActivity
                                     .orderMoney,"${it.totalFee}"))
                             } else {

@@ -116,6 +116,9 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                     // 记录时间
                     lastBackPressTime = currentTIme
                 }
+                else{
+                    finish()
+                }
             } else {
                 super.onBackPressed()
             }
@@ -407,9 +410,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
-
             userState.observe(this@MainActivity, Observer {
-
                 it.showSuccess?.let {
                     JPushInterface.setAlias(applicationContext, 1001, it.id.toString())
 

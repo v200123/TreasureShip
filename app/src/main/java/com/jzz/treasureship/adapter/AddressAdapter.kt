@@ -15,7 +15,7 @@ class AddressAdapter(layoutResId: Int = R.layout.item_address) :
 
         val address = "${item.provinceName} ${item.cityName} ${item.districtName} ${item.address}"
         helper.setText(R.id.tv_address, address)
-        helper.getView<CheckBox>(R.id.cb_setDefault).isEnabled = item.isDefault == 1
+        helper.getView<CheckBox>(R.id.cb_setDefault).isEnabled = item.isDefault != 1
         helper.setChecked(R.id.cb_setDefault, item.isDefault == 1)
 
         helper.addOnClickListener(R.id.tv_addr_edit)

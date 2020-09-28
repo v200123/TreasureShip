@@ -9,3 +9,5 @@ import androidx.core.content.ContextCompat
  *@Auth: 29579
  **/
 fun Context.getResColor(colorResId:Int):Int = ContextCompat.getColor(this,colorResId)
+
+fun Context.getResDrawable(drawableResId:Int)= ContextCompat.getDrawable(this,drawableResId)

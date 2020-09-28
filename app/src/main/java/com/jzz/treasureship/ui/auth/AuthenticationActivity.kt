@@ -24,7 +24,6 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.model.bean.UserAuthTypeBean
-import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.RealPathFromUriUtils
@@ -74,7 +73,6 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
         if( intent?.getStringExtra(NeedFinish) == "exit")
         {
             finish()
-            mContext.start<MainActivity> {  }
         }
     }
 

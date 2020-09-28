@@ -46,7 +46,7 @@ import com.jzz.treasureship.utils.changeImage
 import com.jzz.treasureship.view.CustomComparePricePopup
 import com.jzz.treasureship.view.CustomSkuBottomPopup
 import com.jzz.treasureship.view.RadiusSpan
-import com.lc.mybaselibrary.out
+import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -64,7 +64,8 @@ import q.rorbin.badgeview.QBadgeView
 import java.net.URLEncoder
 
 
-class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermissions.PermissionCallbacks {
+class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
+    EasyPermissions.PermissionCallbacks {
 
     private val mShopCarFragment by lazy { ShopCarFragment.newInstance() }
     private var isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
@@ -72,7 +73,9 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
     private lateinit var mWindow: Window
     private var goodsId: Int = -1
     private val dialog: Dialog by lazy { Dialog(mContext, R.style.edit_AlertDialog_style) }
-    private var JsonString:String = ""
+    private var JsonString: String = ""
+    private  var mQBadgeView: QBadgeView? = null
+
     companion object {
         const val RC_CALL_PERM = 122
 
@@ -102,18 +105,19 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
 
     override fun onResume() {
         super.onResume()
-        "我${this::class.java.name}\t\tFragment进来了".out()
+        activity!!.nav_view.visibility = View.GONE
+
     }
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        activity?.nav_view?.visibility = View.GONE
 
         gooddetails_shop.setOnClickListener {
-            mContext.startActivity(GoodsQualificationActivity.newInstance(mContext,0,JsonString))
+            mContext.startActivity(GoodsQualificationActivity.newInstance(mContext, 0, JsonString))
         }
 
         ll_goodsDetails_parameter.setOnClickListener {
-            mContext.startActivity(GoodsQualificationActivity.newInstance(mContext,1,JsonString))
+            mContext.startActivity(GoodsQualificationActivity.newInstance(mContext, 1, JsonString))
         }
 
         this.mWindow = activity!!.window
@@ -165,7 +169,7 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
 
                 viewModel.showSuccess?.let { goodsDetail ->
                     addCartPopup.dismiss()
-                    JsonString =  GsonUtils.toJson(goodsDetail)
+                    JsonString = GsonUtils.toJson(goodsDetail)
                     initUi(goodsDetail)
                 }
 
@@ -198,7 +202,12 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
                 it.needLogin?.let { needLogin ->
                     xPopup.dismiss()
                     if (needLogin) {
-                        startActivity(Intent(this@GoodsDetailFragment.context, LoginActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@GoodsDetailFragment.context,
+                                LoginActivity::class.java
+                            )
+                        )
                     }
                 }
             })
@@ -212,14 +221,21 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
 
                 it.showSuccess?.let {
                     addCartPopup.dismiss()
-                    QBadgeView(context)
-                        .bindTarget(tv_cart)
-                        .setBadgeNumber(it)
-                        .setBadgeTextSize(10f, true)
-                        .setBadgePadding(1.0f, true)
-                        .setBadgeGravity(Gravity.CENTER or Gravity.TOP)
-                        .setBadgeBackgroundColor(context!!.resources.getColor(R.color.blue_light))
+                    if (it == 0) {
+                        mQBadgeView?.hide(false)
+                    } else {
+                        mQBadgeView = QBadgeView(context)
+                            .apply {
+                                bindTarget(tv_cart)
+                                setBadgeNumber(it)
+                                setBadgeTextSize(10f, true)
+                                setBadgePadding(1.0f, true)
+                                setBadgeGravity(Gravity.CENTER or Gravity.TOP)
+                                setBadgeBackgroundColor(mContext.getResColor(R.color.blue_light))
+                            }
 
+
+                    }
                 }
 
                 it.showError?.let { message ->
@@ -230,7 +246,12 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
                 it.needLogin?.let { needLogin ->
                     xPopup.dismiss()
                     if (needLogin) {
-                        startActivity(Intent(this@GoodsDetailFragment.context, LoginActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@GoodsDetailFragment.context,
+                                LoginActivity::class.java
+                            )
+                        )
                     }
                 }
             })
@@ -252,7 +273,12 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
                 it.needLogin?.let { needLogin ->
                     xPopup.dismiss()
                     if (needLogin) {
-                        startActivity(Intent(this@GoodsDetailFragment.context, LoginActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@GoodsDetailFragment.context,
+                                LoginActivity::class.java
+                            )
+                        )
                     }
                 }
             })
@@ -268,7 +294,12 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
 
                 it.needLogin?.let { needLogin ->
                     if (needLogin) {
-                        startActivity(Intent(this@GoodsDetailFragment.context, LoginActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@GoodsDetailFragment.context,
+                                LoginActivity::class.java
+                            )
+                        )
                     }
                 }
             })
@@ -281,7 +312,7 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
         }
 
         iv_back.setOnClickListener {
-           (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
+            (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
         }
 
 
@@ -362,7 +393,11 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
@@ -402,7 +437,14 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
+            StateAppBar.setStatusBarLightMode(
+                this.activity,
+                context!!.resources.getColor(R.color.white)
+            )
+            val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
+            if (isLogin) {
+                mViewModel.getCount()
+            }
         }
     }
 
@@ -418,13 +460,18 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
             ll_showAndHide.visibility = View.VISIBLE
             view_1.visibility = View.VISIBLE
             val apply = SpannableString("境外商品\t" + goodsDetail.goodsName).apply {
-                setSpan(RadiusSpan(Color.parseColor("#FFF0A823"), 9, context), 0, 3, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                setSpan(
+                    RadiusSpan(Color.parseColor("#FFF0A823"), 9, context),
+                    0,
+                    3,
+                    Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                )
             }
             tv_goodsName.setText(apply)
         } else
             tv_goodsName.text = goodsDetail.goodsName
 //        tv_compony.text = goodsDetail.shopName
-        tv_price.text = "¥${goodsDetail.goodsSku?.get(0)?.price?:"未知"}"
+        tv_price.text = "¥${goodsDetail.goodsSku?.get(0)?.price ?: "未知"}"
 
         if (goodsDetail.goodsSku?.get(0)?.isParity ?: 0 == 0) {
             tv_goCompare.visibility = View.GONE
@@ -434,7 +481,8 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
             priceCompareAdapter.notifyDataSetChanged()
 
             tv_goCompare.setOnClickListener {
-                XPopup.Builder(it.context).asCustom(CustomComparePricePopup(mContext, priceCompareAdapter))
+                XPopup.Builder(it.context)
+                    .asCustom(CustomComparePricePopup(mContext, priceCompareAdapter))
                     .show()
             }
         }
@@ -489,7 +537,11 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
                                         this@GoodsDetailFragment
                                     ).add(
                                         R.id.frame_content,
-                                        PaypalFragment.newInstance(1, skuPopup.mCount, selectedGoods.skuId),
+                                        PaypalFragment.newInstance(
+                                            1,
+                                            skuPopup.mCount,
+                                            selectedGoods.skuId
+                                        ),
                                         PaypalFragment.javaClass.name
                                     ).commit()
                             }
@@ -692,9 +744,10 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
                                         ToastUtils.showLong("资质审核中，请联系相关人员通过审核后再进行购买")
                                     }
                                     1 -> {
-                                        activity!!.supportFragmentManager.beginTransaction().addToBackStack(
-                                            GoodsDetailFragment.javaClass.name
-                                        )
+                                        activity!!.supportFragmentManager.beginTransaction()
+                                            .addToBackStack(
+                                                GoodsDetailFragment.javaClass.name
+                                            )
                                             .hide(
                                                 this@GoodsDetailFragment
                                             ).add(
@@ -785,7 +838,8 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
             val userJson by PreferenceUtils(PreferenceUtils.USER_GSON, "")
             val userObj = GsonUtils.fromJson(userJson, User::class.java)
 
-            val shareGoodsUrl = "http://bj.jzzchina.com/goods/detail?id=${goodsDetail.goodsId}&uid=${userObj.id}"
+            val shareGoodsUrl =
+                "http://bj.jzzchina.com/goods/detail?id=${goodsDetail.goodsId}&uid=${userObj.id}"
             val webpage = WXWebpageObject()
             val shareUrl =
                 "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe5dee58a24f8a244&redirect_uri=${
@@ -809,28 +863,9 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
             req.scene = SendMessageToWX.Req.WXSceneSession
 
             val share = App.iwxapi.sendReq(req)
-            if (share) {
-
-            } else {
+            if (!share) {
                 Log.d("wx share", "微信分享失败")
             }
-
-
-            //构造一个Req
-//            val req = SendMessageToWX.Req()
-//            req.transaction = buildTransaction("webpage")
-//            req.message = msg
-//
-//            req.userOpenId = userObj.wxOpenid
-//            req.scene = SendMessageToWX.Req.WXSceneSession;
-//
-//            val isShare = App.iwxapi.sendReq(req)
-//
-//            if (isShare) {
-//                //ToastUtils.showLong("分享成功！")
-//            } else {
-//                //ToastUtils.showLong("分享失败！")
-//            }
         }
     }
 
@@ -842,6 +877,7 @@ class  GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(), EasyPermiss
     }
 
     private fun buildTransaction(type: String?): String? {
-        return if (type == null) System.currentTimeMillis().toString() else type + System.currentTimeMillis()
+        return if (type == null) System.currentTimeMillis()
+            .toString() else type + System.currentTimeMillis()
     }
 }

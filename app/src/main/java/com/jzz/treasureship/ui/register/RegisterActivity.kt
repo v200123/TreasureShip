@@ -17,10 +17,13 @@ import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.databinding.ActivityRegisterBinding
+import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.license.LicenseActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.utils.CountDownTimerUtils
+import com.lxj.xpopup.XPopup
+import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -28,7 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class RegisterActivity : BaseVMActivity<LoginViewModel>() {
     override fun getLayoutResId() = R.layout.activity_register
-    private val countDown by lazy {  CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
+    private val countDown by lazy { CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
     override fun initVM(): LoginViewModel = getViewModel()
 
     override fun initView() {
@@ -43,8 +46,13 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>() {
         StateAppBar.setStatusBarLightMode(this, this.resources.getColor(R.color.white))
         iv_getCode.setOnClickListener {
             if (!et_phoneNum.text.isNullOrBlank()) {
-                mViewModel.sendSmsCode(1, et_phoneNum.text.toString(),countDown)
-            }else{
+                mViewModel.sendSmsCode(
+                    1,
+                    et_phoneNum.text.toString(),
+                    countDown,
+                    XPopup.Builder(mContext).asLoading()
+                )
+            } else {
                 ToastUtils.showShort("请输入验证码")
             }
 
@@ -71,7 +79,6 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>() {
 
         val spannableString = SpannableString("我已阅读并同意《用户协议》和《隐私政策》")
         val intent = Intent(this, LicenseActivity::class.java)
-
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 intent.putExtra("title", "用户协议")
@@ -103,10 +110,12 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>() {
         spannableString.setSpan(clickableSpan2, 14, 20, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
 
 
-        val colorSpan = ForegroundColorSpan(ContextCompat.getColor(this@RegisterActivity, R.color.blue_normal))
+        val colorSpan =
+            ForegroundColorSpan(ContextCompat.getColor(this@RegisterActivity, R.color.blue_normal))
         spannableString.setSpan(colorSpan, 7, 13, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
 
-        val colorSpan2 = ForegroundColorSpan(ContextCompat.getColor(this@RegisterActivity, R.color.blue_normal))
+        val colorSpan2 =
+            ForegroundColorSpan(ContextCompat.getColor(this@RegisterActivity, R.color.blue_normal))
         spannableString.setSpan(colorSpan2, 14, 20, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
 
         tv_lic.apply {
@@ -134,8 +143,10 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>() {
                 it.showSuccess?.let {
                     countDown.start()
                     dismissProgressDialog()
-                    JPushInterface.setAlias(applicationContext,1001,it.id.toString())
+                    JPushInterface.setAlias(applicationContext, 1001, it.id.toString())
                     finish()
+                    MMKV.defaultMMKV().encode(it.id.toString(), UserDialogInformationBean())
+
                     startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                 }
 

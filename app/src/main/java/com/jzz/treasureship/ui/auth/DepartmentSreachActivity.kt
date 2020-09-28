@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.DepartmentBean
@@ -35,7 +34,11 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
         rlback.setOnClickListener { finish() }
         mAdapter.setOnItemClickListener(object :
             com.didichuxing.doraemonkit.widget.bravh.listener.OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+            override fun onItemClick(
+                adapter: com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter<*, *>,
+                view: View,
+                position: Int
+            ) {
                 setResult(500, Intent().apply {
                     putExtra(
                         AuthBaseInformationFragment.EXTRA_POSITION,

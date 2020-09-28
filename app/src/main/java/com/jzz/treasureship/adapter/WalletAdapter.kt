@@ -1,11 +1,10 @@
 package com.jzz.treasureship.adapter
 
 import android.content.Context
-import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
-import com.didichuxing.doraemonkit.widget.bravh.viewholder.BaseViewHolder
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.Data04
-import com.lc.mybaselibrary.ShapeConstraintLayout
 import q.rorbin.badgeview.DisplayUtil
 
 
@@ -21,9 +20,7 @@ class WalletAdapter( mContext: Context) :
     }
 
 
-    override fun convert(holder: BaseViewHolder, item: Data04, payloads: List<Any>) {
-        super.convert(holder, item, payloads)
-    }
+
 
 //
 //    override fun convert(helper: BaseBindAdapter.BindViewHolder, item: Data04) {

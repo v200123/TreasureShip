@@ -217,15 +217,21 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
+            var isShow = false
             val xPopup = XPopup.Builder(this@OrdersVpFragment.context).asLoading("订单列表获取中")
             ordersState.observe(this@OrdersVpFragment, Observer {
 
                 if (it.showLoading) {
-                    xPopup.show()
+                    if(!isShow) {
+                        xPopup.show()
+                        isShow = true
+                    }
                 }
 
                 it.needLogin?.let { needLogin ->
                     if (needLogin) {
+                        xPopup.dismiss()
+                        isShow = false
                         ToastUtils.showShort("未登录，请登录后再操作！")
                         startActivity(Intent(this@OrdersVpFragment.context, LoginActivity::class.java))
                     }
@@ -233,6 +239,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
 
                 it.showSuccess?.let { orders ->
                     xPopup.dismiss()
+                    isShow = false
                     if (pageNum > 1) {
                         if (orders.data!!.isNotEmpty()) {
                             for (ele in orders.data) {
@@ -263,6 +270,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
 
                 it.showError?.let { message ->
                     xPopup.dismiss()
+                    isShow = false
                     if (pageNum > 1) {
                         --pageNum
                         srl_orders.finishLoadMore(0)

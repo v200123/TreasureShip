@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.bind.BindPhoneActivity
 import com.jzz.treasureship.ui.register.RegisterActivity
@@ -19,13 +20,14 @@ import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class LoginActivity : BaseVMActivity<LoginViewModel>() {
-
+    val xPopup  by lazy {   XPopup.Builder(this@LoginActivity).asLoading()}
     private  var mobile:String? = null
     override fun getLayoutResId() = R.layout.activity_login
    private val countDownTimerUtils by lazy { CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
@@ -50,7 +52,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
 
         iv_getCode.setOnClickListener {
             if (!et_phoneNum.text.isNullOrBlank()) {
-                mViewModel.sendSmsCode(2, et_phoneNum.text.toString(), countDownTimerUtils)
+                mViewModel.sendSmsCode(2, et_phoneNum.text.toString(), countDownTimerUtils, xPopup)
             }
           else{
                 ToastUtils.showShort("请输入验证码")
@@ -80,7 +82,6 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
     override fun startObserve() {
         mViewModel.apply {
 
-            val xPopup = XPopup.Builder(this@LoginActivity).asLoading()
 
             uiState.observe(this@LoginActivity, Observer {
                 if (it.showProgress) {
@@ -94,11 +95,12 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
                     }
                     setAlias(it.id!!)
                     mobile = it.mobile
-
                     finish()
                     if (mobile.isNullOrBlank()) {
+                        MMKV.defaultMMKV().encode(it.id.toString(),UserDialogInformationBean())
                         startActivity(Intent(this@LoginActivity, BindPhoneActivity::class.java))
                     } else {
+                        MMKV.defaultMMKV().encode(it.id.toString(),UserDialogInformationBean())
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     }
 

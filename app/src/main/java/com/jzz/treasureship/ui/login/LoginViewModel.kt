@@ -14,6 +14,7 @@ import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.repository.LoginRepository
 import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lxj.xpopup.impl.LoadingPopupView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -95,7 +96,6 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
             withContext(provider.main) {
                 checkResult(result, {
                     if (it.result == null && it.code != 200) {
-
                         emitUiState(showSuccess = null, enableLoginButton = true)
                     } else {
                         emitUiState(showSuccess = it.result, enableLoginButton = true)
@@ -123,13 +123,18 @@ class LoginViewModel(val repository: LoginRepository, val provider: CoroutinesDi
         }
     }
 
-    fun sendSmsCode(type: Int, userName: String?, countDown: CountDownTimerUtils) {
+    fun sendSmsCode(
+        type: Int,
+        userName: String?,
+        countDown: CountDownTimerUtils,
+        xPopup: LoadingPopupView
+    ) {
         viewModelScope.launch(provider.computation) {
             if (userName.isNullOrBlank()) {
                 ToastUtils.showShort("请先输入电话号码")
             } else {
                 userName.let {
-                    repository.sendSmsCode(type, it,countDown)
+                    repository.sendSmsCode(type, it,countDown,xPopup)
                 }
             }
 

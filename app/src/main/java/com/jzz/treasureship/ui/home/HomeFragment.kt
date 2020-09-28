@@ -19,6 +19,7 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.service.RewardService
 import com.jzz.treasureship.ui.DialogHelp
 import com.jzz.treasureship.ui.questions.QuestionsFragment
@@ -28,10 +29,12 @@ import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CheckRewardDialog
 import com.jzz.treasureship.view.NoticeGetRewardDialog
 import com.jzz.treasureship.view.StartQuestionsDialog
+import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
+import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_home_title.*
@@ -42,8 +45,8 @@ import kotlin.collections.ArrayList
 
 class HomeFragment : BaseVMFragment<HomeViewModel>() {
     private var isInviteDialog by PreferenceUtils(PreferenceUtils.everyday_invite_dialog, "")
-    private val user by PreferenceUtils(PreferenceUtils.USER_GSON,"")
-    private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN,false)
+    private val user by PreferenceUtils(PreferenceUtils.USER_GSON, "")
+    private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     private val mSearchFragment by lazy { SearchFragment.newInstance() }
     private var curFragment by PreferenceUtils(PreferenceUtils.CUR_FRAGMENT, "")
     val startAnswer by PreferenceUtils(PreferenceUtils.start_answer, false)
@@ -51,6 +54,7 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
     val getReward by PreferenceUtils(PreferenceUtils.get_reward, false)
     val openReward by PreferenceUtils(PreferenceUtils.open_reward, false)
     private val mWalletFragment by lazy { WalletFragment.newInstance() }
+
     //    private val tabs = arrayOf("最新", "推荐")
 //    private val fragments: ArrayList<HomeVpFragment> = arrayListOf(
 //        HomeVpFragment.newInstance(0),
@@ -73,24 +77,36 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
     override fun onResume() {
         super.onResume()
 //        App.dialogHelp.showSuccess("eertertet"){}
-        if(isLogin) {
+        if (isLogin) {
             val mUser = GsonUtils.fromJson(user, User::class.java)
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
-            if (mUser.firstPassTip !=1) {
-                if (isInviteDialog.isBlank()) {
+            if (mUser.firstPassTip != 1) {
+                val mUserDialogShow = MMKV.defaultMMKV()
+                    .decodeParcelable(mUser.id.toString(), UserDialogInformationBean::class.java)
+                val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
+                if (mUserDialogShow.showInviteDialogDate.isBlank()) {
                     if (mUser.auditStatus == 1) {
                         App.dialogHelp.showInvite()
-                        isInviteDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                        MMKV.defaultMMKV().encode(
+                            mUser.id.toString(),
+                            mUserDialogShow.apply {
+                                showInviteDialogDate =
+                                    "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                            })
                     }
                 } else {
-                    val split = isInviteDialog.split(",")
+                    val split = mUserDialogShow.showInviteDialogDate.split(",")
                     if (split[0].toInt() != calendar.get(Calendar.MONTH) && split[0].toInt() != calendar.get(
                             Calendar.DAY_OF_MONTH
                         )
                     ) {
                         App.dialogHelp.showInvite()
                     }
-                    isInviteDialog = "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                    MMKV.defaultMMKV().encode(
+                        mUser.id.toString(),
+                        mUserDialogShow.apply {
+                            isInviteDialog =
+                                "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
+                        })
                 }
             }
         }
@@ -109,7 +125,10 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
     override fun initView() {
         activity!!.nav_view.visibility = View.VISIBLE
         curFragment = "HomeFragment"
-        StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
+        StateAppBar.setStatusBarLightMode(
+            this.activity,
+            context!!.resources.getColor(R.color.white)
+        )
 
         tv_full_sreach.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
@@ -134,7 +153,8 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                     fragments.clear()
 
                     for ((index, item) in it.withIndex()) {
-                        val tabBean = HomeTabBeanItem(item.createTime, item.description, item.id, item.name)
+                        val tabBean =
+                            HomeTabBeanItem(item.createTime, item.description, item.id, item.name)
                         tabs.add(tabBean)
                         fragments.add(HomeVpFragment.newInstance(tabBean, index))
                     }
@@ -151,7 +171,8 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                                 if (null == view) {
                                     tab.setCustomView(R.layout.custom_tab_layout_text)
                                 }
-                                val textView: TextView = tab.customView!!.findViewById(R.id.tab_item_textview)
+                                val textView: TextView =
+                                    tab.customView!!.findViewById(R.id.tab_item_textview)
                                 textView.text = tabs[tab.position].name
                                 textView.setTextColor(context.resources.getColor(R.color.Home_text_normal))
                                 textView.typeface = Typeface.DEFAULT
@@ -162,7 +183,8 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                                 if (null == view) {
                                     tab.setCustomView(R.layout.custom_tab_layout_text)
                                 }
-                                val textView: TextView = tab.customView!!.findViewById(R.id.tab_item_textview)
+                                val textView: TextView =
+                                    tab.customView!!.findViewById(R.id.tab_item_textview)
                                 textView.text = tabs[tab.position].name
                                 textView.setTextColor(context.resources.getColor(R.color.Home_text_bold))
                                 textView.typeface = Typeface.DEFAULT_BOLD
@@ -208,31 +230,28 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                             //未答题
                             if (System.currentTimeMillis() !in it.receiveDate!!.startDateTimeInMillis - 10000 until it.receiveDate.startDateTimeInMillis + 10000) {
                                 mContext.startService(intent.apply {
-                                    putExtra(RewardService.TestQuestions,it.questionnaire)
+                                    putExtra(RewardService.TestQuestions, it.questionnaire)
                                 })
-                            }
-                            else if(System.currentTimeMillis()>it.receiveDate.endDateTimeInMillis)
-                            {
+                            } else if (System.currentTimeMillis() > it.receiveDate.endDateTimeInMillis) {
                                 mContext.stopService(intent)
-                            }
-                            else
-                            XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
-                                override fun onDismiss(popupView: BasePopupView) {
-                                    super.onDismiss(popupView)
-                                    if (startAnswer) {
-                                        activity!!.supportFragmentManager.beginTransaction()
-                                            .addToBackStack(HomeVpFragment.javaClass.name)
-                                            .hide(this@HomeFragment)//隐藏当前Fragment
-                                            .add(
-                                                R.id.frame_content,
-                                                QuestionsFragment.newInstance(it.questionnaire!!),
-                                                QuestionsFragment.javaClass.name
-                                            )
-                                            .commit()
+                            } else
+                                XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
+                                    override fun onDismiss(popupView: BasePopupView) {
+                                        super.onDismiss(popupView)
+                                        if (startAnswer) {
+                                            activity!!.supportFragmentManager.beginTransaction()
+                                                .addToBackStack(HomeVpFragment.javaClass.name)
+                                                .hide(this@HomeFragment)//隐藏当前Fragment
+                                                .add(
+                                                    R.id.frame_content,
+                                                    QuestionsFragment.newInstance(it.questionnaire!!),
+                                                    QuestionsFragment.javaClass.name
+                                                )
+                                                .commit()
+                                        }
                                     }
-                                }
-                            })
-                                .asCustom(StartQuestionsDialog(context!!)).show()
+                                })
+                                    .asCustom(StartQuestionsDialog(context!!)).show()
                         }
                         2 -> {
                             //未领取红包
@@ -311,7 +330,8 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                         }
                     }
                     )
-                        .asCustom(CheckRewardDialog(context!!, it.redEnvelopeRecord!!.amount!!)).show()
+                        .asCustom(CheckRewardDialog(context!!, it.redEnvelopeRecord!!.amount!!))
+                        .show()
                 }
 
                 it.showError?.let { err ->
@@ -334,7 +354,7 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
         if (!isHidden) {
             mActivity!!.nav_view.visibility = View.VISIBLE
             mActivity!!.nav_view.menu[0].isChecked = true
-            StateAppBar.setStatusBarLightMode(this.mActivity, context!!.resources.getColor(R.color.white))
+            StateAppBar.setStatusBarLightMode(this.mActivity, mContext.getResColor(R.color.white))
             curFragment = "HomeFragment"
         } else {
             GSYVideoManager.onPause()

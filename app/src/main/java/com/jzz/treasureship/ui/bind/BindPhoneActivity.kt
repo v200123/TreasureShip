@@ -23,6 +23,9 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
     var userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
     var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
     var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
+    val xPopup  by lazy { XPopup.Builder(mContext).asLoading()}
+
+
     private val countDown by lazy { CountDownTimerUtils(tv_sendSms, 60 * 1000, 1000) }
     override fun getLayoutResId() = R.layout.activity_bind_phone
 
@@ -44,7 +47,7 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
 
         tv_sendSms.setOnClickListener {
             if (!et_phone.text.isNullOrBlank()) {
-                mViewModel.sendSmsCode(4, et_phone.text.toString(), countDown)
+                mViewModel.sendSmsCode(4, et_phone.text.toString(), countDown,xPopup)
             }
             else{
                 ToastUtils.showShort("请输入验证码")
@@ -62,7 +65,6 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
-            val xPopup = XPopup.Builder(this@BindPhoneActivity).asLoading()
             uiState.observe(this@BindPhoneActivity, Observer { it ->
                 if (it.showProgress) {
                     xPopup.show()
@@ -77,6 +79,12 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
                     access = user.accessToken!!
                     finish()
                     mContext.start<MainActivity> {  }
+                }
+
+                if(it is LoginViewModel.LoginUiModel)
+                {
+                    xPopup.dismiss()
+
                 }
 
                 it.showError?.let { err ->

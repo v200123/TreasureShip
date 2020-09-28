@@ -136,7 +136,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
                         }
                         srl_wallets.finishLoadMore(0)
                     } else {
-                        mAdapter.setNewInstance(walletList.mData.toMutableList())
+                        mAdapter.setNewData(walletList.mData.toMutableList())
                         srl_wallets.finishRefresh(0)
                     }
                 }

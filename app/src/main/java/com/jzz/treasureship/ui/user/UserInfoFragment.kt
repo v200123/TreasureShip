@@ -125,7 +125,6 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
 
 
     override fun startObserve() {
-
         mViewModel.apply {
             val xPopup = XPopup.Builder(context).asLoading()
 
@@ -255,17 +254,14 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
 
                 lin_mine_header.setOnClickListener {
                     //uploadHeadImage()
-
                     XPopup.Builder(it.context).asCustom(CustomUploadHeaderBottomPopup(it.context)).show()
                 }
-
-
 
                 lin_receiveAddress.setOnClickListener {
                     activity!!.supportFragmentManager.beginTransaction()
                         .addToBackStack(UserInfoFragment.javaClass.name)
-//                        .hide(this@UserInfoFragment)//隐藏当前Fragment
-                        .replace(R.id.frame_content, mAddressFragment, mAddressFragment.javaClass.name)
+                        .hide(this@UserInfoFragment)//隐藏当前Fragment
+                        .add(R.id.frame_content, mAddressFragment, mAddressFragment.javaClass.name)
                         .commit()
                 }
             })

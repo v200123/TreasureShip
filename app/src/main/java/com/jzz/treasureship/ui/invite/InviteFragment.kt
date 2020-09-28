@@ -50,6 +50,11 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
 
     override fun initVM(): InviteViewModel = getViewModel()
 
+    override fun onResume() {
+        super.onResume()
+        activity!!.nav_view.visibility = View.GONE
+    }
+
     override fun initView() {
         val boolean = arguments?.getBoolean(isNeedBackToMain)?:false
         activity!!.nav_view.visibility = View.GONE

@@ -11,12 +11,14 @@ import com.jzz.treasureship.model.bean.InvitedList
 import com.jzz.treasureship.model.bean.OrderRewardFirstBean
 import com.jzz.treasureship.model.repository.InviteRespository
 import com.jzz.treasureship.utils.PreferenceUtils
-import com.lc.mybaselibrary.ErrorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class InviteViewModel(val repository: InviteRespository, val provider: CoroutinesDispatcherProvider) : BaseViewModel() {
+class InviteViewModel(
+    val repository: InviteRespository,
+    val provider: CoroutinesDispatcherProvider
+) : BaseViewModel() {
     private val _invitedsState = MutableLiveData<InvitedModel>()
     val invitedsState: LiveData<InvitedModel>
         get() = _invitedsState
@@ -37,10 +39,17 @@ class InviteViewModel(val repository: InviteRespository, val provider: Coroutine
                             var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
-                            emitInvitedListState(false, "失败!${result.result.message}", null, false, false, true)
+                            wxCode = ""
+                            userInfo = ""
+                            access = ""
+                            emitInvitedListState(
+                                false,
+                                "失败!${result.result.message}",
+                                null,
+                                false,
+                                false,
+                                true
+                            )
                         }
                         else -> {
                             emitInvitedListState(false, "失败!${result.result.message}")
@@ -52,17 +61,17 @@ class InviteViewModel(val repository: InviteRespository, val provider: Coroutine
             }
         }
     }
+
     val redEnvelopOpen = MutableLiveData<OrderRewardFirstBean>()
-    fun getMoney()
-    {
-        launchTask { val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()
-        inviteMoney.resultCheck({
-
-            it?.let {
-                redEnvelopOpen.postValue(it)
-            }
-
-        },{ErrorState(it)})}
+    fun getMoney() {
+        launchTask {
+            val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()
+            inviteMoney.resultCheck({
+                it?.let {
+                    redEnvelopOpen.postValue(it)
+                }
+            })
+        }
     }
 
     //邀请明细
@@ -74,7 +83,8 @@ class InviteViewModel(val repository: InviteRespository, val provider: Coroutine
         isRefresh: Boolean = false,
         needLogin: Boolean? = null
     ) {
-        val uiModel = InvitedModel(showLoading, showError, showSuccess, showEnd, isRefresh, needLogin)
+        val uiModel =
+            InvitedModel(showLoading, showError, showSuccess, showEnd, isRefresh, needLogin)
         _invitedsState.value = uiModel
     }
 
@@ -90,13 +100,11 @@ class InviteViewModel(val repository: InviteRespository, val provider: Coroutine
     )
 
     val mCountData = MutableLiveData<Int>()
-    fun getCount(){
-        launchTask{
+    fun getCount() {
+        launchTask {
             val inviteCount = HttpHelp.getRetrofit().getInviteCount()
             inviteCount.resultCheck({
-                mCountData.postValue( it!!.get("inviteRewardCount").asInt)
-            },{
-                mStateLiveData.postValue(ErrorState(it))
+                mCountData.postValue(it!!.get("inviteRewardCount").asInt)
             })
         }
     }

@@ -1,6 +1,5 @@
 package com.jzz.treasureship.ui.auth
 
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -10,7 +9,6 @@ import androidx.core.content.ContextCompat
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import cn.ycbjie.ycstatusbarlib.utils.StatusBarUtils
 import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.activity.MainActivity
 import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.include_title.*
 
@@ -24,7 +22,13 @@ class AuthConfirmSuccessActivity : AppCompatActivity(R.layout.activity_confirm_s
         super.onCreate(savedInstanceState)
         tv_title.text = "审核中"
         rlback.setOnClickListener {
-            this.start<MainActivity> { setFlags(FLAG_ACTIVITY_CLEAR_TOP)} }
+            this.start<AuthenticationActivity> {
+                putExtra(
+                    AuthenticationActivity.NeedFinish,
+                    "exit"
+                )
+            }
+        }
         rl_title.setBackgroundColor(Color.parseColor("#FFD92A20"))
         setStatueColor()
 

@@ -74,7 +74,7 @@
             android:taskAffinity="net.sourceforge.simcpux"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".ui.activity.ClipImageActivity" />
-        <activity android:name=".ui.login.LoginActivity" android:noHistory="true" />
+        <activity android:name=".ui.login.LoginActivity"  />
         <activity android:name=".ui.bind.BindPhoneActivity" />
         <activity android:name=".ui.auth.AuthenticationActivity"
             android:launchMode="singleTask"/>

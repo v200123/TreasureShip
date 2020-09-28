@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import cn.jiguang.analytics.page.ActivityLifecycle
 import cn.jpush.android.api.JPushInterface
 import com.didichuxing.doraemonkit.DoraemonKit
@@ -15,9 +14,11 @@ import com.jzz.treasureship.constants.Constants
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.service.OKHttpUpdateHttpService
 import com.jzz.treasureship.ui.DialogHelp
+import com.lc.mybaselibrary.out
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import com.tencent.mmkv.MMKV
 import com.xuexiang.xui.XUI
 import com.xuexiang.xupdate.XUpdate
 import me.jessyan.autosize.AutoSizeConfig
@@ -33,6 +34,7 @@ import kotlin.properties.Delegates
 class App : Application() {
     private   var curActivity: AppCompatActivity? = null
     companion object {
+        const val UserDialog = "com.lc.UserDialog"
 
         var CONTEXT: Context by Delegates.notNull()
       var CURRENT_USER: User? = null
@@ -52,6 +54,8 @@ class App : Application() {
         XUI.init(this) //初始化UI框架
         XUI.debug(true)  //开启UI框架调试日志
         DoraemonKit.install(this)
+        val rootDir = MMKV.initialize(this)
+        "当前存储的路径为:${rootDir}".out(true)
         registerActivity()
         initAutoSize()
 //        val crashHandler: CrashHandler4SaveLog2File = CrashHandler4SaveLog2File.getInstance()
@@ -141,7 +145,7 @@ class App : Application() {
             .init(this) //这个必须初始化
     }
 
-    fun registerActivity(){
+    private fun registerActivity(){
         registerActivityLifecycleCallbacks(object : ActivityLifecycle() {
             override fun onActivityResumed(activity: Activity) {
                 curActivity = activity as AppCompatActivity

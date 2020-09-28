@@ -126,7 +126,7 @@
             <Button
                 android:id="@+id/btn_bind"
                 android:layout_width="293dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="37dp"
                 android:background="@drawable/btn_comfirm_shape"

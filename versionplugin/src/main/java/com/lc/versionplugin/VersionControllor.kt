@@ -30,7 +30,7 @@ private object version{
     val viewModelKtxVersion = "1.2.5"
     val lifecycleVersion = "2.2.0"
     val toastyVersion = "1.4.2"
-    val mmkvVersion = "1.2.1"
+    val mmkvVersion = "1.2.2"
     val fileVersion = "1.0.2"
     val xuiVersion = "1.1.5"
     val materialVersion = "material-rc01"

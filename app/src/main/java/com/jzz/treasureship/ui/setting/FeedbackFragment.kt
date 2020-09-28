@@ -49,8 +49,7 @@ class FeedbackFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
-            this.operateUiState.observe(this@FeedbackFragment, Observer {
-
+            operateUiState.observe(this@FeedbackFragment, Observer {
                 it.needLogin?.let { needLogin ->
                     if (needLogin) {
                         ToastUtils.showShort("未登录，请登录后再操作！")

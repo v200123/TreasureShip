@@ -5,6 +5,7 @@ plugins{
     id "com.lc.plugin"
 }
 apply plugin: 'com.android.application'
+apply plugin: 'upload.apk'
 
 apply plugin: 'kotlin-android'
 
@@ -13,6 +14,19 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'mtj-circle-plugin'
+
+uploadApk {
+
+    fir {
+        // 测试平台显示的应用名
+        appName = "宝舰"
+        // 测试平台显示的图片icon，只需要配置app文件夹之后的路径即可，例如src/main/res/mipmap路径即可
+        iconPath = "src/main/res/mipmap-xxhdpi/ic_launcher.png"
+        // Fir.im平台apitoken
+        token = "4e48fe013ea2f8087588a3401e3e75a2"
+    }
+}
+
 android {
 
     if(project.hasProperty('devBuild')){
@@ -26,7 +40,7 @@ android {
     dexOptions{
         javaMaxHeapSize = "1g"
     //        incremental true
-        threadCount = 4
+        threadCount = 5
         maxProcessCount = 7
 
     }
@@ -74,8 +88,8 @@ android {
         applicationId "com.jzz.treasureship"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 131
-        versionName "1.3.1"
+        versionCode 133
+        versionName "1.3.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         signingConfig signingConfigs.debug
@@ -229,7 +243,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:annotations:4.11.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
-    implementation 'com.github.SheHuan:NiceImageView:1.0.5'
+//    implementation 'com.github.SheHuan:NiceImageView:1.0.5'
 //    implementation 'com.lxj:xpopup:1.8.10-x'
 
     //微信sdk
@@ -272,9 +286,10 @@ dependencies {
     }
     releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:3.2.0'
     implementation VersionControllor.dependance.xpop
+    implementation VersionControllor.dependance.MMKV
     implementation VersionControllor.AndroidX.flexboxLayout
     implementation "androidx.preference:preference:1.1.1"
-    implementation 'com.github.KuangGang:RoundCorners:1.0.6'
+//    implementation 'com.github.KuangGang:RoundCorners:1.0.6'
 }
 
 

@@ -27,6 +27,7 @@ import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.utils.MoneyUtil
+import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -89,8 +90,9 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!isHidden) {
+            mViewModel.getCartList()
             activity!!.nav_view.visibility = View.GONE
-            StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
+            StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.blue_normal))
         }
     }
 

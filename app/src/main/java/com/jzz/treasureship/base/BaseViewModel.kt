@@ -25,8 +25,7 @@ open class BaseViewModel : ViewModel() {
 
     fun <T> JzzResponse<T>.resultCheck(
         block: (T?) -> Unit, errorMsg: (msg: String) -> Unit = {
-            mStateLiveData
-                .postValue(ErrorState(it))
+            mStateLiveData.postValue(ErrorState(it))
         }
     ) {
         if (this.success) {

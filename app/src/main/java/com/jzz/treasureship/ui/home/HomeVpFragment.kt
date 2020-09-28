@@ -5,11 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
-import android.text.style.ImageSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +14,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -55,7 +51,6 @@ import kotlinx.android.synthetic.main.layout_home_header.*
 import kotlinx.android.synthetic.main.video_layout_normal.view.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.math.BigDecimal
-import kotlin.math.log
 
 class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
@@ -711,8 +706,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             activity!!.supportFragmentManager.beginTransaction()
                                 .addToBackStack(HomeVpFragment.javaClass.name)
                                 .hide(this@HomeVpFragment.parentFragment!!)//隐藏当前Fragment
-                                .add(
-                                    R.id.frame_content,
+                                .add(R.id.frame_content,
                                     GoodsDetailFragment.newInstance("${item.goodsId}"),
                                     GoodsDetailFragment.javaClass.name
                                 )

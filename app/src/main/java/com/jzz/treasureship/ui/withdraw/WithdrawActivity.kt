@@ -63,7 +63,7 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
         //TODO 提现服务协议还没有，先屏蔽
         layout_lic.visibility = View.INVISIBLE
 
-        val userObj = GsonUtils.fromJson(userJson, User::class.java)
+        var userObj = GsonUtils.fromJson(userJson, User::class.java)
         tv_withDrawAll.setOnClickListener {
             edit_price.setText(withDrawMoney)
             edit_price.setSelection(edit_price.text.length)
@@ -119,7 +119,7 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
 //                ToastUtils.showShort("请先仔细阅读《提现服务协议》，并勾选")
 //                return@setOnClickListener
 //            }
-
+            userObj = GsonUtils.fromJson(userJson, User::class.java)
             val value = BigDecimal(edit_price.text.toString())
             val minValue = BigDecimal("0.03")
             if (value < minValue) {
@@ -253,9 +253,7 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
     }
 
     inner class CustomWithDrawDialog(context: Context, withDrawMoney: String) : CenterPopupView(context) {
-
         private val mWithDrawMoney = withDrawMoney
-
         override fun getImplLayoutId() = R.layout.layout_withdraw_comfirm
 
         override fun initPopupContent() {

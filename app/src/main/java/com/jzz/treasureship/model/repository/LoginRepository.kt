@@ -12,6 +12,7 @@ import com.jzz.treasureship.model.bean.UpdateAppBean
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lxj.xpopup.impl.LoadingPopupView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -74,12 +75,23 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
 
     //注册
     suspend fun register(userName: String, activeCode: String): Result<JzzResponse<User>> {
-        return safeApiCall(call = { requestRegister(userName.replace(" ", ""), activeCode) }, errorMessage = "注册失败")
+        return safeApiCall(
+            call = { requestRegister(userName.replace(" ", ""), activeCode) },
+            errorMessage = "注册失败"
+        )
     }
 
     //获取验证码
-    suspend fun sendSmsCode(type: Int, userName: String, countDown: CountDownTimerUtils): Result<JzzResponse<Unit>> {
-        return safeApiCall(call = { requestSmsCode(type, userName.replace(" ", ""),countDown) }, errorMessage = "验证码请求失败")
+    suspend fun sendSmsCode(
+        type: Int,
+        userName: String,
+        countDown: CountDownTimerUtils,
+        xPopup: LoadingPopupView
+    ): Result<JzzResponse<Unit>> {
+        return safeApiCall(
+            call = { requestSmsCode(type, userName.replace(" ", ""), countDown, xPopup) },
+            errorMessage = "验证码请求失败"
+        )
     }
 
     //微信登录
@@ -88,7 +100,10 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
     }
 
     //请求注册，注册成功后直接登录
-    private suspend fun requestRegister(userName: String, activeCode: String): Result<JzzResponse<User>> {
+    private suspend fun requestRegister(
+        userName: String,
+        activeCode: String
+    ): Result<JzzResponse<User>> {
         val root = JSONObject()
         val body = JSONObject()
 
@@ -115,7 +130,10 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
     }
 
     //请求登录
-    private suspend fun requestLogin(userName: String, activeCode: String): Result<JzzResponse<User>> {
+    private suspend fun requestLogin(
+        userName: String,
+        activeCode: String
+    ): Result<JzzResponse<User>> {
         val root = JSONObject()
         val body = JSONObject()
 
@@ -145,7 +163,10 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
     }
 
     //请求绑定手机号
-    private suspend fun requestBindMobile(mobile: String, activeCode: String): Result<JzzResponse<User>> {
+    private suspend fun requestBindMobile(
+        mobile: String,
+        activeCode: String
+    ): Result<JzzResponse<User>> {
         val root = JSONObject()
         val body = JSONObject()
 
@@ -176,13 +197,17 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
 
     //请求验证码
     private suspend
-    fun requestSmsCode(type: Int, userName: String, countDown: CountDownTimerUtils): Result<JzzResponse<Unit>> {
+    fun requestSmsCode(
+        type: Int,
+        userName: String,
+        countDown: CountDownTimerUtils,
+        xPopup: LoadingPopupView
+    ): Result<JzzResponse<Unit>> {
         val root = JSONObject()
         val body = JSONObject()
 
         body.put("type", type)
         body.put("userName", userName.trim())
-
         root.put("body", body)
 
         val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
@@ -195,10 +220,14 @@ class LoginRepository(private val service: JzzApiService) : BaseRepository() {
                     ToastUtils.showShort("${response.message}")
                 } else {
                     countDown.start()
+                    xPopup.dismiss()
                     ToastUtils.showShort("验证码请求成功")
                 }
             },
-            { ToastUtils.showShort("验证码请求失败") })
+            {
+                ToastUtils.showShort("验证码请求失败")
+                xPopup.dismiss()
+            })
     }
 
     //微信登录
