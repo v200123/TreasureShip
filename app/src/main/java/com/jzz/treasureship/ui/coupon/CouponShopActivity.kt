@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
-import com.didichuxing.doraemonkit.widget.bravh.listener.OnItemClickListener
-import com.didichuxing.doraemonkit.widget.bravh.module.LoadMoreModule
-import com.didichuxing.doraemonkit.widget.bravh.viewholder.BaseViewHolder
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
+
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.GlideImageLoader
 import com.jzz.treasureship.base.BaseVMActivity
@@ -76,41 +75,26 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
             }
         }
         rlback.setOnClickListener { finish() }
-        rv_coupon_shop.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-//                mTotalOffsetY += dy
-//                if(mTotalOffsetY>60)
-//                {
-//                    tv_coupon_shop_content.translationY = -mTotalOffsetY.toFloat()
-//                }
-            }
-        })
 
 
-        mAdapter.loadMoreModule.apply {
-            setOnLoadMoreListener {
+        mAdapter.setEnableLoadMore(true)
+        mAdapter.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener{
+            override fun onLoadMoreRequested() {
                 mViewModel.getList(BaseRequestBody(MyHeader = header(pageNum = nowPosition)))
             }
-            isEnableLoadMore = true
-            isAutoLoadMore = false
-            isEnableLoadMoreIfNotFullPage = false
-        }
+
+        },rv_coupon_shop)
 
 
-        mAdapter.setOnItemClickListener(object : OnItemClickListener {
-
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val data03 = adapter.data[position] as Data03
-                mContext.start<MainActivity> {
-                    putExtra(
+        mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            val data03 = adapter.data[position] as Data03
+            mContext.start<MainActivity> {
+                putExtra(
                         MainActivity.GoodsId,
                         "${data03.mGoodsId}"
-                    )
-                }
+                )
             }
-
-        })
+        }
     }
 
     override fun initData() {
@@ -167,9 +151,9 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
         mViewModel.mCouponData.observe(this, {
             mAdapter.addData(it.mData)
             if (it.mTotalPages == nowPosition) {
-                mAdapter.loadMoreModule.loadMoreEnd()
+                mAdapter.loadMoreEnd()
             } else {
-                mAdapter.loadMoreModule.loadMoreComplete()
+                mAdapter.loadMoreComplete()
                 nowPosition++
             }
 
@@ -178,11 +162,11 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
 
 
     class couponAdapter(var fragment: AppCompatActivity) :
-        com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter<Data03,
+       BaseQuickAdapter<Data03,
                 BaseViewHolder>(
             R.layout
                 .item_coupon_shop
-        ), LoadMoreModule {
+        ){
         override fun convert(holder: BaseViewHolder, item: Data03) {
             Glide.with(fragment).asDrawable().apply(
                 RequestOptions().placeholder(ContextCompat.getDrawable(fragment, R.drawable.icon_sku_unload)).error(

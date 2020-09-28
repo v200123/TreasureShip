@@ -7,7 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.GsonUtils
 import com.bumptech.glide.Glide
-import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.GoodsDetail
 import kotlinx.android.synthetic.main.activity_goods_qualification.*
@@ -81,11 +82,11 @@ class GoodsQualificationActivity : AppCompatActivity(R.layout.activity_goods_qua
     }
 
     class qualificationAdapter(var mActivity: AppCompatActivity) :
-        BaseQuickAdapter<String, com.didichuxing.doraemonkit.widget.bravh.viewholder.BaseViewHolder>(
+        BaseQuickAdapter<String, BaseViewHolder>(
             R.layout.item_simple_imageview
         ) {
         override fun convert(
-            holder: com.didichuxing.doraemonkit.widget.bravh.viewholder.BaseViewHolder,
+            holder: BaseViewHolder,
             item: String
         ) {
 

@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.DepartmentBean
@@ -32,10 +33,9 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
         }
         tv_title.text = "选择科室"
         rlback.setOnClickListener { finish() }
-        mAdapter.setOnItemClickListener(object :
-            com.didichuxing.doraemonkit.widget.bravh.listener.OnItemClickListener {
+        mAdapter.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener {
             override fun onItemClick(
-                adapter: com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter<*, *>,
+                adapter: BaseQuickAdapter<*, *>,
                 view: View,
                 position: Int
             ) {
@@ -65,11 +65,11 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
 
             override fun afterTextChanged(s: Editable) {
                 if (s.isBlank()) {
-                    mAdapter.setList(mDepartmentList)
+                    mAdapter.setNewData(mDepartmentList)
                 } else {
                     val filter = mDepartmentList
                         .filter { it.mName.contains(s.toString()) }
-                    mAdapter.setList(filter)
+                    mAdapter.setNewData(filter)
                 }
             }
 
@@ -84,7 +84,7 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
     override fun startObserve() {
         mViewModel.hospitalData.observe(this, {
             mDepartmentList = it.mList
-            mAdapter.setList(mDepartmentList)
+            mAdapter.setNewData(mDepartmentList)
         })
     }
 

@@ -7,11 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.didichuxing.doraemonkit.widget.bravh.BaseQuickAdapter
-import com.didichuxing.doraemonkit.widget.bravh.listener.OnItemChildClickListener
-import com.didichuxing.doraemonkit.widget.bravh.listener.OnLoadMoreListener
-import com.didichuxing.doraemonkit.widget.bravh.module.LoadMoreModule
-import com.didichuxing.doraemonkit.widget.bravh.viewholder.BaseViewHolder
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.BaseRequestBody
@@ -20,6 +17,7 @@ import com.jzz.treasureship.model.bean.header
 import com.jzz.treasureship.ui.coupon.requestBody.CouponBody
 import com.jzz.treasureship.ui.coupon.viewModel.CouponUseViewModel
 import com.lc.mybaselibrary.start
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_common_coupon_used.*
 
 /**
@@ -49,22 +47,19 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
             layoutManager = LinearLayoutManager(mContext)
         }
 
-        mAdapter.loadMoreModule.apply {
-            isEnableLoadMore = true
-            isEnableLoadMoreIfNotFullPage = false
-            isAutoLoadMore = false
-            setOnLoadMoreListener(object : OnLoadMoreListener {
-                override fun onLoadMore() {
-                    mViewModel.getCouponList(
+        mAdapter.setEnableLoadMore(true)
+        mAdapter.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener{
+            override fun onLoadMoreRequested() {
+                mViewModel.getCouponList(
                         BaseRequestBody(
-                            CouponBody(arguments?.getInt(mCouponType) ?: 1),
-                            header(pageNum = nowPosition, pageSize = 20)
+                                CouponBody(arguments?.getInt(mCouponType) ?: 1),
+                                header(pageNum = nowPosition, pageSize = 20)
                         )
-                    )
-                }
-            })
-        }
-        mAdapter.setEmptyView(R.layout.rv_empty_01)
+                )
+            }
+        },rv_common_card)
+        mAdapter.disableLoadMoreIfNotFullPage(rv_common_card)
+        mAdapter.setEmptyView(R.layout.rv_empty_01,rv_common_card)
 
 
 
@@ -83,10 +78,10 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
         mViewModel.couponData.observe(this, {
             mAdapter.addData(it.mData)
             if (it.mTotalPages == nowPosition) {
-                mAdapter.loadMoreModule.loadMoreEnd()
+                mAdapter.loadMoreEnd()
             } else {
                 ++nowPosition
-                mAdapter.loadMoreModule.loadMoreComplete()
+                mAdapter.loadMoreComplete()
             }
 
         })
@@ -94,7 +89,7 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
     }
 
     override fun initListener() {
-        mAdapter.setOnItemChildClickListener(object : OnItemChildClickListener {
+        mAdapter.setOnItemChildClickListener(object : BaseQuickAdapter.OnItemChildClickListener {
             override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val data01 = adapter.data[position] as Data01
                 mContext.start<CouponShopActivity> {
@@ -107,13 +102,11 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
 
 
     class CouponAdapter(var type: Int,var mContext:Context) : BaseQuickAdapter<Data01, BaseViewHolder>(R.layout
-        .item_card_unuse),
-        LoadMoreModule {
-        init {
-            addChildClickViewIds(R.id.btn_goto_shop)
-        }
+        .item_card_unuse) {
+
 
         override fun convert(holder: BaseViewHolder, item: Data01) {
+            holder.addOnClickListener(R.id.btn_goto_shop)
             val imageView = holder.getView<ImageView>(R.id.imageView)
             if (type == 1) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.bg_card_unuse))
