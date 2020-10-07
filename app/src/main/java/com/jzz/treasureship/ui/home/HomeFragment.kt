@@ -104,7 +104,7 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                     MMKV.defaultMMKV().encode(
                         mUser.id.toString(),
                         mUserDialogShow.apply {
-                            isInviteDialog =
+                            showInviteDialogDate =
                                 "${calendar.get(Calendar.MONTH)},${calendar.get(Calendar.DAY_OF_MONTH)}"
                         })
                 }

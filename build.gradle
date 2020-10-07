@@ -16,9 +16,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.3'
+        classpath 'com.android.tools.build:gradle:4.0.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.baidu.mobstat:mtj-circle-plugin:1.4.0'
+        classpath 'com.baidu.mobstat:mtj-circle-plugin:latest.integration'
         classpath 'com.github.chenyy0708:UploadApkPlugin:3.0.1'
     }
 }
