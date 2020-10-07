@@ -2,6 +2,7 @@ package com.jzz.treasureship.model.api
 
 import com.google.gson.JsonObject
 import com.jzz.treasureship.model.bean.*
+import com.jzz.treasureship.ui.upAddressRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
