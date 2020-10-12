@@ -222,15 +222,12 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
             ordersState.observe(this@OrdersVpFragment, Observer {
 
                 if (it.showLoading) {
-                    if(!isShow) {
-                        xPopup.show()
-                        isShow = true
-                    }
+                    showLoading("订单列表获取中")
                 }
 
                 it.needLogin?.let { needLogin ->
                     if (needLogin) {
-                        xPopup.dismiss()
+                        hideLoading()
                         isShow = false
                         ToastUtils.showShort("未登录，请登录后再操作！")
                         startActivity(Intent(this@OrdersVpFragment.context, LoginActivity::class.java))
@@ -238,7 +235,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
                 }
 
                 it.showSuccess?.let { orders ->
-                    xPopup.dismiss()
+                    hideLoading()
                     isShow = false
                     if (pageNum > 1) {
                         if (orders.data!!.isNotEmpty()) {
@@ -269,7 +266,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
                 }
 
                 it.showError?.let { message ->
-                    xPopup.dismiss()
+                    hideLoading()
                     isShow = false
                     if (pageNum > 1) {
                         --pageNum
@@ -286,10 +283,12 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
             ordersGoPayState.observe(this@OrdersVpFragment, Observer {
 
                 if (it.showLoading) {
-                    goPayPopup.show()
+                    showLoading()
                 }
 
                 it.needLogin?.let { needLogin ->
+                    hideLoading()
+
                     if (needLogin) {
                         ToastUtils.showShort("未登录，请登录后再操作！")
                         startActivity(Intent(this@OrdersVpFragment.context, LoginActivity::class.java))
@@ -297,7 +296,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
                 }
 
                 it.showSuccess?.let { ordersGoPayBean ->
-                    goPayPopup.dismiss()
+                    hideLoading()
                     if (!App.iwxapi.isWXAppInstalled) {
                         ToastUtils.showShort("未安装微信客户端，无法使用微信支付")
                     } else {
@@ -315,7 +314,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
                 }
 
                 it.showError?.let { message ->
-                    goPayPopup.dismiss()
+                    hideLoading()
                     ToastUtils.showShort(if (message.isBlank()) "网络异常" else message)
                 }
             })
@@ -324,42 +323,45 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
             comfirmReceiveState.observe(this@OrdersVpFragment, Observer {
 
                 if (it.showLoading) {
-                    sureReceivePopup.show()
+                    showLoading()
                 }
 
                 it.needLogin?.let { needLogin ->
                     if (needLogin) {
+                        hideLoading()
                         ToastUtils.showShort("未登录，请登录后再操作！")
                         startActivity(Intent(this@OrdersVpFragment.context, LoginActivity::class.java))
                     }
                 }
 
                 it.showSuccess.let { order ->
-                    sureReceivePopup.dismiss()
+                    hideLoading()
+
                     ToastUtils.showShort("已收货")
                     //mViewModel.getOrderList(-1, null, 2, -1, pageNum)
                 }
 
                 it.showError?.let { message ->
-                    sureReceivePopup.dismiss()
+                    hideLoading()
                     ToastUtils.showShort(if (message.isBlank()) "网络异常" else message)
                 }
             })
 
             refundState.observe(this@OrdersVpFragment, Observer {
                 if (it.showLoading) {
-                    sureReceivePopup.show()
+                    showLoading()
                 }
 
                 it.needLogin?.let { needLogin ->
                     if (needLogin) {
+                        hideLoading()
                         ToastUtils.showShort("未登录，请登录后再操作！")
                         startActivity(Intent(this@OrdersVpFragment.context, LoginActivity::class.java))
                     }
                 }
 
                 it.showSuccess.let { it ->
-                    sureReceivePopup.dismiss()
+                    hideLoading()
                     if(it == null){
                         ToastUtils.showShort("已申请退款！")
                         list[itemPosition].orderStatus = 9
@@ -412,7 +414,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
                 }
 
                 it.showError?.let { message ->
-                    sureReceivePopup.dismiss()
+                    hideLoading()
                     ToastUtils.showShort(if (message.isBlank()) "网络异常" else message)
                 }
             })

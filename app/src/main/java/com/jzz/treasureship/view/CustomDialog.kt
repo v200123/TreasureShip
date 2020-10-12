@@ -31,9 +31,9 @@ class CustomDialog : Dialog {
         private var contentView //对话框中间加载的其他布局界面
                 : View? = null
 
-        /*按钮坚挺事件*/
+        /*按钮确认事件*/
         private var confirm_btnClickListener: DialogInterface.OnClickListener? = null
-        private var cancel_btnClickListener: DialogInterface.OnClickListener? = null
+//        private var cancel_btnClickListener: DialogInterface.OnClickListener? = null
 
         /*设置对话框信息*/
         fun setMessage(message: String?): Builder {
@@ -115,36 +115,36 @@ class CustomDialog : Dialog {
             return this
         }
 
-        /**
-         * Set the negative button resource and it's listener
-         *
-         * @param confirm_btnText
-         * @return
-         */
-        fun setNegativeButton(
-            cancel_btnText: Int,
-            listener: DialogInterface.OnClickListener?
-        ): Builder {
-            this.cancel_btnText = context
-                .getText(cancel_btnText).toString()
-            cancel_btnClickListener = listener
-            return this
-        }
-
-        /**
-         * Set the negative button and it's listener
-         *
-         * @param confirm_btnText
-         * @return
-         */
-        fun setNegativeButton(
-            cancel_btnText: String?,
-            listener: DialogInterface.OnClickListener?
-        ): Builder {
-            this.cancel_btnText = cancel_btnText
-            cancel_btnClickListener = listener
-            return this
-        }
+//        /**
+//         * Set the negative button resource and it's listener
+//         *
+//         * @param confirm_btnText
+//         * @return
+//         */
+//        fun setNegativeButton(
+//            cancel_btnText: Int,
+//            listener: DialogInterface.OnClickListener?
+//        ): Builder {
+//            this.cancel_btnText = context
+//                .getText(cancel_btnText).toString()
+//            cancel_btnClickListener = listener
+//            return this
+//        }
+//
+//        /**
+//         * Set the negative button and it's listener
+//         *
+//         * @param confirm_btnText
+//         * @return
+//         */
+//        fun setNegativeButton(
+//            cancel_btnText: String?,
+//            listener: DialogInterface.OnClickListener?
+//        ): Builder {
+//            this.cancel_btnText = cancel_btnText
+//            cancel_btnClickListener = listener
+//            return this
+//        }
 
         @SuppressLint("WrongViewCast")
         fun create(): CustomDialog {
@@ -152,15 +152,16 @@ class CustomDialog : Dialog {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             // instantiate the dialog with the custom Theme
             val dialog = CustomDialog(context, R.style.ios_dialog_style)
-            val layout: View = inflater.inflate(R.layout.layout_ios_dialog, null)
+            val layout: View = inflater.inflate(R.layout.dialog_ios_ensure, null)
             dialog.addContentView(
                 layout, ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             )
             // set the dialog title
-            (layout.findViewById(R.id.title) as TextView).text = title
-            (layout.findViewById(R.id.title) as TextView).paint.isFakeBoldText = true
+            val mDialogTitle = layout.findViewById<TextView>(R.id.title)
+            mDialogTitle.text = title
+            (mDialogTitle as TextView).paint.isFakeBoldText = true
             // set the confirm button
             if (confirm_btnText != null) {
                 (layout.findViewById(R.id.confirm_btn) as Button).text = confirm_btnText
@@ -178,21 +179,21 @@ class CustomDialog : Dialog {
                 (layout.findViewById(R.id.confirm_btn) as Button).visibility = View.GONE
             }
             // set the cancel button
-            if (cancel_btnText != null) {
-                (layout.findViewById(R.id.cancel_btn) as Button).text = cancel_btnText
-                if (cancel_btnClickListener != null) {
-                    (layout.findViewById(R.id.cancel_btn) as Button)
-                        .setOnClickListener {
-                            cancel_btnClickListener!!.onClick(
-                                dialog,
-                                DialogInterface.BUTTON_NEGATIVE
-                            )
-                        }
-                }
-            } else {
-// if no confirm button just set the visibility to GONE
-                (layout.findViewById(R.id.cancel_btn) as Button).visibility = View.GONE
-            }
+//            if (cancel_btnText != null) {
+//                (layout.findViewById(R.id.cancel_btn) as Button).text = cancel_btnText
+//                if (cancel_btnClickListener != null) {
+//                    (layout.findViewById(R.id.cancel_btn) as Button)
+//                        .setOnClickListener {
+//                            cancel_btnClickListener!!.onClick(
+//                                dialog,
+//                                DialogInterface.BUTTON_NEGATIVE
+//                            )
+//                        }
+//                }
+//            } else {
+//// if no confirm button just set the visibility to GONE
+//                (layout.findViewById(R.id.cancel_btn) as Button).visibility = View.GONE
+//            }
             // set the content message
             if (message != null) {
                 (layout.findViewById(R.id.message) as TextView).text = message

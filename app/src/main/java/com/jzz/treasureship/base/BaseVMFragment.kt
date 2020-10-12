@@ -32,7 +32,9 @@ import java.util.*
 abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true) : Fragment(),
     FragmentBackHandler {
     private val mLoading by lazy {
-        XPopup.Builder(mContext).dismissOnBackPressed(false)
+        XPopup.Builder(mContext)
+            .hasShadowBg(false)
+            .dismissOnBackPressed(false)
             .dismissOnTouchOutside(false)
             .asLoading()
     }
@@ -161,8 +163,17 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     }
 
+    fun showLoading(msg:String? = null){
+        mLoading.setTitle(msg?:"").show()
+    }
+
+    fun hideLoading(){
+        mLoading.dismiss()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        hideLoading()
         GSYVideoManager.releaseAllVideos()
     }
 

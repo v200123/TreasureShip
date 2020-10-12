@@ -210,7 +210,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                     ad.list?.let { list ->
                         if (list.isNotEmpty()) {
                             list[0]?.let { item ->
-                                Glide.with(context!!).load(item.adCover).into(iv_ad)
+                                iv_ad?.let { Glide.with(mContext).load(item.adCover).into(iv_ad) }
                             }
                         }
 
@@ -456,16 +456,16 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                                         }
                                     }
                                 })
-                                    .asCustom(StartQuestionsDialog(context!!)).show()
+                                    .asCustom(StartQuestionsDialog(mContext)).show()
                         }
                         2 -> {
                             //未领取红包
                             XPopup.Builder(context)
-                                .asCustom(NoticeGetRewardDialog(context!!, mViewModel)).show()
+                                .asCustom(NoticeGetRewardDialog(mContext, mViewModel)).show()
                         }
                         3, 4, 5, 6, 8 -> {
                             //红包已领取
-                            val customDialog = CustomDialog.Builder(this@HomeVpFragment.context!!)
+                            val customDialog = CustomDialog.Builder(mContext)
                             customDialog.setTitle("提示")
                             customDialog.setMessage("${it.resultMsg}")
                             customDialog.setPositiveButton(

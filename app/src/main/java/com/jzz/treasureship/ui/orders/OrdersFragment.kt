@@ -21,6 +21,7 @@ import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.treasurebox.TreasureBoxFragment
 import com.jzz.treasureship.ui.usersetting.UserSettingFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.ext.getResColor
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_orders.*
 import kotlinx.android.synthetic.main.fragment_treasure_box.*
@@ -47,7 +48,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             activity!!.nav_view.visibility = View.GONE
-            StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
+            StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.white))
         }
     }
 
@@ -59,7 +60,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
         activity!!.nav_view.visibility = View.GONE
         tv_title.text = "我的订单"
 
-        StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
+        StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.white))
 
         val titles = arrayOf("全部", "待付款", "待发货", "已发货", "已完成")
         val fragments: ArrayList<OrdersVpFragment> = ArrayList(titles.size)
@@ -124,7 +125,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
             fragments.add(OrdersVpFragment(index))
         }
         ordersTablayout.run {
-            setSelectedTabIndicatorColor(this.resources.getColor(R.color.blue_light))
+            setSelectedTabIndicatorColor(mContext.getResColor(R.color.blue_light))
             setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
 
@@ -191,36 +192,36 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
     }
 
     override fun onBackPressed(): Boolean {
-        if (mRootFragment.isBlank()) {
-            activity!!.supportFragmentManager.popBackStack()
-        } else {
-            when (mRootFragment) {
-                "HomeFragment" -> {
-                    Log.d("orderback","HomeFragment")
-                    activity!!.supportFragmentManager.beginTransaction().hide(this)
-                        .add(
-                            R.id.frame_content,
-                            HomeFragment.newInstance(),
-                            HomeFragment.javaClass.name
-                        )
-                        .commit()
-                }
-                "TreasureBoxFragment" -> {
-                    Log.d("orderback","TreasureBoxFragment")
-                    activity!!.supportFragmentManager.beginTransaction().hide(this)
-                        .add(
-                            R.id.frame_content,
-                            TreasureBoxFragment.newInstance(),
-                            TreasureBoxFragment.javaClass.name
-                        )
-                        .commit()
-                }
-                else -> {
-                    Log.d("orderback","popBackStack")
-                    activity!!.supportFragmentManager.popBackStack()
-                }
-            }
-        }
+//        if (mRootFragment.isBlank()) {
+////            activity!!.supportFragmentManager.popBackStack()
+////        } else {
+////            when (mRootFragment) {
+////                "HomeFragment" -> {
+////                    Log.d("orderback","HomeFragment")
+////                    activity!!.supportFragmentManager.beginTransaction().hide(this)
+////                        .add(
+////                            R.id.frame_content,
+////                            HomeFragment.newInstance(),
+////                            HomeFragment.javaClass.name
+////                        )
+////                        .commit()
+////                }
+////                "TreasureBoxFragment" -> {
+////                    Log.d("orderback","TreasureBoxFragment")
+////                    activity!!.supportFragmentManager.beginTransaction().hide(this)
+////                        .add(
+////                            R.id.frame_content,
+////                            TreasureBoxFragment.newInstance(),
+////                            TreasureBoxFragment.javaClass.name
+////                        )
+////                        .commit()
+////                }
+////                else -> {
+////                    Log.d("orderback","popBackStack")
+////                    activity!!.supportFragmentManager.popBackStack()
+////                }
+////            }
+////        }
         return true
     }
 

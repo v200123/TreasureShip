@@ -23,7 +23,9 @@ import kotlinx.coroutines.launch
 
 abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true) : AppCompatActivity() {
     private val mLoading by lazy {
-        XPopup.Builder(mContext).dismissOnBackPressed(false)
+        XPopup.Builder(mContext)
+            .hasShadowBg(false)
+            .dismissOnBackPressed(false)
             .dismissOnTouchOutside(false)
             .asLoading()
     }
@@ -88,9 +90,6 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onResume() {
         super.onResume()
         "我${this::class.java.name}\t\t进来了\n".out()
-
-
-
 
         showAuthDialog()
     }
