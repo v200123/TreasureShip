@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="traceInfo"
+            type="com.jzz.treasureship.model.bean.X" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rlTimeline"
+            android:layout_width="32dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvTopLine"
+                android:layout_width="0.5dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:background="#E5E5E5" />
+
+            <TextView
+                android:id="@+id/tvDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/icon_trace_normal"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvBotLine"
+                android:layout_gravity="center"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tvDot"
+                android:layout_centerHorizontal="true"
+                android:background="#E5E5E5" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlCenter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="6dp"
+            android:layout_marginStart="20dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="6dp">
+
+            <TextView
+                android:id="@+id/tvAcceptTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff666666"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAcceptTime"
+                android:layout_marginTop="7dp"
+                android:textColor="#ff111111"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

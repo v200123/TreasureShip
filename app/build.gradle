@@ -1,0 +1,296 @@
+import com.lc.versionplugin.VersionControllor
+
+plugins{
+    // 这个 id 就是在 versionPlugin 文件夹下 build.gradle 文件内定义的 id
+    id "com.lc.plugin"
+}
+apply plugin: 'com.android.application'
+apply plugin: 'upload.apk'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+//apply plugin: 'mtj-circle-plugin'
+
+uploadApk {
+
+    fir {
+        // 测试平台显示的应用名
+        appName = "宝舰"
+        // 测试平台显示的图片icon，只需要配置app文件夹之后的路径即可，例如src/main/res/mipmap路径即可
+        iconPath = "src/main/res/mipmap-xxhdpi/ic_launcher.png"
+        // Fir.im平台apitoken
+        token = "4e48fe013ea2f8087588a3401e3e75a2"
+    }
+}
+
+android {
+
+    if(project.hasProperty('devBuild')){
+        // 开发中禁用 Split apk
+        splits.abi.enable = false
+        splits.density.enable =false
+        // 禁用 PNG 运算
+        aaptOptions.cruncherEnabled = false
+    }
+
+    dexOptions{
+        javaMaxHeapSize = "1g"
+        //        incremental true
+        threadCount = 5
+        maxProcessCount = 7
+
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError false
+//        checkReleaseBuilds false
+//        // Or, if you prefer, you can continue to check for errors in release builds,
+//        // but continue the build even when errors are found:
+//        abortOnError false
+    }
+
+    signingConfigs {
+        debug {
+
+            storeFile file('./JzzChinaKeyStore.keystore')
+            storePassword 'LTLAjcouPwULSOFl'
+            keyAlias = 'TreasureShip'
+            keyPassword 'N8L3fG9tgPV9lrsd'
+        }
+        release {
+            storeFile file('./JzzChinaKeyStore.keystore')
+            storePassword 'LTLAjcouPwULSOFl'
+            keyAlias = 'TreasureShip'
+            keyPassword 'N8L3fG9tgPV9lrsd'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+//    applicationVariants.all { variant ->
+//        variant.outputs[0].processManifestProvider.get().doLast {
+//        }
+//    }
+    compileSdkVersion VersionControllor.Android.compileSdkVersion
+    buildToolsVersion "29.0.3"
+    defaultConfig {
+        applicationId VersionControllor.Android.applicationId
+        minSdkVersion VersionControllor.Android.minSdkVersion
+        targetSdkVersion VersionControllor.Android.targetSdkVersion
+        versionCode VersionControllor.Android.versionCode
+        versionName VersionControllor.Android.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        signingConfig signingConfigs.debug
+        resValue "string", "authorities", applicationId
+
+
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters  'armeabi-v7a', 'arm64-v8a' ,'x86_64'
+            //,'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: defaultConfig.applicationId,
+                JPUSH_APPKEY : "0df9aa7d7d54170775bb72cc",//来自开发者平台取得的AppKey
+                JPUSH_CHANNEL: "default_developer",
+        ]
+    }
+    buildTypes {
+        release {
+
+            buildConfigField("String","BaseUrl","\"http://bj.jzzchina.com\"")
+            minifyEnabled true //混淆
+            // Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            multiDexEnabled false
+            crunchPngs false
+            ext.enableCrashlytics = false
+            ext.alwaysUpdateBuildId = false
+//        buildConfigField("String","BaseUrl","\"http://bj.jzzchina.com\"")
+            buildConfigField("String","BaseUrl","\"http://119.3.125.1:9602\"")
+            signingConfig signingConfigs.debug
+        }
+    }
+    dataBinding {
+        enabled true
+    }
+}
+
+//MtjCirclePluginConfig {
+//    // 设置appkey
+//    appkey = 'a1c940f49e'
+//    // 设置debug 开关，如果需要查看日志则打开开关，为避免影响性能建议上线前关闭（设置为false）
+//    debug = false
+//    // 默认启动此插件，如果开发者不需要可以禁用（设置为false）
+//    enabled = true
+//}
+
+//aspectjx {
+////排除所有package路径中包含`android.support`的class文件及库（jar文件）
+//    exclude 'android.support'
+//}
+
+//aspectjx {
+//////忽略所有的class文件及jar文件，相当于AspectJX不生效
+////    exclude '*'
+////}
+
+//aspectjx {
+////关闭AspectJX功能
+//    enabled false
+//}
+
+dependencies {
+    implementation (project(path: ':LiuChangLib')){
+        transitive false
+    }
+//    implementation (project(path: ':myBaseLibrary'))
+    def autoSizeVersion = '1.1.2'
+    def gsonVersion = '2.8.6'
+    def retrofit2Version = '2.7.1'
+    def okhttpVersion = '4.3.1'
+    def okhttpLoggingInterceptorVersion = '4.3.1'
+    def kotlinCoroutineVersion = '1.3.7'
+    def gsyVideoVersion = '7.1.2'
+    def viewPager2Version = '1.0.0'
+    def smartRefreshLayoutVersion = '1.1.0'
+    def badgeViewVersion = '1.1.3'
+    def utilsCodeVersion = '1.26.0'
+    def koinVersion = '2.0.1'
+    def lifecycle_version = "1.1.1"
+//    def work_version = "2.3.4"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation (VersionControllor.Ktx.fragmentKtx){
+        exclude  group: 'androidx.core'
+    }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.navigation:navigation-fragment:2.3.0'
+    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+    //viewpager2
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
+    //下拉刷新、上拉加载、二级刷新、淘宝二楼、RefreshLayout、OverScroll，Android智能下拉刷新框架
+    implementation "com.scwang.smartrefresh:SmartRefreshLayout:$smartRefreshLayoutVersion"
+    //基于头条适配方案的适配开源框架
+    implementation "me.jessyan:autosize:$autoSizeVersion"
+    //Gson json解析库
+    //implementation "com.google.code.gson:gson:$gsonVersion"
+    //retrofit2
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
+    //Gson converter-gson
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2Version"
+    //okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    //okhttp日志拦截器
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion"
+    //kotlin协程支持库
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVersion"
+    //GSYVideo
+    implementation "com.shuyu:gsyVideoPlayer-java:$gsyVideoVersion"
+    //是否需要ExoPlayer模式
+    implementation "com.shuyu:GSYVideoPlayer-exo2:$gsyVideoVersion"
+    //更多ijk的编码支持
+    implementation "com.shuyu:gsyVideoPlayer-ex_so:$gsyVideoVersion"
+    //badgeview
+    implementation "q.rorbin:badgeview:$badgeViewVersion"
+    //android utilsCode
+    implementation "com.blankj:utilcodex:$utilsCodeVersion"
+
+    // Koin for Android
+    implementation "org.koin:koin-android:$koinVersion"
+    // or Koin for Lifecycle scoping
+    implementation "org.koin:koin-androidx-scope:$koinVersion"
+    // or Koin for Android Architecture ViewModel
+    implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
+
+    implementation('com.github.ihsanbal:LoggingInterceptor:3.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.github.bumptech.glide:annotations:4.11.0'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+//    implementation 'com.github.SheHuan:NiceImageView:1.0.5'
+//    implementation 'com.lxj:xpopup:1.8.10-x'
+
+    //微信sdk
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
+
+    implementation 'com.youth.banner:banner:1.4.10'
+
+    implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
+
+    implementation 'com.github.Blincheng:AddressSelector:v1.0.4'
+
+    implementation 'com.wuhenzhizao:sku:1.0.4'
+
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    implementation 'com.github.wanglu1209:PhotoViewer:0.50'
+
+    implementation 'com.king.zxing:zxing-lite:1.1.6-androidx'
+
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
+    implementation 'cn.yc:YCStatusBarLib:1.4.3'
+
+    implementation 'com.azhon:appupdateX:2.8.0'
+
+    implementation 'cn.jiguang.sdk:jpush:3.8.0'
+    implementation 'cn.jiguang.sdk:jcore:2.4.2'
+//    implementation "androidx.work:work-runtime-ktx:$work_version"
+//    implementation "com.jakewharton.timber:timber:4.7.1"
+    implementation 'com.github.xuexiangjys:XUpdate:2.0.1'
+    implementation 'com.zhy:okhttputils:2.6.2'
+//    implementation 'com.github.xuexiangjys:citypicker:1.0.1'
+    implementation VersionControllor.dependance.xui
+//    implementation VersionControllor.dependance.imageSelector
+    debugImplementation ('com.didichuxing.doraemonkit:doraemonkit:3.2.0')
+            {
+                exclude group: 'androidx.databinding'
+            }
+    releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:3.2.0'
+    implementation VersionControllor.dependance.xpop
+    implementation VersionControllor.dependance.MMKV
+    implementation VersionControllor.dependance.logger
+    implementation VersionControllor.AndroidX.flexboxLayout
+    implementation "androidx.preference:preference:1.1.1"
+
+//    implementation 'com.github.KuangGang:RoundCorners:1.0.6'
+}

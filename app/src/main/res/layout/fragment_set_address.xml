@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.jzz.treasureship.ui.address.AddressViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/garyf6"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_title" />
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/srl_address"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_addressList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+        <com.lc.mybaselibrary.DrawableTextView
+        android:id="@+id/layout_addAddress"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="8dp"
+            android:drawableStart="@drawable/icon_address_add"
+            android:gravity="center_vertical"
+            android:drawablePadding="15dp"
+            android:text="新增地址"
+            android:textColor="@color/white"
+            app:shapeCornersRadius="20dp"
+            app:shapeSolidColor="@color/blue_normal" />
+
+    </LinearLayout>
+</layout>

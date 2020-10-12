@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jzz.treasureship.ui.login.LoginViewModel" />
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/layout_loginTitle"
+            layout="@layout/include_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="152dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="153dp"
+            android:layout_marginBottom="424dp"
+            android:background="@mipmap/ic_launcher_round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_loginTitle" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="66dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="295dp"
+            android:background="@drawable/login_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
+
+        <com.jzz.treasureship.view.PhoneEditText
+            android:id="@+id/et_phoneNum"
+            android:layout_width="150dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:hint="@string/login_et_phone_num"
+            android:inputType="phone"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_phone"
+            app:layout_constraintTop_toTopOf="@+id/iv_phone" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="53dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="52dp"
+            android:background="#E4E4E4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_phoneNum" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64.5dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="295dp"
+            android:background="@drawable/login_code"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_codeNum"
+            android:layout_width="120dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="188.22dp"
+            android:background="@null"
+            android:hint="@string/login_et_code_num"
+            android:inputType="number"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_code"
+            app:layout_constraintTop_toTopOf="@+id/iv_code" />
+
+        <TextView
+            android:id="@+id/iv_getCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="250.58dp"
+            android:layout_marginEnd="69.42dp"
+            android:padding="10dp"
+            android:text="@string/login_tv_get_code"
+            android:textAlignment="center"
+            android:textColor="#26C8D7"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_codeNum"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_codeNum" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="270dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="53dp"
+            android:layout_marginEnd="52dp"
+            android:background="#E4E4E4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_getCode" />
+
+        <Button
+            android:id="@+id/ib_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="53dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="52dp"
+            android:background="@drawable/login_login_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="158.28dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="156.72dp"
+            android:text="@string/login_tv_registe"
+            android:textAlignment="center"
+            android:textColor="#26C8D7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ib_login" />
+
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="42dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="98dp"
+            android:layout_marginEnd="235dp"
+            android:background="#E4E4E4"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_otherLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_otherLogin" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_otherLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="151.58dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="157.42dp"
+            android:text="@string/login_tv_other_way"
+            android:textAlignment="center"
+            android:textColor="#CACACA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_register" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="42dp"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="235dp"
+            android:layout_marginEnd="98dp"
+            android:background="#E4E4E4"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_otherLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_otherLogin" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_wxLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="171dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="170dp"
+            android:background="@drawable/login_wechat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_otherLogin"
+            app:srcCompat="@drawable/login_wechat" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+</layout>

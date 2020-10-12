@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.jzz.treasureship.ui.paypal.PaypalViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_title" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="71dp"
+            android:src="@drawable/icon_pay_success" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="支付完成"
+            android:textColor="#FF111111"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_success_pay_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:text="订单金额:dsfsdfdsfcxv" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34.5dp">
+
+            <com.lc.mybaselibrary.ShapeTextView
+                android:id="@+id/tv_back_money"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="75dp"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="返回首页"
+                android:textColor="@color/blue_normal"
+                app:shapeStrokeColor="@color/blue_normal"
+                android:textSize="14sp"
+                app:shapeStrokeWidth="1dp"
+                app:shapeCornersRadius="17dp"
+                app:shapeSolidColor="@color/white" />
+
+            <com.lc.mybaselibrary.ShapeTextView
+                android:id="@+id/tv_checkOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="220dp"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="查看订单"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:shapeCornersRadius="17dp"
+                app:shapeSolidColor="@color/blue_normal" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>

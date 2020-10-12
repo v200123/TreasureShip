@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="goodsSku"
+            type="com.jzz.treasureship.model.bean.GoodsSku" />
+    </data>
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@color/swipe_red"
+            android:id="@+id/layout_delGoods"
+            android:layout_width="64dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvDel"
+                android:textSize="12sp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="删除" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <CheckBox
+                    android:id="@+id/cb_shopcar_good"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/shopcar_check_selector"
+                    android:button="@null" />
+
+                <ImageView
+                    android:id="@+id/iv_shopcar_good_cover"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_default_avatar" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_shopcar_good_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:lines="2"
+                        android:singleLine="false"
+                        android:text="澳洲进口 Swisse奶蓟草护肝片 成人养肝护肝加班熬夜烟酒人士常备"
+                        android:textColor="@color/garyf3"
+                        android:textSize="11sp" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_specsv_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120片"
+                            android:textColor="#999999"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"
+                            android:textColor="#999999"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tv_specsv_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="盒"
+                            android:textColor="#999999"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_goods_price"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:text="¥139.99"
+                            android:textColor="#FFCC0814"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="96dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_shopcar_good_sub"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/icon_shopcar_sub"
+                                android:gravity="center" />
+
+                            <EditText
+                                android:id="@+id/et_shopcar_good_num"
+                                android:layout_width="30dp"
+                                android:maxWidth="60dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/cart_num_text_shape"
+                                android:inputType="number"
+                                android:text="1"
+                                android:textAlignment="center"
+                                android:textColor="@color/garyf3"
+                                android:textSize="9sp" />
+
+                            <TextView
+                                android:id="@+id/tv_shopcar_good_add"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/icon_shopcar_add"
+                                android:gravity="center"
+                                android:textColor="@color/garyf3" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
+</layout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="dataXX"
+            type="com.jzz.treasureship.model.bean.DataXX" />
+    </data>
+
+    <LinearLayout
+        android:layout_marginBottom="15dp"
+        android:id="@+id/layout_goodsItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_goodsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:textColor="#ff666666"
+            android:textSize="14sp" />
+    </LinearLayout>
+</layout>

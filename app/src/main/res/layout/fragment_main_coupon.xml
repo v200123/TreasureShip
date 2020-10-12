@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/include"
+        layout="@layout/include_title" />
+
+    <com.xuexiang.xui.widget.tabbar.EasyIndicator
+        android:id="@+id/tab_main_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:indicator_line_color="@color/blue_normal"
+        app:indicator_line_show="true"
+        app:indicator_bottom_line_color="@color/blue_normal"
+        app:indicator_normal_color="@color/gray_9a9a9a"
+        app:indicator_select_textSize="17sp"
+        app:indicator_selected_color="@color/black_121212"
+        app:indicator_textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <androidx.viewpager.widget.ViewPager
+
+        android:id="@+id/vp_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_main_coupon" />
+</androidx.constraintlayout.widget.ConstraintLayout>

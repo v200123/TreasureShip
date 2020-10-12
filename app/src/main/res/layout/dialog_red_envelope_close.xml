@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.jzz.treasureship.view.viewGroup.BaseDialog
+        android:id="@+id/dialog_open_red_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bottomWidth="29dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:setBottomImage="@drawable/ico_close_cricle"
+        app:setTopImage="@drawable/bg_red_envelope_close">
+
+
+    </com.jzz.treasureship.view.viewGroup.BaseDialog>
+
+    <View
+        android:id="@+id/view_close"
+        android:layout_width="120dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="50dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_open_red_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_marginBottom="55dp"
+        android:id="@+id/tv_redEnvelopeClose_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF0CFA4"
+        app:layout_constraintBottom_toBottomOf="@+id/dialog_open_red_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.43"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="你还有sdsdsdfsdf" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.jzz.treasureship.ui.home.HomeViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#F7F4F8"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_title" />
+
+        <EditText
+            android:id="@+id/edit_content"
+            android:layout_width="match_parent"
+            android:layout_height="233dp"
+            android:layout_marginTop="13.5dp"
+            android:background="@drawable/address_item_bg_shape"
+            android:gravity="top"
+            android:hint="请输入您的宝贵意见，我们将努力改进（不少于五个字）"
+            android:padding="26dp"
+            android:textAllCaps="false"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="54.5dp"
+            android:background="@drawable/button_shape_normal"
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:padding="15dp"
+            android:text="提交"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</layout>
