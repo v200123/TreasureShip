@@ -112,11 +112,11 @@ android {
         release {
 
             buildConfigField("String","BaseUrl","\"http://bj.jzzchina.com\"")
-            minifyEnabled true //混淆
+//            minifyEnabled true //混淆
             // Zipalign优化
-            zipAlignEnabled true
+//            zipAlignEnabled true
             // 移除无用的resource文件
-            shrinkResources true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {

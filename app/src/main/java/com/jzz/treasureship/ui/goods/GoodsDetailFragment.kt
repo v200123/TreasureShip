@@ -459,11 +459,11 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
         if (goodsDetail.goodsType == 1) {
             ll_showAndHide.visibility = View.VISIBLE
             view_1.visibility = View.VISIBLE
-            val apply = SpannableString("境外商品\t" + goodsDetail.goodsName).apply {
+            val apply = SpannableString("境外商品\t\t" + goodsDetail.goodsName).apply {
                 setSpan(
                     RadiusSpan(Color.parseColor("#FFF0A823"), 9, context),
                     0,
-                    3,
+                    4,
                     Spannable.SPAN_INCLUSIVE_INCLUSIVE
                 )
             }
