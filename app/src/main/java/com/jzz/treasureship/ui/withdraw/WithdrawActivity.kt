@@ -16,11 +16,11 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-App
-R
-base.BaseVMActivity
-model.bean.User
-utils.PreferenceUtils
+import com.jzz.treasureship.App
+import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.utils.PreferenceUtils
 import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView

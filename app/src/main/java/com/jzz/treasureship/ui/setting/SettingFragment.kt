@@ -10,15 +10,15 @@ import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.azhon.appupdate.manager.DownloadManager
 import com.blankj.utilcode.util.PhoneUtils
 import com.blankj.utilcode.util.ToastUtils
-App
-BuildConfig
-R
-base.BaseVMFragment
-ui.activity.MainActivity
-ui.login.LoginActivity
-ui.login.LoginViewModel
-utils.DataCleanManagerUtils
-utils.PreferenceUtils
+import com.jzz.treasureship.App
+import com.jzz.treasureship.BuildConfig
+import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.ui.activity.MainActivity
+import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.ui.login.LoginViewModel
+import com.jzz.treasureship.utils.DataCleanManagerUtils
+import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_setting.*

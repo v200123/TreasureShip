@@ -492,7 +492,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
 //            adapter = skuListAdapter
 //            suppressLayout(true)
 //        }
-        skuListAdapter.setNewData(goodsDetail.goodsSku)
+        skuListAdapter.setList(goodsDetail.goodsSku)
         skuListAdapter.notifyDataSetChanged()
 
 

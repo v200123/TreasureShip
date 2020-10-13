@@ -17,18 +17,18 @@ import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-R
-adapter.BaseBindAdapter
-adapter.CollectAdapter
-adapter.CommentsAdapter
-base.BaseVMFragment
-model.bean.TabBean
-model.bean.VideoData
-ui.goods.GoodsDetailFragment
-ui.home.HomeViewModel
-ui.login.LoginActivity
-utils.PreferenceUtils
-view.*
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.BaseBindAdapter
+import com.jzz.treasureship.adapter.CollectAdapter
+import com.jzz.treasureship.adapter.CommentsAdapter
+import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.TabBean
+import com.jzz.treasureship.model.bean.VideoData
+import com.jzz.treasureship.ui.goods.GoodsDetailFragment
+import com.jzz.treasureship.ui.home.HomeViewModel
+import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.view.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -327,7 +327,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
         tabId: Int = -1,
         layoutResId: Int = R.layout.item_video
     ) :
-        BaseBindAdapter<VideoData>(layoutResId,
+        BaseBindAdapter<VideoData>(layoutResId){
         private val mFrom = from
         private val mViewModel = viewModel
         private val mTabId = tabId

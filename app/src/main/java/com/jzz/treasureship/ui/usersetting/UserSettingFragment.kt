@@ -13,22 +13,22 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-R
-base.BaseVMFragment
-model.bean.User
-ui.activity.DialogStatusViewModel
-ui.auth.AuthenticationActivity
-ui.auth.viewmodel.UserViewModel
-ui.coupon.CouponActivity
-ui.invite.InviteFragment
-ui.msg.MsgFragment
-ui.orders.OrdersFragment
-ui.ranking.RankingFragment
-ui.setting.SettingFragment
-ui.shopcar.ShopCarFragment
-ui.user.UserInfoFragment
-ui.wallet.WalletFragment
-utils.PreferenceUtils
+import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.ui.activity.DialogStatusViewModel
+import com.jzz.treasureship.ui.auth.AuthenticationActivity
+import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
+import com.jzz.treasureship.ui.coupon.CouponActivity
+import com.jzz.treasureship.ui.invite.InviteFragment
+import com.jzz.treasureship.ui.msg.MsgFragment
+import com.jzz.treasureship.ui.orders.OrdersFragment
+import com.jzz.treasureship.ui.ranking.RankingFragment
+import com.jzz.treasureship.ui.setting.SettingFragment
+import com.jzz.treasureship.ui.shopcar.ShopCarFragment
+import com.jzz.treasureship.ui.user.UserInfoFragment
+import com.jzz.treasureship.ui.wallet.WalletFragment
+import com.jzz.treasureship.utils.PreferenceUtils
 import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.activity_main.*

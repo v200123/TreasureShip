@@ -6,9 +6,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
-R
-adapter.CommentsAdapter
-ui.home.HomeViewModel
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.CommentsAdapter
+import com.jzz.treasureship.ui.home.HomeViewModel
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.dialog_home_comments.view.*

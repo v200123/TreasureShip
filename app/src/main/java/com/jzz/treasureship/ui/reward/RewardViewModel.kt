@@ -4,14 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-CoroutinesDispatcherProvider
-base.BaseViewModel
-core.Result
-model.bean.Rank
-model.bean.Reward
-model.repository.RankingRepository
-model.repository.RewardRepository
-utils.PreferenceUtils
+import com.jzz.treasureship.CoroutinesDispatcherProvider
+import com.jzz.treasureship.base.BaseViewModel
+import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.bean.Rank
+import com.jzz.treasureship.model.bean.Reward
+import com.jzz.treasureship.model.repository.RankingRepository
+import com.jzz.treasureship.model.repository.RewardRepository
+import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

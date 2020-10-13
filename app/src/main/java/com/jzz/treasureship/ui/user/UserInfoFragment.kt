@@ -23,18 +23,18 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-App
-BuildConfig
-R
-base.BaseVMFragment
-ui.activity.ClipImageActivity
-ui.address.ChooseAddressFragment
-ui.auth.AuthenticationActivity
-ui.auth.viewmodel.UserViewModel
-ui.login.LoginActivity
-utils.FileUtil
-utils.PreferenceUtils
-utils.RealPathFromUriUtils
+import com.jzz.treasureship.App
+import com.jzz.treasureship.BuildConfig
+import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.ui.activity.ClipImageActivity
+import com.jzz.treasureship.ui.address.ChooseAddressFragment
+import com.jzz.treasureship.ui.auth.AuthenticationActivity
+import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
+import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.utils.FileUtil
+import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.RealPathFromUriUtils
 import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup

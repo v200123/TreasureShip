@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
-R
-adapter.HotSearchAdapter
-base.BaseVMFragment
-ui.login.LoginActivity
-view.RecyclerViewSpacesItemDecoration
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.HotSearchAdapter
+import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.view.RecyclerViewSpacesItemDecoration
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_search.*

@@ -587,7 +587,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         tabId: Int = -1,
         layoutResId: Int = R.layout.item_video
     ) :
-        BaseBindAdapter<VideoData>(layoutResId,
+        BaseBindAdapter<VideoData>(layoutResId){
         private val mFrom = from
         private val mViewModel = viewModel
         private val mTabId = tabId

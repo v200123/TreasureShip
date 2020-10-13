@@ -3,7 +3,7 @@ package com.jzz.treasureship.utils
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-App
+import com.jzz.treasureship.App
 import java.io.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

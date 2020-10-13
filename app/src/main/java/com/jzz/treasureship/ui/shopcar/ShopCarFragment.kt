@@ -19,15 +19,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.daimajia.swipe.SwipeLayout
-R
-base.BaseVMFragment
-model.bean.CartGoodsSku
-model.bean.CartList
-model.bean.Shop
-ui.activity.MainActivity
-ui.login.LoginActivity
-ui.paypal.PaypalFragment
-utils.MoneyUtil
+import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.CartGoodsSku
+import com.jzz.treasureship.model.bean.CartList
+import com.jzz.treasureship.model.bean.Shop
+import com.jzz.treasureship.ui.activity.MainActivity
+import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.ui.paypal.PaypalFragment
+import com.jzz.treasureship.utils.MoneyUtil
 import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*

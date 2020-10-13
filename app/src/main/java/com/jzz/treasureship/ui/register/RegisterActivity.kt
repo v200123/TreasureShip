@@ -14,14 +14,14 @@ import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
-R
-base.BaseVMActivity
-databinding.ActivityRegisterBinding
-model.bean.UserDialogInformationBean
-ui.activity.MainActivity
-ui.license.LicenseActivity
-ui.login.LoginViewModel
-utils.CountDownTimerUtils
+import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.databinding.ActivityRegisterBinding
+import com.jzz.treasureship.model.bean.UserDialogInformationBean
+import com.jzz.treasureship.ui.activity.MainActivity
+import com.jzz.treasureship.ui.license.LicenseActivity
+import com.jzz.treasureship.ui.login.LoginViewModel
+import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.lxj.xpopup.XPopup
 import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_register.*

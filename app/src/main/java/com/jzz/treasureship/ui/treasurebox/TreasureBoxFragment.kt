@@ -10,13 +10,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayoutMediator
-R
-base.BaseVMFragment
-model.bean.TabBean
-ui.home.HomeViewModel
-ui.shopcar.ShopCarFragment
-utils.PreferenceUtils
-view.CustomInputDialog
+import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.TabBean
+import com.jzz.treasureship.ui.home.HomeViewModel
+import com.jzz.treasureship.ui.shopcar.ShopCarFragment
+import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.view.CustomInputDialog
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import kotlinx.android.synthetic.main.activity_main.*
