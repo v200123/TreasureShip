@@ -1,8 +1,8 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
-import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.coupon.CouponShopActivity
+R
+ui.coupon.CouponShopActivity
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_withdraw_success.view.*

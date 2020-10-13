@@ -10,12 +10,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.TraceAdapter
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.login.LoginActivity
-import com.jzz.treasureship.ui.orders.OrdersFragment
-import com.jzz.treasureship.utils.PreferenceUtils
+R
+adapter.TraceAdapter
+base.BaseVMFragment
+ui.login.LoginActivity
+ui.orders.OrdersFragment
+utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -113,7 +113,7 @@ class TraceFragment : BaseVMFragment<TraceViewModel>() {
                     tv_ExpressCompany.text = it.name
                     tv_traceNo.text = it.no
 
-                    mAdapter.setNewData(it.list)
+                    mAdapter.setList(it.list)
                     mAdapter.notifyDataSetChanged()
                 }
 

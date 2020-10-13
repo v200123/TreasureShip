@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.HotSearchAdapter
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.login.LoginActivity
-import com.jzz.treasureship.view.RecyclerViewSpacesItemDecoration
+R
+adapter.HotSearchAdapter
+base.BaseVMFragment
+ui.login.LoginActivity
+view.RecyclerViewSpacesItemDecoration
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_search.*
@@ -221,7 +221,20 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
                     loadingPopup.dismiss()
                     hotSearchAdapter.run {
                         setNewData(hotSearches)
-                        onItemChildClickListener = this@SearchFragment.onItemChildClickListener
+                        setOnItemChildClickListener() { adapter, view, position ->
+                            when (view.id) {
+                                R.id.layout_hot_search -> {
+                                    activity!!.supportFragmentManager.beginTransaction()
+                                        .addToBackStack(SearchFragment.javaClass.name)
+                                        .hide(this@SearchFragment)//隐藏当前Fragment
+                                        .add(
+                                            R.id.frame_content,
+                                            SearchResultsFragment.newInstance(hotSearchAdapter.getItem(position)!!.videoName, 2, type),
+                                            SearchResultsFragment.javaClass.name
+                                        ).commit()
+                                }
+                            }
+                        }
                     }
 
                     mrv_search_hot.adapter = hotSearchAdapter
@@ -261,20 +274,7 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
         }
     }
 
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.layout_hot_search -> {
-                activity!!.supportFragmentManager.beginTransaction()
-                    .addToBackStack(SearchFragment.javaClass.name)
-                    .hide(this@SearchFragment)//隐藏当前Fragment
-                    .add(
-                        R.id.frame_content,
-                        SearchResultsFragment.newInstance(hotSearchAdapter.getItem(position)!!.videoName, 2, type),
-                        SearchResultsFragment.javaClass.name
-                    ).commit()
-            }
-        }
-    }
+
 
     override fun initListener() {
 

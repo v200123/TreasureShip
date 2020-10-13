@@ -3,8 +3,9 @@ package com.jzz.treasureship.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
+
+
 import com.lc.mybaselibrary.*
 import kotlinx.coroutines.*
 

@@ -7,11 +7,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.BR
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.BaseBindAdapter
-import com.jzz.treasureship.model.bean.DataXX
-import com.jzz.treasureship.utils.PreferenceUtils
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+
+R
+adapter.BaseBindAdapter
+model.bean.DataXX
+utils.PreferenceUtils
 import com.lxj.xpopup.core.DrawerPopupView
 import kotlinx.android.synthetic.main.custom_contacter_drawer_popup.view.*
 import kotlinx.android.synthetic.main.layout_item_contacter_goods.view.*
@@ -66,9 +67,9 @@ class CustomContacterDrawerPopupView(context: Context, goods: ArrayList<DataXX>)
     }
 
     inner class ContacterGoodsAdapter(layoutResId: Int = R.layout.layout_item_contacter_goods) :
-        BaseBindAdapter<DataXX>(layoutResId, BR.dataXX) {
+        BaseBindAdapter<DataXX>(layoutResId) {
 
-        override fun convert(helper: BindViewHolder, item: DataXX) {
+        override fun convert(helper: BaseViewHolder, item: DataXX) {
             super.convert(helper, item)
 
             helper.setText(R.id.tv_goodsName, item.name)

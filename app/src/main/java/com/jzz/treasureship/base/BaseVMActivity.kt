@@ -16,6 +16,7 @@ import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.out
+
 import com.lc.mybaselibrary.*
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.include_title.*

@@ -1,10 +1,10 @@
 package com.jzz.treasureship.model.repository
 
-import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.JzzRetrofitClient
-import com.jzz.treasureship.model.bean.CartList
 import com.jzz.treasureship.model.bean.JzzResponse
 import com.jzz.treasureship.model.bean.OrderExpress
+import com.jzz.treasureship.core.*
+
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject

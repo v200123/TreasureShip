@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.CoroutinesDispatcherProvider
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.CollectAdapter
-import com.jzz.treasureship.model.bean.User
-import com.jzz.treasureship.model.repository.HomeRepository
-import com.jzz.treasureship.ui.home.HomeViewModel
-import com.jzz.treasureship.utils.PreferenceUtils
-import com.jzz.treasureship.viewModelModule
+CoroutinesDispatcherProvider
+R
+adapter.CollectAdapter
+model.bean.User
+model.repository.HomeRepository
+ui.home.HomeViewModel
+utils.PreferenceUtils
+viewModelModule
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.interfaces.OnConfirmListener

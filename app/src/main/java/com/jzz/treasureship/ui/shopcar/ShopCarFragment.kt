@@ -17,16 +17,17 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.daimajia.swipe.SwipeLayout
-import com.jzz.treasureship.R
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.CartGoodsSku
-import com.jzz.treasureship.model.bean.CartList
-import com.jzz.treasureship.model.bean.Shop
-import com.jzz.treasureship.ui.activity.MainActivity
-import com.jzz.treasureship.ui.login.LoginActivity
-import com.jzz.treasureship.ui.paypal.PaypalFragment
-import com.jzz.treasureship.utils.MoneyUtil
+R
+base.BaseVMFragment
+model.bean.CartGoodsSku
+model.bean.CartList
+model.bean.Shop
+ui.activity.MainActivity
+ui.login.LoginActivity
+ui.paypal.PaypalFragment
+utils.MoneyUtil
 import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
@@ -122,7 +123,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                         cb_shop_car_all.isChecked = it.isSelected == 1
 
 
-                        cartAdapter.setNewData(spcs.shops)
+                        cartAdapter.setNewInstance(spcs.shops.toMutableList())
                         cartAdapter.notifyDataSetChanged()
                     }
 
@@ -242,7 +243,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     inner class CartOrderAdapter(layoutResId: Int = R.layout.item_car_shop) :
         BaseQuickAdapter<Shop, BaseViewHolder>(layoutResId) {
 
-        override fun convert(helper: BaseViewHolder, item: Shop?) {
+        override fun convert(helper: BaseViewHolder, item: Shop) {
             item?.let {
                 helper.setText(R.id.cb_shop_car_all, item.mShopName)
                 val cbShop: CheckBox = helper.getView(R.id.cb_shop_car_all)
@@ -314,7 +315,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
             this.positionShop = positionShop
         }
 
-        override fun convert(helper: BaseViewHolder, item: CartGoodsSku?) {
+        override fun convert(helper: BaseViewHolder, item: CartGoodsSku) {
             item?.let { goodsSku ->
 
                 val swipeLayout: SwipeLayout = helper.getView(R.id.swipeLayout)

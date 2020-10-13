@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import com.jzz.treasureship.R
+R
 import com.lxj.xpopup.core.CenterPopupView
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton
 import com.xuexiang.xui.widget.dialog.materialdialog.CustomMaterialDialog

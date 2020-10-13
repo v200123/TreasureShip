@@ -4,14 +4,20 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jzz.treasureship.BR
-import com.jzz.treasureship.R
-import com.jzz.treasureship.model.bean.Data
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class OrdersVpAdapter(layoutResId: Int = R.layout.item_order) :
-    BaseBindAdapter<Data>(layoutResId, BR.data) {
+    BaseBindAdapter<Data>(layoutResId){
+    init {
+        addChildClickViewIds(
+            R.id.tv_go_pay,
+            R.id.tv_sure_goods,
+            R.id.tv_ckwl,
+            R.id.tv_ask_refund
+        )
+    }
 
-    override fun convert(helper: BindViewHolder, item: Data) {
+    override fun convert(helper: BaseViewHolder, item: Data) {
         super.convert(helper, item)
         helper.setText(R.id.tv_order_code, "订单号：${item.orderNo}")
 
@@ -119,16 +125,16 @@ class OrdersVpAdapter(layoutResId: Int = R.layout.item_order) :
 
         val childAdapter: OrdersChildAdapter = OrdersChildAdapter()
         helper.getView<RecyclerView>(R.id.mrv_order_childlist).run {
-            layoutManager = LinearLayoutManager(mContext).also {
+            layoutManager = LinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             this.adapter = childAdapter
 
-            childAdapter.setNewData(item.goodsSkuList)
+            childAdapter.setList(item.goodsSkuList)
             childAdapter.notifyDataSetChanged()
         }
 
-        if(item.payMoney == 0.0f){
+        if (item.payMoney == 0.0f) {
             helper.getView<TextView>(R.id.tv_ask_refund).visibility = View.GONE
         }
 
@@ -139,9 +145,5 @@ class OrdersVpAdapter(layoutResId: Int = R.layout.item_order) :
 //        val totalMoney = BigDecimal(sum).stripTrailingZeros().toPlainString()
         helper.setText(R.id.tv_order_allprice, "共${item.goodsNum}件商品  合计:¥${item.payMoney}")
 
-        helper.addOnClickListener(R.id.tv_go_pay)
-        helper.addOnClickListener(R.id.tv_sure_goods)
-        helper.addOnClickListener(R.id.tv_ckwl)
-        helper.addOnClickListener(R.id.tv_ask_refund)
     }
 }

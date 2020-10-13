@@ -4,10 +4,10 @@ import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.R
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.home.HomeViewModel
-import com.jzz.treasureship.ui.login.LoginActivity
+R
+base.BaseVMFragment
+ui.home.HomeViewModel
+ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_feedback.*
 import kotlinx.android.synthetic.main.include_title.*

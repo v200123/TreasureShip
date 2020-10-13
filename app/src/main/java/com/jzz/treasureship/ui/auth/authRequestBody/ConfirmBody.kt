@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.jzz.treasureship.model.bean.body
 
 
+
 /**
  *@date: 2020/9/14
  *@describe:

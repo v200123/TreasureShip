@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.module.LoadMoreModule
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.BaseRequestBody
@@ -17,7 +18,6 @@ import com.jzz.treasureship.model.bean.header
 import com.jzz.treasureship.ui.coupon.requestBody.CouponBody
 import com.jzz.treasureship.ui.coupon.viewModel.CouponUseViewModel
 import com.lc.mybaselibrary.start
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_common_coupon_used.*
 
 /**
@@ -47,19 +47,24 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
             layoutManager = LinearLayoutManager(mContext)
         }
 
-        mAdapter.setEnableLoadMore(true)
-        mAdapter.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener{
-            override fun onLoadMoreRequested() {
-                mViewModel.getCouponList(
+        mAdapter.loadMoreModule.apply {
+
+            setOnLoadMoreListener(object :
+                com.chad.library.adapter.base.listener.OnLoadMoreListener {
+
+                override fun onLoadMore() {
+                    mViewModel.getCouponList(
                         BaseRequestBody(
-                                CouponBody(arguments?.getInt(mCouponType) ?: 1),
-                                header(pageNum = nowPosition, pageSize = 20)
+                            CouponBody(arguments?.getInt(mCouponType) ?: 1),
+                            header(pageNum = nowPosition, pageSize = 20)
                         )
-                )
-            }
-        },rv_common_card)
-        mAdapter.disableLoadMoreIfNotFullPage(rv_common_card)
-        mAdapter.setEmptyView(R.layout.rv_empty_01,rv_common_card)
+                    )
+                }
+
+            })
+        }
+
+        mAdapter.setEmptyView(R.layout.rv_empty_01)
 
 
 
@@ -78,10 +83,10 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
         mViewModel.couponData.observe(this, {
             mAdapter.addData(it.mData)
             if (it.mTotalPages == nowPosition) {
-                mAdapter.loadMoreEnd()
+                mAdapter.loadMoreModule.loadMoreEnd()
             } else {
                 ++nowPosition
-                mAdapter.loadMoreComplete()
+                mAdapter.loadMoreModule.loadMoreComplete()
             }
 
         })
@@ -89,24 +94,24 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
     }
 
     override fun initListener() {
-        mAdapter.setOnItemChildClickListener(object : BaseQuickAdapter.OnItemChildClickListener {
-            override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        mAdapter.setOnItemChildClickListener(){adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
                 val data01 = adapter.data[position] as Data01
                 mContext.start<CouponShopActivity> {
                 }
 
             }
 
-        })
     }
 
 
     class CouponAdapter(var type: Int,var mContext:Context) : BaseQuickAdapter<Data01, BaseViewHolder>(R.layout
-        .item_card_unuse) {
-
+        .item_card_unuse),LoadMoreModule {
+    init {
+        addChildClickViewIds((R.id.btn_goto_shop))
+    }
 
         override fun convert(holder: BaseViewHolder, item: Data01) {
-            holder.addOnClickListener(R.id.btn_goto_shop)
+
             val imageView = holder.getView<ImageView>(R.id.imageView)
             if (type == 1) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.bg_card_unuse))

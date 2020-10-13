@@ -5,7 +5,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.widget.TextView
-import com.jzz.treasureship.R
+R
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_red_envelope_open.view.*

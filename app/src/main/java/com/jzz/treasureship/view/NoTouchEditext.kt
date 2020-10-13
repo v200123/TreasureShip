@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
-import com.jzz.treasureship.R
+R
 
 /**
  *@date: 2020/9/20

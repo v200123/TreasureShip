@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
+
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp

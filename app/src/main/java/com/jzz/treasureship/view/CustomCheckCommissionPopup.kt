@@ -3,11 +3,13 @@ package com.jzz.treasureship.view
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.CommissionGoodsAdapter
-import com.jzz.treasureship.model.bean.Data
-import com.jzz.treasureship.model.bean.DataXX
-import com.jzz.treasureship.utils.MoneyUtil
+R
+adapter.CommissionGoodsAdapter
+model.bean.Data
+model.bean.DataXX
+model.bean.GoodsSku
+model.bean.GoodsSkuX
+utils.MoneyUtil
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.layout_check_commision.view.*
@@ -51,7 +53,7 @@ class CustomCheckCommissionPopup(context: Context, data: Data) : BottomPopupView
                 adapter = mAdapter
             }
 
-            mAdapter.setNewData(it)
+            mAdapter.setList(it)
             mAdapter.notifyDataSetChanged()
         }
     }

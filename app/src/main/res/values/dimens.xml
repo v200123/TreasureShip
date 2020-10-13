@@ -7,4 +7,6 @@
 
     <dimen name="ios_dialog_radius">10dp</dimen>
     <dimen name="ios_sheet_dialog_radius">10dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
 </resources>

@@ -1,7 +1,7 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
-import com.jzz.treasureship.R
+R
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.layout_check_docter_advice_popup.view.*

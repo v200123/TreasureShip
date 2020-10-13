@@ -12,16 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.App
-import com.jzz.treasureship.model.bean.User
-import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.utils.FragmentBackHandler
 import com.jzz.treasureship.utils.PreferenceUtils
-import com.jzz.treasureship.utils.normalOut
+
+
 import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.SuccessState
-import com.jzz.treasureship.utils.out
+
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.tencent.mmkv.MMKV

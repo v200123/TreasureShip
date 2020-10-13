@@ -2,10 +2,10 @@ package com.jzz.treasureship.view
 
 import android.content.Context
 import com.blankj.utilcode.util.GsonUtils
-import com.jzz.treasureship.R
-import com.jzz.treasureship.model.bean.CityPlace
-import com.jzz.treasureship.model.bean.CityPlaces
-import com.jzz.treasureship.utils.PreferenceUtils
+R
+model.bean.CityPlace
+model.bean.CityPlaces
+utils.PreferenceUtils
 import com.lxj.xpopup.core.BottomPopupView
 import kotlinx.android.synthetic.main.layout_city_picker.view.*
 

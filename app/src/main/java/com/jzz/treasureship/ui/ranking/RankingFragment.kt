@@ -9,11 +9,11 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.RankAdapter
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.login.LoginActivity
-import com.jzz.treasureship.view.MyDatePickerDialog
+R
+adapter.RankAdapter
+base.BaseVMFragment
+ui.login.LoginActivity
+view.MyDatePickerDialog
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_mine_rank.*

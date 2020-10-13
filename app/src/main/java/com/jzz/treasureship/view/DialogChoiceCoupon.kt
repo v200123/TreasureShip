@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.widget.CheckBox
 import android.widget.TextView
-import com.jzz.treasureship.R
-import com.jzz.treasureship.model.bean.Coupon
+R
+model.bean.Coupon
 import com.lc.mybaselibrary.ShapeLinearLayout
 import com.lxj.xpopup.core.BottomPopupView
 import kotlinx.android.synthetic.main.dialog_coupon.view.*

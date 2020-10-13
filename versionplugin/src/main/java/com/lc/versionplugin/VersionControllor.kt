@@ -39,6 +39,7 @@ private object version{
     val xpopVersion = "2.0.11"
     val flexboxVersion = "2.0.1"
     val loggerVersion = "2.2.0"
+    val kongzuTabVersion = "1.5.4"
 }
 
     object Android{
@@ -79,6 +80,7 @@ private object version{
 
 
         val logger = "com.orhanobut:logger:${version.loggerVersion}"
+        val kongzuTab = "com.kongzue.tabbarx:tabbar:${version.kongzuTabVersion}"
     }
 
     object oppo{

@@ -17,7 +17,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jzz.treasureship.R;
+R;
 
 import java.util.ArrayList;
 
@@ -364,7 +364,7 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBaseViewHolder(MyViewHolder holder, int position) {
             if(listItemIcon != -1)
                 holder.img.setImageResource(listItemIcon);
             if(listTextSize != -1)

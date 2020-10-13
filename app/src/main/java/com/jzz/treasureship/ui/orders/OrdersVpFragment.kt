@@ -1,12 +1,9 @@
 package com.jzz.treasureship.ui.orders
 
 import android.content.Intent
-import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.OrdersVpAdapter
@@ -14,7 +11,6 @@ import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.Data
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.trace.TraceFragment
-
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.tencent.mm.opensdk.modelpay.PayReq
@@ -133,36 +129,36 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
             }
 
             mAdapter.run {
-                onItemChildClickListener = this@OrdersVpFragment.onItemChildClickListener
+                setOnItemChildClickListener() { adapter, view, position ->
+                    itemPosition = position
+                    when (view.id) {
+                        R.id.tv_go_pay -> {
+                            mViewModel.payByOrder(list[position].orderId!!)
+                        }
+                        R.id.tv_sure_goods -> {
+                            mViewModel.sureReceice(list[position].orderId!!)
+                        }
+                        R.id.tv_ckwl -> {
+                            activity!!.supportFragmentManager.beginTransaction().addToBackStack(OrdersFragment.javaClass.name).hide(this.parentFragment!!).add(
+                                R.id.frame_content,
+                                TraceFragment.newInstance(list[position].orderId!!),
+                                TraceFragment.javaClass.name
+                            ).commit()
+                        }
+                        R.id.tv_ask_refund -> {
+                            XPopup.Builder(view.context).asConfirm("确认退款","确认要对该订单进行退货吗？","取消","退货",{
+                                mViewModel.askRefund(list[position].orderNo!!)
+                            },{},false).show()
+                        }
+                    }
+                }
             }
 
             rcv_orders.adapter = mAdapter
         }
     }
 
-    private val onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        itemPosition = position
-        when (view.id) {
-            R.id.tv_go_pay -> {
-                mViewModel.payByOrder(list[position].orderId!!)
-            }
-            R.id.tv_sure_goods -> {
-                mViewModel.sureReceice(list[position].orderId!!)
-            }
-            R.id.tv_ckwl -> {
-                activity!!.supportFragmentManager.beginTransaction().addToBackStack(OrdersFragment.javaClass.name).hide(this.parentFragment!!).add(
-                    R.id.frame_content,
-                    TraceFragment.newInstance(list[position].orderId!!),
-                    TraceFragment.javaClass.name
-                ).commit()
-            }
-            R.id.tv_ask_refund -> {
-                XPopup.Builder(view.context).asConfirm("确认退款","确认要对该订单进行退货吗？","取消","退货",{
-                    mViewModel.askRefund(list[position].orderNo!!)
-                },{},false).show()
-            }
-        }
-    }
+
 
     override fun initData() {
         val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)

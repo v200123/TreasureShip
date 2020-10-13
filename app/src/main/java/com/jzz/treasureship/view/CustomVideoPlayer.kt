@@ -7,7 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.jzz.treasureship.R
+R
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView
 import kotlinx.android.synthetic.main.video_layout_normal.view.*

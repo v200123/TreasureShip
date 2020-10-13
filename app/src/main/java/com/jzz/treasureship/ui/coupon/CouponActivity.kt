@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jzz.treasureship.R
 
+
+
 /**
  *@date: 2020/9/8
  *@describe: 优惠券进来的第一个界面

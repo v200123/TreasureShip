@@ -9,8 +9,9 @@ import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
-
+import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.chad.library.adapter.base.module.LoadMoreModule
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.GlideImageLoader
 import com.jzz.treasureship.base.BaseVMActivity
@@ -77,24 +78,27 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
         rlback.setOnClickListener { finish() }
 
 
-        mAdapter.setEnableLoadMore(true)
-        mAdapter.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener{
-            override fun onLoadMoreRequested() {
-                mViewModel.getList(BaseRequestBody(MyHeader = header(pageNum = nowPosition)))
-            }
+        mAdapter.loadMoreModule.apply {
+            isEnableLoadMore = true
+            isEnableLoadMoreIfNotFullPage = false
+            setOnLoadMoreListener(object : OnLoadMoreListener {
 
-        },rv_coupon_shop)
+                override fun onLoadMore() {
+                    mViewModel.getList(BaseRequestBody(MyHeader = header(pageNum = nowPosition)))
+                }
 
+            })
+        }
 
-        mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            val data03 = adapter.data[position] as Data03
-            mContext.start<MainActivity> {
-                putExtra(
+        mAdapter.setOnItemChildClickListener() { adapter, view, position ->
+                val data03 = adapter.data[position] as Data03
+                mContext.start<MainActivity> {
+                    putExtra(
                         MainActivity.GoodsId,
                         "${data03.mGoodsId}"
-                )
+                    )
+                }
             }
-        }
     }
 
     override fun initData() {
@@ -151,9 +155,9 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
         mViewModel.mCouponData.observe(this, {
             mAdapter.addData(it.mData)
             if (it.mTotalPages == nowPosition) {
-                mAdapter.loadMoreEnd()
+                mAdapter.loadMoreModule.loadMoreEnd()
             } else {
-                mAdapter.loadMoreComplete()
+                mAdapter.loadMoreModule.loadMoreComplete()
                 nowPosition++
             }
 
@@ -162,20 +166,31 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
 
 
     class couponAdapter(var fragment: AppCompatActivity) :
-       BaseQuickAdapter<Data03,
+        BaseQuickAdapter<Data03,
                 BaseViewHolder>(
             R.layout
                 .item_coupon_shop
-        ){
+        ), LoadMoreModule {
         override fun convert(holder: BaseViewHolder, item: Data03) {
             Glide.with(fragment).asDrawable().apply(
-                RequestOptions().placeholder(ContextCompat.getDrawable(fragment, R.drawable.icon_sku_unload)).error(
+                RequestOptions().placeholder(
+                    ContextCompat.getDrawable(
+                        fragment,
+                        R.drawable.icon_sku_unload
+                    )
+                ).error(
                     ContextCompat.getDrawable
                         (
                         fragment, R
                         .drawable.icon_sku_unload
                     )
-                ).transform(RoundedCornersTransformation(24,0,RoundedCornersTransformation.CornerType.TOP))
+                ).transform(
+                    RoundedCornersTransformation(
+                        24,
+                        0,
+                        RoundedCornersTransformation.CornerType.TOP
+                    )
+                )
             ).load(item.mPicture)
 
                 .into(holder.getView(R.id.iv_coupon_shop))

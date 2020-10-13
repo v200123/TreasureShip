@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 import androidx.core.view.MotionEventCompat;
 import androidx.core.view.ViewCompat;
 
-import com.jzz.treasureship.R;
+R;
 
 public class SlideDetailsLayout extends ViewGroup {
 

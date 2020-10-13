@@ -310,7 +310,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         }
                         adapter = cartSelectedAdapter
 
-                        cartSelectedAdapter.setNewData(list)
+                        cartSelectedAdapter.setNewInstance(list.toMutableList())
                         cartSelectedAdapter.notifyDataSetChanged()
 
                     }

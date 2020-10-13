@@ -26,21 +26,19 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.core.*
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.ui.addressbook.AddressBookFragment
-import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.home.HomeFragment
-import com.jzz.treasureship.ui.invite.InviteFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
-import com.jzz.treasureship.ui.orders.OrdersFragment
 import com.jzz.treasureship.ui.treasurebox.TreasureBoxFragment
 import com.jzz.treasureship.ui.usersetting.UserSettingFragment
 import com.jzz.treasureship.utils.BackHandlerHelper
 import com.jzz.treasureship.utils.HProgressDialogUtils
 import com.jzz.treasureship.utils.PreferenceUtils
-import com.jzz.treasureship.utils.out
+
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.xuexiang.xupdate.XUpdate
@@ -81,7 +79,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                 2, "2" -> {
                     //刷新用户信息
                     mViewModel.getUserInfo()
-                    if(mCurrentFragment is UserSettingFragment )
+                    if(mCurrentFragment is UserSettingFragment)
                     {
                         (mCurrentFragment as UserSettingFragment).refreshUser()
                     }

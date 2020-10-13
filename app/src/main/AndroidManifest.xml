@@ -48,10 +48,7 @@
         </provider>
 
         <activity android:name=".ui.activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".ui.activity.MainActivity"  />
         <activity android:name=".ui.register.RegisterActivity" />
@@ -87,6 +84,12 @@
         <activity android:name=".ui.goods.GoodsQualificationActivity" />
         <activity android:name=".ui.coupon.CouponShopActivity" />
         <activity android:name=".ui.activity.OrdersActivity" />
+        <activity android:name=".ui.activity.TestActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- 1.这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
             android:name=".service.PushService"

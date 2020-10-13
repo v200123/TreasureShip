@@ -4,9 +4,9 @@ import android.content.Context
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.coupon.CouponShopActivity
-import com.jzz.treasureship.ui.withdraw.WithdrawActivity
+R
+ui.coupon.CouponShopActivity
+ui.withdraw.WithdrawActivity
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.CenterPopupView
 

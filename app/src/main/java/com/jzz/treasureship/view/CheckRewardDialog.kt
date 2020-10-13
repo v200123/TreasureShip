@@ -1,8 +1,8 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
-import com.jzz.treasureship.R
-import com.jzz.treasureship.utils.PreferenceUtils
+R
+utils.PreferenceUtils
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_already_reward.view.*
 

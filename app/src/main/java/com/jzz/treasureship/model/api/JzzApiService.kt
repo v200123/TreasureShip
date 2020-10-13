@@ -1,8 +1,10 @@
 package com.jzz.treasureship.model.api
 
 import com.google.gson.JsonObject
-import com.jzz.treasureship.model.bean.*
-import com.jzz.treasureship.ui.upAddressRequest
+import com.jzz.treasureship.model.bean.BaseRequestBody
+import com.jzz.treasureship.model.bean.CityPlaces
+import com.jzz.treasureship.model.bean.JzzResponse
+
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body

@@ -477,7 +477,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
             tv_goCompare.visibility = View.GONE
         } else {
             tv_goCompare.visibility = View.VISIBLE
-            priceCompareAdapter.setNewData(goodsDetail.goodsSku?.get(0)?.parityList)
+            priceCompareAdapter.setNewInstance(goodsDetail.goodsSku?.get(0)?.parityList!!.toMutableList())
             priceCompareAdapter.notifyDataSetChanged()
 
             tv_goCompare.setOnClickListener {

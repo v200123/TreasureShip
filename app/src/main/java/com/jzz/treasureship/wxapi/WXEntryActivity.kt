@@ -10,6 +10,8 @@ import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
 import com.jzz.treasureship.ui.withdraw.WithdrawFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+
+
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
@@ -56,7 +58,8 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
                                     finish()
                                 }
                                 if (state == "treasureship_wx_bind") {
-                                    localManager.sendBroadcast(Intent("WxCode").putExtra(WithdrawFragment.withDraw,code))
+                                    localManager.sendBroadcast(Intent("WxCode").putExtra(
+                                        WithdrawFragment.withDraw,code))
                                     var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE_BIND, "")
                                     wxCode = code
 

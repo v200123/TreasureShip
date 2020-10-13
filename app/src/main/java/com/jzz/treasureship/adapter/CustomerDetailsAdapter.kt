@@ -3,14 +3,21 @@ package com.jzz.treasureship.adapter
 import android.widget.Adapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jzz.treasureship.BR
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
-import com.jzz.treasureship.model.bean.Data
+
 
 class CustomerDetailsAdapter(layoutResId: Int = R.layout.layout_customer_detail_item) :
-    BaseBindAdapter<Data>(layoutResId, BR.customerOrder) {
+    BaseBindAdapter<Data>(layoutResId){
 
-    override fun convert(helper: BindViewHolder, item: Data) {
+    init {
+        addChildClickViewIds(
+            R.id.tv_checkDoctorAdvice,
+            R.id.tv_check_commission
+        )
+    }
+
+    override fun convert(helper: BaseViewHolder, item: Data) {
         super.convert(helper, item)
 
         helper.setText(R.id.tv_shop_name, item.shopName)
@@ -45,18 +52,15 @@ class CustomerDetailsAdapter(layoutResId: Int = R.layout.layout_customer_detail_
         helper.setText(R.id.tv_status, status)
         helper.setText(R.id.tv_receiveTime, "收货时间 ${item.signTime}")
 
-        helper.addOnClickListener(R.id.tv_checkDoctorAdvice)
-        helper.addOnClickListener(R.id.tv_check_commission)
-
         val mAdapter: OrdersChildAdapter = OrdersChildAdapter()
-        mAdapter.setNewData(item.goodsSkuList)
+        mAdapter.setList(item.goodsSkuList)
         helper.getView<RecyclerView>(R.id.mrv_prolist).run {
-            layoutManager = LinearLayoutManager(mContext).also {
+            layoutManager = LinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             this.adapter = mAdapter
 
-            mAdapter.setNewData(item.goodsSkuList)
+            mAdapter.setList(item.goodsSkuList)
             mAdapter.notifyDataSetChanged()
         }
     }

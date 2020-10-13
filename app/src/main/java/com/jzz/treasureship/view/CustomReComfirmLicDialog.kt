@@ -12,10 +12,10 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.ActivityUtils.startActivity
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.App
-import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.license.LicenseActivity
-import com.jzz.treasureship.utils.PreferenceUtils
+App
+R
+ui.license.LicenseActivity
+utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.layout_comfirm_lic.view.*

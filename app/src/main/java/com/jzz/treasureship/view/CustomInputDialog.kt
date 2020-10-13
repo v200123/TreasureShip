@@ -2,8 +2,8 @@ package com.jzz.treasureship.view
 
 import android.content.Context
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.home.HomeViewModel
+R
+ui.home.HomeViewModel
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_add_category.view.*
 

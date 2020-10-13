@@ -1,7 +1,7 @@
 package com.jzz.treasureship.ui
 
 import com.google.gson.annotations.SerializedName
-import com.jzz.treasureship.model.bean.body
+model.bean.body
 
 
 /**

@@ -23,18 +23,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.BR
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.BaseBindAdapter
-import com.jzz.treasureship.adapter.CollectAdapter
-import com.jzz.treasureship.adapter.CommentsAdapter
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.VideoData
-import com.jzz.treasureship.ui.goods.GoodsDetailFragment
-import com.jzz.treasureship.ui.home.HomeViewModel
-import com.jzz.treasureship.ui.login.LoginActivity
-import com.jzz.treasureship.utils.PreferenceUtils
-import com.jzz.treasureship.view.*
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+
+R
+adapter.BaseBindAdapter
+adapter.CollectAdapter
+adapter.CommentsAdapter
+base.BaseVMFragment
+model.bean.VideoData
+ui.goods.GoodsDetailFragment
+ui.home.HomeViewModel
+ui.login.LoginActivity
+utils.PreferenceUtils
+view.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -140,7 +141,31 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             mAdapter.run {
-                onItemChildClickListener = this@SearchResultsFragment.onItemChildClickListener
+                setOnItemChildClickListener() { adapter, view, position ->
+                    when (view.id) {
+                        R.id.layout_like -> {
+                            mViewModel.getCollectCategory()
+                            currentVideoID = mAdapter.getItem(position)!!.id
+                            currentPosition = position
+                        }
+                        R.id.layout_comment -> {
+                            mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
+                            currentVideoID = mAdapter.getItem(position)!!.id
+                            currentPosition = position
+                        }
+//            R.id.layout_share -> {
+//                XPopup.Builder(view.context).asCustom(
+//                    CustomShareBottomPopup(
+//                        view.context,
+//                        mAdapter.getItem(position)!!.videoUrl!!,
+//                        mAdapter.getItem(position)?.videoName,
+//                        mAdapter.getItem(position)?.videoDesc,
+//                        mAdapter.getItem(position)!!.videoCoverUrl!!
+//                    )
+//                ).show()
+//            }
+                    }
+                }
             }
 
             rcv_searchResult_Videos.adapter = mAdapter
@@ -289,7 +314,7 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let { comments ->
                     commentsAdapter.run {
-                        setNewData(comments.data)
+                        setNewInstance(comments.data.toMutableList())
                         notifyDataSetChanged()
                     }
                     XPopup.Builder(this@SearchResultsFragment.context).setPopupCallback(object : SimpleCallback() {
@@ -322,31 +347,7 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
         }
     }
 
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.layout_like -> {
-                mViewModel.getCollectCategory()
-                currentVideoID = mAdapter.getItem(position)!!.id
-                currentPosition = position
-            }
-            R.id.layout_comment -> {
-                mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
-                currentVideoID = mAdapter.getItem(position)!!.id
-                currentPosition = position
-            }
-//            R.id.layout_share -> {
-//                XPopup.Builder(view.context).asCustom(
-//                    CustomShareBottomPopup(
-//                        view.context,
-//                        mAdapter.getItem(position)!!.videoUrl!!,
-//                        mAdapter.getItem(position)?.videoName,
-//                        mAdapter.getItem(position)?.videoDesc,
-//                        mAdapter.getItem(position)!!.videoCoverUrl!!
-//                    )
-//                ).show()
-//            }
-        }
-    }
+
 
     override fun initListener() {
 
@@ -368,9 +369,9 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
     }
 
     inner class SearchResultAdapter(layoutResId: Int = R.layout.item_video) :
-        BaseBindAdapter<VideoData>(layoutResId, BR.video) {
+        BaseBindAdapter<VideoData>(layoutResId,
 
-        override fun convert(helper: BindViewHolder, item: VideoData) {
+        override fun convert(helper: BaseViewHolder, item: VideoData) {
             super.convert(helper, item)
 
             if (item.position == 0) {

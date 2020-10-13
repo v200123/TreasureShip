@@ -2,8 +2,8 @@ package com.jzz.treasureship.view
 
 import android.content.Context
 import android.view.View
-import com.jzz.treasureship.R
-import com.jzz.treasureship.view.viewGroup.BaseDialog
+R
+view.viewGroup.BaseDialog
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_red_envelope_close.view.*
 

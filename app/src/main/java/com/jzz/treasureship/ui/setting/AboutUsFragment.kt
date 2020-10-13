@@ -9,11 +9,11 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.jzz.treasureship.BuildConfig
-import com.jzz.treasureship.R
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.home.HomeViewModel
-import com.jzz.treasureship.ui.license.LicenseActivity
+BuildConfig
+R
+base.BaseVMFragment
+ui.home.HomeViewModel
+ui.license.LicenseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_about_us.*
 import kotlinx.android.synthetic.main.fragment_about_us.tv_lic

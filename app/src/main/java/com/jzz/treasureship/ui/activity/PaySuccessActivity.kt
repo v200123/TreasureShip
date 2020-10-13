@@ -7,6 +7,7 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.paypal.PaypalViewModel
+
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.BasePopupView
 import kotlinx.android.synthetic.main.include_title.*

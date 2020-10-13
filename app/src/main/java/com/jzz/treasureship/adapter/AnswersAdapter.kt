@@ -1,24 +1,28 @@
 package com.jzz.treasureship.adapter
 
-import android.widget.TextView
-import com.jzz.treasureship.BR
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.AnswerItem
+
 import org.json.JSONObject
 
 class AnswersAdapter(layoutResId: Int = R.layout.layout_item_answer) : BaseBindAdapter<AnswerItem>(
-    layoutResId,
-    BR.answerItem
+    layoutResId
 ) {
+    init {
+        addChildClickViewIds(R.id.layout_ansItem)
+    }
 
-override fun convert(helper: BindViewHolder, item: AnswerItem) {
+    override fun convert(helper: BaseViewHolder, item: AnswerItem) {
         super.convert(helper, item)
 
         val itemObj = JSONObject(item.item)
 
-        helper.addOnClickListener(R.id.layout_ansItem)
+        helper.setText(R.id.tv_choice, "${itemObj.getString("item")}.")
+        helper.setText(R.id.tv_content, itemObj.getString("text"))
 
-        helper.getView<TextView>(R.id.tv_choice).text = "${itemObj.getString("item")}."
-        helper.getView<TextView>(R.id.tv_content).text = itemObj.getString("text")
+
+//        helper.getView<TextView>(R.id.tv_choice).text = "${itemObj.getString("item")}."
+//        helper.getView<TextView>(R.id.tv_content).text = itemObj.getString("text")
     }
 }

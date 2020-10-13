@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.AnswersAdapter
-import com.jzz.treasureship.ui.home.HomeViewModel
+R
+adapter.AnswersAdapter
+ui.home.HomeViewModel
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_questions.view.*
 
@@ -32,9 +32,6 @@ class QuestionsDialog(
     }
 
     private fun initRecycleView() {
-        mAdapter.apply {
-            onItemChildClickListener = this@QuestionsDialog.onItemChildClickListener
-        }
 
         rcv_questions.apply {
             layoutManager = LinearLayoutManager(context).also {
@@ -44,17 +41,4 @@ class QuestionsDialog(
         }
     }
 
-    private val onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-
-        when (view.id) {
-//            R.id.layout_questionItem -> {
-//                Log.d("QuestionsDialog", "提交答案")
-//                val json = JSONObject(mAdapter.getItem(position)!!.item)
-//                val ans = json.get("item").toString()
-//                viewModel.submitQuestionnaire(ans, id)
-//            }
-        }
-
-        dismiss()
-    }
 }

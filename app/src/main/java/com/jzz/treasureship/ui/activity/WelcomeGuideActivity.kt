@@ -14,7 +14,6 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager2.widget.ViewPager2
 import cn.jpush.android.api.JPushInterface
 import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.GuidePageAdapter
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.android.synthetic.main.activity_welcome_guide.*
 

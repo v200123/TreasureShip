@@ -2,7 +2,7 @@ package com.jzz.treasureship.adapter
 
 import android.content.Context
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.Data04
 import q.rorbin.badgeview.DisplayUtil
@@ -23,7 +23,7 @@ class WalletAdapter( mContext: Context) :
 
 
 //
-//    override fun convert(helper: BaseBindAdapter.BindViewHolder, item: Data04) {
+//    override fun convert(helper: BaseBindAdapter.BaseViewHolder, item: Data04) {
 //        super.convert(helper, item)
 //
 //        helper.getView<ShapeConstraintLayout>(R.id.shape_constraint_wallet)

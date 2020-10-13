@@ -6,10 +6,9 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.DepartmentBean
-import com.jzz.treasureship.ui.auth.adapter.SearchAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.DepartmentSreachViewModel
 import kotlinx.android.synthetic.main.activity_department_search.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -33,12 +32,10 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
         }
         tv_title.text = "选择科室"
         rlback.setOnClickListener { finish() }
-        mAdapter.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener {
-            override fun onItemClick(
+        mAdapter.setOnItemClickListener{
                 adapter: BaseQuickAdapter<*, *>,
                 view: View,
-                position: Int
-            ) {
+                position: Int ->
                 setResult(500, Intent().apply {
                     putExtra(
                         AuthBaseInformationFragment.EXTRA_POSITION,
@@ -52,8 +49,6 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
                 finish()
             }
 
-        })
-
         et_department_search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -65,11 +60,11 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
 
             override fun afterTextChanged(s: Editable) {
                 if (s.isBlank()) {
-                    mAdapter.setNewData(mDepartmentList)
+                    mAdapter.setList(mDepartmentList)
                 } else {
                     val filter = mDepartmentList
                         .filter { it.mName.contains(s.toString()) }
-                    mAdapter.setNewData(filter)
+                    mAdapter.setList(filter)
                 }
             }
 
@@ -84,7 +79,7 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
     override fun startObserve() {
         mViewModel.hospitalData.observe(this, {
             mDepartmentList = it.mList
-            mAdapter.setNewData(mDepartmentList)
+            mAdapter.setList(mDepartmentList)
         })
     }
 

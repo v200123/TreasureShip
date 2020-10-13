@@ -1,7 +1,7 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
-import com.jzz.treasureship.R
+R
 import com.lxj.xpopup.core.AttachPopupView
 
 class DialogOrderCount(context: Context) : AttachPopupView(context) {

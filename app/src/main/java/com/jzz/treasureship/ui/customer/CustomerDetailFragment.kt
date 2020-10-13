@@ -10,7 +10,6 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CustomerDetailsAdapter
 import com.jzz.treasureship.base.BaseVMFragment
@@ -94,7 +93,20 @@ class CustomerDetailFragment : BaseVMFragment<OrdersViewModel>() {
             }
 
             mAdapter.run {
-                onItemChildClickListener = this@CustomerDetailFragment.onItemChildClickListener
+                setOnItemChildClickListener() { adapter, view, position ->
+                    when (view.id) {
+                        R.id.tv_checkDoctorAdvice -> {
+                            XPopup.Builder(view.context)
+                                .asCustom(CustomCheckDoctorAdvicePopup(view.context, mAdapter.getItem(position)!!.doctorAdvice))
+                                .show()
+                        }
+                        R.id.tv_check_commission -> {
+                            XPopup.Builder(view.context)
+                                .asCustom(CustomCheckCommissionPopup(view.context, mAdapter.getItem(position)!!))
+                                .show()
+                        }
+                    }
+                }
             }
 
             adapter = mAdapter
@@ -121,20 +133,6 @@ class CustomerDetailFragment : BaseVMFragment<OrdersViewModel>() {
         }
     }
 
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.tv_checkDoctorAdvice -> {
-                XPopup.Builder(view.context)
-                    .asCustom(CustomCheckDoctorAdvicePopup(view.context, mAdapter.getItem(position)!!.doctorAdvice))
-                    .show()
-            }
-            R.id.tv_check_commission -> {
-                XPopup.Builder(view.context)
-                    .asCustom(CustomCheckCommissionPopup(view.context, mAdapter.getItem(position)!!))
-                    .show()
-            }
-        }
-    }
 
     override fun initData() {
         arguments?.let {
@@ -150,7 +148,7 @@ class CustomerDetailFragment : BaseVMFragment<OrdersViewModel>() {
                 }
 
                 it.showSuccess?.let {
-                    mAdapter.setNewData(it.data)
+                    mAdapter.setList(it.data)
                     mAdapter.notifyDataSetChanged()
                 }
             })

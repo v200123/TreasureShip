@@ -19,6 +19,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.upAddressRequest
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
+
 import com.lc.mybaselibrary.assertRead
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView

@@ -6,11 +6,11 @@ import androidx.core.view.marginTop
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.CollectAdapter
-import com.jzz.treasureship.adapter.ComparePricesAdapter
-import com.jzz.treasureship.ui.home.HomeViewModel
-import com.jzz.treasureship.utils.PreferenceUtils
+R
+adapter.CollectAdapter
+adapter.ComparePricesAdapter
+ui.home.HomeViewModel
+utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils

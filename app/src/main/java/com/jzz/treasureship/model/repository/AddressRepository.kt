@@ -1,11 +1,11 @@
 package com.jzz.treasureship.model.repository
 
-import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.JzzRetrofitClient
 import com.jzz.treasureship.model.bean.AddressPageList
 import com.jzz.treasureship.model.bean.CityPlace
 import com.jzz.treasureship.model.bean.CityPlaces
 import com.jzz.treasureship.model.bean.JzzResponse
+import com.jzz.treasureship.core.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject

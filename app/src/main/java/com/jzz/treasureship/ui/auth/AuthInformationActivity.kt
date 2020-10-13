@@ -17,6 +17,7 @@ import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.auth.adapter.AuthInfoAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.AuthInforViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
+
 import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.activity_auth_information.*

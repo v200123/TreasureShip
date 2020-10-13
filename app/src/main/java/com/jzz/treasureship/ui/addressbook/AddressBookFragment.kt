@@ -243,39 +243,39 @@ class AddressBookFragment : BaseVMFragment<AddressbookViewModel>() {
             }
 
             mAdapter.run {
-                onItemChildClickListener = this@AddressBookFragment.onItemChildClickListener
+                setOnItemChildClickListener() { adapter, view, position ->
+                    when (view.id) {
+                        R.id.iv_clock -> {
+                            currentPosition = position
+                            XPopup.Builder(view.context).setPopupCallback(object : SimpleCallback() {
+                                override fun onDismiss(popupView: BasePopupView) {
+                                    super.onDismiss(popupView)
+                                    val cancleNotice by PreferenceUtils(PreferenceUtils.CANCLE_NOTICE, false)
+                                    if (cancleNotice) {
+                                        mViewModel.setNotice(mAdapter.getItem(position)!!.id!!, 2, "")
+                                    }
+                                }
+                            }).asCustom(CustomNoticeDialog(view.context)).show()
+                        }
+
+                        R.id.layout_middle_info,
+                        R.id.iv_userIco,
+                        R.id.layout_times -> {
+                            activity!!.supportFragmentManager.beginTransaction()
+                                .addToBackStack(AddressBookFragment.javaClass.name)
+                                .hide(this@AddressBookFragment)//隐藏当前Fragment
+                                .add(R.id.frame_content, CustomerDetailFragment.newInstance(mAdapter.getItem(position)!!), CustomerDetailFragment.javaClass.name)
+                                .commit()
+                        }
+                    }
+                }
+
             }
 
             adapter = mAdapter
         }
     }
 
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.iv_clock -> {
-                currentPosition = position
-                XPopup.Builder(view.context).setPopupCallback(object : SimpleCallback() {
-                    override fun onDismiss(popupView: BasePopupView) {
-                        super.onDismiss(popupView)
-                        val cancleNotice by PreferenceUtils(PreferenceUtils.CANCLE_NOTICE, false)
-                        if (cancleNotice) {
-                            mViewModel.setNotice(mAdapter.getItem(position)!!.id!!, 2, "")
-                        }
-                    }
-                }).asCustom(CustomNoticeDialog(view.context)).show()
-            }
-
-            R.id.layout_middle_info,
-            R.id.iv_userIco,
-            R.id.layout_times -> {
-                activity!!.supportFragmentManager.beginTransaction()
-                    .addToBackStack(AddressBookFragment.javaClass.name)
-                    .hide(this)//隐藏当前Fragment
-                    .add(R.id.frame_content, CustomerDetailFragment.newInstance(mAdapter.getItem(position)!!), CustomerDetailFragment.javaClass.name)
-                    .commit()
-            }
-        }
-    }
 
     override fun initData() {
         if (isLogin) {

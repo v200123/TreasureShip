@@ -2,16 +2,13 @@ package com.jzz.treasureship.model.repository
 
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.App
-import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.JzzApiService
-import com.jzz.treasureship.model.api.JzzRetrofitClient
+
+import com.jzz.treasureship.core.*
 import com.jzz.treasureship.model.bean.JzzResponse
-import com.jzz.treasureship.model.bean.QuestionnaireResponseVo
-import com.jzz.treasureship.model.bean.UpdateAppBean
 import com.jzz.treasureship.model.bean.User
-import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+
 import com.lxj.xpopup.impl.LoadingPopupView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody

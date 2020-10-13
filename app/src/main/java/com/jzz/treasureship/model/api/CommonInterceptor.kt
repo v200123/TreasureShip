@@ -3,7 +3,6 @@ package com.jzz.treasureship.model.api
 import android.text.TextUtils
 import android.util.Log
 import com.blankj.utilcode.util.GsonUtils
-import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.utils.PreferenceUtils
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody

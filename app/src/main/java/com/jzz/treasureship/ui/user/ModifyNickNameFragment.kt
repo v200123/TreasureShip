@@ -2,9 +2,9 @@ package com.jzz.treasureship.ui.user
 
 import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.R
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
+R
+base.BaseVMFragment
+ui.auth.viewmodel.UserViewModel
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.fragment_modified_nickname.*
 import kotlinx.android.synthetic.main.include_title.*

@@ -8,12 +8,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.WalletAdapter
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.Data04
-import com.jzz.treasureship.ui.login.LoginActivity
-import com.jzz.treasureship.ui.withdraw.WithdrawFragment
+R
+adapter.WalletAdapter
+base.BaseVMFragment
+model.bean.Data04
+ui.login.LoginActivity
+ui.withdraw.WithdrawFragment
 import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*

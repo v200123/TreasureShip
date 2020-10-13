@@ -18,10 +18,10 @@ import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.BuildConfig
-import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.model.bean.UserAuthTypeBean
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
@@ -39,11 +39,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
+class AuthenticationActivity : BaseVMActivity<UserViewModel>() {
     companion object {
         //请求相机,半身照
         const val REQUEST_CAPTURE_HALF_BODY = 101
         const val NeedFinish = "finish"
+
         //请求相机,证书
         const val REQUEST_CAPTURE_CERT = 100
         const val REQUEST_PERMISSION_WRITE_STORAGE = 102
@@ -70,23 +71,22 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if( intent?.getStringExtra(NeedFinish) == "exit")
-        {
+        if (intent?.getStringExtra(NeedFinish) == "exit") {
             finish()
         }
     }
 
     override fun initView() {
 
-        if( intent.getStringExtra(NeedFinish) == "exit")
-        {
+        if (intent.getStringExtra(NeedFinish) == "exit") {
             finish()
         }
-        StateAppBar.setStatusBarLightMode(this, ContextCompat.getColor(mContext,R.color.white))
+        StateAppBar.setStatusBarLightMode(this, ContextCompat.getColor(mContext, R.color.white))
         btn_auth_next.setOnClickListener {
             mContext.start<AuthInformationActivity> {
                 putExtra(
-                    AuthInformationActivity.occuId, mViewModel.userType.value?.mList?.get(nowSelectPosition)?.mId
+                    AuthInformationActivity.occuId,
+                    mViewModel.userType.value?.mList?.get(nowSelectPosition)?.mId
                 )
             }
 
@@ -96,14 +96,13 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
             adapter = mAdapter
             layoutManager = GridLayoutManager(mContext, 3)
         }
-        mAdapter.onItemClickListener =
-            BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-                if(nowSelectPosition != position) {
-                    mAdapter.notifyItemChanged(nowSelectPosition, "unSelect")
-                    mAdapter.notifyItemChanged(position, "select")
-                    nowSelectPosition = position
-                }
+        mAdapter.setOnItemChildClickListener() { adapter, view, position ->
+            if (nowSelectPosition != position) {
+                mAdapter.notifyItemChanged(nowSelectPosition, "unSelect")
+                mAdapter.notifyItemChanged(position, "select")
+                nowSelectPosition = position
             }
+        }
         tv_title.text = ""
         rlback.setOnClickListener {
             (mContext as AppCompatActivity).finish()
@@ -116,7 +115,7 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
 
     override fun startObserve() {
         mViewModel.userType.observe(this, {
-            mAdapter.setNewData(it.mList)
+            mAdapter.setList(it.mList)
 
         })
 
@@ -329,7 +328,6 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
     }
 
 
-
 //    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
 //        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
 //            AppSettingsDialog.Builder(this@AuthenticationActivity)
@@ -339,7 +337,6 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
 //
 //    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
 //    }
-
 
 
     private fun getImageContentUri(context: Context, path: String): Uri? {
@@ -392,31 +389,30 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>(){
             helper.setText(R.id.tv_item_type, item.mOccupationName)
         }
 
-        override fun convertPayloads(
-            helper: BaseViewHolder,
+        override fun convert(
+            holder: BaseViewHolder,
             item: UserAuthTypeBean.Type,
-            payloads: MutableList<Any>
+            payloads: List<Any>
         ) {
-            super.convertPayloads(helper, item, payloads)
-            if(payloads.isEmpty())
-                convert(helper,item)
-            else{
+            super.convert(holder, item, payloads)
+            if (payloads.isEmpty())
+                convert(holder, item)
+            else {
                 val mType = payloads[0] as String
-                if(mType == "select")
-                {
+                if (mType == "select") {
                     Glide.with(activity).asDrawable().load(item.mIconSelectedPath)
                         .override(
                             _72dp, _65dp
-                        ).into(helper.getView(R.id.iv_item_type))
-                }
-                else{
+                        ).into(holder.getView(R.id.iv_item_type))
+                } else {
                     Glide.with(activity).asDrawable().load(item.mIconPath)
                         .override(
                             _72dp, _65dp
-                        ).into(helper.getView(R.id.iv_item_type))
+                        ).into(holder.getView(R.id.iv_item_type))
                 }
             }
         }
+
     }
 
 }

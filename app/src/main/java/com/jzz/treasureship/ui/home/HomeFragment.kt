@@ -14,9 +14,9 @@ import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.App
 import com.jzz.treasureship.R
-import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.bean.UserDialogInformationBean
@@ -123,7 +123,7 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
     override fun getLayoutResId() = R.layout.fragment_home
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.VISIBLE
+//        activity!!.nav_view.visibility = View.VISIBLE
         curFragment = "HomeFragment"
         StateAppBar.setStatusBarLightMode(
             this.activity,

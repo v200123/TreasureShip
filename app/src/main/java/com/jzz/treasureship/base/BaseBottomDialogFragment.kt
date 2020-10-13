@@ -9,6 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jzz.treasureship.R
 
+
 open class BaseBottomDialogFragment : BottomSheetDialogFragment() {
     override fun onStart() {
         super.onStart()

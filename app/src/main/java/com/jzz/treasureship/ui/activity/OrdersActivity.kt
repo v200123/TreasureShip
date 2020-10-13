@@ -12,6 +12,8 @@ import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.orders.OrdersViewModel
 import com.jzz.treasureship.ui.orders.OrdersVpFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+
+
 import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.fragment_mine_orders.*

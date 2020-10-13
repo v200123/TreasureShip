@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.jzz.treasureship.ui.auth.AuthBaseInformationFragment
 import com.jzz.treasureship.ui.auth.AuthUpLoadFragment
 
+
 /**
  *@date: 2020/9/11
  *@describe:

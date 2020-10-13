@@ -21,7 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.BR
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.AnswersAdapter
 import com.jzz.treasureship.adapter.BaseBindAdapter
@@ -129,7 +130,49 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             mAdapter.run {
-                onItemChildClickListener = this@HomeVpFragment.onItemChildClickListener
+                setOnItemChildClickListener { adapter, view, position ->
+                    when (view.id) {
+                        R.id.layout_like -> {
+                            if (isLogin) {
+                                mViewModel.getCollectCategory()
+                                currentVideoID = mAdapter.getItem(position)!!.id
+                                currentPosition = position
+                            } else {
+                                switchLogin()
+                            }
+                        }
+                        R.id.layout_comment -> {
+                            if (isLogin) {
+                                mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
+                                XPopup.Builder(this@HomeVpFragment.context)
+                                    .asCustom(
+                                        CustomCommentBottomPopup(
+                                            this@HomeVpFragment.context!!,
+                                            mViewModel,
+                                            mAdapter.getItem(position)!!.id,
+                                            commentsAdapter
+                                        )
+                                    ).show()
+                                currentVideoID = mAdapter.getItem(position)!!.id
+                                currentPosition = position
+                            } else {
+                                switchLogin()
+                            }
+
+                        }
+//            R.id.layout_share -> {
+//                XPopup.Builder(view.context).asCustom(
+//                    CustomShareBottomPopup(
+//                        view.context,
+//                        mAdapter.getItem(position)!!.videoUrl!!,
+//                        mAdapter.getItem(position)?.videoName,
+//                        mAdapter.getItem(position)?.videoDesc,
+//                        mAdapter.getItem(position)!!.videoCoverUrl!!
+//                    )
+//                ).show()
+//            }
+                    }
+                }
                 if (mTabPosition == 0) {
                     val view = View.inflate(context, R.layout.layout_home_header, null)
                     view.findViewById<ImageView>(R.id.iv_ad).setOnClickListener {
@@ -144,50 +187,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         }
     }
 
-    private var onItemChildClickListener =
-        BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-            when (view.id) {
-                R.id.layout_like -> {
-                    if (isLogin) {
-                        mViewModel.getCollectCategory()
-                        currentVideoID = mAdapter.getItem(position)!!.id
-                        currentPosition = position
-                    } else {
-                        switchLogin()
-                    }
-                }
-                R.id.layout_comment -> {
-                    if (isLogin) {
-                        mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
-                        XPopup.Builder(this@HomeVpFragment.context)
-                            .asCustom(
-                                CustomCommentBottomPopup(
-                                    this@HomeVpFragment.context!!,
-                                    mViewModel,
-                                    mAdapter.getItem(position)!!.id,
-                                    commentsAdapter
-                                )
-                            ).show()
-                        currentVideoID = mAdapter.getItem(position)!!.id
-                        currentPosition = position
-                    } else {
-                        switchLogin()
-                    }
 
-                }
-//            R.id.layout_share -> {
-//                XPopup.Builder(view.context).asCustom(
-//                    CustomShareBottomPopup(
-//                        view.context,
-//                        mAdapter.getItem(position)!!.videoUrl!!,
-//                        mAdapter.getItem(position)?.videoName,
-//                        mAdapter.getItem(position)?.videoDesc,
-//                        mAdapter.getItem(position)!!.videoCoverUrl!!
-//                    )
-//                ).show()
-//            }
-            }
-        }
+
 
     override fun initData() {
 //        if (mTab == 0) {
@@ -414,7 +415,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let { comments ->
                     commentsAdapter.run {
-                        setNewData(comments.data)
+                        setNewInstance(comments.data.toMutableList())
                         notifyDataSetChanged()
                     }
                     xPopup.dismiss()
@@ -586,12 +587,16 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         tabId: Int = -1,
         layoutResId: Int = R.layout.item_video
     ) :
-        BaseBindAdapter<VideoData>(layoutResId, BR.video) {
+        BaseBindAdapter<VideoData>(layoutResId,
         private val mFrom = from
         private val mViewModel = viewModel
         private val mTabId = tabId
+        init {
+            addChildClickViewIds(R.id.layout_like,
+            R.id.layout_comment)
+        }
 
-        override fun convert(helper: BindViewHolder, item: VideoData) {
+        override fun convert(helper: BaseViewHolder, item: VideoData) {
             super.convert(helper, item)
 
             if (mFrom == 0) {
@@ -772,12 +777,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             helper.setText(R.id.tv_likeCount, "${toNum(item.likeCount)}")
             helper.setText(R.id.tv_commentCount, "${toNum(item.commentCount)}")
 //            helper.setText(R.id.tv_shareCount, "${toNum(item.shareCount)}")
-
-            helper.addOnClickListener(R.id.layout_like)
-            helper.addOnClickListener(R.id.layout_comment)
 //            helper.addOnClickListener(R.id.layout_share)
 
         }
+
+
 
         /**
          * 全屏幕按键处理

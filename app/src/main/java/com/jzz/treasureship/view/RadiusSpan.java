@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.text.style.ReplacementSpan;
 
-import com.jzz.treasureship.R;
+R;
 
 /**
  * @date: 2020/9/4

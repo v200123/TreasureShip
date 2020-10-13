@@ -39,7 +39,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 
-import com.jzz.treasureship.R;
+R;
 
 /**
  * https://github.com/hdodenhof/CircleImageView

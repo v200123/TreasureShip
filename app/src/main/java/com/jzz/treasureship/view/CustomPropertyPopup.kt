@@ -3,10 +3,10 @@ package com.jzz.treasureship.view
 import android.content.Context
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.GoodsPropertiesAdapter
-import com.jzz.treasureship.model.bean.GoodsAttribute
-import com.jzz.treasureship.model.bean.GoodsDetail
+R
+adapter.GoodsPropertiesAdapter
+model.bean.GoodsAttribute
+model.bean.GoodsDetail
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.dialog_goods_properties.view.*
@@ -29,7 +29,7 @@ class CustomPropertyPopup(context:Context,goodsAttributeList:List<GoodsDetail.Go
         }
         val mAdapter = GoodsPropertiesAdapter()
         mAdapter.run {
-            setNewData(mList)
+            setList(mList)
             notifyDataSetChanged()
         }
 

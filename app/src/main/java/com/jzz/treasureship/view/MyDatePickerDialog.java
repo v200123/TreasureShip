@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 
-import com.jzz.treasureship.R;
+R;
 
 import java.util.Calendar;
 

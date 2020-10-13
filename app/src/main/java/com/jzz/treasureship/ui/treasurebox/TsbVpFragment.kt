@@ -15,19 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.BR
-import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.BaseBindAdapter
-import com.jzz.treasureship.adapter.CollectAdapter
-import com.jzz.treasureship.adapter.CommentsAdapter
-import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.TabBean
-import com.jzz.treasureship.model.bean.VideoData
-import com.jzz.treasureship.ui.goods.GoodsDetailFragment
-import com.jzz.treasureship.ui.home.HomeViewModel
-import com.jzz.treasureship.ui.login.LoginActivity
-import com.jzz.treasureship.utils.PreferenceUtils
-import com.jzz.treasureship.view.*
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+
+R
+adapter.BaseBindAdapter
+adapter.CollectAdapter
+adapter.CommentsAdapter
+base.BaseVMFragment
+model.bean.TabBean
+model.bean.VideoData
+ui.goods.GoodsDetailFragment
+ui.home.HomeViewModel
+ui.login.LoginActivity
+utils.PreferenceUtils
+view.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -60,7 +61,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun initView() {
 
-        mTabBean = arguments!!.getParcelable("tabBean")
+        mTabBean = requireArguments().getParcelable("tabBean")
 
         srl_collectVideos.setOnRefreshListener {
             pageNum = 1
@@ -91,34 +92,27 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             mAdapter.run {
-                onItemChildClickListener = this@TsbVpFragment.onItemChildClickListener
-            }
-
-            rcv_collectVideos.adapter = mAdapter
-        }
-    }
-
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.layout_like -> {
-                mViewModel.getCollectCategory()
-                currentVideoID = mAdapter.getItem(position)!!.id
-                currentPosition = position
-            }
-            R.id.layout_comment -> {
-                mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
-                XPopup.Builder(this@TsbVpFragment.context)
-                    .asCustom(
-                        CustomCommentBottomPopup(
-                            this@TsbVpFragment.context!!,
-                            mViewModel,
-                            mAdapter.getItem(position)!!.id,
-                            commentsAdapter
-                        )
-                    ).show()
-                currentVideoID = mAdapter.getItem(position)!!.id
-                currentPosition = position
-            }
+                setOnItemChildClickListener { adapter, view, position ->
+                    when (view.id) {
+                        R.id.layout_like -> {
+                            mViewModel.getCollectCategory()
+                            currentVideoID = mAdapter.getItem(position)!!.id
+                            currentPosition = position
+                        }
+                        R.id.layout_comment -> {
+                            mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
+                            XPopup.Builder(this@TsbVpFragment.context)
+                                .asCustom(
+                                    CustomCommentBottomPopup(
+                                        mContext,
+                                        mViewModel,
+                                        mAdapter.getItem(position)!!.id,
+                                        commentsAdapter
+                                    )
+                                ).show()
+                            currentVideoID = mAdapter.getItem(position)!!.id
+                            currentPosition = position
+                        }
 //            R.id.layout_share -> {
 //                XPopup.Builder(view.context).asCustom(
 //                    CustomShareBottomPopup(
@@ -130,8 +124,16 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 //                    )
 //                ).show()
 //            }
+                    }
+                }
+
+
+            }
+
+            rcv_collectVideos.adapter = mAdapter
         }
     }
+
 
     override fun initData() {
         mViewModel.getCollectVideoList(mTabBean!!.id, null, -1, pageNum)
@@ -139,7 +141,9 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun startObserve() {
         mViewModel.apply {
-            val xPopup = XPopup.Builder(context).dismissOnBackPressed(false).dismissOnTouchOutside(false).asLoading()
+            val xPopup =
+                XPopup.Builder(context).dismissOnBackPressed(false).dismissOnTouchOutside(false)
+                    .asLoading()
             uiState.observe(this@TsbVpFragment, Observer {
                 it.showLoading.let {
                     //xPopup.show()
@@ -205,12 +209,16 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                             val id by PreferenceUtils(PreferenceUtils.CLICKED_COLLECT_ID, -1)
                             if (id != -1) {
 //                                mViewModel.addCollect(categoryId = id, remark = "", videoId = currentVideoID)
-                                mViewModel.moveCollect(categoryId = id, remark = "", videoId = currentVideoID)
+                                mViewModel.moveCollect(
+                                    categoryId = id,
+                                    remark = "",
+                                    videoId = currentVideoID
+                                )
                             }
                         }
                     }).asCustom(
                         CustomLikeBottomPopup(
-                            context!!,
+                            mContext,
                             currentVideoID,
                             1,
                             list,
@@ -243,7 +251,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                         "视频评论成功" -> {
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
-                        "视频取消收藏成功","视频移动成功" -> {
+                        "视频取消收藏成功", "视频移动成功" -> {
                             pageNum = 1
                             mViewModel.getCollectVideoList(mTabBean!!.id, null, -1, pageNum)
                         }
@@ -278,7 +286,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let { comments ->
                     commentsAdapter.run {
-                        setNewData(comments.data)
+                        setList(comments.data)
                         notifyDataSetChanged()
                     }
                     xPopup.dismiss()
@@ -319,12 +327,16 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
         tabId: Int = -1,
         layoutResId: Int = R.layout.item_video
     ) :
-        BaseBindAdapter<VideoData>(layoutResId, BR.video) {
+        BaseBindAdapter<VideoData>(layoutResId,
         private val mFrom = from
         private val mViewModel = viewModel
         private val mTabId = tabId
 
-        override fun convert(helper: BindViewHolder, item: VideoData) {
+        init {
+            addChildClickViewIds(R.id.layout_comment)
+        }
+
+        override fun convert(helper: BaseViewHolder, item: VideoData) {
             super.convert(helper, item)
 
             if (mFrom == 0) {
@@ -397,7 +409,13 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
                 }).build(helper.getView<CustomVideoPlayer>(R.id.video_player))
             helper.getView<CustomVideoPlayer>(R.id.video_player).apply {
-                fullscreenButton.setOnClickListener { resolveFullBtn(helper.getView<CustomVideoPlayer>(R.id.video_player) as StandardGSYVideoPlayer) }
+                fullscreenButton.setOnClickListener {
+                    resolveFullBtn(
+                        helper.getView<CustomVideoPlayer>(
+                            R.id.video_player
+                        ) as StandardGSYVideoPlayer
+                    )
+                }
                 backButton.visibility = View.GONE
             }
 
@@ -416,7 +434,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                                 }
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(TsbVpFragment.javaClass.name)
-                                    .hide(this@TsbVpFragment.parentFragment!!)//隐藏当前Fragment
+                                    .hide(this@TsbVpFragment.requireParentFragment())//隐藏当前Fragment
                                     .add(
                                         R.id.frame_content,
                                         GoodsDetailFragment.newInstance("${item.goodsId}"),
@@ -461,7 +479,9 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                 for (ele in keywords) {
                     if (ele.isNotBlank()) {
                         val tv = LayoutInflater.from(mContext).inflate(
-                            R.layout.layout_home_video_keywords, helper.getView(R.id.keywordsFlexlayout), false
+                            R.layout.layout_home_video_keywords,
+                            helper.getView(R.id.keywordsFlexlayout),
+                            false
                         ) as TextView
                         tv.maxEms = 6
                         tv.maxLines = 1
@@ -474,9 +494,15 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             if (item.like == 0) {
-                helper.setImageDrawable(R.id.iv_like, mContext.resources.getDrawable(R.drawable.home_unfavorite))
+                helper.setImageDrawable(
+                    R.id.iv_like,
+                    mContext.resources.getDrawable(R.drawable.home_unfavorite)
+                )
             } else {
-                helper.setImageDrawable(R.id.iv_like, mContext.resources.getDrawable(R.drawable.home_favorite))
+                helper.setImageDrawable(
+                    R.id.iv_like,
+                    mContext.resources.getDrawable(R.drawable.home_favorite)
+                )
             }
 //            helper.setText(R.id.tv_likeCount, "${item.likeCount}")
             //helper.getView<AppCompatTextView>(R.id.tv_likeCount).visibility = View.GONE
@@ -484,9 +510,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
             helper.setText(R.id.tv_commentCount, "${toNum(item.commentCount)}")
 //            helper.setText(R.id.tv_shareCount, "${toNum(item.shareCount)}")
-
             //helper.addOnClickListener(R.id.layout_like)
-            helper.addOnClickListener(R.id.layout_comment)
 //            helper.addOnClickListener(R.id.layout_share)
 
         }
