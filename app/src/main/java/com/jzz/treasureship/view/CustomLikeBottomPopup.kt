@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-R
-adapter.CollectAdapter
-model.bean.CollectCategory
-ui.home.HomeViewModel
-utils.PreferenceUtils
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.CollectAdapter
+import com.jzz.treasureship.model.bean.CollectCategory
+import com.jzz.treasureship.ui.home.HomeViewModel
+import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils

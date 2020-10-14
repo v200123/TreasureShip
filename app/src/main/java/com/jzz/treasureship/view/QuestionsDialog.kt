@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-R
-adapter.AnswersAdapter
-ui.home.HomeViewModel
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.AnswersAdapter
+import com.jzz.treasureship.ui.home.HomeViewModel
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_questions.view.*
 

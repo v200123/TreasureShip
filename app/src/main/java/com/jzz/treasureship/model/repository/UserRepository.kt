@@ -14,6 +14,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
+import com.jzz.treasureship.model.bean.*
 
 class UserRepository : BaseRepository() {
     //获取用户信息

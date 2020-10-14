@@ -10,8 +10,8 @@ import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import com.blankj.utilcode.util.ToastUtils
-R
-utils.PreferenceUtils
+import com.jzz.treasureship.R
+import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.layout_customer_set_time.view.*
 import java.lang.StringBuilder

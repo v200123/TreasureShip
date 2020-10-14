@@ -1,5 +1,7 @@
 package com.jzz.treasureship.constants
 
+import com.jzz.treasureship.BuildConfig
+
 
 object Constants {
     //测试环境

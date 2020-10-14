@@ -3,8 +3,8 @@ package com.jzz.treasureship.view
 import android.content.Context
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-R
-ui.invite.InviteFragment
+import com.jzz.treasureship.R
+import com.jzz.treasureship.ui.invite.InviteFragment
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_invita.view.*
 

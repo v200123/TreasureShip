@@ -9,7 +9,12 @@ import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.AddressAdapter
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.Address
+import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.interfaces.OnConfirmListener
 import kotlinx.android.synthetic.main.activity_main.*

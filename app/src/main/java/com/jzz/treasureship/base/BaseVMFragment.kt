@@ -5,20 +5,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.jzz.treasureship.App
+import com.jzz.treasureship.R
+import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.utils.FragmentBackHandler
 import com.jzz.treasureship.utils.PreferenceUtils
-
-
+import com.jzz.treasureship.utils.normalOut
+import com.jzz.treasureship.utils.out
 import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.SuccessState
+import com.lc.mybaselibrary.ext.getResColor
 
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -39,6 +46,9 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     private val userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
+   @ColorRes
+   open var mStatusColor:Int = R.color.white
+
 //    var user = GsonUtils.fromJson(userInfo, User::class.java)
 //    private var isAuthDialog by PreferenceUtils(PreferenceUtils.auth_is_show, "")
 
@@ -114,8 +124,8 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onResume() {
         super.onResume()
         GSYVideoManager.onResume()
+        setStatusColor(mStatusColor)
         "我${this::class.java.name}\t进入到onResume了\n".out()
-
         "当前的FragmentManager中有以下Fragment：｛".normalOut(true)
         (mContext as AppCompatActivity).supportFragmentManager.fragments.forEach {
 
@@ -179,5 +189,8 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         return true
     }
 
+    private fun setStatusColor(@ColorRes colorRes:Int){
+        StateAppBar.setStatusBarLightMode(mContext as AppCompatActivity, mContext.getResColor(colorRes))
+    }
 
 }

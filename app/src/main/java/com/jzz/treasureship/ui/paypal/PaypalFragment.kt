@@ -300,7 +300,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                             it.orientation = LinearLayoutManager.VERTICAL
                         }
 
-                        val list: ArrayList<CartGoodsSku?> = ArrayList()
+                        val list: ArrayList<CartGoodsSku> = ArrayList()
                         for (shop in it.mShops!!) {
                             for (sku in shop.mCartGoodsSkuList!!) {
                                 sku.let {

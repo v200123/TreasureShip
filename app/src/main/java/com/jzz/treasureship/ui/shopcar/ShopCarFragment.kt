@@ -16,7 +16,6 @@ import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.daimajia.swipe.SwipeLayout
 import com.jzz.treasureship.R
@@ -282,7 +281,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                     isNestedScrollingEnabled = false
 
                     val goodsAdapter = CartOrderChildAdapter(helper.adapterPosition, R.layout.item_shopcar_goods)
-                    goodsAdapter.setNewData(item.mCartGoodsSkuList)
+                    goodsAdapter.setNewData(item.mCartGoodsSkuList.toMutableList())
                     adapter = goodsAdapter
 
                     goodsAdapter.notifyDataSetChanged()

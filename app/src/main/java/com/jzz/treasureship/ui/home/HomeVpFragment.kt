@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.jzz.treasureship.BR
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.AnswersAdapter
 import com.jzz.treasureship.adapter.BaseBindAdapter
@@ -130,7 +130,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             mAdapter.run {
-                setOnItemChildClickListener { adapter, view, position ->
+                setOnItemChildClickListener() { adapter, view, position ->
                     when (view.id) {
                         R.id.layout_like -> {
                             if (isLogin) {
@@ -173,17 +173,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 //            }
                     }
                 }
-                if (mTabPosition == 0) {
-                    val view = View.inflate(context, R.layout.layout_home_header, null)
-                    view.findViewById<ImageView>(R.id.iv_ad).setOnClickListener {
-                        mViewModel.getQuestionnaire()
-                    }
-                    addHeaderView(view)
-                }
+
             }
-
-
             adapter = mAdapter
+
+
         }
     }
 
@@ -210,6 +204,14 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 it.showSuccess?.let { ad ->
                     ad.list?.let { list ->
                         if (list.isNotEmpty()) {
+                            if (mTabPosition == 0) {
+                                mAdapter.removeAllHeaderView()
+                                val view = View.inflate(context, R.layout.layout_home_header, null)
+                                view.findViewById<ImageView>(R.id.iv_ad).setOnClickListener {
+                                    mViewModel.getQuestionnaire()
+                                }
+                               mAdapter.addHeaderView(view)
+                            }
                             list[0]?.let { item ->
                                 iv_ad?.let { Glide.with(mContext).load(item.adCover).into(iv_ad) }
                             }
@@ -415,7 +417,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let { comments ->
                     commentsAdapter.run {
-                        setNewInstance(comments.data.toMutableList())
+                        setList(comments.data.toMutableList())
                         notifyDataSetChanged()
                     }
                     xPopup.dismiss()
@@ -587,36 +589,37 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         tabId: Int = -1,
         layoutResId: Int = R.layout.item_video
     ) :
-        BaseBindAdapter<VideoData>(layoutResId){
+        BaseBindAdapter<VideoData>(layoutResId, BR.video) {
         private val mFrom = from
         private val mViewModel = viewModel
         private val mTabId = tabId
+
         init {
             addChildClickViewIds(R.id.layout_like,
             R.id.layout_comment)
         }
 
-        override fun convert(helper: BaseViewHolder, item: VideoData) {
-            super.convert(helper, item)
+        override fun convert(holder: BaseViewHolder, item: VideoData) {
+            super.convert(holder, item)
 
             if (mFrom == 0) {
                 if (item.position == 0) {
-                    helper.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
+                    holder.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
                 } else {
-                    helper.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
+                    holder.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
                 }
             }
-            helper.getView<ImageView>(R.id.iv_tsbMore).visibility = View.GONE
+            holder.getView<ImageView>(R.id.iv_tsbMore).visibility = View.GONE
 
             if (mFrom == 1) {
-                helper.getView<ImageView>(R.id.iv_tsbMore).visibility = View.VISIBLE
+                holder.getView<ImageView>(R.id.iv_tsbMore).visibility = View.VISIBLE
             }
             GSYVideoType.setRenderType(GSYVideoType.SUFRACE)
             GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL)
 
-            Glide.with(mContext).load(item.videoCoverUrl).into(helper.getView(R.id.thumbImage))
+            Glide.with(mContext).load(item.videoCoverUrl).into(holder.getView(R.id.thumbImage))
 
-            helper.getView<TextView>(R.id.totalTime).text = formatTimeS(item.duration.toLong())
+            holder.getView<TextView>(R.id.totalTime).text = formatTimeS(item.duration.toLong())
 
 
             GSYVideoOptionBuilder().setIsTouchWiget(false)
@@ -629,11 +632,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 .setReleaseWhenLossAudio(true)
                 .setShowFullAnimation(true)
                 .setNeedLockFull(true)
-                .setPlayPosition(helper.layoutPosition)
+                .setPlayPosition(holder.layoutPosition)
                 .setVideoAllCallBack(object : GSYSampleCallBack() {
                     override fun onPrepared(url: String, vararg objects: Any) {
                         super.onPrepared(url, *objects)
-                        if (!helper.getView<CustomVideoPlayer>(R.id.video_player).isIfCurrentIsFullscreen) {
+                        if (!holder.getView<CustomVideoPlayer>(R.id.video_player).isIfCurrentIsFullscreen) {
                             //静音
                             GSYVideoManager.instance().isNeedMute = false
                         }
@@ -643,37 +646,37 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         super.onQuitFullscreen(url, *objects)
                         //全屏不静音
                         GSYVideoManager.instance().isNeedMute = false
-                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility =
+                        holder.getView<LinearLayout>(R.id.layout_checkGoods).visibility =
                             View.VISIBLE
-                        helper.getView<TextView>(R.id.totalTime).visibility = View.VISIBLE
+                        holder.getView<TextView>(R.id.totalTime).visibility = View.VISIBLE
                         GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL)
                     }
 
                     override fun onEnterFullscreen(url: String, vararg objects: Any) {
                         super.onEnterFullscreen(url, *objects)
                         GSYVideoManager.instance().isNeedMute = false
-                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility = View.GONE
-                        helper.getView<TextView>(R.id.totalTime).visibility = View.INVISIBLE
+                        holder.getView<LinearLayout>(R.id.layout_checkGoods).visibility = View.GONE
+                        holder.getView<TextView>(R.id.totalTime).visibility = View.INVISIBLE
                         GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_16_9)
                     }
 
                     override fun onClickStartIcon(url: String?, vararg objects: Any?) {
                         super.onClickStartIcon(url, *objects)
-                        helper.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
+                        holder.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
 
                     }
 
                     override fun onClickResume(url: String?, vararg objects: Any?) {
                         super.onClickResume(url, *objects)
-                        helper.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
+                        holder.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
                     }
 
                     override fun onClickStop(url: String?, vararg objects: Any?) {
                         super.onClickStop(url, *objects)
-                        helper.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.VISIBLE
+                        holder.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.VISIBLE
                     }
-                }).build(helper.getView<CustomVideoPlayer>(R.id.video_player))
-            helper.getView<CustomVideoPlayer>(R.id.video_player).apply {
+                }).build(holder.getView<CustomVideoPlayer>(R.id.video_player))
+            holder.getView<CustomVideoPlayer>(R.id.video_player).apply {
                 val spannerText =
                     SpannableStringBuilder(item.mark ?: "").append(item.videoName).apply {
                         if (!item.mark.isNullOrEmpty())
@@ -687,7 +690,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 setMarkAndTitle(spannerText)
                 fullscreenButton.setOnClickListener {
                     resolveFullBtn(
-                        helper.getView<CustomVideoPlayer>(
+                        holder.getView<CustomVideoPlayer>(
                             R.id.video_player
                         ) as StandardGSYVideoPlayer
                     )
@@ -698,12 +701,12 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             when (mFrom) {
                 0 -> {
                     if (item.haveGoods == 0) {
-                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
+                        holder.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
                             View.INVISIBLE
                     } else {
-                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
+                        holder.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
                             View.VISIBLE
-                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.setOnClickListener {
+                        holder.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.setOnClickListener {
                             if (!isLogin) {
                                 switchLogin()
                                 return@setOnClickListener
@@ -721,7 +724,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 }
             }
 
-            helper.getView<CustomVideoPlayer>(R.id.video_player).iv_tsbMore.setOnClickListener {
+            holder.getView<ImageView>(R.id.iv_tsbMore).setOnClickListener {
                 XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
                     override fun onDismiss(popupView: BasePopupView) {
                         super.onDismiss(popupView)
@@ -744,13 +747,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             val keywords = item.keywords?.split(',')
-            helper.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).removeAllViews()
+            holder.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).removeAllViews()
             if (!keywords.isNullOrEmpty()) {
                 for (ele in keywords) {
                     if (ele.isNotBlank()) {
                         val tv = LayoutInflater.from(mContext).inflate(
                             R.layout.layout_home_video_keywords,
-                            helper.getView(R.id.keywordsFlexlayout),
+                            holder.getView(R.id.keywordsFlexlayout),
                             false
                         ) as TextView
                         tv.maxEms = 6
@@ -758,30 +761,29 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         tv.ellipsize = TextUtils.TruncateAt.END
                         tv.text = "$ele"
                         //添加到父View
-                        helper.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).addView(tv)
+                        holder.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).addView(tv)
                     }
                 }
             }
 
             if (item.like == 0) {
-                helper.setImageDrawable(
+                holder.setImageDrawable(
                     R.id.iv_like,
                     mContext.resources.getDrawable(R.drawable.home_unfavorite)
                 )
             } else {
-                helper.setImageDrawable(
+                holder.setImageDrawable(
                     R.id.iv_like,
                     mContext.resources.getDrawable(R.drawable.home_favorite)
                 )
             }
-            helper.setText(R.id.tv_likeCount, "${toNum(item.likeCount)}")
-            helper.setText(R.id.tv_commentCount, "${toNum(item.commentCount)}")
+            holder.setText(R.id.tv_likeCount, "${toNum(item.likeCount)}")
+            holder.setText(R.id.tv_commentCount, "${toNum(item.commentCount)}")
 //            helper.setText(R.id.tv_shareCount, "${toNum(item.shareCount)}")
+
 //            helper.addOnClickListener(R.id.layout_share)
 
         }
-
-
 
         /**
          * 全屏幕按键处理

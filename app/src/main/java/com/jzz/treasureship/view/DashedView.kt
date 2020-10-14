@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-utils.out
+import com.jzz.treasureship.utils.out
 import q.rorbin.badgeview.DisplayUtil
 
 /**

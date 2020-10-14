@@ -9,6 +9,7 @@
     </data>
 
     <LinearLayout
+        android:layout_marginTop="6dp"
         android:id="@+id/layout_videos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
             android:layout_height="211dp" />
 
         <LinearLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="4.5dp"
@@ -46,14 +48,16 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:layout_gravity="center"
                     android:id="@+id/layout_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:id="@+id/iv_like"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@drawable/home_unfavorite" />
 
                     <TextView
@@ -67,6 +71,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+
                     android:id="@+id/layout_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -74,9 +79,10 @@
                     android:layout_marginStart="8dp">
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:id="@+id/ib_comment"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@drawable/home_comments" />
 
                     <TextView
@@ -87,8 +93,17 @@
                         android:text="-1"
                         android:textColor="#ff333333"
                         android:textSize="11sp" />
-                </LinearLayout>
 
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_tsbMore"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_gravity="center"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icon_tsb_more"
+                    />
 <!--                <LinearLayout-->
 <!--                    android:id="@+id/layout_share"-->
 <!--                    android:layout_width="wrap_content"-->

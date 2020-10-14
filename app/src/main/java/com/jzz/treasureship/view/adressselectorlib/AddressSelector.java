@@ -13,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-R;
+import com.jzz.treasureship.R;
 
 import java.util.ArrayList;
 
@@ -363,8 +363,9 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
             return viewHolder;
         }
 
+
         @Override
-        public void onBaseViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(MyViewHolder holder, int position) {
             if(listItemIcon != -1)
                 holder.img.setImageResource(listItemIcon);
             if(listTextSize != -1)

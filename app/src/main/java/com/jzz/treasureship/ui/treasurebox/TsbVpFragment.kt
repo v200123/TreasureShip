@@ -9,17 +9,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.BaseBindAdapter
-import com.jzz.treasureship.adapter.CollectAdapter
 import com.jzz.treasureship.adapter.CommentsAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.TabBean
@@ -38,6 +34,7 @@ import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import kotlinx.android.synthetic.main.fragment_tsb_vp.*
+import kotlinx.android.synthetic.main.item_video.view.*
 import kotlinx.android.synthetic.main.video_layout_normal.view.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.math.BigDecimal
@@ -447,7 +444,8 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                 }
             }
 
-            helper.getView<CustomVideoPlayer>(R.id.video_player).iv_tsbMore.setOnClickListener {
+            helper.getView<CustomVideoPlayer>(R.id.video_player).
+            iv_tsbMore.setOnClickListener {
                 XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
                     override fun onDismiss(popupView: BasePopupView) {
                         super.onDismiss(popupView)

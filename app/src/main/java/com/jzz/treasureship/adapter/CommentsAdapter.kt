@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
+import com.jzz.treasureship.model.bean.CommentData
 
 
 class CommentsAdapter(layoutResId: Int = R.layout.comment_item_layout) :

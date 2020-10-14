@@ -7,6 +7,7 @@ import okhttp3.internal.platform.Platform
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.jzz.treasureship.BuildConfig
 
 /**
  *@date: 2020/9/10

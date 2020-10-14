@@ -139,7 +139,7 @@ class OrdersVpFragment(position: Int) : BaseVMFragment<OrdersViewModel>() {
                             mViewModel.sureReceice(list[position].orderId!!)
                         }
                         R.id.tv_ckwl -> {
-                            activity!!.supportFragmentManager.beginTransaction().addToBackStack(OrdersFragment.javaClass.name).hide(this.parentFragment!!).add(
+                            activity!!.supportFragmentManager.beginTransaction().addToBackStack(OrdersFragment.javaClass.name).hide(this@OrdersVpFragment.requireParentFragment()).add(
                                 R.id.frame_content,
                                 TraceFragment.newInstance(list[position].orderId!!),
                                 TraceFragment.javaClass.name

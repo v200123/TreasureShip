@@ -1,6 +1,5 @@
 package com.jzz.treasureship.ui.treasurebox
 
-import android.os.Parcelable
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.get
@@ -46,7 +45,7 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
     override fun initVM(): HomeViewModel = getViewModel()
 
     override fun initView() {
-        StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
+
         curFragment = "TreasureBoxFragment"
         tv_addCollect.setOnClickListener {
             XPopup.Builder(it.context).asCustom(CustomInputDialog(it.context, mViewModel)).show()
@@ -154,7 +153,7 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        activity!!.nav_view.visibility = View.VISIBLE
+//        activity!!.nav_view.visibility = View.VISIBLE
         GSYVideoManager.releaseAllVideos()
     }
 

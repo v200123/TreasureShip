@@ -6,9 +6,10 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.DepartmentBean
+import com.jzz.treasureship.ui.auth.adapter.SearchAdapter
 import com.jzz.treasureship.ui.auth.viewmodel.DepartmentSreachViewModel
 import kotlinx.android.synthetic.main.activity_department_search.*
 import kotlinx.android.synthetic.main.include_title.*

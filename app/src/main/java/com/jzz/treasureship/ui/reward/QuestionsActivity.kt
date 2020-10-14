@@ -3,7 +3,8 @@ package com.jzz.treasureship.ui.reward
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
-R
+import com.jzz.treasureship.R
+
 
 class QuestionsActivity : AppCompatActivity() {
 

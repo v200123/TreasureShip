@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-R
-adapter.BaseBindAdapter
-model.bean.DataXX
-utils.PreferenceUtils
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.BaseBindAdapter
+import com.jzz.treasureship.model.bean.DataXX
+import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.core.DrawerPopupView
 import kotlinx.android.synthetic.main.custom_contacter_drawer_popup.view.*
 import kotlinx.android.synthetic.main.layout_item_contacter_goods.view.*

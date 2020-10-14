@@ -16,13 +16,15 @@ import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.out
-
-import com.lc.mybaselibrary.*
+import com.lc.mybaselibrary.ErrorState
+import com.lc.mybaselibrary.LoadState
+import com.lc.mybaselibrary.NeedLoginState
+import com.lc.mybaselibrary.SuccessState
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.coroutines.launch
 
-abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = true) : AppCompatActivity() {
+abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = false) : AppCompatActivity() {
     private val mLoading by lazy {
         XPopup.Builder(mContext)
             .hasShadowBg(false)

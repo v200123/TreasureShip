@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-R;
-view.clipview.ClipViewLayout;
+import com.jzz.treasureship.R;
+import com.jzz.treasureship.view.clipview.ClipViewLayout;
 
 import java.io.File;
 import java.io.IOException;

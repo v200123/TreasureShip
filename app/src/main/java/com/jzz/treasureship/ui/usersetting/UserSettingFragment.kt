@@ -37,7 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class UserSettingFragment : BaseVMFragment<UserViewModel>() {
     private val mPopStatus by activityViewModels<DialogStatusViewModel> ()
-
+    override var  mStatusColor = R.color.blue_normal
     var isShow by PreferenceUtils(PreferenceUtils.no_auth_show,false)
     companion object {
         fun newInstance(): UserSettingFragment {
@@ -48,9 +48,8 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            activity!!.nav_view.visibility = View.VISIBLE
-            activity!!.nav_view.menu[3].isChecked = true
-            StateAppBar.setStatusBarLightMode(this.activity,ContextCompat.getColor(mContext,R.color.blue_normal))
+//            activity!!.nav_view.visibility = View.VISIBLE
+//            activity!!.nav_view.menu[3].isChecked = true
             if(!mPopStatus.isOpen)
             mViewModel.getUserInfo()
         }

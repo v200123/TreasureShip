@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.RankAdapter
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.XX
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.view.MyDatePickerDialog
 import com.lxj.xpopup.XPopup
@@ -141,7 +142,7 @@ class RankingFragment : BaseVMFragment<RankingViewModel>() {
                     tv_income.text = "收入:${it.account}元"
                     tv_totalRankNum.text = "${it.num}人"
 
-                    mAdapter.setNewData(it.list)
+                    mAdapter.setNewData(it.list as MutableList<XX>?)
                     mAdapter.notifyDataSetChanged()
 
 

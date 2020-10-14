@@ -8,13 +8,12 @@ import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
-App
-R
-model.bean.User
-ui.login.LoginActivity
-
-utils.PreferenceUtils
-utils.changeImage
+import com.jzz.treasureship.App
+import com.jzz.treasureship.R
+import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.ui.login.LoginActivity
+import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.changeImage
 import com.lxj.xpopup.core.BottomPopupView
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession

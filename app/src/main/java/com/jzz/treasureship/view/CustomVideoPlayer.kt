@@ -1,13 +1,10 @@
 package com.jzz.treasureship.view
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
-R
+import com.jzz.treasureship.R
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView
 import kotlinx.android.synthetic.main.video_layout_normal.view.*

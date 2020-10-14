@@ -20,7 +20,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-R;
+import com.jzz.treasureship.R;
 
 import java.io.IOException;
 

@@ -26,19 +26,21 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
-import com.jzz.treasureship.core.*
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.ui.addressbook.AddressBookFragment
+import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.home.HomeFragment
+import com.jzz.treasureship.ui.invite.InviteFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
+import com.jzz.treasureship.ui.orders.OrdersFragment
 import com.jzz.treasureship.ui.treasurebox.TreasureBoxFragment
 import com.jzz.treasureship.ui.usersetting.UserSettingFragment
 import com.jzz.treasureship.utils.BackHandlerHelper
 import com.jzz.treasureship.utils.HProgressDialogUtils
 import com.jzz.treasureship.utils.PreferenceUtils
-
+import com.jzz.treasureship.utils.out
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.xuexiang.xupdate.XUpdate
@@ -206,7 +208,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             .registerReceiver(receiver, IntentFilter(MESSAGE_RECEIVED_ACTION))
         isForeground = true
 
-        this.nav_view.visibility = View.VISIBLE
         //设置状态栏文字颜色及图标为深色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility =
@@ -215,45 +216,43 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         StateAppBar.setStatusBarColor(this, ContextCompat.getColor(this, R.color.white))
         StatusBarUtils.StatusBarLightMode(this)
 
-        nav_view.inflateMenu(R.menu.bottom_nav_menu)
-        nav_view.itemIconTintList = null
-        switchToHome()
-        nav_view.setOnNavigationItemSelectedListener { item: MenuItem ->
-            if (!isLogin) {
-                switchToLogin()
-                return@setOnNavigationItemSelectedListener false
-            } else {
-                return@setOnNavigationItemSelectedListener when (item.itemId) {
-                    R.id.navigation_home -> {
-                        item.setIcon(R.drawable.home_nav_home_icon_selected)
-                        switchToHome()
-                        curFragment = "HomeFragment"
-                        true
-                    }
-                    R.id.navigation_treasure_box -> {
-                        item.setIcon(R.drawable.icon_treasure_box_selected)
-                        switchToTsb()
-                        curFragment = "TreasureBoxFragment"
-                        true
-                    }
-                    R.id.navigation_address_book -> {
-                        curFragment = "AddressBookFragment"
-                        item.setIcon(R.drawable.icon_addressbook_selected)
-                        switchToAddressBook()
-                        true
-                    }
-                    R.id.navigation_user_settings -> {
-                        curFragment = "UserSettingFragment"
-                        item.setIcon(R.drawable.icon_mine_selected)
-                        switchToMine()
-                        true
-                    }
-                    else -> {
-                        false
-                    }
-                }
-            }
-        }
+
+//        nav_view.setOnNavigationItemSelectedListener { item: MenuItem ->
+//            if (!isLogin) {
+//                switchToLogin()
+//                return@setOnNavigationItemSelectedListener false
+//            } else {
+//                return@setOnNavigationItemSelectedListener when (item.itemId) {
+//                    R.id.navigation_home -> {
+//                        item.setIcon(R.drawable.home_nav_home_icon_selected)
+//                        switchToHome()
+//                        curFragment = "HomeFragment"
+//                        true
+//                    }
+//                    R.id.navigation_treasure_box -> {
+//                        item.setIcon(R.drawable.icon_treasure_box_selected)
+//                        switchToTsb()
+//                        curFragment = "TreasureBoxFragment"
+//                        true
+//                    }
+//                    R.id.navigation_address_book -> {
+//                        curFragment = "AddressBookFragment"
+//                        item.setIcon(R.drawable.icon_addressbook_selected)
+//                        switchToAddressBook()
+//                        true
+//                    }
+//                    R.id.navigation_user_settings -> {
+//                        curFragment = "UserSettingFragment"
+//                        item.setIcon(R.drawable.icon_mine_selected)
+//                        switchToMine()
+//                        true
+//                    }
+//                    else -> {
+//                        false
+//                    }
+//                }
+//            }
+//        }
 
         intent?.let {
             val goodId = it.getStringExtra(GoodsId)
@@ -318,48 +317,46 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 
     }
 
-    private fun switchToMine() {
-        resetToDefaultIcon()
-        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
-        mineItem.setIcon(R.drawable.icon_mine_selected)
-        mineItem.setChecked(true)
-        switchFragment(mMineFragment, UserSettingFragment.javaClass.name)
-    }
+//    private fun switchToMine() {
+//        resetToDefaultIcon()
+//        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
+//        mineItem.setIcon(R.drawable.icon_mine_selected)
+//        mineItem.setChecked(true)
+//        switchFragment(mMineFragment, UserSettingFragment.javaClass.name)
+//    }
 
-    private fun switchToLogin() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
+//    private fun switchToLogin() {
+//        startActivity(Intent(this, LoginActivity::class.java))
+//    }
 
-    private fun switchToAddressBook() {
-        resetToDefaultIcon()
-        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
-        addressBookItem.setIcon(R.drawable.icon_addressbook_selected)
-        addressBookItem.setChecked(true)
-        switchFragment(mAddressBookFragment, AddressBookFragment.javaClass.name)
-    }
+//    private fun switchToAddressBook() {
+//        resetToDefaultIcon()
+//        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
+//        addressBookItem.setIcon(R.drawable.icon_addressbook_selected)
+//        addressBookItem.setChecked(true)
+//        switchFragment(mAddressBookFragment, AddressBookFragment.javaClass.name)
+//    }
 
-    private fun switchToTsb() {
-        resetToDefaultIcon()
-        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
-        tsbItem.setIcon(R.drawable.icon_treasure_box_selected)
-        tsbItem.setChecked(true)
-        switchFragment(mTsbFragment, TreasureBoxFragment.javaClass.name)
-    }
+//    private fun switchToTsb() {
+//        resetToDefaultIcon()
+//        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
+//        tsbItem.setIcon(R.drawable.icon_treasure_box_selected)
+//        tsbItem.setChecked(true)
+//        switchFragment(mTsbFragment, TreasureBoxFragment.javaClass.name)
+//    }
 
-    public fun switchToHome() {
-        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
-        homeItem.setIcon(R.drawable.home_nav_home_icon_selected)
-        homeItem.setChecked(true)
-        switchFragment(HomeFragment.newInstance(), HomeFragment.javaClass.name)
-    }
+//    public fun switchToHome() {
+//        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
+//        homeItem.setIcon(R.drawable.home_nav_home_icon_selected)
+//        homeItem.setChecked(true)
+//        switchFragment(HomeFragment.newInstance(), HomeFragment.javaClass.name)
+//    }
 
     private fun switchFragment(targetFragment: Fragment, tag: String) {
         val currentFragmentStr = mCurrentFragment.javaClass.name
         val targetFragmentStr = targetFragment.javaClass.name
-
         Log.e("currentFragmentStr", currentFragmentStr)
         Log.e("targetFragmentStr", targetFragmentStr)
-
         val result = currentFragmentStr.equals(targetFragmentStr)
 
         if (result) {
@@ -382,20 +379,20 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         mCurrentFragment = targetFragment
     }
 
-    private fun resetToDefaultIcon() {
-        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
-        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
-        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
-        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
-        homeItem.setIcon(R.drawable.home_nav_home_icon_normal)
-        homeItem.setChecked(false)
-        tsbItem.setIcon(R.drawable.icon_treasure_box_normal)
-        tsbItem.setChecked(false)
-        addressBookItem.setIcon(R.drawable.icon_addressbook_normal)
-        addressBookItem.setChecked(false)
-        mineItem.setIcon(R.drawable.icon_mine_normal)
-        mineItem.setChecked(false)
-    }
+//    private fun resetToDefaultIcon() {
+//        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
+//        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
+//        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
+//        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
+//        homeItem.setIcon(R.drawable.home_nav_home_icon_normal)
+//        homeItem.setChecked(false)
+//        tsbItem.setIcon(R.drawable.icon_treasure_box_normal)
+//        tsbItem.setChecked(false)
+//        addressBookItem.setIcon(R.drawable.icon_addressbook_normal)
+//        addressBookItem.setChecked(false)
+//        mineItem.setIcon(R.drawable.icon_mine_normal)
+//        mineItem.setChecked(false)
+//    }
 
 
     override fun initData() {

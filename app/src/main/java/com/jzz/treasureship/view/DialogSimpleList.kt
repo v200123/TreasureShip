@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-R
+import com.jzz.treasureship.R
 import com.lxj.xpopup.core.BottomPopupView
 import com.xuexiang.xui.widget.layout.XUILinearLayout
 

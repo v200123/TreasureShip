@@ -4,8 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.model.bean.JzzResponse
-
-
+import com.jzz.treasureship.core.*
 import com.lc.mybaselibrary.*
 import kotlinx.coroutines.*
 

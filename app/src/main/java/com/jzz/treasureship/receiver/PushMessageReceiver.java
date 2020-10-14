@@ -2,16 +2,13 @@ package com.jzz.treasureship.receiver;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-ui.activity.MainActivity;
-utils.ExampleUtil;
-utils.TagAliasOperatorHelper;
-import com.lxj.xpopup.XPopup;
+import com.jzz.treasureship.ui.activity.MainActivity;
+import com.jzz.treasureship.utils.ExampleUtil;
+import com.jzz.treasureship.utils.TagAliasOperatorHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

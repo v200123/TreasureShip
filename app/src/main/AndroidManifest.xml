@@ -84,7 +84,7 @@
         <activity android:name=".ui.goods.GoodsQualificationActivity" />
         <activity android:name=".ui.coupon.CouponShopActivity" />
         <activity android:name=".ui.activity.OrdersActivity" />
-        <activity android:name=".ui.activity.TestActivity" >
+        <activity android:name=".ui.activity.MainHomeFragment" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

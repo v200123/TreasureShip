@@ -23,9 +23,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
+import com.jzz.treasureship.BuildConfig
+import com.jzz.treasureship.ImageLoader
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.image
 import com.jzz.treasureship.ui.auth.viewmodel.AuthUpLoadViewModel
+import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
+import com.jzz.treasureship.utils.FileUtil
+import com.jzz.treasureship.utils.RealPathFromUriUtils
+import com.jzz.treasureship.utils.out
+import com.jzz.treasureship.view.DialogSimpleList
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.fragment_auth_upload.*
 import kotlinx.android.synthetic.main.item_card_unuse.*

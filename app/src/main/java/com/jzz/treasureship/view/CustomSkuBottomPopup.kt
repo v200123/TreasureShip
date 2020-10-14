@@ -8,11 +8,11 @@ import com.blankj.utilcode.util.GsonUtils
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-R
-adapter.SkuSelectAdapter
-model.bean.GoodsDetail
-utils.PreferenceUtils
-utils.SelectedNavItem
+import com.jzz.treasureship.R
+import com.jzz.treasureship.adapter.SkuSelectAdapter
+import com.jzz.treasureship.model.bean.GoodsDetail
+import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.SelectedNavItem
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import kotlinx.android.synthetic.main.layout_sku.view.*

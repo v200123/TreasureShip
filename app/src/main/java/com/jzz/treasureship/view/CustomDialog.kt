@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-R
+import com.jzz.treasureship.R
 
 
 class CustomDialog : Dialog {

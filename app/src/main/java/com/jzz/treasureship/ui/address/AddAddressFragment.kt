@@ -7,8 +7,13 @@ import androidx.navigation.Navigation
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.CityPlace
+import com.jzz.treasureship.model.bean.CityPlaces
+import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.view.CustomAddPickerBottomPopup
 import com.lc.mybaselibrary.assertRead.Companion.getFromAssets
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView

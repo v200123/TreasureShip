@@ -1,9 +1,7 @@
 package com.jzz.treasureship.model.api
 
 import com.google.gson.JsonObject
-import com.jzz.treasureship.model.bean.BaseRequestBody
-import com.jzz.treasureship.model.bean.CityPlaces
-import com.jzz.treasureship.model.bean.JzzResponse
+import com.jzz.treasureship.model.bean.*
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
