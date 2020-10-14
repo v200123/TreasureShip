@@ -118,6 +118,11 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
+        if(!hidden)
+        {
+            setStatusColor()
+        }
+
         "我${this::class.java.name}\t\tFragment进入到onHiddenChanged了\n ".out()
     }
 
@@ -189,7 +194,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         return true
     }
 
-    private fun setStatusColor(@ColorRes colorRes:Int){
+    protected fun setStatusColor(@ColorRes colorRes:Int = mStatusColor){
         StateAppBar.setStatusBarLightMode(mContext as AppCompatActivity, mContext.getResColor(colorRes))
     }
 

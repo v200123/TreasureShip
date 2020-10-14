@@ -66,11 +66,9 @@ import java.net.URLEncoder
 
 class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
     EasyPermissions.PermissionCallbacks {
-
     private val mShopCarFragment by lazy { ShopCarFragment.newInstance() }
     private var isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
     private var mGoodsDetails: GoodsDetail? = null
-    private lateinit var mWindow: Window
     private var goodsId: Int = -1
     private val dialog: Dialog by lazy { Dialog(mContext, R.style.edit_AlertDialog_style) }
     private var JsonString: String = ""
@@ -105,12 +103,12 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
 
     override fun onResume() {
         super.onResume()
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
     }
 
     override fun initView() {
-        activity?.nav_view?.visibility = View.GONE
+//        activity?.nav_view?.visibility = View.GONE
 
         gooddetails_shop.setOnClickListener {
             mContext.startActivity(GoodsQualificationActivity.newInstance(mContext, 0, JsonString))
@@ -120,7 +118,6 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
             mContext.startActivity(GoodsQualificationActivity.newInstance(mContext, 1, JsonString))
         }
 
-        this.mWindow = activity!!.window
 
         fab_up.hide()
 

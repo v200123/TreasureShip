@@ -34,7 +34,6 @@ import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import kotlinx.android.synthetic.main.fragment_tsb_vp.*
-import kotlinx.android.synthetic.main.item_video.view.*
 import kotlinx.android.synthetic.main.video_layout_normal.view.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.math.BigDecimal
@@ -444,8 +443,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                 }
             }
 
-            helper.getView<CustomVideoPlayer>(R.id.video_player).
-            iv_tsbMore.setOnClickListener {
+            helper.getView<ImageView>(R.id.iv_tsbMore).setOnClickListener {
                 XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
                     override fun onDismiss(popupView: BasePopupView) {
                         super.onDismiss(popupView)

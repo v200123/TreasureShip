@@ -71,7 +71,7 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
         if (midAddress.isNotBlank()) {
             midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
         }
-        activity?.nav_view?.visibility = View.GONE
+//        activity?.nav_view?.visibility = View.GONE
         tv_title.text = "修改地址"
         arguments?.let {
             val address = it.getParcelable<Address>("address")!!

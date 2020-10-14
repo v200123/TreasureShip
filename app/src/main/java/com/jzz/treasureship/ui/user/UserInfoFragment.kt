@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
@@ -41,7 +40,6 @@ import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
 import com.tencent.mm.opensdk.modelmsg.SendAuth
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_upload_header_img.view.*
 import kotlinx.android.synthetic.main.fragment_userinfo.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -95,7 +93,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
 
     override fun initView() {
 
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
 
@@ -162,8 +160,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                         }
                     } else {
                         tv_bindWx.text = "已绑定"
-                        val drawable =
-                            ContextCompat.getDrawable(mContext, R.drawable.icon_check_more)
+                        val drawable = ContextCompat.getDrawable(mContext, R.drawable.ico_goto)
                         drawable!!.setBounds(0,0,drawable.minimumWidth,drawable.minimumHeight)
                         drawable.setTint(mContext.getResColor(R.color.transparent))
                         tv_bindWx.setCompoundDrawables(null,null,drawable,null)

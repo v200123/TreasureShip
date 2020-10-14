@@ -74,7 +74,7 @@ class WithdrawFragment : BaseVMFragment<WithdrawViewModel>() {
     override fun initVM(): WithdrawViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "提现"
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         rlback.setOnClickListener {

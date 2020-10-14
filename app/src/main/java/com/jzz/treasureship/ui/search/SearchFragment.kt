@@ -46,7 +46,7 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
     private var type: Int = 0
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
         arguments?.let {
             type = it.getInt("type")

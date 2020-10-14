@@ -40,7 +40,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            activity!!.nav_view.visibility = View.GONE
+            //activity!!.nav_view.visibility = View.GONE
             StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.white))
         }
     }
@@ -50,7 +50,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
     override fun initVM(): OrdersViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "我的订单"
 
         StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.white))

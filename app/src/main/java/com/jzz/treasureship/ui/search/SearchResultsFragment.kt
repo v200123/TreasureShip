@@ -83,7 +83,7 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
     private val videoList: ArrayList<VideoData> = ArrayList()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
         arguments?.let {
             type = it.getInt("type")

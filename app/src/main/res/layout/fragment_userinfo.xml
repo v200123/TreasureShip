@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -48,17 +49,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginEnd="22.5dp"
-                    android:drawableEnd="@drawable/icon_check_more"
                     android:gravity="center|end"
                     android:text="修改头像"
+                    android:drawableTint="#FFAFAFAF"
                     android:textColor="#ff999999"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:drawableRight="@drawable/ico_goto"
+                  />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="1px"
                 android:layout_marginStart="21.5dp"
                 android:background="#EEEEEE" />
         </LinearLayout>
@@ -94,7 +97,7 @@
                     android:layout_gravity="center"
                     android:gravity="center|end"
                     android:drawableTint="@color/transparent"
-                    android:drawableEnd="@drawable/icon_check_more"
+                    android:drawableEnd="@drawable/ico_goto"
                     android:textColor="#ff999999"
                     android:textSize="14sp" />
 
@@ -137,7 +140,7 @@
                     android:layout_gravity="center"
                     android:gravity="center|end"
                     android:drawableTint="@color/transparent"
-                    android:drawableEnd="@drawable/icon_check_more"
+                    android:drawableEnd="@drawable/ico_goto"
                     android:textColor="#ff999999"
                     android:textSize="14sp" />
 
@@ -186,9 +189,11 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="21.5dp"
                     android:gravity="center|end"
-                    android:drawableEnd="@drawable/icon_check_more"
                     android:textColor="#ff999999"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:drawableTint="#FFAFAFAF"
+                    android:drawableRight="@drawable/ico_goto"
+                    />
 
                 <View
                     android:layout_width="match_parent"
@@ -235,15 +240,17 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="22.5dp"
-                android:drawableEnd="@drawable/icon_check_more"
                 android:gravity="right|center"
                 android:textColor="#E60012"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:drawableTint="#FFAFAFAF"
+                android:drawableRight="@drawable/ico_goto"
+                />
         </LinearLayout>
 
         <View
             android:layout_width="353.5dp"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:layout_marginStart="21.5dp"
             android:background="#EEEEEE" />
 
@@ -269,10 +276,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="22.5dp"
-                android:drawableRight="@drawable/icon_check_more"
                 android:gravity="right|center"
                 android:textColor="#111111"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:drawableTint="#FFAFAFAF"
+                android:drawableRight="@drawable/ico_goto" />
         </LinearLayout>
     </LinearLayout>
 </layout>

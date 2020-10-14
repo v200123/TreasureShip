@@ -42,7 +42,7 @@ class RankingFragment : BaseVMFragment<RankingViewModel>() {
 
     override fun initView() {
 
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
         iv_back.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()

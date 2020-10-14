@@ -39,7 +39,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
     override fun initView() {
 
         StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.white))
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 //        val titles = arrayOf("全部", "佣金", "个税", "提现记录", "返利")
 //        val fragments: ArrayList<WalletVpFragment> = ArrayList(titles.size)
         iv_walletBack.setOnClickListener {
@@ -161,7 +161,7 @@ class WalletFragment : BaseVMFragment<WalletViewModel>() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            activity!!.nav_view.visibility = View.GONE
+            //activity!!.nav_view.visibility = View.GONE
             StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
             mViewModel.getBalance()
             pageNum = 1

@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
 
     <com.jzz.treasureship.view.viewGroup.BaseDialog
-        app:bottomWidth="173dp"
-        app:bottomHight="69dp"
+        app:bottomWidth="120dp"
+        app:bottomHight="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

@@ -58,7 +58,7 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
     override fun initVM(): LoginViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         rlback.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
@@ -85,7 +85,7 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
                     (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                         .addToBackStack(SettingFragment.javaClass.name)
                         .hide(this).commit()
-                    (mContext as MainActivity).switchToHome()
+//                    (mContext as MainActivity).switchToHome()
                     if (!JPushInterface.isPushStopped(App.CONTEXT)){
                         JPushInterface.stopPush(App.CONTEXT)
                     }

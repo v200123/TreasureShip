@@ -40,7 +40,7 @@ class OrdersActivity : BaseVMActivity<OrdersViewModel>() {
     override fun initVM(): OrdersViewModel = getViewModel()
 
     override fun initView() {
-//        activity!!.nav_view.visibility = View.GONE
+//        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "我的订单"
         StateAppBar.setStatusBarLightMode(this, mContext.getResColor(R.color.white))
         val titles = arrayOf("全部", "待付款", "待发货", "已发货", "已完成")

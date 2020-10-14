@@ -31,7 +31,7 @@ class MsgFragment : BaseVMFragment<MsgViewModel>() {
             mActivity?.onBackPressed()
         }
 
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "消息中心"
 
         val titles = arrayOf("通知消息", "评论消息")

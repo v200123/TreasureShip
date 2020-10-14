@@ -40,7 +40,7 @@ class AddAddressFragment : BaseVMFragment<AddressViewModel>() {
     }
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "新增地址"
         StateAppBar.setStatusBarLightMode(this.activity, mContext.resources.getColor(R.color.white))
         lin_address.setOnClickListener { view ->

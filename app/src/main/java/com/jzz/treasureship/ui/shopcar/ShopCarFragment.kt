@@ -29,7 +29,6 @@ import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.utils.MoneyUtil
 import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.android.synthetic.main.shop_car_fragment.*
 import org.json.JSONArray
@@ -48,7 +47,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     lateinit var spcs: CartList
 
     private val cartAdapter by lazy { CartOrderAdapter() }
-
+    override var mStatusColor: Int = R.color.blue_normal
     override fun getLayoutResId() = R.layout.shop_car_fragment
 
     override fun initVM(): ShopCarViewModel = getViewModel()
@@ -56,7 +55,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         ll_view.background = context!!.getDrawable(R.drawable.toolbar_bg)
         tv_title.text = context!!.resources.getText(R.string.title_shop_car)
 
@@ -74,8 +73,8 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         }
 
         tv_addGoods2Cart.setOnClickListener {
-            activity!!.nav_view.visibility = View.VISIBLE
-            activity!!.nav_view.selectedItemId = R.id.navigation_home
+//            activity!!.nav_view.visibility = View.VISIBLE
+//            activity!!.nav_view.selectedItemId = R.id.navigation_home
             startActivity(Intent(this.context,MainActivity::class.java))
 //            activity!!.supportFragmentManager.beginTransaction()
 //                .replace(
@@ -91,7 +90,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         super.onHiddenChanged(hidden)
         if (!isHidden) {
             mViewModel.getCartList()
-            activity!!.nav_view.visibility = View.GONE
+            //activity!!.nav_view.visibility = View.GONE
             StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.blue_normal))
         }
     }

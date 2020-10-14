@@ -3,9 +3,7 @@ package com.jzz.treasureship.ui.home
 import android.content.Intent
 import android.graphics.Typeface
 import android.util.Log
-import android.view.View
 import android.widget.TextView
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -14,14 +12,13 @@ import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.App
 import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.service.RewardService
-import com.jzz.treasureship.ui.DialogHelp
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.search.SearchFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
@@ -35,7 +32,6 @@ import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.tencent.mmkv.MMKV
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_home_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -80,9 +76,12 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
         if (isLogin) {
             val mUser = GsonUtils.fromJson(user, User::class.java)
             if (mUser.firstPassTip != 1) {
-                val mUserDialogShow = MMKV.defaultMMKV()
+                var mUserDialogShow = MMKV.defaultMMKV()
                     .decodeParcelable(mUser.id.toString(), UserDialogInformationBean::class.java)
                 val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
+                if (mUserDialogShow == null)
+                    mUserDialogShow = UserDialogInformationBean()
+                MMKV.defaultMMKV().encode(mUser.id.toString(), mUserDialogShow)
                 if (mUserDialogShow.showInviteDialogDate.isBlank()) {
                     if (mUser.auditStatus == 1) {
                         App.dialogHelp.showInvite()
@@ -205,7 +204,7 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                         }
 
                     }
-                    //home_viewpager2.offscreenPageLimit = fragments.size
+                    home_viewpager2.offscreenPageLimit = 1
                     home_viewpager2.isSaveEnabled = false
                     home_viewpager2.adapter = mAdapter
 
@@ -352,12 +351,15 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!isHidden) {
-            mActivity!!.nav_view.visibility = View.VISIBLE
-            mActivity!!.nav_view.menu[0].isChecked = true
+//            mActivity!!.nav_view.visibility = View.VISIBLE
+//            mActivity!!.nav_view.menu[0].isChecked = true
             StateAppBar.setStatusBarLightMode(this.mActivity, mContext.getResColor(R.color.white))
             curFragment = "HomeFragment"
         } else {
             GSYVideoManager.onPause()
         }
+    }
+    override fun onBackPressed(): Boolean {
+        return false
     }
 }

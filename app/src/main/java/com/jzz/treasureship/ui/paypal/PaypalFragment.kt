@@ -94,7 +94,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         ll_view.background = context!!.getDrawable(R.drawable.toolbar_bg)
         StateAppBar.setStatusBarLightMode(
             this.activity,
@@ -635,7 +635,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
         if (!hidden) {
             val tmpAddress2 by PreferenceUtils(PreferenceUtils.SELECTED_ADDRESS, "")
             tmpAddress = tmpAddress2
-            activity!!.nav_view.visibility = View.GONE
+            //activity!!.nav_view.visibility = View.GONE
 
             StateAppBar.setStatusBarLightMode(
                 this.activity,

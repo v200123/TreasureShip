@@ -49,7 +49,7 @@ class CustomerDetailFragment : BaseVMFragment<OrdersViewModel>() {
     override fun initVM(): OrdersViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         tv_title.text = "客户详情"
 

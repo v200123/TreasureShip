@@ -51,7 +51,7 @@ class QuestionsFragment : BaseVMFragment<HomeViewModel>() {
     override fun initVM(): HomeViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_back.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
         }

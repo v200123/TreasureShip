@@ -53,7 +53,7 @@ class OthersPayFragment : BaseVMFragment<OrdersViewModel>() {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         ll_view.background = context!!.getDrawable(R.drawable.toolbar_bg)
 
         tv_title.text = "支付"

@@ -16,10 +16,6 @@
         android:layout_height="match_parent">
 
 
-
-
-
-
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
@@ -243,7 +239,7 @@
                             android:layout_marginEnd="18dp"
                             android:background="#FFCCCCCC"
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"/>
+                            android:layout_height="1px"/>
                         <LinearLayout
                             android:visibility="gone"
                             android:id="@+id/ll_showAndHide"
@@ -263,6 +259,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="21dp"
+                                android:text="无"
                                 tools:text="进口税（本商品已含税费10元）" />
                         </LinearLayout>
                     </com.lc.mybaselibrary.ShapeLinearLayout>

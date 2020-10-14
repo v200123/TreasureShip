@@ -66,7 +66,7 @@ class AddressBookFragment : BaseVMFragment<AddressbookViewModel>() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
-        activity!!.nav_view.visibility = View.VISIBLE
+//        activity!!.nav_view.visibility = View.VISIBLE
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
 
         srl_contacter.setOnRefreshListener {
@@ -373,8 +373,8 @@ class AddressBookFragment : BaseVMFragment<AddressbookViewModel>() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden){
-            activity!!.nav_view.visibility = View.VISIBLE
-            activity!!.nav_view.menu[2].isChecked = true
+//            activity!!.nav_view.visibility = View.VISIBLE
+//            activity!!.nav_view.menu[2].isChecked = true
             StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         }
     }

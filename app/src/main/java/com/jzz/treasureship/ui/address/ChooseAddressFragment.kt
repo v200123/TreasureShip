@@ -41,7 +41,7 @@ class ChooseAddressFragment : BaseVMFragment<AddressViewModel>() {
     override fun initVM(): AddressViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "设置地址"
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         rlback.setOnClickListener {

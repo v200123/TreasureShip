@@ -1,8 +1,7 @@
 package com.jzz.treasureship.ui.treasurebox
 
 import android.view.Gravity
-import android.view.View
-import androidx.core.view.get
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -12,13 +11,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.TabBean
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomInputDialog
+import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_treasure_box.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import q.rorbin.badgeview.QBadgeView
@@ -52,9 +52,9 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
         }
 
         tv_shopCar_btn.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
-                .addToBackStack(TreasureBoxFragment.javaClass.name)
-                .hide(this)//隐藏当前Fragment
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
                 .add(R.id.frame_content, mShopCarFragment, mShopCarFragment.javaClass.name)
                 .commit()
         }
@@ -102,7 +102,7 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
                         }
 
                     }
-                    viewpager2.offscreenPageLimit = fragments.size
+                    viewpager2.offscreenPageLimit = 1
                     viewpager2.isSaveEnabled = false
                     viewpager2.adapter = mAdapter
 
@@ -126,7 +126,7 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
                         .setBadgeTextSize(10f, true)
                         .setBadgePadding(1.0f, true)
                         .setBadgeGravity(Gravity.TOP or Gravity.CENTER)
-                        .setBadgeBackgroundColor(context!!.resources.getColor(R.color.blue_light))
+                        .setBadgeBackgroundColor(mContext.getResColor(R.color.blue_light))
                 }
 
                 it.showError?.let { message ->
@@ -170,10 +170,10 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
         super.onHiddenChanged(hidden)
         var tsbUpdate by PreferenceUtils(PreferenceUtils.TSB_UPDATE, false)
         if (!hidden) {
-            mActivity!!.nav_view!!.visibility = View.VISIBLE
-            mActivity!!.nav_view!!.menu[1].isChecked = true
+//            mActivity!!.nav_view!!.visibility = View.VISIBLE
+//            mActivity!!.nav_view!!.menu[1].isChecked = true
             mViewModel.getCount()
-            StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
+            StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.white))
             if (tsbUpdate) {
                 mViewModel.getCollectCategory()
                 tsbUpdate = false
@@ -182,5 +182,8 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
         } else {
             GSYVideoManager.onPause()
         }
+    }
+    override fun onBackPressed(): Boolean {
+        return false
     }
 }

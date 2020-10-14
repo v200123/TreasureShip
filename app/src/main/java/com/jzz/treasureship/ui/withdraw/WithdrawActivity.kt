@@ -52,7 +52,7 @@ class WithdrawActivity : BaseVMActivity<WithdrawViewModel>() {
     override fun initVM(): WithdrawViewModel = getViewModel()
 
     override fun initView() {
-//        activity!!.nav_view.visibility = View.GONE
+//        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "提现"
         StateAppBar.setStatusBarLightMode(this, getResColor(R.color.white))
         rlback.setOnClickListener {

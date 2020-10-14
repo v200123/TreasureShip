@@ -26,7 +26,6 @@ import com.lxj.xpopup.core.BasePopupView
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_invite.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -46,18 +45,19 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
         }
     }
 
+    override var mStatusColor: Int = R.color.blue_normal
     override fun getLayoutResId() = R.layout.fragment_mine_invite
 
     override fun initVM(): InviteViewModel = getViewModel()
 
     override fun onResume() {
         super.onResume()
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
     }
 
     override fun initView() {
         val boolean = arguments?.getBoolean(isNeedBackToMain)?:false
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         iv_inviteBack.setOnClickListener {
             if(boolean)
                 mContext.start<MainActivity> {  }
