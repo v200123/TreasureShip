@@ -51,7 +51,7 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
                 "我的", false, true
             )
         )
-        vp_container_home.offscreenPageLimit = 2
+        vp_container_home.offscreenPageLimit = 1
         tab_container.setupWithViewPager(vp_container_home, false)
 
         vp_container_home.adapter = object : FragmentStatePagerAdapter(
@@ -67,11 +67,11 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
             }
         }
 
-        tab_container.addOnTabSelectedListener(object : TabSegment.OnTabSelectedListener{
+        tab_container.addOnTabSelectedListener(object : TabSegment.OnTabSelectedListener {
             override fun onTabSelected(index: Int) {
                 if (index != 0) {
                     if (!isLogin) {
-                        vp_container_home.setCurrentItem(0,false)
+                        vp_container_home.setCurrentItem(0, true)
                         mContext.start<LoginActivity> { }
                     }
                 }
@@ -96,14 +96,13 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-
-        childFragmentManager.fragments.forEach{
-            if(it is IParentHidden)
-            {
-                it.parentHidden(hidden,0)
+        if (!hidden) {
+            childFragmentManager.fragments.forEach {
+                if (it is IParentHidden) {
+                    it.parentHidden(hidden, 0)
+                }
             }
         }
-
         "我MainFragment进入到onHiddenChanged了".normalOut(true)
     }
 

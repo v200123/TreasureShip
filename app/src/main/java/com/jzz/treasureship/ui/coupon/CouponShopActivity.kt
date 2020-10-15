@@ -89,7 +89,9 @@ class CouponShopActivity : BaseVMFragment<CouponShopViewModel>(false) {
         mAdapter.setOnItemClickListener() { adapter, view, position ->
                 val data03 = adapter.data[position] as Data03
                 (mContext as AppCompatActivity).supportFragmentManager.commit {
-                    replace(R.id.frame_content,GoodsDetailFragment.newInstance(data03.mGoodsId.toString()))
+                    addToBackStack("12")
+                    hide(this@CouponShopActivity)
+                    add(R.id.frame_content,GoodsDetailFragment.newInstance(data03.mGoodsId.toString()))
                 }
             }
     }

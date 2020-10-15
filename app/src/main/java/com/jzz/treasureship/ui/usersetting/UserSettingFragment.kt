@@ -53,7 +53,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() , IParentHidden {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            if(!mPopStatus.isOpen)
+            if(isLogin)
             mViewModel.getUserInfo()
         }
     }
@@ -262,6 +262,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() , IParentHidden {
     }
 
     override fun initData() {
+        if(isLogin)
         mViewModel.getUserInfo()
     }
 

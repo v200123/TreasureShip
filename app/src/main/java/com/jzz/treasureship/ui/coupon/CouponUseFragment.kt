@@ -97,7 +97,7 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
     override fun initListener() {
         mAdapter.setOnItemChildClickListener(){adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
                 (mContext as AppCompatActivity).supportFragmentManager.commit {
-                    hide(this@CouponUseFragment.requireParentFragment())
+                    hide(this@CouponUseFragment)
                     add(R.id.frame_content,CouponShopActivity())
                 }
             }
