@@ -13,15 +13,15 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.jzz.treasureship.AppInterface.IParentHidden
 import com.jzz.treasureship.R
-import com.jzz.treasureship.AppInterface.MyParentHidden
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.auth.AuthenticationActivity
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
-import com.jzz.treasureship.ui.coupon.CouponActivity
+import com.jzz.treasureship.ui.coupon.CouponMainFragment
 import com.jzz.treasureship.ui.invite.InviteFragment
 import com.jzz.treasureship.ui.msg.MsgFragment
 import com.jzz.treasureship.ui.orders.OrdersFragment
@@ -38,9 +38,10 @@ import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.fragment_user_setting.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class UserSettingFragment : BaseVMFragment<UserViewModel>() , MyParentHidden {
+class UserSettingFragment : BaseVMFragment<UserViewModel>() , IParentHidden {
     private val mPopStatus by activityViewModels<DialogStatusViewModel> ()
     override var  mStatusColor = R.color.blue_normal
+    private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
 
     var isShow by PreferenceUtils(PreferenceUtils.no_auth_show,false)
     companion object {
@@ -79,7 +80,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() , MyParentHidden {
     override fun onResume() {
         super.onResume()
         "我userSetting当前在onResume".out(true)
-        if(!mPopStatus.isOpen)
+        if(isLogin)
         mViewModel.getUserInfo()
     }
 
@@ -90,7 +91,13 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() , MyParentHidden {
 
     override fun initView() {
         fl_setting_card.setOnClickListener {
-            mContext.start<CouponActivity> {  }
+
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, CouponMainFragment(), "CouponMainFragment")
+                .commit()
+
         }
         StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.blue_normal))
 
@@ -130,7 +137,8 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() , MyParentHidden {
         lin_shopcar.setOnClickListener {
             (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, ShopCarFragment.newInstance(), ShopCarFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, ShopCarFragment.newInstance(), ShopCarFragment.javaClass.name)
                 .commit()
         }
         lin_mine_order.setOnClickListener {
@@ -143,32 +151,37 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() , MyParentHidden {
         lin_income.setOnClickListener {
             (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, WalletFragment.newInstance(), WalletFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, WalletFragment.newInstance(), WalletFragment.javaClass.name)
                 .commit()
         }
         lin_ranking.setOnClickListener {
             (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, RankingFragment.newInstance(), RankingFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, RankingFragment.newInstance(), RankingFragment.javaClass.name)
                 .commit()
         }
         lin_invite.setOnClickListener {
             (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, InviteFragment.newInstance(), InviteFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, InviteFragment.newInstance(), InviteFragment.javaClass.name)
                 .commit()
         }
         lin_setting.setOnClickListener {
             (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, SettingFragment.newInstance(), SettingFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, SettingFragment.newInstance(), SettingFragment.javaClass.name)
                 .commit()
         }
 
         iv_msg.setOnClickListener {
             (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, MsgFragment.newInstance(), MsgFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, MsgFragment.newInstance(), MsgFragment.javaClass.name)
                 .commit()
 
         }

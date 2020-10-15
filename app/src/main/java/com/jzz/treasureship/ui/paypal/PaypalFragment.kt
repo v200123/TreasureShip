@@ -37,7 +37,6 @@ import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.tencent.mm.opensdk.modelpay.PayReq
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_paypal.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.json.JSONArray
@@ -55,7 +54,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
     //private val isAudit = 1
     private var mOrderId = -1
-
+    override var mStatusColor: Int = R.color.blue_normal
     //默认地址
     private var mAddress: ReceiveAddress? = null
     private var selectedAddress: ReceiveAddress? = null

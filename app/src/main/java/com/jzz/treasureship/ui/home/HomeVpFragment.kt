@@ -32,12 +32,14 @@ import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.VideoData
 import com.jzz.treasureship.service.RewardService
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.*
+import com.lc.mybaselibrary.ext.getResDrawable
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -713,7 +715,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             }
                             activity!!.supportFragmentManager.beginTransaction()
                                 .addToBackStack(HomeVpFragment.javaClass.name)
-                                .hide(this@HomeVpFragment.parentFragment!!)//隐藏当前Fragment
+                                .hide((mContext as MainActivity).mMainHomeFragemnt)//隐藏当前Fragment
                                 .add(R.id.frame_content,
                                     GoodsDetailFragment.newInstance("${item.goodsId}"),
                                     GoodsDetailFragment.javaClass.name
@@ -747,10 +749,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             val keywords = item.keywords?.split(',')
-            holder.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).removeAllViews()
+            val keyContainer = holder.getView<CustomFlexlayout>(R.id.keywordsFlexlayout)
+            keyContainer.removeAllViews()
             if (!keywords.isNullOrEmpty()) {
                 for (ele in keywords) {
-                    if (ele.isNotBlank()) {
+                    if (ele.isNotBlank() && keyContainer.childCount < 2) {
                         val tv = LayoutInflater.from(mContext).inflate(
                             R.layout.layout_home_video_keywords,
                             holder.getView(R.id.keywordsFlexlayout),
@@ -761,7 +764,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         tv.ellipsize = TextUtils.TruncateAt.END
                         tv.text = "$ele"
                         //添加到父View
-                        holder.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).addView(tv)
+                        keyContainer.addView(tv)
                     }
                 }
             }
@@ -769,12 +772,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             if (item.like == 0) {
                 holder.setImageDrawable(
                     R.id.iv_like,
-                    mContext.resources.getDrawable(R.drawable.home_unfavorite)
+                    
+                    mContext.getResDrawable(R.drawable.home_unfavorite)
                 )
             } else {
                 holder.setImageDrawable(
                     R.id.iv_like,
-                    mContext.resources.getDrawable(R.drawable.home_favorite)
+                    mContext.getResDrawable(R.drawable.home_favorite)
                 )
             }
             holder.setText(R.id.tv_likeCount, "${toNum(item.likeCount)}")
@@ -816,7 +820,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
     }
 
     private fun switchLogin() {
-        startActivity(Intent(this.activity!!, LoginActivity::class.java))
+        startActivity(Intent(mContext, LoginActivity::class.java))
     }
 
     fun toNum(num: Int): String {

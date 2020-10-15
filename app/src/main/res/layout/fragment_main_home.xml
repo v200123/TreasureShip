@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <!--用于承载主界面的切换流程-->
-    <androidx.viewpager.widget.ViewPager
+    <com.jzz.treasureship.view.noScollorViewPager
         android:id="@+id/vp_container_home"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -16,7 +16,6 @@
 
     <com.jzz.treasureship.view.TabSegment
         app:ts_has_indicator="false"
-
         android:textSize="11dp"
         app:ts_selected_color="@color/blue_normal"
         app:ts_normal_color="@color/black"

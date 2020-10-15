@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
@@ -255,7 +256,7 @@ class UserInfoFragment : BaseVMFragment<UserViewModel>(), EasyPermissions.Permis
                 }
 
                 lin_receiveAddress.setOnClickListener {
-                    activity!!.supportFragmentManager.beginTransaction()
+                    (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                         .addToBackStack(UserInfoFragment.javaClass.name)
                         .hide(this@UserInfoFragment)//隐藏当前Fragment
                         .add(R.id.frame_content, mAddressFragment, mAddressFragment.javaClass.name)

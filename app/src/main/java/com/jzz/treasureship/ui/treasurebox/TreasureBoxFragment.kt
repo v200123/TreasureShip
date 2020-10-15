@@ -8,6 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayoutMediator
+import com.jzz.treasureship.AppInterface.IParentHidden
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.TabBean
@@ -24,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import q.rorbin.badgeview.QBadgeView
 
 
-class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
+class TreasureBoxFragment : BaseVMFragment<HomeViewModel>(),IParentHidden{
 
     private var curFragment by PreferenceUtils(PreferenceUtils.CUR_FRAGMENT, "")
     private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
@@ -185,5 +186,9 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>() {
     }
     override fun onBackPressed(): Boolean {
         return false
+    }
+
+    override fun parentHidden(isHidden: Boolean, Type: Int) {
+        setStatusColor()
     }
 }

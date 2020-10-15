@@ -15,8 +15,10 @@ import com.jzz.treasureship.BuildConfig
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.ui.activity.MainActivity
+import com.jzz.treasureship.ui.activity.MainHomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
+import com.jzz.treasureship.ui.user.UserInfoFragment
 import com.jzz.treasureship.utils.DataCleanManagerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lxj.xpopup.XPopup
@@ -83,8 +85,9 @@ class SettingFragment : BaseVMFragment<LoginViewModel>(), EasyPermissions.Permis
                     ToastUtils.showShort("已退出系统")
 //                    activity!!.supportFragmentManager.popBackStack()
                     (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
-                        .addToBackStack(SettingFragment.javaClass.name)
-                        .hide(this).commit()
+                        .addToBackStack(null)
+                        .replace(R.id.frame_content,MainHomeFragment())
+                        .commit()
 //                    (mContext as MainActivity).switchToHome()
                     if (!JPushInterface.isPushStopped(App.CONTEXT)){
                         JPushInterface.stopPush(App.CONTEXT)

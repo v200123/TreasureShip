@@ -1,11 +1,9 @@
 package com.jzz.treasureship.ui.coupon
 
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,13 +12,13 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.GlideImageLoader
-import com.jzz.treasureship.base.BaseVMActivity
+import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.Data03
 import com.jzz.treasureship.model.bean.header
 import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.coupon.viewModel.CouponShopViewModel
-import com.lc.mybaselibrary.ext.getResColor
+import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.lc.mybaselibrary.start
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
@@ -36,17 +34,15 @@ import java.math.RoundingMode
  *@describe:
  *@Auth: 29579
  **/
-class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
+class CouponShopActivity : BaseVMFragment<CouponShopViewModel>(false) {
     private var hasBanner = false
     private var nowPosition = 1
     override fun getLayoutResId(): Int = R.layout.fragment_coupon_shop
-    private val mAdapter by lazy { couponAdapter(this) }
-    private var mTotalOffsetY = 0
+    private val mAdapter by lazy { couponAdapter(mContext as AppCompatActivity) }
     override fun initVM(): CouponShopViewModel = CouponShopViewModel()
 
     override fun initView() {
         tv_title.text = "商品推荐"
-        StateAppBar.setStatusBarLightMode(this, mContext.getResColor(R.color.white))
         rv_coupon_shop.apply {
             adapter = mAdapter
             layoutManager = GridLayoutManager(mContext, 2).apply {
@@ -75,7 +71,7 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
                 }
             }
         }
-        rlback.setOnClickListener { finish() }
+        rlback.setOnClickListener { (mContext as AppCompatActivity).supportFragmentManager.popBackStack() }
 
 
         mAdapter.loadMoreModule.apply {
@@ -90,13 +86,10 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
             })
         }
 
-        mAdapter.setOnItemChildClickListener() { adapter, view, position ->
+        mAdapter.setOnItemClickListener() { adapter, view, position ->
                 val data03 = adapter.data[position] as Data03
-                mContext.start<MainActivity> {
-                    putExtra(
-                        MainActivity.GoodsId,
-                        "${data03.mGoodsId}"
-                    )
+                (mContext as AppCompatActivity).supportFragmentManager.commit {
+                    replace(R.id.frame_content,GoodsDetailFragment.newInstance(data03.mGoodsId.toString()))
                 }
             }
     }
@@ -201,6 +194,10 @@ class CouponShopActivity : BaseVMActivity<CouponShopViewModel>(false) {
                 }"
             )
         }
+
+    }
+
+    override fun initListener() {
 
     }
 

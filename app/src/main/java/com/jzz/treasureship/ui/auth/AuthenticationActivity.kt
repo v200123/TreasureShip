@@ -20,8 +20,8 @@ import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.BuildConfig
-import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.R
+import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.model.bean.UserAuthTypeBean
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
@@ -96,7 +96,7 @@ class AuthenticationActivity : BaseVMActivity<UserViewModel>() {
             adapter = mAdapter
             layoutManager = GridLayoutManager(mContext, 3)
         }
-        mAdapter.setOnItemChildClickListener() { adapter, view, position ->
+        mAdapter.setOnItemClickListener() { adapter, view, position ->
             if (nowSelectPosition != position) {
                 mAdapter.notifyItemChanged(nowSelectPosition, "unSelect")
                 mAdapter.notifyItemChanged(position, "select")

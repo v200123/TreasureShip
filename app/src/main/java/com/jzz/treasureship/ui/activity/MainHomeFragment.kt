@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
+import com.jzz.treasureship.AppInterface.IParentHidden
 import com.jzz.treasureship.R
-import com.jzz.treasureship.AppInterface.MyParentHidden
 import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.treasurebox.TreasureBoxFragment
@@ -31,7 +30,6 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tab_container.setupWithViewPager(vp_container_home, false)
         tab_container.addTab(
             TabSegment.Tab(
                 mContext.getResDrawable(R.drawable.home_nav_home_icon_normal),
@@ -54,6 +52,8 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
             )
         )
         vp_container_home.offscreenPageLimit = 2
+        tab_container.setupWithViewPager(vp_container_home, false)
+
         vp_container_home.adapter = object : FragmentStatePagerAdapter(
             childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
         ) {
@@ -67,28 +67,30 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
             }
         }
 
-        vp_container_home.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-            }
-
-            override fun onPageSelected(position: Int) {
-                if (position != 0) {
+        tab_container.addOnTabSelectedListener(object : TabSegment.OnTabSelectedListener{
+            override fun onTabSelected(index: Int) {
+                if (index != 0) {
                     if (!isLogin) {
+                        vp_container_home.setCurrentItem(0,false)
                         mContext.start<LoginActivity> { }
                     }
                 }
             }
 
-            override fun onPageScrollStateChanged(state: Int) {
+            override fun onTabUnselected(index: Int) {
+
+            }
+
+            override fun onTabReselected(index: Int) {
+
+            }
+
+            override fun onDoubleTap(index: Int) {
 
             }
 
         })
+
     }
 
 
@@ -96,7 +98,7 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
         super.onHiddenChanged(hidden)
 
         childFragmentManager.fragments.forEach{
-            if(it is MyParentHidden)
+            if(it is IParentHidden)
             {
                 it.parentHidden(hidden,0)
             }

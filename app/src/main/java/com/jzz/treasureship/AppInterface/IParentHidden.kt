@@ -1,5 +1,5 @@
 package com.jzz.treasureship.AppInterface
 
-interface MyParentHidden {
+interface IParentHidden {
     fun parentHidden(isHidden: Boolean, Type: Int)
 }

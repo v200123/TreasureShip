@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -17,7 +19,6 @@ import com.jzz.treasureship.model.bean.Data01
 import com.jzz.treasureship.model.bean.header
 import com.jzz.treasureship.ui.coupon.requestBody.CouponBody
 import com.jzz.treasureship.ui.coupon.viewModel.CouponUseViewModel
-import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.fragment_common_coupon_used.*
 
 /**
@@ -95,10 +96,10 @@ class CouponUseFragment : BaseVMFragment<CouponUseViewModel>(false) {
 
     override fun initListener() {
         mAdapter.setOnItemChildClickListener(){adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
-                val data01 = adapter.data[position] as Data01
-                mContext.start<CouponShopActivity> {
+                (mContext as AppCompatActivity).supportFragmentManager.commit {
+                    hide(this@CouponUseFragment.requireParentFragment())
+                    add(R.id.frame_content,CouponShopActivity())
                 }
-
             }
 
     }
