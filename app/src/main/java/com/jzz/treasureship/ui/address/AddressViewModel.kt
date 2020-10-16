@@ -141,7 +141,6 @@ class AddressViewModel(val repository: AddressRepository, val provider: Coroutin
     }
 val addressRusult = MutableLiveData<Boolean>()
     fun updateAddress(addressRequest:upAddressRequest) {
-
         launchTask {
             HttpHelp.getRetrofit().updatePayAddress(BaseRequestBody(addressRequest)).resultCheck({
                 addressRusult.postValue(true)

@@ -4,8 +4,10 @@ import android.content.Context
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.commit
 import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.coupon.CouponShopActivity
+import com.jzz.treasureship.ui.activity.MainActivity
+import com.jzz.treasureship.ui.coupon.CouponMainFragment
 import com.jzz.treasureship.ui.withdraw.WithdrawActivity
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.CenterPopupView
@@ -15,7 +17,7 @@ import com.lxj.xpopup.core.CenterPopupView
  *@describe:
  *@Auth: 29579
  **/
-class Dialog_approve_success(context: Context,var userName:String) : CenterPopupView(context) {
+class Dialog_approve_success(var mContext: Context,var userName:String) : CenterPopupView(mContext) {
     override fun getImplLayoutId(): Int =  R.layout.dialog_approve_success
 
     override fun onCreate() {
@@ -25,7 +27,12 @@ class Dialog_approve_success(context: Context,var userName:String) : CenterPopup
             this.dismiss()
         }
         findViewById<Button>(R.id.btn_approve_buy).setOnClickListener {
-            context.start<CouponShopActivity> {  }
+            if(mContext is MainActivity)
+            {
+                (mContext as MainActivity).supportFragmentManager.commit {
+                    replace(R.id.frame_content,CouponMainFragment())
+                }
+            }
             this.dismiss()
         }
         findViewById<ImageView>(R.id.iv_approve_success).setOnClickListener {

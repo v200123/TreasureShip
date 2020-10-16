@@ -82,6 +82,7 @@ private object version{
         val httpLog = "com.squareup.okhttp3:logging-interceptor:${version.httpLogVersion}"
         val logger = "com.orhanobut:logger:${version.loggerVersion}"
         val kongzuTab = "com.kongzue.tabbarx:tabbar:${version.kongzuTabVersion}"
+        val baiduStatistics = "com.baidu.mobstat:mtj-sdk:4.0.3.4"
     }
 
     object oppo{

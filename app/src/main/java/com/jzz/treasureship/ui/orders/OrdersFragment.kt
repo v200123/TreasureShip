@@ -2,9 +2,8 @@ package com.jzz.treasureship.ui.orders
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -12,11 +11,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.home.HomeFragment
-import com.jzz.treasureship.ui.treasurebox.TreasureBoxFragment
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lc.mybaselibrary.ext.getResColor
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_orders.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -64,41 +60,45 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
         }
 
         rlback.setOnClickListener {
-            if (mRootFragment.isBlank()) {
-                activity!!.supportFragmentManager.popBackStack()
-            } else {
-                Log.d("asd", mRootFragment)
-                when (mRootFragment) {
-                    "HomeFragment" -> {
-//                        activity!!.supportFragmentManager.popBackStackImmediate(
-//                            HomeFragment.javaClass.name,
-//                            FragmentManager.POP_BACK_STACK_INCLUSIVE
-//                        )
-                        activity!!.supportFragmentManager.beginTransaction().hide(this)
-                            .add(R.id.frame_content, HomeFragment.newInstance(), HomeFragment.javaClass.name)
-                            .commit()
-                        Log.d("asd", "hoem")
-                    }
-                    "TreasureBoxFragment" -> {
-//                        activity!!.supportFragmentManager.popBackStackImmediate(
-//                            TreasureBoxFragment.javaClass.name,
-//                            FragmentManager.POP_BACK_STACK_INCLUSIVE
-//                        )
-                        activity!!.supportFragmentManager.beginTransaction().hide(this)
-                            .add(
-                                R.id.frame_content,
-                                TreasureBoxFragment.newInstance(),
-                                TreasureBoxFragment.javaClass.name
-                            )
-                            .commit()
-                        Log.d("asd", "hoem2")
-                    }
-                    else -> {
-                        activity!!.supportFragmentManager.popBackStack()
-                        Log.d("asd", "hoem3")
-                    }
-                }
-            }
+
+            (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
+        }
+
+//            if (mRootFragment.isBlank()) {
+//                activity!!.supportFragmentManager.popBackStack()
+//            } else {
+//                Log.d("asd", mRootFragment)
+//                when (mRootFragment) {
+//                    "HomeFragment" -> {
+////                        activity!!.supportFragmentManager.popBackStackImmediate(
+////                            HomeFragment.javaClass.name,
+////                            FragmentManager.POP_BACK_STACK_INCLUSIVE
+////                        )
+//                        activity!!.supportFragmentManager.beginTransaction().hide(this)
+//                            .add(R.id.frame_content, HomeFragment.newInstance(), HomeFragment.javaClass.name)
+//                            .commit()
+//                        Log.d("asd", "hoem")
+//                    }
+//                    "TreasureBoxFragment" -> {
+////                        activity!!.supportFragmentManager.popBackStackImmediate(
+////                            TreasureBoxFragment.javaClass.name,
+////                            FragmentManager.POP_BACK_STACK_INCLUSIVE
+////                        )
+//                        activity!!.supportFragmentManager.beginTransaction().hide(this)
+//                            .add(
+//                                R.id.frame_content,
+//                                TreasureBoxFragment.newInstance(),
+//                                TreasureBoxFragment.javaClass.name
+//                            )
+//                            .commit()
+//                        Log.d("asd", "hoem2")
+//                    }
+//                    else -> {
+//                        activity!!.supportFragmentManager.popBackStack()
+//                        Log.d("asd", "hoem3")
+//                    }
+//                }
+//            }
 
 //            when (mComeFrom) {
 //                "paypal",
@@ -112,7 +112,6 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
 //                }
 //            }
 
-        }
 
         for ((index) in titles.withIndex()) {
             fragments.add(OrdersVpFragment(index))

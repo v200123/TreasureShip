@@ -454,10 +454,10 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                 mViewModel.createOrder(body)
                             }, {
                                 //订单列表
-                                activity!!.supportFragmentManager.beginTransaction()
+                                (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                                    .addToBackStack("")
                                     .hide(this@PaypalFragment)
-                                    .add(
-                                        R.id.frame_content,
+                                    .add(R.id.frame_content,
                                         OrdersFragment.newInstance("paypal"),
                                         OrdersFragment.javaClass.name
                                     )

@@ -22,6 +22,10 @@ import java.io.File
 class AuthUpLoadViewModel : BaseViewModel() {
     val occupationData = MutableLiveData<OccupationBean>()
     val ImageResultData = MutableLiveData<UploadImgBean>()
+
+    /**
+     * 获取认证的id
+     */
     fun getOccupation( id:Int){
         launchTask {
             val occupationType = HttpHelp.getRetrofit().getOccupationType(BaseRequestBody(getOccupationBody(id)))

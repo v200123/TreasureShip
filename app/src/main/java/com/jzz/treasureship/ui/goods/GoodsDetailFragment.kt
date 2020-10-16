@@ -460,7 +460,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                 setSpan(
                     RadiusSpan(Color.parseColor("#FFF0A823"), 9, context),
                     0,
-                    3,
+                    4,
                     Spannable.SPAN_INCLUSIVE_INCLUSIVE
                 )
             }

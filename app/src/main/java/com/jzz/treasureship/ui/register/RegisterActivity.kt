@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.include_title.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class RegisterActivity : BaseVMActivity<LoginViewModel>() {
+class RegisterActivity : BaseVMActivity<LoginViewModel>(true) {
     override fun getLayoutResId() = R.layout.activity_register
     private val countDown by lazy { CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
     override fun initVM(): LoginViewModel = getViewModel()

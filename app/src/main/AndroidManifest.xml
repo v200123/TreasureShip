@@ -36,6 +36,14 @@
             android:name="design_height_in_dp"
             android:value="667" />
 
+        <meta-data
+            android:name="BaiduMobAd_STAT_ID"
+            android:value="a1c940f49e" />
+
+        <meta-data
+            android:name="BaiduMobAd_EXCEPTION_LOG"
+            android:value="true" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.jzz.treasureship.fileProvider"
@@ -87,7 +95,6 @@
         </activity>
         <activity android:name=".ui.withdraw.WithdrawActivity" />
         <activity android:name=".ui.goods.GoodsQualificationActivity" />
-        <activity android:name=".ui.coupon.CouponShopActivity" />
         <activity android:name=".ui.activity.OrdersActivity" />
 <!--        <activity android:name=".ui.activity.MainHomeFragment" >-->
 <!--        -->

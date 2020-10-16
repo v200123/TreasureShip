@@ -3,8 +3,8 @@ package com.jzz.treasureship.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
-import com.jzz.treasureship.core.*
 import com.lc.mybaselibrary.*
 import kotlinx.coroutines.*
 
@@ -43,17 +43,25 @@ open class BaseViewModel : ViewModel() {
         block: LaunchBlock
     ) {//使用协程封装统一的网络请求处理
         viewModelScope.launch {
-            //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
-            try {
-                mStateLiveData.value = LoadState
-                block()
-                mStateLiveData.value = SuccessState
-            } catch (e: Exception) {
-                when (e) {
-                    is CancellationException -> cancel?.invoke(e)
-                    else -> mStateLiveData.value = ErrorState(e.message)
+                    //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
+            mStateLiveData.value = LoadState
+            runCatching { block() }
+                .onSuccess {
+                    mStateLiveData.value = SuccessState
                 }
-            }
+                .onFailure { when (it) {
+                    is CancellationException -> cancel?.invoke(it)
+                    else -> mStateLiveData.value = ErrorState(it.message)
+                } }
+
+//            try {
+//                block()
+//            } catch (e: Exception) {
+//                when (e) {
+//                    is CancellationException -> cancel?.invoke(e)
+//                    else -> mStateLiveData.value = ErrorState(e.message)
+//                }
+//            }
         }
     }
 

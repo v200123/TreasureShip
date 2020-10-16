@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -19,6 +20,7 @@ import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.service.RewardService
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.search.SearchFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
@@ -130,9 +132,9 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
         )
 
         tv_full_sreach.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
-                .addToBackStack(HomeFragment.javaClass.name)
-                .hide(this)//隐藏当前Fragment
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .addToBackStack("02")
+                .hide((mContext as MainActivity).mMainHomeFragemnt)//隐藏当前Fragment
                 .add(R.id.frame_content, mSearchFragment, mSearchFragment.javaClass.name)
                 .commit()
         }

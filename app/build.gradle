@@ -285,6 +285,7 @@ dependencies {
     releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:3.2.0'
     implementation VersionControllor.dependance.xpop
     implementation VersionControllor.dependance.MMKV
+    implementation VersionControllor.dependance.baiduStatistics
     implementation VersionControllor.dependance.logger
 //    implementation VersionControllor.dependance.kongzuTab
     implementation VersionControllor.AndroidX.flexboxLayout

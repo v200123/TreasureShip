@@ -6,13 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <!--用于承载主界面的切换流程-->
+
+
+
     <com.jzz.treasureship.view.noScollorViewPager
         android:id="@+id/vp_container_home"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.jzz.treasureship.view.TabSegment
         app:ts_has_indicator="false"

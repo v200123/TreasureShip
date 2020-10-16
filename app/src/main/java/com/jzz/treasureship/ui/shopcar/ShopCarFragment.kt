@@ -28,6 +28,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.utils.MoneyUtil
 import com.lc.mybaselibrary.ext.getResColor
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.android.synthetic.main.shop_car_fragment.*
@@ -75,7 +76,9 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         tv_addGoods2Cart.setOnClickListener {
 //            activity!!.nav_view.visibility = View.VISIBLE
 //            activity!!.nav_view.selectedItemId = R.id.navigation_home
-            startActivity(Intent(this.context,MainActivity::class.java))
+           mContext.start<MainActivity>{
+               setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+           }
 //            activity!!.supportFragmentManager.beginTransaction()
 //                .replace(
 //                    R.id.frame_content,

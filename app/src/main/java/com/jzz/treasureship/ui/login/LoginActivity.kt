@@ -18,6 +18,7 @@ import com.jzz.treasureship.ui.bind.BindPhoneActivity
 import com.jzz.treasureship.ui.register.RegisterActivity
 import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mmkv.MMKV
@@ -29,6 +30,8 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class LoginActivity : BaseVMActivity<LoginViewModel>() {
     val xPopup  by lazy {   XPopup.Builder(this@LoginActivity).asLoading()}
     private  var mobile:String? = null
+    var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
+
     override fun getLayoutResId() = R.layout.activity_login
    private val countDownTimerUtils by lazy { CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
     override fun initVM(): LoginViewModel = getViewModel()
@@ -178,4 +181,11 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
         super.onDestroy()
         mHandler.removeCallbacksAndMessages(null)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if(!login)
+            mContext.start<MainActivity>()
+    }
+
 }

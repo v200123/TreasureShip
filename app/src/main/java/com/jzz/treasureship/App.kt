@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import cn.jiguang.analytics.page.ActivityLifecycle
 import cn.jpush.android.api.JPushInterface
+import com.baidu.mobstat.StatService
 import com.didichuxing.doraemonkit.DoraemonKit
 import com.jzz.treasureship.constants.Constants
 import com.jzz.treasureship.model.bean.User
@@ -53,7 +54,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         CONTEXT = applicationContext
 //        ImageSelector.setImageEngine(GlideEngine())
         XUI.init(this) //初始化UI框架

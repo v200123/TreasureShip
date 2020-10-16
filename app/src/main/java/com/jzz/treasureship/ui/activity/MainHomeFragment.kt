@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_main_home.*
 class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
 
     private lateinit var mContext: Context
+
+
     val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,6 +32,9 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         tab_container.addTab(
             TabSegment.Tab(
                 mContext.getResDrawable(R.drawable.home_nav_home_icon_normal),
@@ -67,29 +72,42 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
             }
         }
 
-        tab_container.addOnTabSelectedListener(object : TabSegment.OnTabSelectedListener {
-            override fun onTabSelected(index: Int) {
+
+        tab_container.setOnTabClickListener(object : TabSegment.OnTabClickListener{
+            override fun onTabClick(index: Int) {
                 if (index != 0) {
                     if (!isLogin) {
-                        vp_container_home.setCurrentItem(0, true)
                         mContext.start<LoginActivity> { }
+                        tab_container.selectTab(0)
                     }
                 }
             }
 
-            override fun onTabUnselected(index: Int) {
-
-            }
-
-            override fun onTabReselected(index: Int) {
-
-            }
-
-            override fun onDoubleTap(index: Int) {
-
-            }
-
         })
+
+//        tab_container.addOnTabSelectedListener(object : TabSegment.OnTabSelectedListener {
+//            override fun onTabSelected(index: Int) {
+//
+//            }
+//
+//            override fun onTabUnselected(index: Int) {
+//                if (index == 0) {
+//                    if (!isLogin) {
+//
+//                        mContext.start<LoginActivity> { }
+//                    }
+//                }
+//            }
+//
+//            override fun onTabReselected(index: Int) {
+//
+//            }
+//
+//            override fun onDoubleTap(index: Int) {
+//
+//            }
+//
+//        })
 
     }
 
