@@ -36,7 +36,7 @@ private object version{
     val materialVersion = "material-rc01"
 //    https://github.com/JackLiaoJH/ImageSelect
     val imageChoiseVersion = "1.2.1"
-    val xpopVersion = "2.0.11"
+    val xpopVersion = "2.1.4"
     val flexboxVersion = "2.0.1"
     val loggerVersion = "2.2.0"
     val kongzuTabVersion = "1.5.4"

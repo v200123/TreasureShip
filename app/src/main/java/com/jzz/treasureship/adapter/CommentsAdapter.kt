@@ -15,7 +15,6 @@ class CommentsAdapter(layoutResId: Int = R.layout.comment_item_layout) :
     init {
         addChildClickViewIds(
             R.id.iv_praise,
-            R.id.layout_comment_item,
             R.id.tv_comment_content_parent
         )
     }

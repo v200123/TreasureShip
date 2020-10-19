@@ -145,17 +145,17 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         }
                         R.id.layout_comment -> {
                             if (isLogin) {
-                                mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
+                                mViewModel.getCommentList(-1, mAdapter.getItem(position).id)
                                 XPopup.Builder(this@HomeVpFragment.context)
                                     .asCustom(
                                         CustomCommentBottomPopup(
-                                            this@HomeVpFragment.context!!,
+                                            mContext,
                                             mViewModel,
-                                            mAdapter.getItem(position)!!.id,
+                                            mAdapter.getItem(position).id,
                                             commentsAdapter
                                         )
                                     ).show()
-                                currentVideoID = mAdapter.getItem(position)!!.id
+                                currentVideoID = mAdapter.getItem(position).id
                                 currentPosition = position
                             } else {
                                 switchLogin()
@@ -178,8 +178,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
             }
             adapter = mAdapter
-
-
         }
     }
 

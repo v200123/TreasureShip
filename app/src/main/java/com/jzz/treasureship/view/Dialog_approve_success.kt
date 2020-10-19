@@ -30,6 +30,7 @@ class Dialog_approve_success(var mContext: Context,var userName:String) : Center
             if(mContext is MainActivity)
             {
                 (mContext as MainActivity).supportFragmentManager.commit {
+                    addToBackStack("")
                     replace(R.id.frame_content,CouponMainFragment())
                 }
             }

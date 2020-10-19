@@ -106,7 +106,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/comments_child_shape" />
 
-<!--            <LinearLayout-->
+            <!--            <LinearLayout-->
 <!--                android:background="@drawable/comments_child_shape"-->
 <!--                android:layout_marginLeft="50dp"-->
 <!--                android:id="@+id/layout_seeMore"-->

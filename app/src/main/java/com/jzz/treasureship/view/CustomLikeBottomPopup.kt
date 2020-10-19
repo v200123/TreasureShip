@@ -3,7 +3,6 @@ package com.jzz.treasureship.view
 import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CollectAdapter
 import com.jzz.treasureship.model.bean.CollectCategory
@@ -45,6 +44,7 @@ class CustomLikeBottomPopup(
             layoutManager = LinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
+            adapter = mAdapter
         }
 
         mAdapter.run {
@@ -79,12 +79,12 @@ class CustomLikeBottomPopup(
             }
 
         }
-        likeCategoryRecycle.run {
-            layoutManager = LinearLayoutManager(context).also {
-                it.orientation = LinearLayoutManager.VERTICAL
-            }
-            adapter = mAdapter
-        }
+//        likeCategoryRecycle.run {
+//            layoutManager = LinearLayoutManager(context).also {
+//                it.orientation = LinearLayoutManager.VERTICAL
+//            }
+//            adapter = mAdapter
+//        }
         mAdapter.setList(mList)
         mAdapter.notifyDataSetChanged()
     }
