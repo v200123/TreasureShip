@@ -1,11 +1,15 @@
 package com.jzz.treasureship.constants
 
 import com.jzz.treasureship.BuildConfig
+import com.jzz.treasureship.MyDoraemoKit
+import com.tencent.mmkv.MMKV
 
 
 object Constants {
+
+
     //测试环境
-    const val BASE_URL = BuildConfig.BaseUrl
+     val BASE_URL by lazy { if(MMKV.mmkvWithID(MyDoraemoKit.Kit_Name).decodeBool(MyDoraemoKit.Kit_Key)) "http://bj.jzzchina.com/" else BuildConfig.BaseUrl }
 
     //生产环境
 //    const val BASE_URL = "http://bj.jzzchina.com/"

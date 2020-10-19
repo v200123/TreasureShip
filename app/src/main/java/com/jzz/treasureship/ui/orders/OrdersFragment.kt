@@ -1,4 +1,4 @@
-package com.jzz.treasureship.ui.orders
+ package com.jzz.treasureship.ui.orders
 
 import android.graphics.Typeface
 import android.os.Bundle
@@ -60,7 +60,6 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
         }
 
         rlback.setOnClickListener {
-
             (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
         }
 

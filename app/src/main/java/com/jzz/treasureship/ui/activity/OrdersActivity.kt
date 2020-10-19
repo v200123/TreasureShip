@@ -1,5 +1,6 @@
 package com.jzz.treasureship.ui.activity
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -29,7 +30,7 @@ class OrdersActivity : BaseVMActivity<OrdersViewModel>() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        mContext.start<MainActivity> {  }
+        mContext.start<MainActivity> { setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 
         finish()
     }
@@ -47,9 +48,7 @@ class OrdersActivity : BaseVMActivity<OrdersViewModel>() {
         val fragments: ArrayList<OrdersVpFragment> = ArrayList(titles.size)
 
         rlback.setOnClickListener {
-            mContext.start<MainActivity> {  }
-
-            finish()
+            onBackPressed()
         }
 
         for ((index) in titles.withIndex()) {

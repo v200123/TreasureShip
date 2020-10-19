@@ -204,9 +204,8 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
                         override fun getItemCount(): Int {
                             return fragments.size
                         }
-
                     }
-                    home_viewpager2.offscreenPageLimit = 1
+                    home_viewpager2.offscreenPageLimit = 2
                     home_viewpager2.isSaveEnabled = false
                     home_viewpager2.adapter = mAdapter
 

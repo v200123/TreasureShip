@@ -22,6 +22,7 @@ import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.license.LicenseActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.utils.CountDownTimerUtils
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.tencent.mmkv.MMKV
 import kotlinx.android.synthetic.main.activity_register.*
@@ -147,7 +148,9 @@ class RegisterActivity : BaseVMActivity<LoginViewModel>(true) {
                     finish()
                     MMKV.defaultMMKV().encode(it.id.toString(), UserDialogInformationBean())
 
-                    startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+                    mContext.start<MainActivity>{
+                        setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    }
                 }
 
                 it.showError?.let { err ->

@@ -3,9 +3,9 @@ package com.jzz.treasureship.view
 import android.content.Context
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CommentsAdapter
 import com.jzz.treasureship.ui.home.HomeViewModel
@@ -28,8 +28,9 @@ class CustomCommentBottomPopup(
 
     override fun getImplLayoutId() = R.layout.dialog_home_comments
 
-    override fun initPopupContent() {
-        super.initPopupContent()
+    override fun onCreate() {
+        super.onCreate()
+        val msgInput = findViewById<EditText>(R.id.et_comments)
         rv_comments.run {
             layoutManager = LinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
@@ -43,51 +44,32 @@ class CustomCommentBottomPopup(
                         R.id.tv_comment_content_parent -> {
                             replyId = mAdapter.getItem(position)!!.id
                             toWho = "@${mAdapter.getItem(position)!!.nickName}"
-                            et_comments.hint = toWho
-                            et_comments.requestFocus()
+                            msgInput.hint = toWho
+                            msgInput.requestFocus()
                             val imm: InputMethodManager? =
                                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                            imm?.showSoftInput(et_comments, InputMethodManager.SHOW_IMPLICIT)
+                            imm?.showSoftInput(msgInput, InputMethodManager.SHOW_IMPLICIT)
                         }
                         R.id.layout_comment_item -> {
                             replyId = -1
                             toWho = "输入内容评论视频"
-                            et_comments.hint = toWho
+                            msgInput.hint = toWho
                             //et_comments.requestFocus()
-                            et_comments.clearFocus()
+                            msgInput.clearFocus()
                             val imm: InputMethodManager? =
                                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                            imm?.hideSoftInputFromWindow(et_comments.windowToken, 0)
+                            imm?.hideSoftInputFromWindow(msgInput.windowToken, 0)
                         }
                     }
                 }
 
                 adapter = mAdapter
             }
-
-            et_comments.imeOptions = EditorInfo.IME_ACTION_SEND
-            et_comments.setOnEditorActionListener { v, actionId, event ->
-                if (actionId == EditorInfo.IME_ACTION_SEND
-                ) {
-                    if (et_comments.text.toString().isBlank()) {
-                        ToastUtils.showShort("先输入点内容再评论吧")
-                    } else {
-                        mViewModel.addComment(
-                            replyId, et_comments.text.toString(), if (replyId == -1) {
-                                mVideoId
-                            } else {
-                                -1
-                            }
-                        )
-                        et_comments.setText("")
-                        et_comments.hint = "点击回复评论"
-                    }
-                    true
-                }
-                false
-            }
-
-            iv_sendComments.setOnClickListener {
+        }
+        et_comments.imeOptions = EditorInfo.IME_ACTION_SEND
+        et_comments.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEND
+            ) {
                 if (et_comments.text.toString().isBlank()) {
                     ToastUtils.showShort("先输入点内容再评论吧")
                 } else {
@@ -99,10 +81,31 @@ class CustomCommentBottomPopup(
                         }
                     )
                     et_comments.setText("")
+                    et_comments.hint = "点击回复评论"
                 }
+                true
+            }
+            false
+        }
+
+        iv_sendComments.setOnClickListener {
+            if (et_comments.text.toString().isBlank()) {
+                ToastUtils.showShort("先输入点内容再评论吧")
+            } else {
+                mViewModel.addComment(
+                    replyId, et_comments.text.toString(), if (replyId == -1) {
+                        mVideoId
+                    } else {
+                        -1
+                    }
+                )
+                et_comments.setText("")
             }
         }
+
     }
+
+
 
     override fun getMaxHeight(): Int {
         return (XPopupUtils.getWindowHeight(context) * .6f).roundToInt()
@@ -110,32 +113,7 @@ class CustomCommentBottomPopup(
 }
 
 
-//    private var mOnItemChildClickListener = mAdapter.setOnItemChildClickListener { adapter, view, position ->
-//        when (view.id) {
-//            R.id.iv_praise -> {
-//                mViewModel.addPraise(mAdapter.data[position].id, mVideoId)
-//            }
-//            R.id.tv_comment_content_parent -> {
-//                replyId = mAdapter.getItem(position)!!.id
-//                toWho = "@${mAdapter.getItem(position)!!.nickName}"
-//                et_comments.hint = toWho
-//                et_comments.requestFocus()
-//                val imm: InputMethodManager? =
-//                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-//                imm?.showSoftInput(et_comments, InputMethodManager.SHOW_IMPLICIT)
-//            }
-//            R.id.layout_comment_item -> {
-//                replyId = -1
-//                toWho = "输入内容评论视频"
-//                et_comments.hint = toWho
-//                //et_comments.requestFocus()
-//                et_comments.clearFocus()
-//                val imm: InputMethodManager? =
-//                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-//                imm?.hideSoftInputFromWindow(et_comments.windowToken, 0)
-//            }
-//        }
-//    }
+
 
 
 

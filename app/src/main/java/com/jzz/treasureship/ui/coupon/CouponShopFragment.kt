@@ -34,7 +34,7 @@ import java.math.RoundingMode
  *@describe:
  *@Auth: 29579
  **/
-class CouponShopActivity : BaseVMFragment<CouponShopViewModel>(false) {
+class CouponShopFragment : BaseVMFragment<CouponShopViewModel>(false) {
     private var hasBanner = false
     private var nowPosition = 1
     override fun getLayoutResId(): Int = R.layout.fragment_coupon_shop
@@ -90,7 +90,7 @@ class CouponShopActivity : BaseVMFragment<CouponShopViewModel>(false) {
                 val data03 = adapter.data[position] as Data03
                 (mContext as AppCompatActivity).supportFragmentManager.commit {
                     addToBackStack("12")
-                    hide(this@CouponShopActivity)
+                    hide(this@CouponShopFragment)
                     add(R.id.frame_content,GoodsDetailFragment.newInstance(data03.mGoodsId.toString()))
                 }
             }

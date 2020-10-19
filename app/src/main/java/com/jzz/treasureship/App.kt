@@ -9,14 +9,12 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import cn.jiguang.analytics.page.ActivityLifecycle
 import cn.jpush.android.api.JPushInterface
-import com.baidu.mobstat.StatService
 import com.didichuxing.doraemonkit.DoraemonKit
 import com.jzz.treasureship.constants.Constants
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.service.OKHttpUpdateHttpService
 import com.jzz.treasureship.ui.DialogHelp
 import com.jzz.treasureship.utils.out
-
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
@@ -58,7 +56,7 @@ class App : Application() {
 //        ImageSelector.setImageEngine(GlideEngine())
         XUI.init(this) //初始化UI框架
         XUI.debug(true)  //开启UI框架调试日志
-        DoraemonKit.install(this)
+        DoraemonKit.install(this, arrayListOf(MyDoraemoKit()))
         val rootDir = MMKV.initialize(this)
         "当前存储的路径为:${rootDir}".out(true)
 
