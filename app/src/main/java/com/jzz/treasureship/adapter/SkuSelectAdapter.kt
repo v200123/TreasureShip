@@ -24,26 +24,26 @@ class SkuSelectAdapter(layoutResId: Int = R.layout.item_sku) :
         fun onItemClick(view: View?, position: Int)
     }
 
-    override fun convert(helper: BaseViewHolder, item: GoodsDetail.GoodsSku) {
-        super.convert(helper, item)
+    override fun convert(holder: BaseViewHolder, item: GoodsDetail.GoodsSku) {
+        super.convert(holder, item)
 
-        Glide.with(helper.itemView.context).load(item.skuImg).into(helper.getView(R.id.tv_logo))
-        helper.setText(R.id.tv_itemName, item.specValue)
+        Glide.with(holder.itemView.context).load(item.skuImg).into(holder.getView(R.id.tv_logo))
+        holder.setText(R.id.tv_itemName, item.specValue)
         /*设置选中状态*/
-        if (helper.adapterPosition == SelectedNavItem.selectedNavItem) {
-            helper.getView<ShapeTextView>(R.id.tv_itemName).apply {
+        if (holder.adapterPosition == SelectedNavItem.selectedNavItem) {
+            holder.getView<ShapeTextView>(R.id.tv_itemName).apply {
                 shapeBuilder!!.setShapeSolidColor(Color.parseColor("#FFFBE9EA"))
                     .setShapeStrokeColor(Color.parseColor("#FFFBE9EA")).into(this)
                 setTextColor(ContextCompat.getColor(context, R.color.red))
             }
         } else {
-            helper.getView<ShapeTextView>(R.id.tv_itemName).apply {
+            holder.getView<ShapeTextView>(R.id.tv_itemName).apply {
                 shapeBuilder!!.setShapeSolidColor(Color.parseColor("#FFF5F5F5"))
                     .setShapeStrokeColor(Color.parseColor("#FFF5F5F5")).into(this)
                 setTextColor(ContextCompat.getColor(context, R.color.black_121212))
             }
-            helper.itemView.setOnClickListener {
-                onItemClickListener?.onItemClick(helper.itemView, position = helper.adapterPosition)
+            holder.itemView.setOnClickListener {
+                onItemClickListener?.onItemClick(holder.itemView, position = holder.adapterPosition)
             }
 
         }

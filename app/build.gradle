@@ -249,7 +249,7 @@ dependencies {
 
 //    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.6'
 
-    implementation 'com.youth.banner:banner:1.4.10'
+    implementation 'com.youth.banner:banner:2.1.0'
 
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
 

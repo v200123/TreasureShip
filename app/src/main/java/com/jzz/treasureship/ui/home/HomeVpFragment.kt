@@ -14,13 +14,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.BR
 import com.jzz.treasureship.R
@@ -38,6 +39,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.out
 import com.jzz.treasureship.view.*
 import com.lc.mybaselibrary.ext.getResDrawable
 import com.lxj.xpopup.XPopup
@@ -130,7 +132,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             layoutManager = LinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
-
+            adapter = mAdapter
             mAdapter.run {
                 setOnItemChildClickListener() { adapter, view, position ->
                     when (view.id) {
@@ -177,11 +179,29 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 }
 
             }
-            adapter = mAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                    val findLastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                    "firstVisibleItem $findFirstVisibleItemPosition , lastVisibleItem $findLastVisibleItemPosition".out(
+                        true
+                    )
+                    val playPosition = GSYVideoManager.instance().playPosition
+                    if (playPosition >= 0) {
+                        if ((playPosition < findFirstVisibleItemPosition || playPosition > findLastVisibleItemPosition)) {
+                            //释放掉视频
+                            GSYVideoManager.releaseAllVideos()
+                            mAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            })
+
         }
     }
-
-
 
 
     override fun initData() {
@@ -210,7 +230,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                                 view.findViewById<ImageView>(R.id.iv_ad).setOnClickListener {
                                     mViewModel.getQuestionnaire()
                                 }
-                               mAdapter.addHeaderView(view)
+                                mAdapter.addHeaderView(view)
                             }
                             list[0]?.let { item ->
                                 iv_ad?.let { Glide.with(mContext).load(item.adCover).into(iv_ad) }
@@ -382,7 +402,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             ToastUtils.showShort("点赞成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
-                        "取消点赞" ->{
+                        "取消点赞" -> {
                             ToastUtils.showShort("取消点赞成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
@@ -439,9 +459,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         1 -> {
                             //未答题
                             if (System.currentTimeMillis() in it.receiveDate!!.startDateTimeInMillis - 10000 until it.receiveDate.startDateTimeInMillis + 10000) {
-                                mContext.startService(Intent(mContext, RewardService::class.java).apply {
-                                    putExtra(RewardService.TestQuestions, it.questionnaire)
-                                })
+                                mContext.startService(
+                                    Intent(
+                                        mContext,
+                                        RewardService::class.java
+                                    ).apply {
+                                        putExtra(RewardService.TestQuestions, it.questionnaire)
+                                    })
                             } else
                                 XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
                                     override fun onDismiss(popupView: BasePopupView) {
@@ -595,8 +619,10 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         private val mTabId = tabId
 
         init {
-            addChildClickViewIds(R.id.layout_like,
-            R.id.layout_comment)
+            addChildClickViewIds(
+                R.id.layout_like,
+                R.id.layout_comment
+            )
         }
 
         override fun convert(holder: BaseViewHolder, item: VideoData) {
@@ -675,6 +701,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         super.onClickStop(url, *objects)
                         holder.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.VISIBLE
                     }
+
                 }).build(holder.getView<CustomVideoPlayer>(R.id.video_player))
             holder.getView<CustomVideoPlayer>(R.id.video_player).apply {
                 val spannerText =
@@ -714,7 +741,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             activity!!.supportFragmentManager.beginTransaction()
                                 .addToBackStack(HomeVpFragment.javaClass.name)
                                 .hide((mContext as MainActivity).mMainHomeFragemnt)//隐藏当前Fragment
-                                .add(R.id.frame_content,
+                                .add(
+                                    R.id.frame_content,
                                     GoodsDetailFragment.newInstance("${item.goodsId}"),
                                     GoodsDetailFragment.javaClass.name
                                 )
@@ -770,7 +798,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             if (item.like == 0) {
                 holder.setImageDrawable(
                     R.id.iv_like,
-                    
+
                     mContext.getResDrawable(R.drawable.home_unfavorite)
                 )
             } else {

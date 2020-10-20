@@ -108,7 +108,7 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = fals
         if (isLogin) {
 //未认证
             val user = GsonUtils.fromJson(userInfo, User::class.java)
-            if (user.auditStatus == 1 && user.firstPassTip == 1 &&!authShowSuccess) {
+            if (user.auditStatus == 1 && user.firstPassTip != 1 &&!authShowSuccess) {
                 authShowSuccess = true
                 App.dialogHelp.showSuccess(user.nickName){
 

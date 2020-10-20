@@ -6,24 +6,24 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.GlideImageLoader
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.Data03
 import com.jzz.treasureship.model.bean.header
-import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.coupon.viewModel.CouponShopViewModel
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
-import com.lc.mybaselibrary.start
+import com.xuexiang.xui.utils.Utils
 import com.youth.banner.Banner
-import com.youth.banner.BannerConfig
-import com.youth.banner.Transformer
-import com.youth.banner.listener.OnBannerListener
+import com.youth.banner.adapter.BannerImageAdapter
+import com.youth.banner.config.IndicatorConfig
+import com.youth.banner.holder.BannerImageHolder
+import com.youth.banner.indicator.CircleIndicator
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.fragment_coupon_shop.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -86,12 +86,12 @@ class CouponShopFragment : BaseVMFragment<CouponShopViewModel>(false) {
             })
         }
 
-        mAdapter.setOnItemClickListener() { adapter, view, position ->
+        mAdapter.setOnItemClickListener { adapter, view, position ->
                 val data03 = adapter.data[position] as Data03
                 (mContext as AppCompatActivity).supportFragmentManager.commit {
                     addToBackStack("12")
                     hide(this@CouponShopFragment)
-                    add(R.id.frame_content,GoodsDetailFragment.newInstance(data03.mGoodsId.toString()))
+                    add(R.id.frame_content,GoodsDetailFragment.newInstance(data03.mGoodsId.toString(),data03.mSkuId))
                 }
             }
     }
@@ -107,40 +107,29 @@ class CouponShopFragment : BaseVMFragment<CouponShopViewModel>(false) {
         mViewModel.mBannerList.observe(this, {
             if (it.mList.isNotEmpty()) {
                 hasBanner = true
-                val BannerParenter =
-                    layoutInflater.inflate(R.layout.common_banner, rv_coupon_shop, false)
+                val BannerParenter = layoutInflater.inflate(R.layout.common_banner, rv_coupon_shop, false)
                 val imageUrl = mutableListOf<String>()
                 mAdapter.removeAllHeaderView()
-                val mBanner = BannerParenter.findViewById<Banner>(R.id.common_banner).apply {
-                    setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                    setBannerAnimation(Transformer.BackgroundToForeground)
-                    isAutoPlay(true)
-                    setImageLoader(GlideImageLoader())
-                    setDelayTime(2000)
-                }
-
-                mBanner.apply {
-
-
-                    for (banner in it.mList) {
-                        imageUrl.add(banner.mBannerImg)
-                    }
-                    setImages(imageUrl)
-                    setOnBannerListener(object : OnBannerListener {
-                        override fun OnBannerClick(position: Int) {
-                            if ("${it.mList[position].mBannerTypeId}".isNotBlank())
-                                mContext.start<MainActivity> {
-                                    putExtra(
-                                        MainActivity.GoodsId,
-                                        "${it.mList[position].mBannerTypeId}"
-                                    )
-                                }
+                BannerParenter.findViewById<Banner<*,*>>(R.id.common_banner) .apply {
+                    indicator = CircleIndicator(mContext)
+                    adapter = object : BannerImageAdapter<String>(imageUrl){
+                        override fun onBindView(
+                            holder: BannerImageHolder,
+                            data: String,
+                            position: Int,
+                            size: Int
+                        ) {
+                            Glide.with(holder.itemView)
+                                .load(data)
+                                .override(Utils.getScreenWidth(mContext), Target.SIZE_ORIGINAL)
+                                .into(holder.imageView);
                         }
 
-                    })
+                    }
+                    isAutoLoop(true)
+                    setIndicatorGravity(IndicatorConfig.Direction.RIGHT)
                     start()
                 }
-
                 mAdapter.addHeaderView(BannerParenter)
             } else {
                 hasBanner = false

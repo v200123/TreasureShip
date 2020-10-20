@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.commit
 import com.jzz.treasureship.R
 import com.jzz.treasureship.ui.activity.MainActivity
-import com.jzz.treasureship.ui.coupon.CouponMainFragment
+import com.jzz.treasureship.ui.coupon.CouponShopFragment
 import com.jzz.treasureship.ui.withdraw.WithdrawActivity
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.CenterPopupView
@@ -31,7 +31,7 @@ class Dialog_approve_success(var mContext: Context,var userName:String) : Center
             {
                 (mContext as MainActivity).supportFragmentManager.commit {
                     addToBackStack("")
-                    replace(R.id.frame_content,CouponMainFragment())
+                    replace(R.id.frame_content,CouponShopFragment())
                 }
             }
             this.dismiss()

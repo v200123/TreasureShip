@@ -30,11 +30,9 @@ import com.bumptech.glide.request.target.Target
 import com.jzz.treasureship.App
 import com.jzz.treasureship.BigImageActivity
 import com.jzz.treasureship.R
-import com.jzz.treasureship.adapter.AddressLogisticsAdapter
 import com.jzz.treasureship.adapter.ComparePricesAdapter
 import com.jzz.treasureship.adapter.SkuChooseAdapter
 import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.model.bean.AddressLogisticsBean
 import com.jzz.treasureship.model.bean.GoodsDetail
 import com.jzz.treasureship.model.bean.GoodsSku
 import com.jzz.treasureship.model.bean.User
@@ -56,7 +54,6 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
 import com.xuexiang.xui.utils.Utils
 import com.youth.banner.adapter.BannerImageAdapter
-import com.youth.banner.config.BannerConfig
 import com.youth.banner.config.IndicatorConfig
 import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.CircleIndicator
@@ -68,13 +65,13 @@ import q.rorbin.badgeview.QBadgeView
 import java.net.URLEncoder
 
 
-class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
+class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
     EasyPermissions.PermissionCallbacks {
     private val mShopCarFragment by lazy { ShopCarFragment.newInstance() }
     private var isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
-    private var mGoodsDetails: GoodsDetail? = null
+//    private var mGoodsDetails: GoodsDetail? = null
     private var goodsId: Int = -1
-    private var mSelectPosition = -1
+    private var mSelectPosition = 0
     private var mSkuId: Int = 0
     private val dialog: Dialog by lazy { Dialog(mContext, R.style.edit_AlertDialog_style) }
     private var JsonString: String = ""
@@ -83,8 +80,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
     companion object {
         const val RC_CALL_PERM = 122
         const val GOODSDETAIL_SKUID = "com"
-        fun newInstance(goodsId: String, skuId: Int = 0): GoodsDetailFragment {
-            val f = GoodsDetailFragment()
+        fun newInstance(goodsId: String, skuId: Int = 0): GoodsDetailFragment02 {
+            val f = GoodsDetailFragment02()
             val bundle = Bundle()
             if (skuId != 0) {
                 bundle.putInt(GOODSDETAIL_SKUID, skuId)
@@ -93,16 +90,18 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
             f.arguments = bundle
             return f
         }
+
+
     }
 
-    private val addressLogisticsList: ArrayList<AddressLogisticsBean> = arrayListOf(
-        AddressLogisticsBean("日本发货", "", 1),
-        AddressLogisticsBean("内地海关", "", 0),
-        AddressLogisticsBean("国内快递", "", 0),
-        AddressLogisticsBean("确认收货", "", 0)
-    )
+//    private val addressLogisticsList: ArrayList<AddressLogisticsBean> = arrayListOf(
+//        AddressLogisticsBean("日本发货", "", 1),
+//        AddressLogisticsBean("内地海关", "", 0),
+//        AddressLogisticsBean("国内快递", "", 0),
+//        AddressLogisticsBean("确认收货", "", 0)
+//    )
 
-    private val addressLogisticsAdapter by lazy { AddressLogisticsAdapter() }
+//    private val addressLogisticsAdapter by lazy { AddressLogisticsAdapter() }
     private val priceCompareAdapter by lazy { ComparePricesAdapter() }
     private val skuListAdapter by lazy { SkuChooseAdapter() }
 
@@ -110,14 +109,9 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
 
     override fun initVM(): GoodsDetailViewModel = getViewModel()
 
-    override fun onResume() {
-        super.onResume()
-        //activity!!.nav_view.visibility = View.GONE
 
-    }
 
     override fun initView() {
-//        activity?.nav_view?.visibility = View.GONE
 
         gooddetails_shop.setOnClickListener {
             mContext.startActivity(GoodsQualificationActivity.newInstance(mContext, 0, JsonString))
@@ -126,7 +120,6 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
         ll_goodsDetails_parameter.setOnClickListener {
             mContext.startActivity(GoodsQualificationActivity.newInstance(mContext, 1, JsonString))
         }
-
 
         fab_up.hide()
 
@@ -137,18 +130,13 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                 .add(
                     R.id.frame_content,
                     mShopCarFragment,
-                    mShopCarFragment.javaClass.name
+                    "mShopCarFragment"
                 )
                 .commit()
         }
 
+//        dialog.setContentView(R.layout.item_img)
 
-
-        dialog.setContentView(R.layout.item_img)
-
-        mGoodsDetails?.let {
-            initUi(it)
-        }
     }
 
     override fun initData() {
@@ -167,8 +155,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
     @SuppressLint("SetJavaScriptEnabled", "SetTextI18n")
     override fun startObserve() {
         mViewModel.apply {
-            val addCartPopup = XPopup.Builder(this@GoodsDetailFragment.context).asLoading()
-            uiState.observe(this@GoodsDetailFragment, Observer { viewModel ->
+            val addCartPopup = XPopup.Builder(this@GoodsDetailFragment02.context).asLoading()
+            uiState.observe(this@GoodsDetailFragment02, Observer { viewModel ->
 
                 if (viewModel.showLoading) {
                     addCartPopup.show()
@@ -186,8 +174,8 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                 }
             })
 
-            val xPopup = XPopup.Builder(this@GoodsDetailFragment.context).asLoading("正在加入购物车。。。")
-            addCartState.observe(this@GoodsDetailFragment, Observer {
+            val xPopup = XPopup.Builder(this@GoodsDetailFragment02.context).asLoading("正在加入购物车。。。")
+            addCartState.observe(this@GoodsDetailFragment02, Observer {
                 if (it.showLoading) {
                     xPopup.show()
                 }
@@ -211,7 +199,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                     if (needLogin) {
                         startActivity(
                             Intent(
-                                this@GoodsDetailFragment.context,
+                                this@GoodsDetailFragment02.context,
                                 LoginActivity::class.java
                             )
                         )
@@ -220,7 +208,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
             })
 
 
-            cartNumUiState.observe(this@GoodsDetailFragment, Observer {
+            cartNumUiState.observe(this@GoodsDetailFragment02, Observer {
 
                 if (it.showLoading) {
                     addCartPopup.show()
@@ -255,7 +243,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                     if (needLogin) {
                         startActivity(
                             Intent(
-                                this@GoodsDetailFragment.context,
+                                this@GoodsDetailFragment02.context,
                                 LoginActivity::class.java
                             )
                         )
@@ -263,7 +251,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                 }
             })
 
-            directBuyUiState.observe(this@GoodsDetailFragment, Observer {
+            directBuyUiState.observe(this@GoodsDetailFragment02, Observer {
                 if (it.showLoading) {
                     addCartPopup.show()
                 }
@@ -282,7 +270,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                     if (needLogin) {
                         startActivity(
                             Intent(
-                                this@GoodsDetailFragment.context,
+                                this@GoodsDetailFragment02.context,
                                 LoginActivity::class.java
                             )
                         )
@@ -290,7 +278,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                 }
             })
 
-            userState.observe(this@GoodsDetailFragment, Observer {
+            userState.observe(this@GoodsDetailFragment02, Observer {
                 it.showSuccess?.let {
                     isAudit = it.auditStatus!!
                 }
@@ -303,7 +291,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                     if (needLogin) {
                         startActivity(
                             Intent(
-                                this@GoodsDetailFragment.context,
+                                this@GoodsDetailFragment02.context,
                                 LoginActivity::class.java
                             )
                         )
@@ -387,6 +375,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
         }
     }
 
+    @SuppressLint("MissingPermission")
     @AfterPermissionGranted(RC_CALL_PERM)
     private fun callService(phoneNum: String) {
         if (EasyPermissions.hasPermissions(mContext, Manifest.permission.CALL_PHONE)) {
@@ -477,54 +466,44 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
         } else
             tv_goodsName.text = goodsDetail.goodsName
 //        tv_compony.text = goodsDetail.shopName
+//        判断从推荐商城传过来的ID，若这ID不等于0，则遍历出SKU的位置并显示该SKU的价格
         if (mSkuId != 0) {
             goodsDetail.goodsSku?.forEachIndexed { i: Int, goodsSku: GoodsDetail.GoodsSku ->
                 if (goodsSku.skuId == mSkuId) {
                     mSelectPosition = i
-                    var s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
-                    s = GsonUtils.toJson(goodsSku)
                     return@forEachIndexed
                 } else {
                     return@forEachIndexed
                 }
             }
         }
-        tv_price.text = "¥${goodsDetail.goodsSku?.get(if(mSelectPosition>0)mSelectPosition else 0)?.price ?: "未知"}"
+        tv_price.text = "¥${goodsDetail.goodsSku?.get(mSelectPosition)?.price ?: "未知"}"
 
-        if (goodsDetail.goodsSku?.get(0)?.isParity ?: 0 == 0) {
+        if (goodsDetail.goodsSku?.get(mSelectPosition)?.isParity ?: 0 == 0) {
             tv_goCompare.visibility = View.GONE
         } else {
             tv_goCompare.visibility = View.VISIBLE
-            priceCompareAdapter.setNewInstance(goodsDetail.goodsSku?.get(0)?.parityList!!.toMutableList())
-            priceCompareAdapter.notifyDataSetChanged()
-
+            priceCompareAdapter.setNewInstance(goodsDetail.goodsSku?.get(mSelectPosition)?.parityList!!.toMutableList())
             tv_goCompare.setOnClickListener {
                 XPopup.Builder(it.context)
                     .asCustom(CustomComparePricePopup(mContext, priceCompareAdapter))
                     .show()
             }
         }
-
-//        rcv_skus.run {
-//            layoutManager = GridLayoutManager(context!!, goodsDetail.goodsSku?.size?:1)
-//            adapter = skuListAdapter
-//            suppressLayout(true)
-//        }
         skuListAdapter.setList(goodsDetail.goodsSku)
-        skuListAdapter.notifyDataSetChanged()
 
 
         goodsDetail.shippingFee.let {
-            if (goodsDetail.shippingFee.toString().isBlank()) {
+            if (it.toString().isBlank()) {
                 tv_freight.text = "免运费"
             } else {
-                tv_freight.text = "¥ ${goodsDetail.shippingFee}(商品售价已含)"
+                tv_freight.text = "¥ ${it}(商品售价已含)"
             }
         }
 
         detail_banner.apply {
             indicator = CircleIndicator(mContext)
-            adapter = object : BannerImageAdapter<String>(goodsDetail.goodsPictureList){
+            adapter = object :BannerImageAdapter<String>(goodsDetail.goodsPictureList){
                 override fun onBindView(
                     holder: BannerImageHolder,
                     data: String,
@@ -533,7 +512,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                 ) {
                     Glide.with(holder.itemView)
                         .load(data)
-                        .override(Utils.getScreenWidth(mContext), Target.SIZE_ORIGINAL)
+                        .override(Utils.getScreenWidth(mContext),Target.SIZE_ORIGINAL)
                         .into(holder.imageView);
                 }
 
@@ -562,7 +541,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                                 activity!!.supportFragmentManager.beginTransaction()
                                     .addToBackStack(GoodsDetailFragment.javaClass.name)
                                     .hide(
-                                        this@GoodsDetailFragment
+                                        this@GoodsDetailFragment02
                                     ).add(
                                         R.id.frame_content,
                                         PaypalFragment.newInstance(
@@ -636,7 +615,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                                                 GoodsDetailFragment.javaClass.name
                                             )
                                             .hide(
-                                                this@GoodsDetailFragment
+                                                this@GoodsDetailFragment02
                                             ).add(
                                                 R.id.frame_content,
                                                 PaypalFragment.newInstance(
@@ -688,7 +667,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
                                         activity!!.supportFragmentManager.beginTransaction()
                                             .addToBackStack(GoodsDetailFragment.javaClass.name)
                                             .hide(
-                                                this@GoodsDetailFragment
+                                                this@GoodsDetailFragment02
                                             ).add(
                                                 R.id.frame_content,
                                                 PaypalFragment.newInstance(

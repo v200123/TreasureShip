@@ -1,5 +1,6 @@
 package com.jzz.treasureship.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.View
@@ -20,22 +21,15 @@ import kotlinx.android.synthetic.main.layout_sku.view.*
 /**
  * 商品的SKU选择
  */
-class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopupView(context) {
+@SuppressLint("ViewConstructor")
+class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail, selsectPosition:Int = 0) : BottomPopupView(context) {
     private val mCountTips by lazy {
-
-
         XPopup.Builder(context).hasShadowBg(false)
             .atView(et_sku_quantity_input)
             .isCenterHorizontal(true)
             .asCustom( DialogOrderCount(context))
-//        ViewTooltip.on(et_sku_quantity_input)
-//            .position(ViewTooltip.Position.BOTTOM)
-//        .text("限购3件哦")
-//            .autoHide(false,0)
-//        .color(Color.parseColor("#FF434343"))
-//        .textColor(Color.parseColor("#FFF0A923"))
-//        .corner(40)
     }
+    private var mInitSelect = selsectPosition
     private val skuListAdapter by lazy { SkuSelectAdapter() }
     private var SELECTED_SKU by PreferenceUtils(PreferenceUtils.SELECTED_SKU,"")
 //    val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
@@ -51,31 +45,6 @@ class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopu
         super.initPopupContent()
         mCount = et_sku_quantity_input.text.toString().toInt()
         et_sku_quantity_input.setSelection(et_sku_quantity_input.text.length)
-//        et_sku_quantity_input.addTextChangedListener(object : TextWatcher{
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//
-//
-//                if(s.toString().toInt()>3)
-//                {
-//                    et_sku_quantity_input.setText("3")
-//                    mCountTips.show()
-//                }
-//                else{
-//                    if(mCountTips.isShow)
-//                    {
-//                        mCountTips.dismiss()
-//                    }
-//                }
-//
-//            }
-//        })
-
 
         mGoods.goodsSku?.get(0)?.skuImg.let {
             Glide.with(context).load(it).into(iv_sku_logo)
@@ -90,6 +59,9 @@ class CustomSkuBottomPopup(context: Context, goodsSku: GoodsDetail) : BottomPopu
                tv_sku_selling_price.text = "¥ ${selectSku.price}"
                tv_sku_selling_price_unit.text = "已选：${selectSku.specValue}"
                tv_sku_info.text = "库存：${selectSku.stock}"
+               SelectedNavItem.selectedNavItem = mInitSelect
+
+
            }
         rv_skuList.run {
             layoutManager = FlexboxLayoutManager(context).apply {
