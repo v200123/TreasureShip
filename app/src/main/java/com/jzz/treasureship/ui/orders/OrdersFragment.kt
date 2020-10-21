@@ -63,54 +63,6 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
             (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
         }
 
-//            if (mRootFragment.isBlank()) {
-//                activity!!.supportFragmentManager.popBackStack()
-//            } else {
-//                Log.d("asd", mRootFragment)
-//                when (mRootFragment) {
-//                    "HomeFragment" -> {
-////                        activity!!.supportFragmentManager.popBackStackImmediate(
-////                            HomeFragment.javaClass.name,
-////                            FragmentManager.POP_BACK_STACK_INCLUSIVE
-////                        )
-//                        activity!!.supportFragmentManager.beginTransaction().hide(this)
-//                            .add(R.id.frame_content, HomeFragment.newInstance(), HomeFragment.javaClass.name)
-//                            .commit()
-//                        Log.d("asd", "hoem")
-//                    }
-//                    "TreasureBoxFragment" -> {
-////                        activity!!.supportFragmentManager.popBackStackImmediate(
-////                            TreasureBoxFragment.javaClass.name,
-////                            FragmentManager.POP_BACK_STACK_INCLUSIVE
-////                        )
-//                        activity!!.supportFragmentManager.beginTransaction().hide(this)
-//                            .add(
-//                                R.id.frame_content,
-//                                TreasureBoxFragment.newInstance(),
-//                                TreasureBoxFragment.javaClass.name
-//                            )
-//                            .commit()
-//                        Log.d("asd", "hoem2")
-//                    }
-//                    else -> {
-//                        activity!!.supportFragmentManager.popBackStack()
-//                        Log.d("asd", "hoem3")
-//                    }
-//                }
-//            }
-
-//            when (mComeFrom) {
-//                "paypal",
-//                "OthersPay",
-//                "AddAdvice" -> {
-//                    StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
-//                    switchFragment(mHomeFragment)
-//                }
-//                else -> {
-//                    activity!!.supportFragmentManager.popBackStack()
-//                }
-//            }
-
 
         for ((index) in titles.withIndex()) {
             fragments.add(OrdersVpFragment(index))
@@ -183,36 +135,6 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
     }
 
     override fun onBackPressed(): Boolean {
-//        if (mRootFragment.isBlank()) {
-////            activity!!.supportFragmentManager.popBackStack()
-////        } else {
-////            when (mRootFragment) {
-////                "HomeFragment" -> {
-////                    Log.d("orderback","HomeFragment")
-////                    activity!!.supportFragmentManager.beginTransaction().hide(this)
-////                        .add(
-////                            R.id.frame_content,
-////                            HomeFragment.newInstance(),
-////                            HomeFragment.javaClass.name
-////                        )
-////                        .commit()
-////                }
-////                "TreasureBoxFragment" -> {
-////                    Log.d("orderback","TreasureBoxFragment")
-////                    activity!!.supportFragmentManager.beginTransaction().hide(this)
-////                        .add(
-////                            R.id.frame_content,
-////                            TreasureBoxFragment.newInstance(),
-////                            TreasureBoxFragment.javaClass.name
-////                        )
-////                        .commit()
-////                }
-////                else -> {
-////                    Log.d("orderback","popBackStack")
-////                    activity!!.supportFragmentManager.popBackStack()
-////                }
-////            }
-////        }
         return true
     }
 

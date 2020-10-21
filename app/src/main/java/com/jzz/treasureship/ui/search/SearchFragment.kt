@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -143,12 +144,12 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
                         val str = tv.text.toString()
 
                         tv.setOnClickListener {
-                            activity!!.supportFragmentManager.beginTransaction()
+                            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                                 .addToBackStack(SearchFragment.javaClass.name)
                                 .hide(this@SearchFragment)//隐藏当前Fragment
                                 .add(
                                     R.id.frame_content,
-                                    SearchResultsFragment.newInstance(element.id, 0, type),
+                                    SearchResultsFragment.newInstance(element.id, 0, type,element.brandName),
                                     SearchResultsFragment.javaClass.name
                                 ).commit()
                         }

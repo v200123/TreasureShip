@@ -22,6 +22,7 @@ import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.mmkv.MMKV
+import com.tendcloud.tenddata.TCAgent
 import com.xuexiang.xui.XUI
 import com.xuexiang.xupdate.XUpdate
 import me.jessyan.autosize.AutoSizeConfig
@@ -59,7 +60,8 @@ class App : Application() {
         DoraemonKit.install(this, arrayListOf(MyDoraemoKit()))
         val rootDir = MMKV.initialize(this)
         "当前存储的路径为:${rootDir}".out(true)
-
+//        初始化Talk的数据留存信息
+        initTCA()
         Logger.addLogAdapter(
             AndroidLogAdapter(
                 PrettyFormatStrategy.newBuilder()
@@ -85,6 +87,14 @@ class App : Application() {
         initWxSdk()
         initJPush()
         initUpdate()
+    }
+
+    private fun initTCA(){
+        TCAgent.LOG_ON=true
+        // App ID: 在TalkingData创建应用后，进入数据报表页中，在“系统设置”-“编辑应用”页面里查看App ID。
+        // 渠道 ID: 是渠道标识符，可通过不同渠道单独追踪数据。
+        // 如果已经在AndroidManifest.xml配置了App ID和渠道ID，调用TCAgent.init(this)即可；或与AndroidManifest.xml中的对应参数保持一致。
+        TCAgent.init(this)
     }
 
     private fun initAutoSize() {

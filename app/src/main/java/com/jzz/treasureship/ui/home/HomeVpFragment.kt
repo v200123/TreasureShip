@@ -35,6 +35,7 @@ import com.jzz.treasureship.service.RewardService
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
+import com.jzz.treasureship.ui.goods.GoodsDetailFragment02
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
@@ -216,7 +217,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
     override fun startObserve() {
         mViewModel.apply {
             val xPopup =
-                XPopup.Builder(context).dismissOnBackPressed(false).dismissOnTouchOutside(false)
+                XPopup.Builder(context).dismissOnBackPressed(true).dismissOnTouchOutside(false)
                     .asLoading()
 
             adState.observe(this@HomeVpFragment, Observer {
@@ -347,8 +348,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
                             override fun onBackPressed(popupView: BasePopupView?): Boolean {
 
-                                Log.d("TAG", "onBackPressed:哈哈哈哈哈 ")
-                                return true
+                                return false
                             }
                         })
                         .asCustom(
@@ -743,8 +743,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                                 .hide((mContext as MainActivity).mMainHomeFragemnt)//隐藏当前Fragment
                                 .add(
                                     R.id.frame_content,
-                                    GoodsDetailFragment.newInstance("${item.goodsId}"),
-                                    GoodsDetailFragment.javaClass.name
+                                    GoodsDetailFragment02.newInstance("${item.goodsId}"),
+                                    "GoodsDetailFragment02"
                                 )
                                 .commit()
                         }

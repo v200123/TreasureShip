@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="332dp"
             android:layout_marginTop="13dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginEnd="21dp"
             android:layout_marginBottom="13dp"
             android:src="@drawable/ic_send_comment" />

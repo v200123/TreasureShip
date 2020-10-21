@@ -2,7 +2,6 @@ package com.jzz.treasureship.ui.goods
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -19,6 +18,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.PagerAdapter
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -34,12 +34,12 @@ import com.jzz.treasureship.adapter.ComparePricesAdapter
 import com.jzz.treasureship.adapter.SkuChooseAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.GoodsDetail
-import com.jzz.treasureship.model.bean.GoodsSku
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.SelectedNavItem
 import com.jzz.treasureship.utils.changeImage
 import com.jzz.treasureship.utils.out
 import com.jzz.treasureship.view.CustomComparePricePopup
@@ -69,11 +69,12 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
     EasyPermissions.PermissionCallbacks {
     private val mShopCarFragment by lazy { ShopCarFragment.newInstance() }
     private var isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
-//    private var mGoodsDetails: GoodsDetail? = null
+
+    //    private var mGoodsDetails: GoodsDetail? = null
     private var goodsId: Int = -1
     private var mSelectPosition = 0
     private var mSkuId: Int = 0
-    private val dialog: Dialog by lazy { Dialog(mContext, R.style.edit_AlertDialog_style) }
+//    private val dialog: Dialog by lazy { Dialog(mContext, R.style.edit_AlertDialog_style) }
     private var JsonString: String = ""
     private var mQBadgeView: QBadgeView? = null
 
@@ -101,14 +102,13 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
 //        AddressLogisticsBean("确认收货", "", 0)
 //    )
 
-//    private val addressLogisticsAdapter by lazy { AddressLogisticsAdapter() }
+    //    private val addressLogisticsAdapter by lazy { AddressLogisticsAdapter() }
     private val priceCompareAdapter by lazy { ComparePricesAdapter() }
     private val skuListAdapter by lazy { SkuChooseAdapter() }
 
     override fun getLayoutResId() = R.layout.fragment_goods_details
 
     override fun initVM(): GoodsDetailViewModel = getViewModel()
-
 
 
     override fun initView() {
@@ -503,7 +503,7 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
 
         detail_banner.apply {
             indicator = CircleIndicator(mContext)
-            adapter = object :BannerImageAdapter<String>(goodsDetail.goodsPictureList){
+            adapter = object : BannerImageAdapter<String>(goodsDetail.goodsPictureList) {
                 override fun onBindView(
                     holder: BannerImageHolder,
                     data: String,
@@ -512,7 +512,7 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
                 ) {
                     Glide.with(holder.itemView)
                         .load(data)
-                        .override(Utils.getScreenWidth(mContext),Target.SIZE_ORIGINAL)
+                        .override(Utils.getScreenWidth(mContext), Target.SIZE_ORIGINAL)
                         .into(holder.imageView);
                 }
 
@@ -523,49 +523,12 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
         }
 
         ll_choice_norm.setOnClickListener {
-            val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail,mSelectPosition)
-            XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
-                override fun onShow(popupView: BasePopupView?) {
-                    super.onShow(popupView)
-                }
+            showSkuDialog(goodsDetail)
 
-                override fun onDismiss(popupView: BasePopupView) {
-                    super.onDismiss(popupView)
-                    val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
-                    val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
-                    tv_price.text = "¥${selectedGoods.price}"
-                    selectedGoods.let {
-                        when (skuPopup.mWhere) {
-                            0 -> mViewModel.addCart(skuPopup.mCount, selectedGoods.skuId)
-                            1 -> {
-                                activity!!.supportFragmentManager.beginTransaction()
-                                    .addToBackStack(GoodsDetailFragment.javaClass.name)
-                                    .hide(
-                                        this@GoodsDetailFragment02
-                                    ).add(
-                                        R.id.frame_content,
-                                        PaypalFragment.newInstance(
-                                            1,
-                                            skuPopup.mCount,
-                                            selectedGoods.skuId
-                                        ),
-                                        PaypalFragment.javaClass.name
-                                    ).commit()
-                            }
-                            else -> {
-
-                            }
-                        }
-                    }
-                }
-            }).asCustom(skuPopup)
-                .show()
         }
 
-
-
         tv_callService.setOnClickListener {
-            if (goodsDetail.companyPhone.isNullOrBlank()) {
+            if (goodsDetail.companyPhone.isBlank()) {
                 ToastUtils.showShort("客服电话为空")
             } else {
                 callService(goodsDetail.companyPhone)
@@ -579,7 +542,7 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
         ) //这个是给图片设置点击监听的，如果你项目需要webview中图片，点击查看大图功能，可以这么添加
 
 
-        goodsDetail.goodsDetailHtml?.let {
+        goodsDetail.goodsDetailHtml.let {
             slidedetails_behind?.loadDataWithBaseURL(
                 null, goodsDetail.goodsDetailHtml,
                 "text/html", "UTF-8", null
@@ -587,113 +550,12 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
         }
 
         tv_buyNow.setOnClickListener { view ->
-       goodsDetail.toString().out(true)
-            val skuPopup = CustomSkuBottomPopup(view.context, goodsDetail,mSelectPosition)
-            XPopup.Builder(view.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss(popupView: BasePopupView) {
-                    super.onDismiss(popupView)
-                    val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
-                    val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
-                    tv_price.text = "¥${selectedGoods.price}"
-
-                    selectedGoods?.let {
-                        when (skuPopup.mWhere) {
-                            0 -> {
-                                mViewModel.addCart(skuPopup.mCount, selectedGoods.skuId)
-                            }
-                            1 -> {
-                                when (isAudit) {
-                                    -1 -> {
-                                        ToastUtils.showLong("您还未进行资质认证，请先在设置中提交资质认证并通过认证后再进行购买")
-                                    }
-                                    0 -> {
-                                        ToastUtils.showLong("资质审核中，请联系相关人员通过审核后再进行购买")
-                                    }
-                                    1 -> {
-                                        activity!!.supportFragmentManager.beginTransaction()
-                                            .addToBackStack(
-                                                GoodsDetailFragment.javaClass.name
-                                            )
-                                            .hide(
-                                                this@GoodsDetailFragment02
-                                            ).add(
-                                                R.id.frame_content,
-                                                PaypalFragment.newInstance(
-                                                    1,
-                                                    skuPopup.mCount,
-                                                    selectedGoods.skuId
-                                                ),
-                                                PaypalFragment.javaClass.name
-                                            ).commit()
-                                    }
-                                    2 -> {
-                                        ToastUtils.showLong("资质审核未通过，请联系相关人员/重新提交资质认证资料，资质审核通过后再进行购买")
-                                    }
-                                    else -> {
-
-                                    }
-                                }
-                            }
-                            else -> {
-
-                            }
-                        }
-                    }
-                }
-            }).asCustom(skuPopup)
-                .show()
+            goodsDetail.toString().out(true)
+            showSkuDialog(goodsDetail)
         }
         tv_addCart.setOnClickListener { view ->
-            val skuPopup = CustomSkuBottomPopup(view.context, goodsDetail,mSelectPosition)
-            XPopup.Builder(view.context).setPopupCallback(object : SimpleCallback() {
-                override fun onDismiss(popupView: BasePopupView) {
-                    super.onDismiss(popupView)
-                    val s by PreferenceUtils(PreferenceUtils.SELECTED_SKU, "")
-                    val selectedGoods = GsonUtils.fromJson(s, GoodsSku::class.java)
-                    tv_price.text = "¥${selectedGoods.price}"
+            showSkuDialog(goodsDetail)
 
-                    selectedGoods?.let {
-                        when (skuPopup.mWhere) {
-                            0 -> mViewModel.addCart(skuPopup.mCount, selectedGoods.skuId)
-                            1 -> {
-                                when (isAudit) {
-                                    -1 -> {
-                                        ToastUtils.showLong("您还未进行资质认证，请先在设置中提交资质认证并通过认证后再进行购买")
-                                    }
-                                    0 -> {
-                                        ToastUtils.showLong("资质审核中，请联系相关人员通过审核后再进行购买")
-                                    }
-                                    1 -> {
-                                        activity!!.supportFragmentManager.beginTransaction()
-                                            .addToBackStack(GoodsDetailFragment.javaClass.name)
-                                            .hide(
-                                                this@GoodsDetailFragment02
-                                            ).add(
-                                                R.id.frame_content,
-                                                PaypalFragment.newInstance(
-                                                    1,
-                                                    skuPopup.mCount,
-                                                    selectedGoods.skuId
-                                                ),
-                                                PaypalFragment.javaClass.name
-                                            ).commit()
-                                    }
-                                    2 -> {
-                                        ToastUtils.showLong("资质审核未通过，请联系相关人员/重新提交资质认证资料，资质审核通过后再进行购买")
-                                    }
-                                    else -> {
-
-                                    }
-                                }
-                            }
-                            else -> {
-
-                            }
-                        }
-                    }
-                }
-            }).asCustom(skuPopup)
-                .show()
         }
 
         iv_share.setOnClickListener {
@@ -733,6 +595,73 @@ class GoodsDetailFragment02 : BaseVMFragment<GoodsDetailViewModel>(),
                 Log.d("wx share", "微信分享失败")
             }
         }
+    }
+
+    /**
+     * 展示SKull的DIalog底部弹窗
+     */
+    private fun showSkuDialog(
+        goodsDetail: GoodsDetail
+    ) {
+        val skuPopup = CustomSkuBottomPopup(mContext, goodsDetail, mSelectPosition)
+        XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
+            override fun onDismiss(popupView: BasePopupView) {
+                super.onDismiss(popupView)
+                mSelectPosition = SelectedNavItem.selectedNavItem
+                goodsDetail.goodsSku?.get(SelectedNavItem.selectedNavItem)?.let {
+                    tv_price.text = "¥${it?.price}"
+
+                    when (skuPopup.mWhere) {
+                        0 -> {
+                            mViewModel.addCart(skuPopup.mCount, it.skuId)
+                        }
+                        1 -> {
+                            when (isAudit) {
+                                -1 -> {
+                                    ToastUtils.showLong("您还未进行资质认证，请先在设置中提交资质认证并通过认证后再进行购买")
+                                }
+                                0 -> {
+                                    ToastUtils.showLong("资质审核中，请联系相关人员通过审核后再进行购买")
+                                }
+                                1 -> {
+                                    gotoPay(skuPopup, it)
+
+                                }
+                                2 -> {
+                                    ToastUtils.showLong("资质审核未通过，请联系相关人员/重新提交资质认证资料，资质审核通过后再进行购买")
+                                }
+                                else -> {
+
+                                }
+                            }
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+            }
+        }).asCustom(skuPopup)
+            .show()
+    }
+
+    private fun gotoPay(
+        skuPopup: CustomSkuBottomPopup,
+        selectedGoods: GoodsDetail.GoodsSku
+    ) {
+        (mContext as AppCompatActivity).supportFragmentManager
+            .commit {
+                addToBackStack("4")
+                hide(this@GoodsDetailFragment02)
+                add(
+                    R.id.frame_content,
+                    PaypalFragment.newInstance(
+                        1,
+                        skuPopup.mCount,
+                        selectedGoods.skuId
+                    ), "PaypalFragment"
+                )
+            }
     }
 
     override fun onDestroy() {

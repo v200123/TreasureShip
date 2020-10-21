@@ -53,9 +53,11 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
     companion object {
-        fun newInstance(searchWords: String, what: Int, type: Int): SearchResultsFragment {
+        fun newInstance(searchWords: String, what: Int, type: Int,searchTitle:String = ""): SearchResultsFragment {
             val f = SearchResultsFragment()
             val bundle = Bundle()
+            if(searchTitle.isNotBlank())
+                bundle.putString("searchTitle", searchTitle)
             bundle.putString("searchWords", searchWords)
             bundle.putInt("what", what)
             bundle.putInt("type", type)
@@ -89,6 +91,11 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
             type = it.getInt("type")
             what = it.getInt("what")
             searchWords = it.getString("searchWords")
+            val string = it.getString("searchTitle", "")
+            if(string.isNotBlank())
+            {
+                etSearch.setText(string)
+            }
         }
         iv_back.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()

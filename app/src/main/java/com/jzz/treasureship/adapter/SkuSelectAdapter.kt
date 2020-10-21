@@ -1,7 +1,6 @@
 package com.jzz.treasureship.adapter
 
 import android.graphics.Color
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -11,18 +10,8 @@ import com.jzz.treasureship.utils.SelectedNavItem
 import com.lc.mybaselibrary.ShapeTextView
 
 class SkuSelectAdapter(layoutResId: Int = R.layout.item_sku) :
-    BaseBindAdapter<GoodsDetail.GoodsSku>(layoutResId){
+    BaseBindAdapter<GoodsDetail.GoodsSku>(layoutResId) {
 
-    private var onItemClickListener: OnItemClickListener? = null
-
-    /*暴露给外部的方法*/
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
-        onItemClickListener = listener
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(view: View?, position: Int)
-    }
 
     override fun convert(holder: BaseViewHolder, item: GoodsDetail.GoodsSku) {
         super.convert(holder, item)
@@ -42,10 +31,6 @@ class SkuSelectAdapter(layoutResId: Int = R.layout.item_sku) :
                     .setShapeStrokeColor(Color.parseColor("#FFF5F5F5")).into(this)
                 setTextColor(ContextCompat.getColor(context, R.color.black_121212))
             }
-            holder.itemView.setOnClickListener {
-                onItemClickListener?.onItemClick(holder.itemView, position = holder.adapterPosition)
-            }
-
         }
     }
 }

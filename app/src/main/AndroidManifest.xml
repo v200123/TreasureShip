@@ -36,13 +36,8 @@
             android:name="design_height_in_dp"
             android:value="667" />
 
-        <meta-data
-            android:name="BaiduMobAd_STAT_ID"
-            android:value="a1c940f49e" />
+        <meta-data android:name="TD_APP_ID" android:value="AFE1CA21C73E487A8D33CA8C326DC9B0" />
 
-        <meta-data
-            android:name="BaiduMobAd_EXCEPTION_LOG"
-            android:value="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
