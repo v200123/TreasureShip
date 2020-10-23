@@ -45,15 +45,13 @@ class OrdersActivity : BaseVMActivity<OrdersViewModel>() {
         tv_title.text = "我的订单"
         StateAppBar.setStatusBarLightMode(this, mContext.getResColor(R.color.white))
         val titles = arrayOf("全部", "待付款", "待发货", "已发货", "已完成")
-        val fragments: ArrayList<OrdersVpFragment> = ArrayList(titles.size)
+
 
         rlback.setOnClickListener {
             onBackPressed()
         }
 
-        for ((index) in titles.withIndex()) {
-            fragments.add(OrdersVpFragment(index))
-        }
+
         ordersTablayout.run {
             setSelectedTabIndicatorColor(this.resources.getColor(R.color.blue_light))
             setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -88,14 +86,12 @@ class OrdersActivity : BaseVMActivity<OrdersViewModel>() {
 
         val mAdapter = object : FragmentStateAdapter(this@OrdersActivity) {
             override fun createFragment(position: Int): Fragment {
-                if (!fragments[position].isAdded) {
-                    return fragments[position]
-                }
-                return Fragment()
+
+                return OrdersVpFragment.newInstance(position)
             }
 
             override fun getItemCount(): Int {
-                return fragments.size
+                return titles.size
             }
         }
         ordersViewpager.offscreenPageLimit =1

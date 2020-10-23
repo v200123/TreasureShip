@@ -153,7 +153,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
 
             if (user.auditStatus == -1) {
                 if (mUserDialogShow.ShowNoAuthDialogDate.isBlank()) {
-                    App.dialogHelp.showNoAuth()
+                    App.dialogHelp.showNoAuth(user.mAppCampaignType)
                     MMKV.defaultMMKV().encode(
                         user.id.toString(),
                         mUserDialogShow.apply {
@@ -166,7 +166,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
                             Calendar.DAY_OF_MONTH
                         )
                     ) {
-                        App.dialogHelp.showNoAuth()
+                        App.dialogHelp.showNoAuth(user.mAppCampaignType)
                     }
                     MMKV.defaultMMKV().encode(
                         user.id.toString(),

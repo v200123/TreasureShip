@@ -22,7 +22,6 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
 
     val orderListData = MutableLiveData<OrdersListBean>()
     fun getNewOrderList(
-        memberId: Int,
         orderNo: String?,
         orderStatus: Int,
         pageNum: Int = 1, orderType: Int = 0
@@ -32,7 +31,7 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                HttpHelp.getRetrofit()
                     .getOrderList(
                         BaseRequestBody(
-                            OrderListRequest(memberId, orderNo, orderStatus, orderType), header(pageNum = pageNum)
+                            OrderListRequest(orderNo,if(orderStatus == -1) null else orderStatus.toString()), header(pageNum = pageNum)
                         )
                     ).resultCheck{
                        orderListData.postValue(it)

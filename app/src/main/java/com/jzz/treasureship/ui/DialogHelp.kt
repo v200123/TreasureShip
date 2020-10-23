@@ -15,8 +15,8 @@ class DialogHelp(var context: Context) {
     /**
      * 未认证的界面
      */
-    fun showNoAuth() {
-        XPopup.Builder(context).hasShadowBg(true).asCustom(Dialog_no_auth(context))
+    fun showNoAuth(type:Int = 1) {
+        XPopup.Builder(context).hasShadowBg(true).asCustom(Dialog_no_auth(context,type))
             .show()
     }
 

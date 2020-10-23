@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jzz.treasureship.App
+import com.jzz.treasureship.AppInterface.IParentHidden
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
@@ -41,7 +42,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class HomeFragment : BaseVMFragment<HomeViewModel>() {
+class HomeFragment : BaseVMFragment<HomeViewModel>(),IParentHidden {
     private var isInviteDialog by PreferenceUtils(PreferenceUtils.everyday_invite_dialog, "")
     private val user by PreferenceUtils(PreferenceUtils.USER_GSON, "")
     private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
@@ -362,5 +363,13 @@ class HomeFragment : BaseVMFragment<HomeViewModel>() {
     }
     override fun onBackPressed(): Boolean {
         return false
+    }
+
+    override var mStatusColor: Int = R.color.white
+    override fun parentHidden(isHidden: Boolean, Type: Int) {
+        if(!isHidden)
+        {
+            setStatusColor()
+        }
     }
 }

@@ -19,6 +19,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
@@ -63,6 +64,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.jzz.treasureship.view.PhoneEditText
+            android:textCursorDrawable="@color/black"
             android:id="@+id/et_phoneNum"
             android:maxLength="6"
             android:layout_width="210dp"
@@ -113,6 +115,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:textCursorDrawable="@color/black"
             android:id="@+id/et_codeNum"
             android:layout_width="140dp"
             android:layout_height="20dp"

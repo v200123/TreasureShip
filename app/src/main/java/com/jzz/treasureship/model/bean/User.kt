@@ -1,5 +1,7 @@
 package com.jzz.treasureship.model.bean
 
+import com.google.gson.annotations.SerializedName
+
 data class User(
     val accessToken: String?,
     val address: String?,
@@ -24,4 +26,7 @@ data class User(
     val wxAvatar: String,
     //微信名称
     val wxNickName: String,
+//    判断是否开启营销流程
+    @SerializedName("appCampaignType")
+    val mAppCampaignType:Int = 1
 )

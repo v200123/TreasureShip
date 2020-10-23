@@ -17,6 +17,7 @@
 
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/imageView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,6 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/imageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,6 +81,7 @@
             app:srcCompat="@drawable/ico_confirm_redback" />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/imageView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,6 +91,8 @@
             app:srcCompat="@drawable/ico_confirm_juan" />
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_tips_01"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

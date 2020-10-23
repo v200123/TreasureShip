@@ -16,7 +16,7 @@ class OrdersListBean(
 ) {
     class Data(
         @SerializedName("commissionAccount")
-        var mCommissionAccount: Int? = 0, // 0
+        var mCommissionAccount: Float = 0f, // 0
         @SerializedName("commissionStatus")
         var mCommissionStatus: String? = "", // string
         @SerializedName("createTime")

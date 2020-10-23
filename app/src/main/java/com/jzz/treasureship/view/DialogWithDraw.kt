@@ -19,6 +19,9 @@ class DialogWithDraw(context: Context) : CenterPopupView(context) {
     override fun onCreate() {
         super.onCreate()
         iv_withdraw_close.setOnClickListener { this.dismiss() }
+
+
+
         view_goto_01.setOnClickListener { context.start<CouponShopFragment> {  }
         this.dismiss()}
     }
