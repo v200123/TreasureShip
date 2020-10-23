@@ -18,17 +18,17 @@ class CouponShopViewModel : BaseViewModel() {
     val mBannerList = MutableLiveData<CouponBannerBean>()
     fun getList(body: BaseRequestBody) {
         launchTask {
-            HttpHelp.getRetrofit().getRecommendGoods(body).resultCheck({
+            HttpHelp.getRetrofit().getRecommendGoods(body).resultCheck{
                 mCouponData.postValue(it)
-            })
+            }
         }
     }
 
     fun getBannerList(){
         launchTask {
-            HttpHelp.getRetrofit().getCouponBanner(BaseRequestBody(CouponRequest(0))).resultCheck({
+            HttpHelp.getRetrofit().getCouponBanner(BaseRequestBody(CouponRequest(0))).resultCheck{
                 mBannerList.postValue(it)
-            })
+            }
         }
     }
 }

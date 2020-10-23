@@ -14,17 +14,16 @@ import com.lc.mybaselibrary.ErrorState
  **/
 class DepartmentSreachViewModel : BaseViewModel() {
     val hospitalData = MutableLiveData<DepartmentBean>()
-    fun getHospital(){
+    fun getHospital() {
         launchTask {
             val hospitalType = HttpHelp.getRetrofit().getHospitalType(BaseRequestBody())
-        hospitalType.resultCheck({
-            hospitalData.postValue(it)
-        },{
-            mStateLiveData.postValue(ErrorState(it))
-        })
+            hospitalType.resultCheck({
+                mStateLiveData.postValue(ErrorState(it))
+            }) {
+                hospitalData.postValue(it)
+            }
         }
     }
-
 
 
 }

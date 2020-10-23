@@ -307,6 +307,9 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() , IParentHidden {
     }
 
     override fun parentHidden(isHidden: Boolean, Type: Int) {
+
+        "我进入parentHidden02".out()
+
         if(!isHidden)
         {
             setStatusColor()

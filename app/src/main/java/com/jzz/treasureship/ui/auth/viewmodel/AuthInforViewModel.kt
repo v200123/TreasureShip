@@ -21,11 +21,9 @@ class AuthInforViewModel : BaseViewModel() {
             launchTask {
                 val uploadInformation =
                     HttpHelp.getRetrofit().uploadInformation(BaseRequestBody((confirmBody)))
-                uploadInformation.resultCheck({
+                uploadInformation.resultCheck{
                     qualLiveData.postValue(it)
-                }, {
-                    mStateLiveData.postValue(ErrorState(it))
-                })
+                }
             }
         }
         else{

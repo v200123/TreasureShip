@@ -1,10 +1,11 @@
- package com.jzz.treasureship.ui.orders
+package com.jzz.treasureship.ui.orders
 
 import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.google.android.material.tabs.TabLayout
@@ -135,6 +136,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
     }
 
     override fun onBackPressed(): Boolean {
+        mFragmentManager.commit { remove(this@OrdersFragment) }
         return true
     }
 

@@ -10,7 +10,6 @@ import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.*
 import com.jzz.treasureship.model.repository.PaypalRepository
 import com.jzz.treasureship.utils.PreferenceUtils
-import com.lc.mybaselibrary.ErrorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -83,7 +82,8 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     private val _orderState = MutableLiveData<OrderModel>()
     val orderState: LiveData<OrderModel>
         get() = _orderState
-//创建订单
+
+    //创建订单
     fun createOrder(body: JSONObject) {
         emitOrderState(true)
         viewModelScope.launch(Dispatchers.Main) {
@@ -139,10 +139,10 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
         val needLogin: Boolean? = null
     )
 
-    fun directBuy(count: Int, skuId: Int,cartId:Int? = null) {
+    fun directBuy(count: Int, skuId: Int, cartId: Int? = null) {
         emitDirectBuyUiState(true)
         viewModelScope.launch(Dispatchers.Main) {
-            val result = repository.getDirectBuy(count, skuId,cartId)
+            val result = repository.getDirectBuy(count, skuId, cartId)
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
                     emitDirectBuyUiState(false, null, result.result.result)
@@ -198,10 +198,10 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     )
 
     //购物车结算
-    fun cartSettlement(body: String,couponId:Int? = null) {
+    fun cartSettlement(body: String, couponId: Int? = null) {
         emitDirectBuyUiState(true)
         viewModelScope.launch(Dispatchers.Main) {
-            val result = repository.cartSettlement(body,couponId)
+            val result = repository.cartSettlement(body, couponId)
             if (result is Result.Success) {
                 if (result.result?.code == 200) {
                     emitDirectBuyUiState(false, null, result.result.result)
@@ -387,35 +387,36 @@ class PaypalViewModel(val repository: PaypalRepository, val provider: Coroutines
     val firstBean = MutableLiveData<OrderRewardFirstBean>()
     fun getFirst() {
         launchTask {
-            HttpHelp.getRetrofit().getIsFirst(BaseRequestBody()).resultCheck({
-                        firstBean.postValue(it)
-            })
+            HttpHelp.getRetrofit().getIsFirst(BaseRequestBody()).resultCheck{
+                firstBean.postValue(it)
+            }
         }
     }
 
     val redAmount = MutableLiveData<FirOrderRedBean>()
 
     val redEnvelopOpen = MutableLiveData<OrderRewardFirstBean>()
-    fun getMoney()
-    {
-        launchTask { val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()
-            inviteMoney.resultCheck({
+    fun getMoney() {
+        launchTask {
+            val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()
+            inviteMoney.resultCheck {
 
                 it?.let {
                     redEnvelopOpen.postValue(it)
                 }
-
-            },{ ErrorState(it) })}
+            }
+        }
     }
 
-    fun getFirstRed(){
+    fun getFirstRed() {
         launchTask {
-        HttpHelp.getRetrofit().openOrderRed(BaseRequestBody()).resultCheck({
-              redAmount.postValue(it)
-        })
-    }
+            HttpHelp.getRetrofit().openOrderRed(BaseRequestBody()).resultCheck{
+                redAmount.postValue(it)
+            }
+        }
 
     }
+
     private fun emitOrderStatusState(
         showLoading: Boolean = false,
         showError: String? = null,

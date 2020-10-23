@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.jzz.treasureship.R
@@ -35,8 +35,8 @@ class CouponMainFragment : Fragment(R.layout.fragment_main_coupon) {
         tv_title.text = "我的卡券"
         rlback.setOnClickListener { (mContext as FragmentActivity).onBackPressed() }
         tab_main_coupon.setTabTitles(arrayOf("未使用","已使用","已过期"))
-        vp_coupon.offscreenPageLimit = 1
-        tab_main_coupon.setViewPager(vp_coupon,object : FragmentPagerAdapter(childFragmentManager,
+        vp_coupon.offscreenPageLimit = 2
+        tab_main_coupon.setViewPager(vp_coupon,object : FragmentStatePagerAdapter(childFragmentManager,
             BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getCount(): Int  = 3
             override fun getItem(position: Int): Fragment = CouponUseFragment.newInstance(position+1)

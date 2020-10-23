@@ -16,6 +16,7 @@ import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.out
 import com.jzz.treasureship.view.CustomInputDialog
 import com.lc.mybaselibrary.ext.getResColor
 import com.lxj.xpopup.XPopup
@@ -75,11 +76,6 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>(),IParentHidden{
                 it.showSuccess?.let { list ->
                     tabs.clear()
                     fragments.clear()
-
-//                    val tmp = TabBean(0, "我的收藏", 1, 1, 1)
-//                    tabs.add(tmp)
-//                    fragments.add(TsbVpFragment.newInstance(tmp))
-
                     for (item in list) {
                         val tabBean = TabBean(item.id, item.title, item.type, item.count, item.deleteShow)
                         tabs.add(tabBean)
@@ -189,6 +185,7 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>(),IParentHidden{
     }
 
     override fun parentHidden(isHidden: Boolean, Type: Int) {
+        "我进入parentHidden01".out()
         setStatusColor()
     }
 }

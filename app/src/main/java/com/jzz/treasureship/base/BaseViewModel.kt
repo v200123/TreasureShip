@@ -7,6 +7,11 @@ import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
 import com.lc.mybaselibrary.*
 import kotlinx.coroutines.*
+import org.json.JSONException
+import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 typealias LaunchBlock = suspend CoroutineScope.() -> Unit
 typealias Cancel = (e: Exception) -> Unit
@@ -24,9 +29,10 @@ open class BaseViewModel : ViewModel() {
     )
 
     fun <T> JzzResponse<T>.resultCheck(
-        block: (T?) -> Unit, errorMsg: (msg: String) -> Unit = {
+        errorMsg: (msg: String) -> Unit = {
             mStateLiveData.postValue(ErrorState(it))
-        }
+        },
+        block: (T?) -> Unit
     ) {
         if (this.success) {
             block(this.result)
@@ -43,25 +49,47 @@ open class BaseViewModel : ViewModel() {
         block: LaunchBlock
     ) {//使用协程封装统一的网络请求处理
         viewModelScope.launch {
-                    //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
+            //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
             mStateLiveData.value = LoadState
-            runCatching { block() }
+            runCatching {
+                block()
+            }
                 .onSuccess {
                     mStateLiveData.value = SuccessState
                 }
-                .onFailure { when (it) {
-                    is CancellationException -> cancel?.invoke(it)
-                    else -> mStateLiveData.value = ErrorState(it.message)
-                } }
+                .onFailure {
+                    getApiException(it, cancel)
+                }
+        }
+    }
 
-//            try {
-//                block()
-//            } catch (e: Exception) {
-//                when (e) {
-//                    is CancellationException -> cancel?.invoke(e)
-//                    else -> mStateLiveData.value = ErrorState(e.message)
-//                }
-//            }
+    private fun getApiException(e: Throwable, cancel: Cancel?) {
+        when (e) {
+            is UnknownHostException -> {
+                mStateLiveData.value = ErrorState("网络异常", -100)
+            }
+            is JSONException -> {//|| e is JsonParseException
+                mStateLiveData.value = ErrorState("数据异常", -100)
+            }
+            is SocketTimeoutException -> {
+                mStateLiveData.value = ErrorState("连接超时", -100)
+            }
+            is ConnectException -> {
+                mStateLiveData.value = ErrorState("连接错误", -100)
+            }
+            is HttpException -> {
+                mStateLiveData.value = ErrorState("http code ${e.code()}", -100)
+            }
+            /**
+             * 如果协程还在运行，个别机型退出当前界面时，viewModel会通过抛出CancellationException，
+             * 强行结束协程，与java中InterruptException类似，所以不必理会,只需将toast隐藏即可
+             */
+            is CancellationException -> {
+                cancel?.invoke(e)
+            }
+            else -> {
+                mStateLiveData.value = ErrorState("未知错误", -100)
+            }
         }
     }
 
@@ -84,27 +112,6 @@ open class BaseViewModel : ViewModel() {
     fun launc(tryBlock: suspend CoroutineScope.() -> Unit) {
         launchOnUI {
             tryCatch(tryBlock, {}, {}, true)
-        }
-    }
-
-
-    fun launchOnUITryCatch(
-        tryBlock: suspend CoroutineScope.() -> Unit,
-        catchBlock: suspend CoroutineScope.(Throwable) -> Unit,
-        finallyBlock: suspend CoroutineScope.() -> Unit,
-        handleCancellationExceptionManually: Boolean
-    ) {
-        launchOnUI {
-            tryCatch(tryBlock, catchBlock, finallyBlock, handleCancellationExceptionManually)
-        }
-    }
-
-    fun launchOnUITryCatch(
-        tryBlock: suspend CoroutineScope.() -> Unit,
-        handleCancellationExceptionManually: Boolean = false
-    ) {
-        launchOnUI {
-            tryCatch(tryBlock, {}, {}, handleCancellationExceptionManually)
         }
     }
 

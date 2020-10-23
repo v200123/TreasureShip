@@ -43,10 +43,12 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
             .dismissOnTouchOutside(false)
             .asLoading()
     }
+
+    protected var mTipDialogText = "请稍等...."
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     private val userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
-
+     val mFragmentManager by lazy { (mContext as AppCompatActivity).supportFragmentManager }
     @ColorRes
     open var mStatusColor: Int = R.color.white
 
@@ -90,9 +92,9 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         initData()
         startObserve()
         initListener()
-        mViewModel.mStateLiveData.observe(viewLifecycleOwner, {
+        mViewModel.mStateLiveData.observe(owner = viewLifecycleOwner, onChanged = {
             if (it is LoadState) {
-                mLoading.show()
+                showLoading(mTipDialogText)
             }
             if (it is SuccessState) {
                 mLoading.dismiss()

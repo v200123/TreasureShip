@@ -16,9 +16,8 @@ class CouponUseViewModel: BaseViewModel() {
 
     fun getCouponList(body: BaseRequestBody){
         launchTask {
-            HttpHelp.getRetrofit().getCouponList(body).resultCheck(
-                {couponData.postValue(it)}
-            )
+            HttpHelp.getRetrofit().getCouponList(body).resultCheck{couponData.postValue(it)}
+
         }
     }
 

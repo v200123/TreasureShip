@@ -282,7 +282,9 @@ interface JzzApiService {
      * 订单信息：获取订单列表
      */
     @POST("/api/v1/order/getOrderList")
-    suspend fun getOrderList(@Body body: RequestBody): JzzResponse<Orders>
+    suspend fun getOrderList(@Body body: BaseRequestBody): JzzResponse<OrdersListBean>
+
+
 
     /**
      * 收货地址管理：添加收货地址

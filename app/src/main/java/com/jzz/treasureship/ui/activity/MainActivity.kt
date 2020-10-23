@@ -26,7 +26,6 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
-import com.jzz.treasureship.ui.addressbook.AddressBookFragment
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.invite.InviteFragment
 import com.jzz.treasureship.ui.login.LoginViewModel
@@ -59,7 +58,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     val mMainHomeFragemnt = MainHomeFragment()
     //    private val mHomeFragment by lazy { HomeFragment.newInstance() }
     private val mTsbFragment by lazy { TreasureBoxFragment.newInstance() }
-    private val mAddressBookFragment by lazy { AddressBookFragment.newInstance() }
     private val mMineFragment by lazy { UserSettingFragment.newInstance() }
 
     override fun getLayoutResId() = R.layout.activity_main

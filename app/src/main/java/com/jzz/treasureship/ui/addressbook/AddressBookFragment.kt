@@ -261,11 +261,11 @@ class AddressBookFragment : BaseVMFragment<AddressbookViewModel>() {
                         R.id.layout_middle_info,
                         R.id.iv_userIco,
                         R.id.layout_times -> {
-                            activity!!.supportFragmentManager.beginTransaction()
-                                .addToBackStack(AddressBookFragment.javaClass.name)
-                                .hide(this@AddressBookFragment)//隐藏当前Fragment
-                                .add(R.id.frame_content, CustomerDetailFragment.newInstance(mAdapter.getItem(position)!!), CustomerDetailFragment.javaClass.name)
-                                .commit()
+//                            activity!!.supportFragmentManager.beginTransaction()
+//                                .addToBackStack(AddressBookFragment.javaClass.name)
+//                                .hide(this@AddressBookFragment)//隐藏当前Fragment
+//                                .add(R.id.frame_content, CustomerDetailFragment.newInstance(mAdapter.getItem(position)!!), CustomerDetailFragment.javaClass.name)
+//                                .commit()
                         }
                     }
                 }

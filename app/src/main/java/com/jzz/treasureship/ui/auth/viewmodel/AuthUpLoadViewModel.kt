@@ -45,9 +45,9 @@ class AuthUpLoadViewModel : BaseViewModel() {
                     val filePart = MultipartBody.Part.createFormData("file", image.name, requestFile)
                     val uploadFile = HttpHelp.getRetrofit().uploadFile(filePart)
                     uploadFile.resultCheck({
-                        ImageResultData.postValue(it)
-                    },{
                         mStateLiveData.postValue(ErrorState("上传失败，请重试"))
+                    },{
+                        ImageResultData.postValue(it)
                     })
                 }
 

@@ -132,7 +132,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
 
     override fun initData() {
-        mViewModel.getCollectVideoList(mTabBean!!.id, null, -1, pageNum)
+//        mViewModel.getCollectVideoList(mTabBean!!.id, null, -1, pageNum)
     }
 
     override fun startObserve() {
@@ -308,6 +308,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onResume() {
         super.onResume()
+        mViewModel.getCollectVideoList(mTabBean!!.id, null, -1, 1)
         GSYVideoManager.releaseAllVideos()
     }
 

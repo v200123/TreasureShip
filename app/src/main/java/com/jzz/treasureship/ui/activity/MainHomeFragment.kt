@@ -116,7 +116,7 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             childFragmentManager.fragments.forEach {
-                if (it is IParentHidden) {
+                if (it is IParentHidden && it.isResumed) {
                     it.parentHidden(hidden, 0)
                 }
             }

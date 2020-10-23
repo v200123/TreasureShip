@@ -135,9 +135,9 @@ class WithdrawViewModel(val repository: WithdrawRepository, val provider: Corout
     val isUse = MutableLiveData<firstBean>()
     fun getCouponUse() {
         launchTask {
-            HttpHelp.getRetrofit().couponIsUse().resultCheck({
+            HttpHelp.getRetrofit().couponIsUse().resultCheck{
                 isUse.postValue(it)
-            })
+            }
         }
     }
 
@@ -146,9 +146,9 @@ class WithdrawViewModel(val repository: WithdrawRepository, val provider: Corout
         launchTask({
             mStateLiveData.postValue(ErrorState("请求取消了"))
         }) {
-            HttpHelp.getRetrofit().getBalance02().resultCheck({
+            HttpHelp.getRetrofit().getBalance02().resultCheck{
                 canWithDraw.postValue(it!!.balance)
-            })
+            }
         }
     }
 

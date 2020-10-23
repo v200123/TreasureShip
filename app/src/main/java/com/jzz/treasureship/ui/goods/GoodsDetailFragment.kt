@@ -652,7 +652,7 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
         (mContext as AppCompatActivity).supportFragmentManager
             .commit {
                 addToBackStack("4")
-                hide(this@GoodsDetailFragment)
+                remove(this@GoodsDetailFragment)
                 add(R.id.frame_content,
                     PaypalFragment.newInstance(
                         1,

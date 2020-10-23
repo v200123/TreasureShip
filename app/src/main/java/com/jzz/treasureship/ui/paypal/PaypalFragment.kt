@@ -56,7 +56,6 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
     //    private  var mCouponId = 0
     private var mPayDialog : BasePopupView? =null
-
     //private val isAudit = 1
     private var mOrderId = -1
     override var mStatusColor: Int = R.color.blue_normal
@@ -107,7 +106,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
         )
         tv_title.text = "订单支付"
         rlback.setOnClickListener {
-            activity!!.supportFragmentManager.popBackStack()
+            mFragmentManager.popBackStack()
         }
 
 
@@ -146,6 +145,14 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
         mViewModel.apply {
 
             agreementUiState.observe(this@PaypalFragment, Observer {
+
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
+
                 it.showSuccess?.let {
                     val intent = Intent(this@PaypalFragment.activity, LicenseActivity::class.java)
                     intent.putExtra("title", "用户购买合同")
@@ -171,6 +178,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             })
 
             payAddressUiState.observe(this@PaypalFragment, Observer {
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
                 it.showSuccess?.let { address ->
                     if (selectedAddress != null) {
                         layout_noAddress.visibility = View.GONE
@@ -225,7 +238,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             })
 // TODO: 2020/9/20 可能有问题
             directBuyUiState.observe(this@PaypalFragment, Observer { directBuyUiModel ->
-
+                if (directBuyUiModel.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
                 directBuyUiModel.showSuccess?.let {
                     mCoupon = it.mCouponList.toMutableList()
                     if (mCoupon.isNullOrEmpty()) {
@@ -447,6 +465,14 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
             //订单状态
             orderStatusState.observe(this@PaypalFragment, Observer { orderStatusModel ->
+
+                if (orderStatusModel.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
+
                 orderStatusModel.showSuccess?.let {
                     if (it.payStatus != 1) {
                             mPayDialog = XPopup.Builder(mContext).dismissOnBackPressed(true)
@@ -461,7 +487,8 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                 }, {
                                     //订单列表
                                     (mContext as AppCompatActivity).supportFragmentManager.commit {
-                                        replace(R.id.frame_content,
+                                        remove(this@PaypalFragment)
+                                        add(R.id.frame_content,
                                             OrdersFragment.newInstance("paypal"),
                                             "OrdersFragment"
                                         )
@@ -498,6 +525,13 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
             //订单信息返回
             orderState.observe(this@PaypalFragment, Observer { orderModel ->
+                if (orderModel.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
+
                 orderModel.showSuccess?.let {
                     mOrderId = it.orderId
                     when (mPayType) {

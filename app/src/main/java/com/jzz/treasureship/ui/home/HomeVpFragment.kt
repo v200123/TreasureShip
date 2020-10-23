@@ -14,7 +14,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -35,7 +34,6 @@ import com.jzz.treasureship.service.RewardService
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
-import com.jzz.treasureship.ui.goods.GoodsDetailFragment02
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
@@ -248,9 +246,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             })
 
             uiState.observe(this@HomeVpFragment, Observer {
-                it.showLoading.let {
-                    //xPopup.show()
-                }
 
                 it.showSuccess?.let { list ->
                     //xPopup.dismiss()
@@ -315,10 +310,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             })
 
             collectUiState.observe(this@HomeVpFragment, {
-                it.showLoading.let {
-                    if (it) {
-                        xPopup.show()
-                    }
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
                 }
 
                 it.showSuccess?.let { list ->
@@ -377,11 +373,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
             operateUiState.observe(this@HomeVpFragment, Observer {
                 //                Log.d("operateUiState", it.showSuccess)
-                it.showLoading.let {
-                    xPopup.show()
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
                 }
                 it.showSuccess?.let { success ->
-                    xPopup.dismiss()
                     when (success) {
                         "添加收藏分类成功" -> {
                             mViewModel.getCollectCategory()
@@ -743,8 +741,8 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                                 .hide((mContext as MainActivity).mMainHomeFragemnt)//隐藏当前Fragment
                                 .add(
                                     R.id.frame_content,
-                                    GoodsDetailFragment02.newInstance("${item.goodsId}"),
-                                    "GoodsDetailFragment02"
+                                    GoodsDetailFragment.newInstance("${item.goodsId}"),
+                                    "GoodsDetailFragment"
                                 )
                                 .commit()
                         }

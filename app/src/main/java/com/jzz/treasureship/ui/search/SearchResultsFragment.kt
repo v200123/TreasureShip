@@ -96,6 +96,9 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
             {
                 etSearch.setText(string)
             }
+            else{
+                etSearch.setText(searchWords)
+            }
         }
         iv_back.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
