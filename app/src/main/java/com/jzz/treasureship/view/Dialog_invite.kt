@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.jzz.treasureship.R
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.invite.InviteFragment
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_invita.view.*
@@ -25,7 +26,8 @@ class Dialog_invite(context: Context) : CenterPopupView(context) {
         view_invite.setOnClickListener {
             (context as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, InviteFragment.newInstance(), InviteFragment.javaClass.name)
+                .hide((context as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, InviteFragment.newInstance(), InviteFragment.javaClass.name)
                 .commit()
             dismiss()
         }

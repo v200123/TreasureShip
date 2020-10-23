@@ -1,11 +1,11 @@
 package com.jzz.treasureship.model.repository
 
 import android.util.Log
-import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import java.io.IOException
+import com.jzz.treasureship.core.*
 
 open class BaseRepository {
     suspend fun <T : Any> apiCall(call: suspend () -> JzzResponse<T>): JzzResponse<T> {

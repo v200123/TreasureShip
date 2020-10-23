@@ -3,10 +3,7 @@ package com.jzz.treasureship.model.api
 import com.ihsanbal.logging.Level
 import com.ihsanbal.logging.LoggingInterceptor
 import com.jzz.treasureship.BuildConfig
-import okhttp3.HttpUrl
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.internal.platform.Platform
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,7 +1,7 @@
 package com.jzz.treasureship.ui.auth.adapter
 
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.DepartmentBean
 

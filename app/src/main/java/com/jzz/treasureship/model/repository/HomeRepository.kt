@@ -1,8 +1,9 @@
 package com.jzz.treasureship.model.repository
 
-import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.core.*
 import com.jzz.treasureship.model.api.JzzRetrofitClient.service
 import com.jzz.treasureship.model.bean.*
+
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody

@@ -32,8 +32,8 @@ import com.jzz.treasureship.ui.auth.viewmodel.AuthUpLoadViewModel
 import com.jzz.treasureship.ui.auth.viewmodel.CommonDataViewModel
 import com.jzz.treasureship.utils.FileUtil
 import com.jzz.treasureship.utils.RealPathFromUriUtils
-import com.jzz.treasureship.view.DialogSimpleList
 import com.jzz.treasureship.utils.out
+import com.jzz.treasureship.view.DialogSimpleList
 import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.fragment_auth_upload.*
 import kotlinx.android.synthetic.main.item_card_unuse.*

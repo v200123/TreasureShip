@@ -1,26 +1,32 @@
 package com.jzz.treasureship.adapter
 
 import android.widget.CheckBox
-import com.jzz.treasureship.BR
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.Address
 
-class AddressAdapter(layoutResId: Int = R.layout.item_address) :
-    BaseBindAdapter<Address>(layoutResId, BR.address) {
+import com.lc.liuchanglib.adapterUtils.setChecked
 
-    override fun convert(helper: BindViewHolder, item: Address) {
-        super.convert(helper, item)
-        helper.setText(R.id.tv_name, item.consignee)
-        helper.setText(R.id.tv_phone, item.mobile)
+class AddressAdapter(layoutResId: Int = R.layout.item_address) :
+    BaseBindAdapter<Address>(layoutResId) {
+
+    init {
+        addChildClickViewIds(
+            R.id.tv_addr_edit,
+            R.id.tv_addr_delete,
+            R.id.layout_item,
+            R.id.cb_setDefault
+        )
+    }
+
+    override fun convert(holder: BaseViewHolder, item: Address) {
+        super.convert(holder, item)
+        holder.setText(R.id.tv_name, item.consignee)
+        holder.setText(R.id.tv_phone, item.mobile)
 
         val address = "${item.provinceName} ${item.cityName} ${item.districtName} ${item.address}"
-        helper.setText(R.id.tv_address, address)
-        helper.getView<CheckBox>(R.id.cb_setDefault).isEnabled = item.isDefault != 1
-        helper.setChecked(R.id.cb_setDefault, item.isDefault == 1)
-
-        helper.addOnClickListener(R.id.tv_addr_edit)
-        helper.addOnClickListener(R.id.tv_addr_delete)
-        helper.addOnClickListener(R.id.layout_item)
-        helper.addOnClickListener(R.id.cb_setDefault)
+        holder.setText(R.id.tv_address, address)
+        holder.getView<CheckBox>(R.id.cb_setDefault).isEnabled = item.isDefault != 1
+        holder.setChecked(R.id.cb_setDefault, item.isDefault == 1)
     }
 }

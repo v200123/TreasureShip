@@ -1,42 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
 
-        <variable
-            name="viewmodel"
-            type="com.jzz.treasureship.ui.login.LoginViewModel" />
-    </data>
-
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <!--Fragment之后就动态的放在该布局文件下-->
         <FrameLayout
             android:id="@+id/frame_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/nav_view"
             android:scrollbars="none" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:background="?android:attr/windowBackground"
-            app:itemBackground="@null"
-            app:itemTextColor="@color/selector_bnv"
-            app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent" />
-    </RelativeLayout>
-
-</layout>
+    </FrameLayout>

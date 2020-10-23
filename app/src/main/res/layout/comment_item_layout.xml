@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -25,11 +27,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
+                <com.jzz.treasureship.view.clipview.CircleImageView
                     android:id="@+id/iv_commnet_head"
                     android:layout_width="40.0dp"
                     android:layout_height="40.0dp"
-                    android:scaleType="fitXY"
+
                     android:src="@drawable/icon_wechat" />
 
                 <LinearLayout
@@ -48,7 +50,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="小月月"
-                            android:textColor="#666666" />
+                            android:textStyle="bold"
+                            android:textColor="@color/black" />
 
                         <TextView
                             android:id="@+id/tv_comment_date"
@@ -89,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10.0dp"
-                        android:text="内容内容内容内容内容内容内容内容内容内容内容内容  2019-12-12"
+                        tools:text="内容内容内容内容内容内容内容内容内容内容内容内容  2019-12-12"
                         android:textColor="#333333"
                         android:textSize="14.0sp" />
                 </LinearLayout>
@@ -103,7 +106,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/comments_child_shape" />
 
-<!--            <LinearLayout-->
+            <!--            <LinearLayout-->
 <!--                android:background="@drawable/comments_child_shape"-->
 <!--                android:layout_marginLeft="50dp"-->
 <!--                android:id="@+id/layout_seeMore"-->

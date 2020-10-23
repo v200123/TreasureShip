@@ -3,6 +3,8 @@ package com.jzz.treasureship.model.api
 import com.ihsanbal.logging.Level
 import com.ihsanbal.logging.LoggingInterceptor
 import com.jzz.treasureship.BuildConfig
+import com.jzz.treasureship.MyDoraemoKit
+import com.tencent.mmkv.MMKV
 import okhttp3.OkHttpClient
 import okhttp3.internal.platform.Platform
 import retrofit2.Retrofit
@@ -15,6 +17,8 @@ import java.util.concurrent.TimeUnit
  *@Auth: 29579
  **/
 class HttpHelp {
+//    val BASE_URL by lazy { if(MMKV.mmkvWithID(MyDoraemoKit.Kit_Name).decodeBool(MyDoraemoKit.Kit_Key)) "http://bj.jzzchina.com/" else BuildConfig.BaseUrl }
+
     companion object{
         fun getRetrofit():JzzApiService{
             val okHttpClient = OkHttpClient.Builder().callTimeout(30L, TimeUnit.SECONDS)
@@ -31,7 +35,7 @@ class HttpHelp {
                 ).build()
 
          return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BuildConfig.BaseUrl)
+                .baseUrl(if(MMKV.mmkvWithID(MyDoraemoKit.Kit_Name).decodeBool(MyDoraemoKit.Kit_Key)) "http://bj.jzzchina.com/" else BuildConfig.BaseUrl)
                 .client(okHttpClient)
                 .build()
                 .create(JzzApiService::class.java)

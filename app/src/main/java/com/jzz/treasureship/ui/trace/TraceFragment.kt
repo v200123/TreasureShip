@@ -113,7 +113,7 @@ class TraceFragment : BaseVMFragment<TraceViewModel>() {
                     tv_ExpressCompany.text = it.name
                     tv_traceNo.text = it.no
 
-                    mAdapter.setNewData(it.list)
+                    mAdapter.setList(it.list)
                     mAdapter.notifyDataSetChanged()
                 }
 

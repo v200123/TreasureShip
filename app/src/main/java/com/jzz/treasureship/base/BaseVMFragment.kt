@@ -5,23 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.jzz.treasureship.App
+import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.bean.UserDialogInformationBean
 import com.jzz.treasureship.utils.FragmentBackHandler
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.normalOut
+import com.jzz.treasureship.utils.out
 import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.SuccessState
-import com.jzz.treasureship.utils.out
+import com.lc.mybaselibrary.ext.getResColor
+
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.tencent.mmkv.MMKV
@@ -38,9 +43,15 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
             .dismissOnTouchOutside(false)
             .asLoading()
     }
+
+    protected var mTipDialogText = "请稍等...."
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     private val userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
+     val mFragmentManager by lazy { (mContext as AppCompatActivity).supportFragmentManager }
+    @ColorRes
+    open var mStatusColor: Int = R.color.white
+
 //    var user = GsonUtils.fromJson(userInfo, User::class.java)
 //    private var isAuthDialog by PreferenceUtils(PreferenceUtils.auth_is_show, "")
 
@@ -81,9 +92,9 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         initData()
         startObserve()
         initListener()
-        mViewModel.mStateLiveData.observe(viewLifecycleOwner, {
+        mViewModel.mStateLiveData.observe(owner = viewLifecycleOwner, onChanged = {
             if (it is LoadState) {
-                mLoading.show()
+                showLoading(mTipDialogText)
             }
             if (it is SuccessState) {
                 mLoading.dismiss()
@@ -110,14 +121,17 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
+        if (!hidden) {
+            setStatusColor()
+        }
         "我${this::class.java.name}\t\tFragment进入到onHiddenChanged了\n ".out()
     }
 
     override fun onResume() {
         super.onResume()
         GSYVideoManager.onResume()
-        "我${this::class.java.name}\t进入到onResume了\n".out()
-
+        setStatusColor(mStatusColor)
+        "我${this::class.java.name}\t进入到onResume了\n".normalOut(true)
         "当前的FragmentManager中有以下Fragment：｛".normalOut(true)
         (mContext as AppCompatActivity).supportFragmentManager.fragments.forEach {
 
@@ -125,10 +139,14 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
 
         }
         "}".normalOut(true)
+        "\n\n当前的FragmentManager中的返回栈有${(mContext as AppCompatActivity).supportFragmentManager.backStackEntryCount}的栈体".normalOut(
+            true
+        )
+
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
 //        判断当天是否显示了未认证的弹窗
         if (userInfo != "") {
-           val user = GsonUtils.fromJson(userInfo, User::class.java)
+            val user = GsonUtils.fromJson(userInfo, User::class.java)
             val mUserDialogShow =
                 MMKV.defaultMMKV()
                     .decodeParcelable(user.id.toString(), UserDialogInformationBean::class.java)
@@ -163,11 +181,11 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
 
     }
 
-    fun showLoading(msg:String? = null){
-        mLoading.setTitle(msg?:"").show()
+    fun showLoading(msg: String? = null) {
+        mLoading.setTitle(msg ?: "").show()
     }
 
-    fun hideLoading(){
+    fun hideLoading() {
         mLoading.dismiss()
     }
 
@@ -181,5 +199,11 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         return true
     }
 
+    protected fun setStatusColor(@ColorRes colorRes: Int = mStatusColor) {
+        StateAppBar.setStatusBarLightMode(
+            mContext as AppCompatActivity,
+            mContext.getResColor(colorRes)
+        )
+    }
 
 }

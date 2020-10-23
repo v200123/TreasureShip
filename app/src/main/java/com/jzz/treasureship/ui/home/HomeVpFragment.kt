@@ -18,9 +18,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.BR
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.AnswersAdapter
@@ -31,12 +32,15 @@ import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.VideoData
 import com.jzz.treasureship.service.RewardService
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.questions.QuestionsFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.out
 import com.jzz.treasureship.view.*
+import com.lc.mybaselibrary.ext.getResDrawable
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -127,54 +131,38 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             layoutManager = LinearLayoutManager(context).also {
                 it.orientation = LinearLayoutManager.VERTICAL
             }
-
-            mAdapter.run {
-                onItemChildClickListener = this@HomeVpFragment.onItemChildClickListener
-                if (mTabPosition == 0) {
-                    val view = View.inflate(context, R.layout.layout_home_header, null)
-                    view.findViewById<ImageView>(R.id.iv_ad).setOnClickListener {
-                        mViewModel.getQuestionnaire()
-                    }
-                    addHeaderView(view)
-                }
-            }
-
-
             adapter = mAdapter
-        }
-    }
+            mAdapter.run {
+                setOnItemChildClickListener() { adapter, view, position ->
+                    when (view.id) {
+                        R.id.layout_like -> {
+                            if (isLogin) {
+                                mViewModel.getCollectCategory()
+                                currentVideoID = mAdapter.getItem(position)!!.id
+                                currentPosition = position
+                            } else {
+                                switchLogin()
+                            }
+                        }
+                        R.id.layout_comment -> {
+                            if (isLogin) {
+                                mViewModel.getCommentList(-1, mAdapter.getItem(position).id)
+                                XPopup.Builder(this@HomeVpFragment.context)
+                                    .asCustom(
+                                        CustomCommentBottomPopup(
+                                            mContext,
+                                            mViewModel,
+                                            mAdapter.getItem(position).id,
+                                            commentsAdapter
+                                        )
+                                    ).show()
+                                currentVideoID = mAdapter.getItem(position).id
+                                currentPosition = position
+                            } else {
+                                switchLogin()
+                            }
 
-    private var onItemChildClickListener =
-        BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-            when (view.id) {
-                R.id.layout_like -> {
-                    if (isLogin) {
-                        mViewModel.getCollectCategory()
-                        currentVideoID = mAdapter.getItem(position)!!.id
-                        currentPosition = position
-                    } else {
-                        switchLogin()
-                    }
-                }
-                R.id.layout_comment -> {
-                    if (isLogin) {
-                        mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
-                        XPopup.Builder(this@HomeVpFragment.context)
-                            .asCustom(
-                                CustomCommentBottomPopup(
-                                    this@HomeVpFragment.context!!,
-                                    mViewModel,
-                                    mAdapter.getItem(position)!!.id,
-                                    commentsAdapter
-                                )
-                            ).show()
-                        currentVideoID = mAdapter.getItem(position)!!.id
-                        currentPosition = position
-                    } else {
-                        switchLogin()
-                    }
-
-                }
+                        }
 //            R.id.layout_share -> {
 //                XPopup.Builder(view.context).asCustom(
 //                    CustomShareBottomPopup(
@@ -186,8 +174,34 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 //                    )
 //                ).show()
 //            }
+                    }
+                }
+
             }
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                    val findLastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                    "firstVisibleItem $findFirstVisibleItemPosition , lastVisibleItem $findLastVisibleItemPosition".out(
+                        true
+                    )
+                    val playPosition = GSYVideoManager.instance().playPosition
+                    if (playPosition >= 0) {
+                        if ((playPosition < findFirstVisibleItemPosition || playPosition > findLastVisibleItemPosition)) {
+                            //释放掉视频
+                            GSYVideoManager.releaseAllVideos()
+                            mAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            })
+
         }
+    }
+
 
     override fun initData() {
 //        if (mTab == 0) {
@@ -201,7 +215,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
     override fun startObserve() {
         mViewModel.apply {
             val xPopup =
-                XPopup.Builder(context).dismissOnBackPressed(false).dismissOnTouchOutside(false)
+                XPopup.Builder(context).dismissOnBackPressed(true).dismissOnTouchOutside(false)
                     .asLoading()
 
             adState.observe(this@HomeVpFragment, Observer {
@@ -209,6 +223,14 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 it.showSuccess?.let { ad ->
                     ad.list?.let { list ->
                         if (list.isNotEmpty()) {
+                            if (mTabPosition == 0) {
+                                mAdapter.removeAllHeaderView()
+                                val view = View.inflate(context, R.layout.layout_home_header, null)
+                                view.findViewById<ImageView>(R.id.iv_ad).setOnClickListener {
+                                    mViewModel.getQuestionnaire()
+                                }
+                                mAdapter.addHeaderView(view)
+                            }
                             list[0]?.let { item ->
                                 iv_ad?.let { Glide.with(mContext).load(item.adCover).into(iv_ad) }
                             }
@@ -224,9 +246,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             })
 
             uiState.observe(this@HomeVpFragment, Observer {
-                it.showLoading.let {
-                    //xPopup.show()
-                }
 
                 it.showSuccess?.let { list ->
                     //xPopup.dismiss()
@@ -291,10 +310,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             })
 
             collectUiState.observe(this@HomeVpFragment, {
-                it.showLoading.let {
-                    if (it) {
-                        xPopup.show()
-                    }
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
                 }
 
                 it.showSuccess?.let { list ->
@@ -324,8 +344,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
                             override fun onBackPressed(popupView: BasePopupView?): Boolean {
 
-                                Log.d("TAG", "onBackPressed:哈哈哈哈哈 ")
-                                return true
+                                return false
                             }
                         })
                         .asCustom(
@@ -354,11 +373,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
             operateUiState.observe(this@HomeVpFragment, Observer {
                 //                Log.d("operateUiState", it.showSuccess)
-                it.showLoading.let {
-                    xPopup.show()
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
                 }
                 it.showSuccess?.let { success ->
-                    xPopup.dismiss()
                     when (success) {
                         "添加收藏分类成功" -> {
                             mViewModel.getCollectCategory()
@@ -379,7 +400,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             ToastUtils.showShort("点赞成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
-                        "取消点赞" ->{
+                        "取消点赞" -> {
                             ToastUtils.showShort("取消点赞成功")
                             mViewModel.getCommentList(-1, currentVideoID)
                         }
@@ -414,7 +435,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let { comments ->
                     commentsAdapter.run {
-                        setNewData(comments.data)
+                        setList(comments.data.toMutableList())
                         notifyDataSetChanged()
                     }
                     xPopup.dismiss()
@@ -436,9 +457,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         1 -> {
                             //未答题
                             if (System.currentTimeMillis() in it.receiveDate!!.startDateTimeInMillis - 10000 until it.receiveDate.startDateTimeInMillis + 10000) {
-                                mContext.startService(Intent(mContext, RewardService::class.java).apply {
-                                    putExtra(RewardService.TestQuestions, it.questionnaire)
-                                })
+                                mContext.startService(
+                                    Intent(
+                                        mContext,
+                                        RewardService::class.java
+                                    ).apply {
+                                        putExtra(RewardService.TestQuestions, it.questionnaire)
+                                    })
                             } else
                                 XPopup.Builder(context).setPopupCallback(object : SimpleCallback() {
                                     override fun onDismiss(popupView: BasePopupView) {
@@ -591,27 +616,34 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         private val mViewModel = viewModel
         private val mTabId = tabId
 
-        override fun convert(helper: BindViewHolder, item: VideoData) {
-            super.convert(helper, item)
+        init {
+            addChildClickViewIds(
+                R.id.layout_like,
+                R.id.layout_comment
+            )
+        }
+
+        override fun convert(holder: BaseViewHolder, item: VideoData) {
+            super.convert(holder, item)
 
             if (mFrom == 0) {
                 if (item.position == 0) {
-                    helper.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
+                    holder.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
                 } else {
-                    helper.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
+                    holder.getView<LinearLayout>(R.id.layout_top1).visibility = View.GONE
                 }
             }
-            helper.getView<ImageView>(R.id.iv_tsbMore).visibility = View.GONE
+            holder.getView<ImageView>(R.id.iv_tsbMore).visibility = View.GONE
 
             if (mFrom == 1) {
-                helper.getView<ImageView>(R.id.iv_tsbMore).visibility = View.VISIBLE
+                holder.getView<ImageView>(R.id.iv_tsbMore).visibility = View.VISIBLE
             }
             GSYVideoType.setRenderType(GSYVideoType.SUFRACE)
             GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL)
 
-            Glide.with(mContext).load(item.videoCoverUrl).into(helper.getView(R.id.thumbImage))
+            Glide.with(mContext).load(item.videoCoverUrl).into(holder.getView(R.id.thumbImage))
 
-            helper.getView<TextView>(R.id.totalTime).text = formatTimeS(item.duration.toLong())
+            holder.getView<TextView>(R.id.totalTime).text = formatTimeS(item.duration.toLong())
 
 
             GSYVideoOptionBuilder().setIsTouchWiget(false)
@@ -624,11 +656,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 .setReleaseWhenLossAudio(true)
                 .setShowFullAnimation(true)
                 .setNeedLockFull(true)
-                .setPlayPosition(helper.layoutPosition)
+                .setPlayPosition(holder.layoutPosition)
                 .setVideoAllCallBack(object : GSYSampleCallBack() {
                     override fun onPrepared(url: String, vararg objects: Any) {
                         super.onPrepared(url, *objects)
-                        if (!helper.getView<CustomVideoPlayer>(R.id.video_player).isIfCurrentIsFullscreen) {
+                        if (!holder.getView<CustomVideoPlayer>(R.id.video_player).isIfCurrentIsFullscreen) {
                             //静音
                             GSYVideoManager.instance().isNeedMute = false
                         }
@@ -638,37 +670,38 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         super.onQuitFullscreen(url, *objects)
                         //全屏不静音
                         GSYVideoManager.instance().isNeedMute = false
-                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility =
+                        holder.getView<LinearLayout>(R.id.layout_checkGoods).visibility =
                             View.VISIBLE
-                        helper.getView<TextView>(R.id.totalTime).visibility = View.VISIBLE
+                        holder.getView<TextView>(R.id.totalTime).visibility = View.VISIBLE
                         GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL)
                     }
 
                     override fun onEnterFullscreen(url: String, vararg objects: Any) {
                         super.onEnterFullscreen(url, *objects)
                         GSYVideoManager.instance().isNeedMute = false
-                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility = View.GONE
-                        helper.getView<TextView>(R.id.totalTime).visibility = View.INVISIBLE
+                        holder.getView<LinearLayout>(R.id.layout_checkGoods).visibility = View.GONE
+                        holder.getView<TextView>(R.id.totalTime).visibility = View.INVISIBLE
                         GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_16_9)
                     }
 
                     override fun onClickStartIcon(url: String?, vararg objects: Any?) {
                         super.onClickStartIcon(url, *objects)
-                        helper.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
+                        holder.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
 
                     }
 
                     override fun onClickResume(url: String?, vararg objects: Any?) {
                         super.onClickResume(url, *objects)
-                        helper.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
+                        holder.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.GONE
                     }
 
                     override fun onClickStop(url: String?, vararg objects: Any?) {
                         super.onClickStop(url, *objects)
-                        helper.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.VISIBLE
+                        holder.getView<RelativeLayout>(R.id.layout_unPlay).visibility = View.VISIBLE
                     }
-                }).build(helper.getView<CustomVideoPlayer>(R.id.video_player))
-            helper.getView<CustomVideoPlayer>(R.id.video_player).apply {
+
+                }).build(holder.getView<CustomVideoPlayer>(R.id.video_player))
+            holder.getView<CustomVideoPlayer>(R.id.video_player).apply {
                 val spannerText =
                     SpannableStringBuilder(item.mark ?: "").append(item.videoName).apply {
                         if (!item.mark.isNullOrEmpty())
@@ -682,7 +715,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 setMarkAndTitle(spannerText)
                 fullscreenButton.setOnClickListener {
                     resolveFullBtn(
-                        helper.getView<CustomVideoPlayer>(
+                        holder.getView<CustomVideoPlayer>(
                             R.id.video_player
                         ) as StandardGSYVideoPlayer
                     )
@@ -693,22 +726,23 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             when (mFrom) {
                 0 -> {
                     if (item.haveGoods == 0) {
-                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
+                        holder.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
                             View.INVISIBLE
                     } else {
-                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
+                        holder.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
                             View.VISIBLE
-                        helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.setOnClickListener {
+                        holder.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.setOnClickListener {
                             if (!isLogin) {
                                 switchLogin()
                                 return@setOnClickListener
                             }
                             activity!!.supportFragmentManager.beginTransaction()
                                 .addToBackStack(HomeVpFragment.javaClass.name)
-                                .hide(this@HomeVpFragment.parentFragment!!)//隐藏当前Fragment
-                                .add(R.id.frame_content,
+                                .hide((mContext as MainActivity).mMainHomeFragemnt)//隐藏当前Fragment
+                                .add(
+                                    R.id.frame_content,
                                     GoodsDetailFragment.newInstance("${item.goodsId}"),
-                                    GoodsDetailFragment.javaClass.name
+                                    "GoodsDetailFragment"
                                 )
                                 .commit()
                         }
@@ -716,7 +750,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                 }
             }
 
-            helper.getView<CustomVideoPlayer>(R.id.video_player).iv_tsbMore.setOnClickListener {
+            holder.getView<ImageView>(R.id.iv_tsbMore).setOnClickListener {
                 XPopup.Builder(mContext).setPopupCallback(object : SimpleCallback() {
                     override fun onDismiss(popupView: BasePopupView) {
                         super.onDismiss(popupView)
@@ -739,13 +773,14 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             val keywords = item.keywords?.split(',')
-            helper.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).removeAllViews()
+            val keyContainer = holder.getView<CustomFlexlayout>(R.id.keywordsFlexlayout)
+            keyContainer.removeAllViews()
             if (!keywords.isNullOrEmpty()) {
                 for (ele in keywords) {
-                    if (ele.isNotBlank()) {
+                    if (ele.isNotBlank() && keyContainer.childCount < 2) {
                         val tv = LayoutInflater.from(mContext).inflate(
                             R.layout.layout_home_video_keywords,
-                            helper.getView(R.id.keywordsFlexlayout),
+                            holder.getView(R.id.keywordsFlexlayout),
                             false
                         ) as TextView
                         tv.maxEms = 6
@@ -753,28 +788,27 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         tv.ellipsize = TextUtils.TruncateAt.END
                         tv.text = "$ele"
                         //添加到父View
-                        helper.getView<CustomFlexlayout>(R.id.keywordsFlexlayout).addView(tv)
+                        keyContainer.addView(tv)
                     }
                 }
             }
 
             if (item.like == 0) {
-                helper.setImageDrawable(
+                holder.setImageDrawable(
                     R.id.iv_like,
-                    mContext.resources.getDrawable(R.drawable.home_unfavorite)
+
+                    mContext.getResDrawable(R.drawable.home_unfavorite)
                 )
             } else {
-                helper.setImageDrawable(
+                holder.setImageDrawable(
                     R.id.iv_like,
-                    mContext.resources.getDrawable(R.drawable.home_favorite)
+                    mContext.getResDrawable(R.drawable.home_favorite)
                 )
             }
-            helper.setText(R.id.tv_likeCount, "${toNum(item.likeCount)}")
-            helper.setText(R.id.tv_commentCount, "${toNum(item.commentCount)}")
+            holder.setText(R.id.tv_likeCount, "${toNum(item.likeCount)}")
+            holder.setText(R.id.tv_commentCount, "${toNum(item.commentCount)}")
 //            helper.setText(R.id.tv_shareCount, "${toNum(item.shareCount)}")
 
-            helper.addOnClickListener(R.id.layout_like)
-            helper.addOnClickListener(R.id.layout_comment)
 //            helper.addOnClickListener(R.id.layout_share)
 
         }
@@ -810,7 +844,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
     }
 
     private fun switchLogin() {
-        startActivity(Intent(this.activity!!, LoginActivity::class.java))
+        startActivity(Intent(mContext, LoginActivity::class.java))
     }
 
     fun toNum(num: Int): String {

@@ -1,5 +1,6 @@
 package com.jzz.treasureship.model.bean
 
+
 import com.jzz.treasureship.view.adressselectorlib.CityInterface
 import java.util.ArrayList
 

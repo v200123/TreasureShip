@@ -5,7 +5,6 @@ import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.CouponBean
-
 /**
  *@author LC
  *@createTime 2020/9/19 22:28
@@ -17,9 +16,8 @@ class CouponUseViewModel: BaseViewModel() {
 
     fun getCouponList(body: BaseRequestBody){
         launchTask {
-            HttpHelp.getRetrofit().getCouponList(body).resultCheck(
-                {couponData.postValue(it)}
-            )
+            HttpHelp.getRetrofit().getCouponList(body).resultCheck{couponData.postValue(it)}
+
         }
     }
 

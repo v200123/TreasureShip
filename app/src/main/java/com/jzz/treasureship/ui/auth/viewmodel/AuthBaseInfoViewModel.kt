@@ -1,16 +1,11 @@
 package com.jzz.treasureship.ui.auth.viewmodel
-
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.base.BaseViewModel
-import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.CityPlaces
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.lc.mybaselibrary.ErrorState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  *@date: 2020/9/11

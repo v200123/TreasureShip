@@ -7,6 +7,7 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.paypal.PaypalViewModel
+
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.BasePopupView
 import kotlinx.android.synthetic.main.include_title.*
@@ -29,7 +30,11 @@ class PaySuccessActivity : BaseVMActivity<PaypalViewModel>() {
         tv_title.text = ""
         rlback.visibility = View.GONE
         tv_success_pay_money.text = "订单金额:\t" + intent.getFloatExtra(orderMoney, 0.0f)
-        tv_back_money.setOnClickListener { mContext.start<MainActivity> { } }
+        tv_back_money.setOnClickListener {
+            mContext.start<MainActivity> {
+                setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+        }
         tv_checkOrder.setOnClickListener {
             val intent = Intent(this, OrdersActivity::class.java)
             startActivity(intent)
@@ -44,11 +49,15 @@ class PaySuccessActivity : BaseVMActivity<PaypalViewModel>() {
     override fun startObserve() {
         mViewModel.redEnvelopOpen.observe(owner = this, onChanged = {
             showRedEnvelopeOpen?.dismiss()
-            showRedEnvelopeOpen = App.dialogHelp.showRedEnvelopeOpen(it.mInviteRewardCount, it.mInviteRewardAmount, {
+            showRedEnvelopeOpen =
+                App.dialogHelp.showRedEnvelopeOpen(it.mInviteRewardCount, it.mInviteRewardAmount, {
 //                    mViewModel.getMoney()
                 }, unChange = {
                     finish()
-                    mContext.start<MainActivity> { putExtra(MainActivity.gotoInvite, true) }
+                    mContext.start<MainActivity> {
+                        putExtra(MainActivity.gotoInvite, true)
+                        setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    }
                 }
                 )
                 {
@@ -58,7 +67,7 @@ class PaySuccessActivity : BaseVMActivity<PaypalViewModel>() {
 
         mViewModel.firstBean.observe(owner = this) {
             if (it.mStatus == 1) {
-                App.dialogHelp.showRedEnvelopeClose(it.mInviteRewardCount+1) {
+                App.dialogHelp.showRedEnvelopeClose(it.mInviteRewardCount + 1) {
                     mViewModel.getFirstRed()
                 }
             }
@@ -71,7 +80,10 @@ class PaySuccessActivity : BaseVMActivity<PaypalViewModel>() {
 //                    mViewModel.getMoney()
                 }, unChange = {
                     finish()
-                    mContext.start<MainActivity> { putExtra(MainActivity.gotoInvite, true) }
+                    mContext.start<MainActivity> {
+                        putExtra(MainActivity.gotoInvite, true)
+                        setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    }
                 }
             ) {
                 mViewModel.getMoney()

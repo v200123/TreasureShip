@@ -1,19 +1,14 @@
 package com.jzz.treasureship.ui.msg
 
-import android.app.AppComponentFactory
 import android.graphics.Typeface
-import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
-import com.jzz.treasureship.ui.usersetting.UserSettingFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_msg_center.*
 import kotlinx.android.synthetic.main.include_title.*
@@ -36,7 +31,7 @@ class MsgFragment : BaseVMFragment<MsgViewModel>() {
             mActivity?.onBackPressed()
         }
 
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "消息中心"
 
         val titles = arrayOf("通知消息", "评论消息")

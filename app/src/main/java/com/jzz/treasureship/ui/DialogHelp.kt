@@ -27,8 +27,7 @@ class DialogHelp(var context: Context) {
                 super.onDismiss(popupView)
                 block()
             }
-        }).asCustom(Dialog_approve_success
-            (context,name))
+        }).asCustom(Dialog_approve_success(context,name))
             .show()
     }
 

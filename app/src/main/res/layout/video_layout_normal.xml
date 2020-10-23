@@ -203,13 +203,7 @@
                 android:src="@drawable/icon_hot" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_tsbMore"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/icon_tsb_more"
-            />
+
 
     </LinearLayout>
 

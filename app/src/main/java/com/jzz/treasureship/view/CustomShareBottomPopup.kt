@@ -12,7 +12,6 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.login.LoginActivity
-
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.changeImage
 import com.lxj.xpopup.core.BottomPopupView

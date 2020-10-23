@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -33,11 +34,12 @@ import com.jzz.treasureship.ui.otherspay.OthersPayFragment
 import com.jzz.treasureship.utils.MoneyUtil
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.DialogChoiceCoupon
+import com.lc.mybaselibrary.ext.getResColor
+import com.lc.mybaselibrary.ext.getResDrawable
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.tencent.mm.opensdk.modelpay.PayReq
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_paypal.*
 import kotlinx.android.synthetic.main.include_title.*
 import org.json.JSONArray
@@ -51,10 +53,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
     private val isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
     var tmpAddress by PreferenceUtils(PreferenceUtils.SELECTED_ADDRESS, "")
     private lateinit var mCoupon: MutableList<Coupon>
-//    private  var mCouponId = 0
 
+    //    private  var mCouponId = 0
+    private var mPayDialog : BasePopupView? =null
     //private val isAudit = 1
     private var mOrderId = -1
+    override var mStatusColor: Int = R.color.blue_normal
 
     //默认地址
     private var mAddress: ReceiveAddress? = null
@@ -94,15 +98,15 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
-        ll_view.background = context!!.getDrawable(R.drawable.toolbar_bg)
+        //activity!!.nav_view.visibility = View.GONE
+        ll_view.background = mContext.getResDrawable(R.drawable.toolbar_bg)
         StateAppBar.setStatusBarLightMode(
             this.activity,
-            context!!.resources.getColor(R.color.blue_normal)
+            mContext.getResColor(R.color.blue_normal)
         )
         tv_title.text = "订单支付"
         rlback.setOnClickListener {
-            activity!!.supportFragmentManager.popBackStack()
+            mFragmentManager.popBackStack()
         }
 
 
@@ -141,6 +145,14 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
         mViewModel.apply {
 
             agreementUiState.observe(this@PaypalFragment, Observer {
+
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
+
                 it.showSuccess?.let {
                     val intent = Intent(this@PaypalFragment.activity, LicenseActivity::class.java)
                     intent.putExtra("title", "用户购买合同")
@@ -166,6 +178,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             })
 
             payAddressUiState.observe(this@PaypalFragment, Observer {
+                if (it.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
                 it.showSuccess?.let { address ->
                     if (selectedAddress != null) {
                         layout_noAddress.visibility = View.GONE
@@ -220,7 +238,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             })
 // TODO: 2020/9/20 可能有问题
             directBuyUiState.observe(this@PaypalFragment, Observer { directBuyUiModel ->
-
+                if (directBuyUiModel.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
                 directBuyUiModel.showSuccess?.let {
                     mCoupon = it.mCouponList.toMutableList()
                     if (mCoupon.isNullOrEmpty()) {
@@ -239,7 +262,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         mOccupationBean = Coupon(mCouponId = it.mCouponId)
                         tv_paypal_coupon.text = "-¥${it.mCouponValue}"
                         tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
-                    }else{
+                    } else {
                         mOccupationBean = Coupon(mCouponId = 0)
                     }
 
@@ -300,7 +323,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                             it.orientation = LinearLayoutManager.VERTICAL
                         }
 
-                        val list: ArrayList<CartGoodsSku?> = ArrayList()
+                        val list: ArrayList<CartGoodsSku> = ArrayList()
                         for (shop in it.mShops!!) {
                             for (sku in shop.mCartGoodsSkuList!!) {
                                 sku.let {
@@ -310,7 +333,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         }
                         adapter = cartSelectedAdapter
 
-                        cartSelectedAdapter.setNewData(list)
+                        cartSelectedAdapter.setNewInstance(list.toMutableList())
                         cartSelectedAdapter.notifyDataSetChanged()
 
                     }
@@ -442,33 +465,45 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
             //订单状态
             orderStatusState.observe(this@PaypalFragment, Observer { orderStatusModel ->
+
+                if (orderStatusModel.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
+
                 orderStatusModel.showSuccess?.let {
                     if (it.payStatus != 1) {
-                        XPopup.Builder(context).dismissOnBackPressed(false)
-                            .dismissOnTouchOutside(false)
-                            .asConfirm("订单提示", "您的订单还没有支付成功", "订单列表", "继续支付", {
-                                //继续支付
-                                val body: JSONObject = JSONObject()
-                                body.put("orderId", mOrderId)
-                                body.put("orderType", 1)
-                                body.put("receiveAddressId", selectedAddress?.mId ?: -1)
-                                mViewModel.createOrder(body)
-                            }, {
-                                //订单列表
-                                activity!!.supportFragmentManager.beginTransaction()
-                                    .hide(this@PaypalFragment)
-                                    .add(
-                                        R.id.frame_content,
-                                        OrdersFragment.newInstance("paypal"),
-                                        OrdersFragment.javaClass.name
-                                    )
-                                    .commit()
-                            }, false).show()
+                            mPayDialog = XPopup.Builder(mContext).dismissOnBackPressed(true)
+                                .dismissOnTouchOutside(false)
+                                .asConfirm("订单提示", "您的订单还没有支付成功", "订单列表", "继续支付", {
+                                    //继续支付
+                                    val body: JSONObject = JSONObject()
+                                    body.put("orderId", mOrderId)
+                                    body.put("orderType", 1)
+                                    body.put("receiveAddressId", selectedAddress?.mId ?: -1)
+                                    mViewModel.createOrder(body)
+                                }, {
+                                    //订单列表
+                                    (mContext as AppCompatActivity).supportFragmentManager.commit {
+                                        remove(this@PaypalFragment)
+                                        add(R.id.frame_content,
+                                            OrdersFragment.newInstance("paypal"),
+                                            "OrdersFragment"
+                                        )
+                                    }
+
+                                }, false).show()
                     } else {
                         mOrderId = -1
                         (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
-                        startActivity(Intent(context, PaySuccessActivity::class.java).putExtra(PaySuccessActivity
-                            .orderMoney,it.payMoney))
+                        startActivity(
+                            Intent(context, PaySuccessActivity::class.java).putExtra(
+                                PaySuccessActivity
+                                    .orderMoney, it.payMoney
+                            )
+                        )
                     }
                 }
 
@@ -490,12 +525,19 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
 
             //订单信息返回
             orderState.observe(this@PaypalFragment, Observer { orderModel ->
+                if (orderModel.showLoading)
+                {
+                    showLoading("请稍后...")
+                }else{
+                    hideLoading()
+                }
+
                 orderModel.showSuccess?.let {
                     mOrderId = it.orderId
                     when (mPayType) {
                         //推荐Ta，代付
                         -1 -> {
-                            activity!!.supportFragmentManager.beginTransaction()
+                            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                                 .addToBackStack(PaypalFragment.javaClass.name)
                                 .hide(this@PaypalFragment)//隐藏当前Fragment
                                 .add(
@@ -510,8 +552,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                             if (it.totalFee == 0.00) {
                                 mOrderId = -1
                                 (mContext as AppCompatActivity).supportFragmentManager.popBackStack()
-                                startActivity(Intent(context, PaySuccessActivity::class.java).putExtra(PaySuccessActivity
-                                    .orderMoney,"${it.totalFee}"))
+                                startActivity(
+                                    Intent(context, PaySuccessActivity::class.java).putExtra(
+                                        PaySuccessActivity
+                                            .orderMoney, "${it.totalFee}"
+                                    )
+                                )
                             } else {
                                 weChatPay(it)
                             }
@@ -567,7 +613,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                     tv_paypal_coupon.setTextColor(Color.parseColor("#FF999999"))
                                     AreadyPprice(null)
                                 } else {
-                                    if(coupon.mCouponId != mOccupationBean.mCouponId?:-1 ) {
+                                    if (coupon.mCouponId != mOccupationBean.mCouponId ?: -1) {
                                         mOccupationBean = coupon
                                         AreadyPprice("${mOccupationBean.mCouponId}")
                                     }
@@ -635,11 +681,11 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
         if (!hidden) {
             val tmpAddress2 by PreferenceUtils(PreferenceUtils.SELECTED_ADDRESS, "")
             tmpAddress = tmpAddress2
-            activity!!.nav_view.visibility = View.GONE
+            //activity!!.nav_view.visibility = View.GONE
 
             StateAppBar.setStatusBarLightMode(
                 this.activity,
-                context!!.resources.getColor(R.color.blue_normal)
+                mContext.getResColor(R.color.blue_normal)
             )
 
             if (!tmpAddress.isBlank()) {
@@ -651,7 +697,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
         }
         StateAppBar.setStatusBarLightMode(
             this.activity,
-            context!!.resources.getColor(R.color.blue_normal)
+            mContext.getResColor(R.color.blue_normal)
         )
     }
 
@@ -671,6 +717,11 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             //这里就发起调用微信支付了
             App.iwxapi.sendReq(req)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mPayDialog?.dismiss()
     }
 
     override fun onResume() {

@@ -16,7 +16,7 @@ import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.daimajia.swipe.SwipeLayout
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
@@ -28,8 +28,9 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.paypal.PaypalFragment
 import com.jzz.treasureship.utils.MoneyUtil
 import com.lc.mybaselibrary.ext.getResColor
+import com.lc.mybaselibrary.ext.getResDrawable
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.include_title.*
 import kotlinx.android.synthetic.main.shop_car_fragment.*
 import org.json.JSONArray
@@ -48,7 +49,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     lateinit var spcs: CartList
 
     private val cartAdapter by lazy { CartOrderAdapter() }
-
+    override var mStatusColor: Int = R.color.blue_normal
     override fun getLayoutResId() = R.layout.shop_car_fragment
 
     override fun initVM(): ShopCarViewModel = getViewModel()
@@ -56,13 +57,13 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
-        ll_view.background = context!!.getDrawable(R.drawable.toolbar_bg)
+        //activity!!.nav_view.visibility = View.GONE
+        ll_view.background = mContext.getResDrawable(R.drawable.toolbar_bg)
         tv_title.text = context!!.resources.getText(R.string.title_shop_car)
 
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
         rlback.setOnClickListener {
-            activity!!.supportFragmentManager.popBackStack()
+            mFragmentManager.popBackStack()
         }
 
         rv_shopcar_list.run {
@@ -74,16 +75,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         }
 
         tv_addGoods2Cart.setOnClickListener {
-            activity!!.nav_view.visibility = View.VISIBLE
-            activity!!.nav_view.selectedItemId = R.id.navigation_home
-            startActivity(Intent(this.context,MainActivity::class.java))
-//            activity!!.supportFragmentManager.beginTransaction()
-//                .replace(
-//                    R.id.frame_content,
-//                    HomeFragment.newInstance(),
-//                    HomeFragment.javaClass.name
-//                )
-//                .commit()
+
+           mContext.start<MainActivity>{
+               setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+           }
+
         }
     }
 
@@ -91,7 +87,6 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         super.onHiddenChanged(hidden)
         if (!isHidden) {
             mViewModel.getCartList()
-            activity!!.nav_view.visibility = View.GONE
             StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.blue_normal))
         }
     }
@@ -122,7 +117,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                         cb_shop_car_all.isChecked = it.isSelected == 1
 
 
-                        cartAdapter.setNewData(spcs.shops)
+                        cartAdapter.setNewInstance(spcs.shops.toMutableList())
                         cartAdapter.notifyDataSetChanged()
                     }
 
@@ -163,7 +158,6 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                             detail.put("cartId", cartGoodsSku.mCartId)
                                             detail.put("skuId", cartGoodsSku.mSkuId)
                                             detail.put("count", cartGoodsSku.mCount)
-
                                             details.put(detail)
                                         }
                                     }
@@ -175,7 +169,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                             } else {
                                 //未选中店铺，遍历商品列表，只有选中的商品才加入
                                 shop.mCartGoodsSkuList?.let { goodsSkuList ->
-                                    val details: JSONArray = JSONArray()
+                                    val details = JSONArray()
                                     for (goods in goodsSkuList) {
                                         if (goods?.isSelected == 1) {
                                             val detail: JSONObject = JSONObject()
@@ -191,9 +185,10 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                     }
                                 }
                             }
+                            if(shopItem.length()!= 0)
                             shopsJson.put(shopItem)
                         }
-                        activity!!.supportFragmentManager.beginTransaction()
+                        mFragmentManager.beginTransaction()
                             .addToBackStack(null)
                             .hide(this@ShopCarFragment)//隐藏当前Fragment
                             .add(
@@ -242,20 +237,20 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
     inner class CartOrderAdapter(layoutResId: Int = R.layout.item_car_shop) :
         BaseQuickAdapter<Shop, BaseViewHolder>(layoutResId) {
 
-        override fun convert(helper: BaseViewHolder, item: Shop?) {
+        override fun convert(holder: BaseViewHolder, item: Shop) {
             item?.let {
-                helper.setText(R.id.cb_shop_car_all, item.mShopName)
-                val cbShop: CheckBox = helper.getView(R.id.cb_shop_car_all)
+                holder.setText(R.id.cb_shop_car_all, item.mShopName)
+                val cbShop: CheckBox = holder.getView(R.id.cb_shop_car_all)
                 cbShop.isChecked = item.isSelected == 1
 
                 cbShop.setOnClickListener {
-                    spcs.shops[helper.adapterPosition].isSelected = if (cbShop.isChecked) {
+                    spcs.shops[holder.adapterPosition].isSelected = if (cbShop.isChecked) {
                         1
                     } else {
                         0
                     }
 
-                    for (element in spcs.shops[helper.adapterPosition].mCartGoodsSkuList!!) {
+                    for (element in spcs.shops[holder.adapterPosition].mCartGoodsSkuList!!) {
                         element!!.isSelected = if (cbShop.isChecked) {
                             1
                         } else {
@@ -273,15 +268,15 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                     cartAdapter.notifyDataSetChanged()
                 }
 
-                val rvGoods: RecyclerView = helper.getView(R.id.sl_good)
+                val rvGoods: RecyclerView = holder.getView(R.id.sl_good)
 
                 rvGoods.run {
                     layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
 
                     isNestedScrollingEnabled = false
 
-                    val goodsAdapter = CartOrderChildAdapter(helper.adapterPosition, R.layout.item_shopcar_goods)
-                    goodsAdapter.setNewData(item.mCartGoodsSkuList)
+                    val goodsAdapter = CartOrderChildAdapter(holder.adapterPosition, R.layout.item_shopcar_goods)
+                    goodsAdapter.setNewData(item.mCartGoodsSkuList.toMutableList())
                     adapter = goodsAdapter
 
                     goodsAdapter.notifyDataSetChanged()
@@ -314,7 +309,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
             this.positionShop = positionShop
         }
 
-        override fun convert(helper: BaseViewHolder, item: CartGoodsSku?) {
+        override fun convert(helper: BaseViewHolder, item: CartGoodsSku) {
             item?.let { goodsSku ->
 
                 val swipeLayout: SwipeLayout = helper.getView(R.id.swipeLayout)

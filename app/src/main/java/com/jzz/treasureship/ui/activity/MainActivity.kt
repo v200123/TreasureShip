@@ -4,17 +4,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.PersistableBundle
 import android.util.Log
-import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -28,11 +26,8 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
-import com.jzz.treasureship.ui.addressbook.AddressBookFragment
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
-import com.jzz.treasureship.ui.home.HomeFragment
 import com.jzz.treasureship.ui.invite.InviteFragment
-import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.login.LoginViewModel
 import com.jzz.treasureship.ui.orders.OrdersFragment
 import com.jzz.treasureship.ui.treasurebox.TreasureBoxFragment
@@ -46,7 +41,6 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.xuexiang.xupdate.XUpdate
 import com.xuexiang.xupdate._XUpdate
 import com.xuexiang.xupdate.service.OnFileDownloadListener
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -61,10 +55,9 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     private var mCurrentFragment = Fragment()
     private val mPopStatus by viewModels<DialogStatusViewModel>()
     private var authShowSuccess by PreferenceUtils(PreferenceUtils.authShowSuccess, false)
-
+    val mMainHomeFragemnt = MainHomeFragment()
     //    private val mHomeFragment by lazy { HomeFragment.newInstance() }
     private val mTsbFragment by lazy { TreasureBoxFragment.newInstance() }
-    private val mAddressBookFragment by lazy { AddressBookFragment.newInstance() }
     private val mMineFragment by lazy { UserSettingFragment.newInstance() }
 
     override fun getLayoutResId() = R.layout.activity_main
@@ -81,8 +74,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                 2, "2" -> {
                     //刷新用户信息
                     mViewModel.getUserInfo()
-                    if(mCurrentFragment is UserSettingFragment )
-                    {
+                    if (mCurrentFragment is UserSettingFragment) {
                         (mCurrentFragment as UserSettingFragment).refreshUser()
                     }
                 }
@@ -105,7 +97,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 //        }
 //        else
 
-        if (!BackHandlerHelper.handleBackPress(this)) {
+        if (BackHandlerHelper.handleBackPress(this)) {
             supportFragmentManager.popBackStack()
         } else
             if (supportFragmentManager.backStackEntryCount == 0) {
@@ -115,62 +107,14 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                     ToastUtils.showShort("再按一次返回键退出宝舰")
                     // 记录时间
                     lastBackPressTime = currentTIme
-                }
-                else{
+                } else {
                     finish()
                 }
             } else {
                 super.onBackPressed()
             }
-//        else {
-//            when (supportFragmentManager.findFragmentById(R.id.frame_content)) {
-//                is MsgFragment -> {
-//                    super.onBackPressed()
-//                }
-//                is GoodsDetailFragment -> {
-//                    if (intent.getStringExtra(GoodsId) != null)
-//                        finish()
-//                    else {
-//                        if (!BackHandlerHelper.handleBackPress(this)) {
-//                            super.onBackPressed()
-//                        }
-//                    }
-//                }
-//                is InviteFragment ->{
-//                    if( intent.getBooleanExtra(gotoInvite, false))
-//                    {
-//                        mContext.start<MainActivity> {  }
-//                    }else{
-//                        if (!BackHandlerHelper.handleBackPress(this)) {
-//                            super.onBackPressed()
-//                        }
-//                    }
-//
-//
-//                }
-//
-//                is HomeFragment,
-//                is TreasureBoxFragment,
-//                is AddressBookFragment,
-//                is UserSettingFragment -> {
-//
-//                    val currentTime = System.currentTimeMillis()
-//                    if (lastBackPressTime == -1L || currentTime - lastBackPressTime >= 2000) {
-//                        // 显示提示信息
-//                        ToastUtils.showShort("再按一次返回键退出宝舰")
-//                        // 记录时间
-//                        lastBackPressTime = currentTime
-//                    } else {
-//                        //退出应用
-//                        finish()
-//                    }
-//                }
-//                else -> {
-
-//                }
     }
-//        }
-//    }
+
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         //super.onSaveInstanceState(outState, outPersistentState)
@@ -199,63 +143,59 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     }
 
     override fun initView() {
-//        val window: Window = window
-//        val params: WindowManager.LayoutParams = window.getAttributes()
-//        params.systemUiVisibility =
-//            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE
-//        window.setAttributes(params)
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(receiver, IntentFilter(MESSAGE_RECEIVED_ACTION))
         isForeground = true
 
-        this.nav_view.visibility = View.VISIBLE
-        //设置状态栏文字颜色及图标为深色
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+//        //设置状态栏文字颜色及图标为深色
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            window.decorView.systemUiVisibility =
+//                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        }
         StateAppBar.setStatusBarColor(this, ContextCompat.getColor(this, R.color.white))
         StatusBarUtils.StatusBarLightMode(this)
 
-        nav_view.inflateMenu(R.menu.bottom_nav_menu)
-        nav_view.itemIconTintList = null
-        switchToHome()
-        nav_view.setOnNavigationItemSelectedListener { item: MenuItem ->
-            if (!isLogin) {
-                switchToLogin()
-                return@setOnNavigationItemSelectedListener false
-            } else {
-                return@setOnNavigationItemSelectedListener when (item.itemId) {
-                    R.id.navigation_home -> {
-                        item.setIcon(R.drawable.home_nav_home_icon_selected)
-                        switchToHome()
-                        curFragment = "HomeFragment"
-                        true
-                    }
-                    R.id.navigation_treasure_box -> {
-                        item.setIcon(R.drawable.icon_treasure_box_selected)
-                        switchToTsb()
-                        curFragment = "TreasureBoxFragment"
-                        true
-                    }
-                    R.id.navigation_address_book -> {
-                        curFragment = "AddressBookFragment"
-                        item.setIcon(R.drawable.icon_addressbook_selected)
-                        switchToAddressBook()
-                        true
-                    }
-                    R.id.navigation_user_settings -> {
-                        curFragment = "UserSettingFragment"
-                        item.setIcon(R.drawable.icon_mine_selected)
-                        switchToMine()
-                        true
-                    }
-                    else -> {
-                        false
-                    }
-                }
-            }
+        supportFragmentManager.commit {
+            add(R.id.frame_content,mMainHomeFragemnt,"MainHomeFragment")
         }
+
+
+//        nav_view.setOnNavigationItemSelectedListener { item: MenuItem ->
+//            if (!isLogin) {
+//                switchToLogin()
+//                return@setOnNavigationItemSelectedListener false
+//            } else {
+//                return@setOnNavigationItemSelectedListener when (item.itemId) {
+//                    R.id.navigation_home -> {
+//                        item.setIcon(R.drawable.home_nav_home_icon_selected)
+//                        switchToHome()
+//                        curFragment = "HomeFragment"
+//                        true
+//                    }
+//                    R.id.navigation_treasure_box -> {
+//                        item.setIcon(R.drawable.icon_treasure_box_selected)
+//                        switchToTsb()
+//                        curFragment = "TreasureBoxFragment"
+//                        true
+//                    }
+//                    R.id.navigation_address_book -> {
+//                        curFragment = "AddressBookFragment"
+//                        item.setIcon(R.drawable.icon_addressbook_selected)
+//                        switchToAddressBook()
+//                        true
+//                    }
+//                    R.id.navigation_user_settings -> {
+//                        curFragment = "UserSettingFragment"
+//                        item.setIcon(R.drawable.icon_mine_selected)
+//                        switchToMine()
+//                        true
+//                    }
+//                    else -> {
+//                        false
+//                    }
+//                }
+//            }
+//        }
 
         intent?.let {
             val goodId = it.getStringExtra(GoodsId)
@@ -267,9 +207,9 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
                 supportFragmentManager.beginTransaction()
                     .addToBackStack("")
                     .replace(
-                    R.id.frame_content, GoodsDetailFragment.newInstance
-                        (goodId)
-                ).commit()
+                        R.id.frame_content, GoodsDetailFragment.newInstance
+                            (goodId)
+                    ).commit()
             }
             if (gotoInvite) {
                 supportFragmentManager.beginTransaction()
@@ -292,7 +232,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        switchToHome()
+//        switchToHome()
         intent?.let {
             val stringExtra = it.getStringExtra(GoodsId)
             val gotoInvite = it.getBooleanExtra(gotoInvite, false)
@@ -306,7 +246,11 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             if (gotoInvite) {
                 supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
-                    .replace(R.id.frame_content, InviteFragment.newInstance(true), InviteFragment.javaClass.name)
+                    .replace(
+                        R.id.frame_content,
+                        InviteFragment.newInstance(true),
+                        InviteFragment.javaClass.name
+                    )
                     .commit()
             }
             if (gotoWhere == "orders") {
@@ -320,48 +264,46 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
 
     }
 
-    private fun switchToMine() {
-        resetToDefaultIcon()
-        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
-        mineItem.setIcon(R.drawable.icon_mine_selected)
-        mineItem.setChecked(true)
-        switchFragment(mMineFragment, UserSettingFragment.javaClass.name)
-    }
+//    private fun switchToMine() {
+//        resetToDefaultIcon()
+//        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
+//        mineItem.setIcon(R.drawable.icon_mine_selected)
+//        mineItem.setChecked(true)
+//        switchFragment(mMineFragment, UserSettingFragment.javaClass.name)
+//    }
 
-    private fun switchToLogin() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
+//    private fun switchToLogin() {
+//        startActivity(Intent(this, LoginActivity::class.java))
+//    }
 
-    private fun switchToAddressBook() {
-        resetToDefaultIcon()
-        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
-        addressBookItem.setIcon(R.drawable.icon_addressbook_selected)
-        addressBookItem.setChecked(true)
-        switchFragment(mAddressBookFragment, AddressBookFragment.javaClass.name)
-    }
+//    private fun switchToAddressBook() {
+//        resetToDefaultIcon()
+//        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
+//        addressBookItem.setIcon(R.drawable.icon_addressbook_selected)
+//        addressBookItem.setChecked(true)
+//        switchFragment(mAddressBookFragment, AddressBookFragment.javaClass.name)
+//    }
 
-    private fun switchToTsb() {
-        resetToDefaultIcon()
-        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
-        tsbItem.setIcon(R.drawable.icon_treasure_box_selected)
-        tsbItem.setChecked(true)
-        switchFragment(mTsbFragment, TreasureBoxFragment.javaClass.name)
-    }
+//    private fun switchToTsb() {
+//        resetToDefaultIcon()
+//        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
+//        tsbItem.setIcon(R.drawable.icon_treasure_box_selected)
+//        tsbItem.setChecked(true)
+//        switchFragment(mTsbFragment, TreasureBoxFragment.javaClass.name)
+//    }
 
-    public fun switchToHome() {
-        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
-        homeItem.setIcon(R.drawable.home_nav_home_icon_selected)
-        homeItem.setChecked(true)
-        switchFragment(HomeFragment.newInstance(), HomeFragment.javaClass.name)
-    }
+//    public fun switchToHome() {
+//        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
+//        homeItem.setIcon(R.drawable.home_nav_home_icon_selected)
+//        homeItem.setChecked(true)
+//        switchFragment(HomeFragment.newInstance(), HomeFragment.javaClass.name)
+//    }
 
     private fun switchFragment(targetFragment: Fragment, tag: String) {
         val currentFragmentStr = mCurrentFragment.javaClass.name
         val targetFragmentStr = targetFragment.javaClass.name
-
         Log.e("currentFragmentStr", currentFragmentStr)
         Log.e("targetFragmentStr", targetFragmentStr)
-
         val result = currentFragmentStr.equals(targetFragmentStr)
 
         if (result) {
@@ -384,20 +326,20 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         mCurrentFragment = targetFragment
     }
 
-    private fun resetToDefaultIcon() {
-        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
-        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
-        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
-        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
-        homeItem.setIcon(R.drawable.home_nav_home_icon_normal)
-        homeItem.setChecked(false)
-        tsbItem.setIcon(R.drawable.icon_treasure_box_normal)
-        tsbItem.setChecked(false)
-        addressBookItem.setIcon(R.drawable.icon_addressbook_normal)
-        addressBookItem.setChecked(false)
-        mineItem.setIcon(R.drawable.icon_mine_normal)
-        mineItem.setChecked(false)
-    }
+//    private fun resetToDefaultIcon() {
+//        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
+//        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
+//        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
+//        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
+//        homeItem.setIcon(R.drawable.home_nav_home_icon_normal)
+//        homeItem.setChecked(false)
+//        tsbItem.setIcon(R.drawable.icon_treasure_box_normal)
+//        tsbItem.setChecked(false)
+//        addressBookItem.setIcon(R.drawable.icon_addressbook_normal)
+//        addressBookItem.setChecked(false)
+//        mineItem.setIcon(R.drawable.icon_mine_normal)
+//        mineItem.setChecked(false)
+//    }
 
 
     override fun initData() {
@@ -413,8 +355,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             userState.observe(this@MainActivity, Observer {
                 it.showSuccess?.let {
                     JPushInterface.setAlias(applicationContext, 1001, it.id.toString())
-
-                    if (it.auditStatus == 1 && it.firstPassTip == 1 && !authShowSuccess) {
+                    if (it.auditStatus == 1 && it.firstPassTip == 1 && authShowSuccess) {
                         authShowSuccess = true
                         App.dialogHelp.showSuccess(it.nickName) {
 
@@ -533,7 +474,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
     }
-
 
 
 }

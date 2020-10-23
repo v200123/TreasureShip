@@ -3,7 +3,7 @@ package com.jzz.treasureship.model.bean
 data class OrderExpress(
     val courier: String?,
     val courierPhone: String?,
-    val list: List<X?>?,
+    val list: List<X>?,
     val logo: String?,
     val msg: String?,
     val name: String?,

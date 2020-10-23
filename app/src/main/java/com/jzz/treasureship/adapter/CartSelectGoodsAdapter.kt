@@ -1,22 +1,23 @@
 package com.jzz.treasureship.adapter
 
 import com.bumptech.glide.Glide
-import com.jzz.treasureship.BR
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.CartGoodsSku
 
+
 class CartSelectGoodsAdapter(layoutResId: Int = R.layout.item_order_goods) :
-    BaseBindAdapter<CartGoodsSku>(layoutResId, BR.goodsSku) {
+    BaseBindAdapter<CartGoodsSku>(layoutResId) {
 
-    override fun convert(helper: BindViewHolder, item: CartGoodsSku) {
-        super.convert(helper, item)
+    override fun convert(holder: BaseViewHolder, item: CartGoodsSku) {
+        super.convert(holder, item)
 
-        Glide.with(helper.itemView.context).load(item.mImageUrl).into(helper.getView(R.id.iv_goods))
-        helper.setText(R.id.tv_goods_name, item.mName)
-        helper.setText(R.id.tv_orderGoods_name,item.mName)
-//        helper.setText(R.id.tv_goods_num, "${item.stock}")
-        helper.setText(R.id.tv_goods_spece, item.mSpecValue)
-        helper.setText(R.id.tv_goods_price, "¥${item.mPrice}")
-        helper.setText(R.id.tv_goods_buyCount, "x ${item.mCount}")
+        Glide.with(holder.itemView.context).load(item.mImageUrl).into(holder.getView(R.id.iv_goods))
+        holder.setText(R.id.tv_goods_name, item.mName)
+        holder.setText(R.id.tv_orderGoods_name,item.mName)
+//        holder.setText(R.id.tv_goods_num, "${item.stock}")
+        holder.setText(R.id.tv_goods_spece, item.mSpecValue)
+        holder.setText(R.id.tv_goods_price, "¥${item.mPrice}")
+        holder.setText(R.id.tv_goods_buyCount, "x ${item.mCount}")
     }
 }

@@ -1,8 +1,11 @@
 package com.jzz.treasureship.model.repository
 
-import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.bean.JzzResponse
+
+import com.jzz.treasureship.core.*
 import com.jzz.treasureship.model.api.JzzRetrofitClient
-import com.jzz.treasureship.model.bean.*
+import com.jzz.treasureship.model.bean.User
+
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -11,6 +14,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
+import com.jzz.treasureship.model.bean.*
 
 class UserRepository : BaseRepository() {
     //获取用户信息

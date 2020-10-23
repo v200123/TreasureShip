@@ -23,6 +23,8 @@ class Data03(
     var mGoodsName: String = "", // 施巴婴儿润肤乳
     @SerializedName("goodsType")
     var mGoodsType: Int = 0, // 0
+    @SerializedName("skuId")
+    var mSkuId : Int = 0,
     @SerializedName("oldPrice")
     var mOldPrice: Double = 0.0, // 8.9
     @SerializedName("picture")

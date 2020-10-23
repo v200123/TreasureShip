@@ -32,9 +32,6 @@ class QuestionsDialog(
     }
 
     private fun initRecycleView() {
-        mAdapter.apply {
-            onItemChildClickListener = this@QuestionsDialog.onItemChildClickListener
-        }
 
         rcv_questions.apply {
             layoutManager = LinearLayoutManager(context).also {
@@ -44,17 +41,4 @@ class QuestionsDialog(
         }
     }
 
-    private val onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-
-        when (view.id) {
-//            R.id.layout_questionItem -> {
-//                Log.d("QuestionsDialog", "提交答案")
-//                val json = JSONObject(mAdapter.getItem(position)!!.item)
-//                val ans = json.get("item").toString()
-//                viewModel.submitQuestionnaire(ans, id)
-//            }
-        }
-
-        dismiss()
-    }
 }

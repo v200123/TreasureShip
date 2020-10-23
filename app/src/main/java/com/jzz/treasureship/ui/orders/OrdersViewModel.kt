@@ -6,17 +6,42 @@ import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.CoroutinesDispatcherProvider
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.core.Result
+import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.*
 import com.jzz.treasureship.model.repository.OrdersRepository
 import com.jzz.treasureship.utils.PreferenceUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class OrdersViewModel(val repository: OrdersRepository, val provider: CoroutinesDispatcherProvider) : BaseViewModel() {
 
-    private val _ordersState = MutableLiveData<OrdersModel>()
-    val ordersState: LiveData<OrdersModel>
-        get() = _ordersState
+//    private val _ordersState = MutableLiveData<OrdersModel>()
+//    val ordersState: LiveData<OrdersModel>
+//        get() = _ordersState
+
+    val orderListData = MutableLiveData<OrdersListBean>()
+    fun getNewOrderList(
+        memberId: Int,
+        orderNo: String?,
+        orderStatus: Int,
+        pageNum: Int = 1, orderType: Int = 0
+    ) {
+        launchTask {
+            withContext(Dispatchers.IO){
+               HttpHelp.getRetrofit()
+                    .getOrderList(
+                        BaseRequestBody(
+                            OrderListRequest(memberId, orderNo, orderStatus, orderType), header(pageNum = pageNum)
+                        )
+                    ).resultCheck{
+                       orderListData.postValue(it)
+                   }
+            }
+        }
+
+    }
+
 
     //获取订单列表或客户详情
     fun getOrderList(
@@ -25,48 +50,48 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
         orderStatus: Int?,
         orderType: Int?, pageNum: Int = 1
     ) {
-        emitOrdersState(true)
-        viewModelScope.launch(Dispatchers.Main) {
-            val result = repository.getOrderList(memberId, orderNo, orderStatus, orderType, pageNum)
-            if (result is Result.Success) {
-                if (result.result?.code == 200) {
-                    emitOrdersState(false, null, result.result.result)
-                } else {
-                    when (result.result?.code) {
-                        401 -> {
-                            var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE, "")
-                            var userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
-                            var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
-                            var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
-                            login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
-                            emitOrdersGoPayState(false, "失败!${result.result.message}", null, false, false, true)
-                        }
-                        else -> {
-                            emitOrdersGoPayState(false, "失败!${result.result?.message}")
-                        }
-                    }
-                }
-            } else {
-                emitOrdersState(false, "订单列表获取失败")
-            }
-        }
+//        emitOrdersState(true)
+//        viewModelScope.launch(Dispatchers.Main) {
+//            val result = repository.getOrderList(memberId, orderNo, orderStatus, orderType, pageNum)
+//            if (result is Result.Success) {
+//                if (result.result?.code == 200) {
+//                    emitOrdersState(false, null, result.result.result)
+//                } else {
+//                    when (result.result?.code) {
+//                        401 -> {
+//                            var wxCode by PreferenceUtils(PreferenceUtils.WX_CODE, "")
+//                            var userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
+//                            var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
+//                            var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
+//                            login = false
+//                            wxCode = ""
+//                            userInfo = ""
+//                            access = ""
+//                            emitOrdersGoPayState(false, "失败!${result.result.message}", null, false, false, true)
+//                        }
+//                        else -> {
+//                            emitOrdersGoPayState(false, "失败!${result.result?.message}")
+//                        }
+//                    }
+//                }
+//            } else {
+//                emitOrdersState(false, "订单列表获取失败")
+//            }
+//        }
     }
 
-    //订单列表或客户详情
-    private fun emitOrdersState(
-        showLoading: Boolean = false,
-        showError: String? = null,
-        showSuccess: Orders? = null,
-        showEnd: Boolean = false,
-        isRefresh: Boolean = false,
-        needLogin: Boolean? = null
-    ) {
-        val uiModel = OrdersModel(showLoading, showError, showSuccess, showEnd, isRefresh, needLogin)
-        _ordersState.value = uiModel
-    }
+//    //订单列表或客户详情
+//    private fun emitOrdersState(
+//        showLoading: Boolean = false,
+//        showError: String? = null,
+//        showSuccess: Orders? = null,
+//        showEnd: Boolean = false,
+//        isRefresh: Boolean = false,
+//        needLogin: Boolean? = null
+//    ) {
+//        val uiModel = OrdersModel(showLoading, showError, showSuccess, showEnd, isRefresh, needLogin)
+//        _ordersState.value = uiModel
+//    }
 
 
     //订单列表或客户详情
@@ -99,9 +124,9 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
+                            wxCode = ""
+                            userInfo = ""
+                            access = ""
                             emitOrdersGoPayState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
@@ -158,9 +183,9 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
+                            wxCode = ""
+                            userInfo = ""
+                            access = ""
                             emitOrderStatusState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
@@ -218,9 +243,9 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
+                            wxCode = ""
+                            userInfo = ""
+                            access = ""
                             emitComfirmReceiveState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
@@ -277,9 +302,9 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
+                            wxCode = ""
+                            userInfo = ""
+                            access = ""
                             emitNoticeReceiveState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {
@@ -321,10 +346,10 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
         get() = _refundState
 
     //设置或取消提醒
-    fun askRefund(orderNo: String,refundReason:String = "") {
+    fun askRefund(orderNo: String, refundReason: String = "") {
         emitRefundState(true)
         viewModelScope.launch(Dispatchers.Main) {
-            val result = repository.askRefund(orderNo,refundReason)
+            val result = repository.askRefund(orderNo, refundReason)
             if (result is Result.Success) {
                 if (result.result!!.code == 200) {
                     emitRefundState(false, null, result.result.result)
@@ -336,9 +361,9 @@ class OrdersViewModel(val repository: OrdersRepository, val provider: Coroutines
                             var access by PreferenceUtils(PreferenceUtils.ACCESS_TOKEN, "")
                             var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
                             login = false
-                            wxCode =""
-                            userInfo=""
-                            access=""
+                            wxCode = ""
+                            userInfo = ""
+                            access = ""
                             emitRefundState(false, "失败!${result.result.message}", null, false, false, true)
                         }
                         else -> {

@@ -18,6 +18,7 @@ import com.jzz.treasureship.ui.bind.BindPhoneActivity
 import com.jzz.treasureship.ui.register.RegisterActivity
 import com.jzz.treasureship.utils.CountDownTimerUtils
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mmkv.MMKV
@@ -27,10 +28,12 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class LoginActivity : BaseVMActivity<LoginViewModel>() {
-    val xPopup  by lazy {   XPopup.Builder(this@LoginActivity).asLoading()}
-    private  var mobile:String? = null
+    val xPopup by lazy { XPopup.Builder(this@LoginActivity).asLoading() }
+    private var mobile: String? = null
+    var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
+
     override fun getLayoutResId() = R.layout.activity_login
-   private val countDownTimerUtils by lazy { CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
+    private val countDownTimerUtils by lazy { CountDownTimerUtils(iv_getCode, 60 * 1000, 1000) }
     override fun initVM(): LoginViewModel = getViewModel()
 
     override fun initView() {
@@ -53,8 +56,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
         iv_getCode.setOnClickListener {
             if (!et_phoneNum.text.isNullOrBlank()) {
                 mViewModel.sendSmsCode(2, et_phoneNum.text.toString(), countDownTimerUtils, xPopup)
-            }
-          else{
+            } else {
                 ToastUtils.showShort("请输入验证码")
             }
         }
@@ -90,21 +92,23 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
 
                 it.showSuccess?.let {
                     xPopup.dismiss()
-                    if (JPushInterface.isPushStopped(this@LoginActivity)){
+                    if (JPushInterface.isPushStopped(this@LoginActivity)) {
                         JPushInterface.resumePush(this@LoginActivity)
                     }
                     setAlias(it.id!!)
                     mobile = it.mobile
                     finish()
                     if (mobile.isNullOrBlank()) {
-                        MMKV.defaultMMKV().encode(it.id.toString(),UserDialogInformationBean())
+                        MMKV.defaultMMKV().encode(it.id.toString(), UserDialogInformationBean())
                         startActivity(Intent(this@LoginActivity, BindPhoneActivity::class.java))
                     } else {
-                        MMKV.defaultMMKV().encode(it.id.toString(),UserDialogInformationBean())
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        MMKV.defaultMMKV().encode(it.id.toString(), UserDialogInformationBean())
+                        mContext.start<MainActivity> {
+                            setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        }
                     }
 
-                }?:run{
+                } ?: run {
                     xPopup.dismiss()
                 }
 
@@ -127,10 +131,10 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
     }
 
     // 这是来自 JPush Example 的设置别名的 Activity 里的代码。一般 App 的设置的调用入口，在任何方便的地方调用都可以。
-    private fun setAlias(id:Int) {
+    private fun setAlias(id: Int) {
         // 调用 Handler 来异步设置别名
-        Log.d("JIGUANG","Prepare to setAlias")
-        JPushInterface.setAlias(applicationContext,MSG_SET_ALIAS,id.toString())
+        Log.d("JIGUANG", "Prepare to setAlias")
+        JPushInterface.setAlias(applicationContext, MSG_SET_ALIAS, id.toString())
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, id))
     }
 
@@ -178,4 +182,11 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
         super.onDestroy()
         mHandler.removeCallbacksAndMessages(null)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (!login)
+            mContext.start<MainActivity>()
+    }
+
 }

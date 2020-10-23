@@ -1,16 +1,11 @@
 package com.jzz.treasureship.base
 
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import com.blankj.utilcode.util.ToastUtils
-import com.jzz.treasureship.App
 import com.jzz.treasureship.model.bean.JzzResponse
+import com.jzz.treasureship.core.*
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
-import com.jzz.treasureship.core.Result
-import com.jzz.treasureship.exception.NotLoginException
-import com.jzz.treasureship.utils.PreferenceUtils
 import java.io.IOException
 
 open class BaseRepository {

@@ -7,6 +7,8 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CommissionGoodsAdapter
 import com.jzz.treasureship.model.bean.Data
 import com.jzz.treasureship.model.bean.DataXX
+import com.jzz.treasureship.model.bean.GoodsSku
+import com.jzz.treasureship.model.bean.GoodsSkuX
 import com.jzz.treasureship.utils.MoneyUtil
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
@@ -51,7 +53,7 @@ class CustomCheckCommissionPopup(context: Context, data: Data) : BottomPopupView
                 adapter = mAdapter
             }
 
-            mAdapter.setNewData(it)
+            mAdapter.setList(it)
             mAdapter.notifyDataSetChanged()
         }
     }

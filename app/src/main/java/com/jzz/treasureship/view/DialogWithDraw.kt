@@ -2,7 +2,7 @@ package com.jzz.treasureship.view
 
 import android.content.Context
 import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.coupon.CouponShopActivity
+import com.jzz.treasureship.ui.coupon.CouponShopFragment
 import com.lc.mybaselibrary.start
 import com.lxj.xpopup.core.CenterPopupView
 import kotlinx.android.synthetic.main.dialog_withdraw_success.view.*
@@ -19,7 +19,7 @@ class DialogWithDraw(context: Context) : CenterPopupView(context) {
     override fun onCreate() {
         super.onCreate()
         iv_withdraw_close.setOnClickListener { this.dismiss() }
-        view_goto_01.setOnClickListener { context.start<CouponShopActivity> {  }
+        view_goto_01.setOnClickListener { context.start<CouponShopFragment> {  }
         this.dismiss()}
     }
 

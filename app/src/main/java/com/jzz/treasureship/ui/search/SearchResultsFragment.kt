@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -22,8 +21,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.jzz.treasureship.BR
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.BaseBindAdapter
 import com.jzz.treasureship.adapter.CollectAdapter
@@ -34,7 +32,10 @@ import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.PreferenceUtils
-import com.jzz.treasureship.view.*
+import com.jzz.treasureship.view.CustomCommentBottomPopup
+import com.jzz.treasureship.view.CustomFlexlayout
+import com.jzz.treasureship.view.CustomLikeBottomPopup
+import com.jzz.treasureship.view.CustomVideoPlayer
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
@@ -52,9 +53,11 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
     companion object {
-        fun newInstance(searchWords: String, what: Int, type: Int): SearchResultsFragment {
+        fun newInstance(searchWords: String, what: Int, type: Int,searchTitle:String = ""): SearchResultsFragment {
             val f = SearchResultsFragment()
             val bundle = Bundle()
+            if(searchTitle.isNotBlank())
+                bundle.putString("searchTitle", searchTitle)
             bundle.putString("searchWords", searchWords)
             bundle.putInt("what", what)
             bundle.putInt("type", type)
@@ -82,12 +85,20 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
     private val videoList: ArrayList<VideoData> = ArrayList()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
         arguments?.let {
             type = it.getInt("type")
             what = it.getInt("what")
             searchWords = it.getString("searchWords")
+            val string = it.getString("searchTitle", "")
+            if(string.isNotBlank())
+            {
+                etSearch.setText(string)
+            }
+            else{
+                etSearch.setText(searchWords)
+            }
         }
         iv_back.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
@@ -124,11 +135,21 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
         srl_searchResult_Videos.setOnRefreshListener {
             pageNum = 1
-            mViewModel.getSearchPageList(str = searchWords!!, what = what, type = type, pageNum = pageNum)
+            mViewModel.getSearchPageList(
+                str = searchWords!!,
+                what = what,
+                type = type,
+                pageNum = pageNum
+            )
         }
         srl_searchResult_Videos.setEnableLoadMore(true)
         srl_searchResult_Videos.setOnLoadMoreListener {
-            mViewModel.getSearchPageList(str = searchWords!!, what = what, type = type, pageNum = ++pageNum)
+            mViewModel.getSearchPageList(
+                str = searchWords!!,
+                what = what,
+                type = type,
+                pageNum = ++pageNum
+            )
         }
         initRecycleView()
     }
@@ -140,7 +161,31 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             mAdapter.run {
-                onItemChildClickListener = this@SearchResultsFragment.onItemChildClickListener
+                setOnItemChildClickListener() { adapter, view, position ->
+                    when (view.id) {
+                        R.id.layout_like -> {
+                            mViewModel.getCollectCategory()
+                            currentVideoID = mAdapter.getItem(position)!!.id
+                            currentPosition = position
+                        }
+                        R.id.layout_comment -> {
+                            mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
+                            currentVideoID = mAdapter.getItem(position)!!.id
+                            currentPosition = position
+                        }
+//            R.id.layout_share -> {
+//                XPopup.Builder(view.context).asCustom(
+//                    CustomShareBottomPopup(
+//                        view.context,
+//                        mAdapter.getItem(position)!!.videoUrl!!,
+//                        mAdapter.getItem(position)?.videoName,
+//                        mAdapter.getItem(position)?.videoDesc,
+//                        mAdapter.getItem(position)!!.videoCoverUrl!!
+//                    )
+//                ).show()
+//            }
+                    }
+                }
             }
 
             rcv_searchResult_Videos.adapter = mAdapter
@@ -149,7 +194,12 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
     }
 
     override fun initData() {
-        mViewModel.getSearchPageList(str = searchWords!!, what = what, type = type, pageNum = pageNum)
+        mViewModel.getSearchPageList(
+            str = searchWords!!,
+            what = what,
+            type = type,
+            pageNum = pageNum
+        )
     }
 
     override fun startObserve() {
@@ -223,7 +273,11 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
                             val id by PreferenceUtils(PreferenceUtils.CLICKED_COLLECT_ID, -1)
                             if (id != -1) {
-                                mViewModel.addCollect(categoryId = id, remark = "", videoId = currentVideoID)
+                                mViewModel.addCollect(
+                                    categoryId = id,
+                                    remark = "",
+                                    videoId = currentVideoID
+                                )
                             }
                         }
                     }).asCustom(
@@ -289,18 +343,19 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
                 it.showSuccess?.let { comments ->
                     commentsAdapter.run {
-                        setNewData(comments.data)
+                        setNewInstance(comments.data.toMutableList())
                         notifyDataSetChanged()
                     }
-                    XPopup.Builder(this@SearchResultsFragment.context).setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss(popupView: BasePopupView) {
-                            super.onDismiss(popupView)
-                            commentsAdapter.run {
-                                setNewData(null)
-                                notifyDataSetChanged()
+                    XPopup.Builder(this@SearchResultsFragment.context)
+                        .setPopupCallback(object : SimpleCallback() {
+                            override fun onDismiss(popupView: BasePopupView) {
+                                super.onDismiss(popupView)
+                                commentsAdapter.run {
+                                    setNewData(null)
+                                    notifyDataSetChanged()
+                                }
                             }
-                        }
-                    })
+                        })
                         .asCustom(
                             CustomCommentBottomPopup(
                                 this@SearchResultsFragment.context!!,
@@ -322,31 +377,6 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
         }
     }
 
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.layout_like -> {
-                mViewModel.getCollectCategory()
-                currentVideoID = mAdapter.getItem(position)!!.id
-                currentPosition = position
-            }
-            R.id.layout_comment -> {
-                mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
-                currentVideoID = mAdapter.getItem(position)!!.id
-                currentPosition = position
-            }
-//            R.id.layout_share -> {
-//                XPopup.Builder(view.context).asCustom(
-//                    CustomShareBottomPopup(
-//                        view.context,
-//                        mAdapter.getItem(position)!!.videoUrl!!,
-//                        mAdapter.getItem(position)?.videoName,
-//                        mAdapter.getItem(position)?.videoDesc,
-//                        mAdapter.getItem(position)!!.videoCoverUrl!!
-//                    )
-//                ).show()
-//            }
-        }
-    }
 
     override fun initListener() {
 
@@ -368,9 +398,16 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
     }
 
     inner class SearchResultAdapter(layoutResId: Int = R.layout.item_video) :
-        BaseBindAdapter<VideoData>(layoutResId, BR.video) {
+        BaseBindAdapter<VideoData>(layoutResId) {
 
-        override fun convert(helper: BindViewHolder, item: VideoData) {
+        init {
+            addChildClickViewIds(
+                R.id.layout_like,
+                R.id.layout_comment
+            )
+        }
+
+        override fun convert(helper: BaseViewHolder, item: VideoData) {
             super.convert(helper, item)
 
             if (item.position == 0) {
@@ -412,7 +449,8 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
                         super.onQuitFullscreen(url, *objects)
                         //全屏不静音
                         GSYVideoManager.instance().isNeedMute = false
-                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility = View.VISIBLE
+                        helper.getView<LinearLayout>(R.id.layout_checkGoods).visibility =
+                            View.VISIBLE
                         helper.getView<TextView>(R.id.totalTime).visibility = View.VISIBLE
                         GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL)
                     }
@@ -443,14 +481,22 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
                 }).build(helper.getView<CustomVideoPlayer>(R.id.video_player))
             helper.getView<CustomVideoPlayer>(R.id.video_player).apply {
-                fullscreenButton.setOnClickListener { resolveFullBtn(helper.getView<CustomVideoPlayer>(R.id.video_player) as StandardGSYVideoPlayer) }
+                fullscreenButton.setOnClickListener {
+                    resolveFullBtn(
+                        helper.getView<CustomVideoPlayer>(
+                            R.id.video_player
+                        ) as StandardGSYVideoPlayer
+                    )
+                }
                 backButton.visibility = View.GONE
             }
 
             if (item.haveGoods == 0) {
-                helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility = View.INVISIBLE
+                helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
+                    View.INVISIBLE
             } else {
-                helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility = View.VISIBLE
+                helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.visibility =
+                    View.VISIBLE
                 helper.getView<CustomVideoPlayer>(R.id.video_player).layout_checkGoods.setOnClickListener {
                     activity!!.supportFragmentManager.beginTransaction()
                         .addToBackStack(SearchResultsFragment.javaClass.name)
@@ -471,7 +517,9 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
                 for (ele in keywords) {
                     if (ele.isNotBlank()) {
                         val tv = LayoutInflater.from(mContext).inflate(
-                            R.layout.layout_home_video_keywords, helper.getView(R.id.keywordsFlexlayout), false
+                            R.layout.layout_home_video_keywords,
+                            helper.getView(R.id.keywordsFlexlayout),
+                            false
                         ) as TextView
                         tv.maxEms = 5
                         tv.maxLines = 1
@@ -484,17 +532,22 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
             }
 
             if (item.like == 0) {
-                helper.setImageDrawable(R.id.iv_like, mContext.resources.getDrawable(R.drawable.home_unfavorite))
+                helper.setImageDrawable(
+                    R.id.iv_like,
+                    mContext.resources.getDrawable(R.drawable.home_unfavorite)
+                )
             } else {
-                helper.setImageDrawable(R.id.iv_like, mContext.resources.getDrawable(R.drawable.home_favorite))
+                helper.setImageDrawable(
+                    R.id.iv_like,
+                    mContext.resources.getDrawable(R.drawable.home_favorite)
+                )
             }
 
             helper.setText(R.id.tv_likeCount, "${item.likeCount}")
             helper.setText(R.id.tv_commentCount, "${item.commentCount}")
 //            helper.setText(R.id.tv_shareCount, "${item.shareCount}")
 
-            helper.addOnClickListener(R.id.layout_like)
-            helper.addOnClickListener(R.id.layout_comment)
+
 //            helper.addOnClickListener(R.id.layout_share)
         }
 
@@ -530,9 +583,9 @@ class SearchResultsFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if (!hidden){
+        if (!hidden) {
 
-        }else{
+        } else {
             GSYVideoManager.onPause()
         }
     }

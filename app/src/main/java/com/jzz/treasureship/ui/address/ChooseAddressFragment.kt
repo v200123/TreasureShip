@@ -41,7 +41,7 @@ class ChooseAddressFragment : BaseVMFragment<AddressViewModel>() {
     override fun initVM(): AddressViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "设置地址"
         StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.white))
         rlback.setOnClickListener {
@@ -67,7 +67,38 @@ class ChooseAddressFragment : BaseVMFragment<AddressViewModel>() {
         }
 
         addressAdapter.run {
-            onItemChildClickListener = this@ChooseAddressFragment.onItemChildClickListener
+            setOnItemChildClickListener() { adapter, view, position ->
+                when (view.id) {
+                    R.id.tv_addr_edit -> {
+
+                        requireActivity().supportFragmentManager.beginTransaction().addToBackStack(ChooseAddressFragment.javaClass.name).hide(this@ChooseAddressFragment)
+                            .add(R.id.frame_content,
+                                UpdateAddressFragment.newInstance(adapter.data[position] as Address),
+                                UpdateAddressFragment.javaClass.name
+                            ).commit()
+                    }
+                    R.id.tv_addr_delete -> {
+                        val popup = XPopup.Builder(view.context)
+                        popup.asConfirm("删除地址", "确认删除此地址吗？", OnConfirmListener {
+                            //删除收货地址
+                            mDeletedItem = addressList[position]
+
+                            mViewModel.delAddress(addressList[position].id!!)
+                        }).show()
+                    }
+                    R.id.layout_item -> {
+                        selectedAddress = GsonUtils.toJson(addressList[position])
+                        requireActivity().supportFragmentManager.popBackStack()
+                    }
+                    R.id.cb_setDefault -> {
+                        if ((view as CheckBox).isChecked) {
+                            mViewModel.setAddressDefault((adapter.data[position] as Address).id!!)
+                        } else {
+
+                        }
+                    }
+                }
+            }
         }
 
         srl_address.setOnRefreshListener {
@@ -81,38 +112,7 @@ class ChooseAddressFragment : BaseVMFragment<AddressViewModel>() {
         }
     }
 
-    private val onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.tv_addr_edit -> {
 
-                activity!!.supportFragmentManager.beginTransaction().addToBackStack(ChooseAddressFragment.javaClass.name).hide(this)
-                    .add(R.id.frame_content,
-                        UpdateAddressFragment.newInstance(adapter.data[position] as Address),
-                        UpdateAddressFragment.javaClass.name
-                    ).commit()
-            }
-            R.id.tv_addr_delete -> {
-                val popup = XPopup.Builder(view.context)
-                popup.asConfirm("删除地址", "确认删除此地址吗？", OnConfirmListener {
-                    //删除收货地址
-                    mDeletedItem = addressList[position]
-
-                    mViewModel.delAddress(addressList[position].id!!)
-                }).show()
-            }
-            R.id.layout_item -> {
-                selectedAddress = GsonUtils.toJson(addressList[position])
-                activity!!.supportFragmentManager.popBackStack()
-            }
-            R.id.cb_setDefault -> {
-                if ((view as CheckBox).isChecked) {
-                    mViewModel.setAddressDefault((adapter.data[position] as Address).id!!)
-                } else {
-
-                }
-            }
-        }
-    }
 
     override fun initData() {
         mViewModel.getAddressPageList()

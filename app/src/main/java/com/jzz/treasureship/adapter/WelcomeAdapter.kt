@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.jzz.treasureship.R
 
 
+
 class WelcomeAdapter(list: List<View>) : RecyclerView.Adapter<WelcomeAdapter.ViewPagerViewHolder>() {
 
     private val drawables = list
@@ -29,6 +30,8 @@ class WelcomeAdapter(list: List<View>) : RecyclerView.Adapter<WelcomeAdapter.Vie
     }
 
     override fun getItemCount() = drawables.size
+
+
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
         Glide.with(holder.imgView.context).load(drawables[position]).into(holder.imgView)

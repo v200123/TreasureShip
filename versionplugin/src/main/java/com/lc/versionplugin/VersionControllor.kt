@@ -36,9 +36,11 @@ private object version{
     val materialVersion = "material-rc01"
 //    https://github.com/JackLiaoJH/ImageSelect
     val imageChoiseVersion = "1.2.1"
-    val xpopVersion = "2.0.11"
+    val xpopVersion = "2.1.4"
     val flexboxVersion = "2.0.1"
     val loggerVersion = "2.2.0"
+    val kongzuTabVersion = "1.5.4"
+    val httpLogVersion = "4.9.0"
 }
 
     object Android{
@@ -56,6 +58,7 @@ private object version{
      val viewmodelSavedstate = "androidx.lifecycle:lifecycle-viewmodel-savedstate:${version.lifecycleVersion}"
      val material = "com.google.android.material:${version.materialVersion}"
      val flexboxLayout ="com.google.android:flexbox:${version.flexboxVersion}"
+     val fragemntKtx ="androidx.fragment:fragment-ktx:${version.fragmentKtxVersion}"
  }
 
     object koin{
@@ -76,9 +79,10 @@ private object version{
         val imageSelector = "com.github.JackLiaoJH:ImageSelect:${version.imageChoiseVersion}"
 //        弹窗  @{link:https://github.com/li-xiaojun/XPopup}
         val xpop = "com.lxj:xpopup:${version.xpopVersion}"
-
-
+        val httpLog = "com.squareup.okhttp3:logging-interceptor:${version.httpLogVersion}"
         val logger = "com.orhanobut:logger:${version.loggerVersion}"
+        val kongzuTab = "com.kongzue.tabbarx:tabbar:${version.kongzuTabVersion}"
+        val baiduStatistics = "com.baidu.mobstat:mtj-sdk:4.0.3.4"
     }
 
     object oppo{

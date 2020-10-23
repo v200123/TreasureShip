@@ -66,11 +66,11 @@ class InviteViewModel(
     fun getMoney() {
         launchTask {
             val inviteMoney = HttpHelp.getRetrofit().getInviteMoney()
-            inviteMoney.resultCheck({
+            inviteMoney.resultCheck{
                 it?.let {
                     redEnvelopOpen.postValue(it)
                 }
-            })
+            }
         }
     }
 
@@ -103,9 +103,9 @@ class InviteViewModel(
     fun getCount() {
         launchTask {
             val inviteCount = HttpHelp.getRetrofit().getInviteCount()
-            inviteCount.resultCheck({
+            inviteCount.resultCheck{
                 mCountData.postValue(it!!.get("inviteRewardCount").asInt)
-            })
+            }
         }
     }
 

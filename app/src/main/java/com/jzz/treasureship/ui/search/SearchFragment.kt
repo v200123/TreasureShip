@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +47,7 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
     private var type: Int = 0
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
         arguments?.let {
             type = it.getInt("type")
@@ -143,12 +144,12 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
                         val str = tv.text.toString()
 
                         tv.setOnClickListener {
-                            activity!!.supportFragmentManager.beginTransaction()
+                            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                                 .addToBackStack(SearchFragment.javaClass.name)
                                 .hide(this@SearchFragment)//隐藏当前Fragment
                                 .add(
                                     R.id.frame_content,
-                                    SearchResultsFragment.newInstance(element.id, 0, type),
+                                    SearchResultsFragment.newInstance(element.id, 0, type,element.brandName),
                                     SearchResultsFragment.javaClass.name
                                 ).commit()
                         }
@@ -221,7 +222,20 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
                     loadingPopup.dismiss()
                     hotSearchAdapter.run {
                         setNewData(hotSearches)
-                        onItemChildClickListener = this@SearchFragment.onItemChildClickListener
+                        setOnItemChildClickListener() { adapter, view, position ->
+                            when (view.id) {
+                                R.id.layout_hot_search -> {
+                                    activity!!.supportFragmentManager.beginTransaction()
+                                        .addToBackStack(SearchFragment.javaClass.name)
+                                        .hide(this@SearchFragment)//隐藏当前Fragment
+                                        .add(
+                                            R.id.frame_content,
+                                            SearchResultsFragment.newInstance(hotSearchAdapter.getItem(position)!!.videoName, 2, type),
+                                            SearchResultsFragment.javaClass.name
+                                        ).commit()
+                                }
+                            }
+                        }
                     }
 
                     mrv_search_hot.adapter = hotSearchAdapter
@@ -261,20 +275,7 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
         }
     }
 
-    private var onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        when (view.id) {
-            R.id.layout_hot_search -> {
-                activity!!.supportFragmentManager.beginTransaction()
-                    .addToBackStack(SearchFragment.javaClass.name)
-                    .hide(this@SearchFragment)//隐藏当前Fragment
-                    .add(
-                        R.id.frame_content,
-                        SearchResultsFragment.newInstance(hotSearchAdapter.getItem(position)!!.videoName, 2, type),
-                        SearchResultsFragment.javaClass.name
-                    ).commit()
-            }
-        }
-    }
+
 
     override fun initListener() {
 

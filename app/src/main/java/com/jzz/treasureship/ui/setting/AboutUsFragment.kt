@@ -34,7 +34,7 @@ class AboutUsFragment : BaseVMFragment<HomeViewModel>() {
     override fun initVM(): HomeViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
 
         tv_title.text = "关于我们"
 

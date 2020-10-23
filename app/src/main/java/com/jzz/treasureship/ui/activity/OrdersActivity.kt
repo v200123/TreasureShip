@@ -1,5 +1,6 @@
 package com.jzz.treasureship.ui.activity
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.ui.orders.OrdersViewModel
 import com.jzz.treasureship.ui.orders.OrdersVpFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+
+
 import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.start
 import kotlinx.android.synthetic.main.fragment_mine_orders.*
@@ -27,7 +30,7 @@ class OrdersActivity : BaseVMActivity<OrdersViewModel>() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        mContext.start<MainActivity> {  }
+        mContext.start<MainActivity> { setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 
         finish()
     }
@@ -38,16 +41,14 @@ class OrdersActivity : BaseVMActivity<OrdersViewModel>() {
     override fun initVM(): OrdersViewModel = getViewModel()
 
     override fun initView() {
-//        activity!!.nav_view.visibility = View.GONE
+//        //activity!!.nav_view.visibility = View.GONE
         tv_title.text = "我的订单"
         StateAppBar.setStatusBarLightMode(this, mContext.getResColor(R.color.white))
         val titles = arrayOf("全部", "待付款", "待发货", "已发货", "已完成")
         val fragments: ArrayList<OrdersVpFragment> = ArrayList(titles.size)
 
         rlback.setOnClickListener {
-            mContext.start<MainActivity> {  }
-
-            finish()
+            onBackPressed()
         }
 
         for ((index) in titles.withIndex()) {

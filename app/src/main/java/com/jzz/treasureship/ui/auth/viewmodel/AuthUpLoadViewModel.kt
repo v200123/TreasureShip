@@ -11,7 +11,6 @@ import com.lc.mybaselibrary.ErrorState
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
@@ -23,6 +22,10 @@ import java.io.File
 class AuthUpLoadViewModel : BaseViewModel() {
     val occupationData = MutableLiveData<OccupationBean>()
     val ImageResultData = MutableLiveData<UploadImgBean>()
+
+    /**
+     * 获取认证的id
+     */
     fun getOccupation( id:Int){
         launchTask {
             val occupationType = HttpHelp.getRetrofit().getOccupationType(BaseRequestBody(getOccupationBody(id)))
@@ -42,9 +45,9 @@ class AuthUpLoadViewModel : BaseViewModel() {
                     val filePart = MultipartBody.Part.createFormData("file", image.name, requestFile)
                     val uploadFile = HttpHelp.getRetrofit().uploadFile(filePart)
                     uploadFile.resultCheck({
-                        ImageResultData.postValue(it)
-                    },{
                         mStateLiveData.postValue(ErrorState("上传失败，请重试"))
+                    },{
+                        ImageResultData.postValue(it)
                     })
                 }
 

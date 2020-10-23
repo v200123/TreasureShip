@@ -26,7 +26,6 @@ import com.lxj.xpopup.core.BasePopupView
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_mine_invite.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -34,35 +33,39 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
     private val mInvitedDetailsFragment by lazy { InviteDetailsFragment.newInstance() }
     private val mAdapter by lazy { InvitedAdapter() }
     private var allInvitedList = ArrayList<DataXXXX>()
-    private var  showRedEnvelopeOpen:BasePopupView? = null
+    private var showRedEnvelopeOpen: BasePopupView? = null
+
     companion object {
         const val isNeedBackToMain = "isNeedBackToMain"
-        fun newInstance(isNeed:Boolean = false): InviteFragment {
+        fun newInstance(isNeed: Boolean = false): InviteFragment {
             return InviteFragment().apply {
                 val bundle = Bundle()
-                bundle.putBoolean(isNeedBackToMain,isNeed)
+                bundle.putBoolean(isNeedBackToMain, isNeed)
                 arguments = bundle
             }
         }
     }
 
+    override var mStatusColor: Int = R.color.blue_normal
     override fun getLayoutResId() = R.layout.fragment_mine_invite
 
     override fun initVM(): InviteViewModel = getViewModel()
 
     override fun onResume() {
         super.onResume()
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
     }
 
     override fun initView() {
-        val boolean = arguments?.getBoolean(isNeedBackToMain)?:false
-        activity!!.nav_view.visibility = View.GONE
+        val boolean = arguments?.getBoolean(isNeedBackToMain) ?: false
+        //activity!!.nav_view.visibility = View.GONE
         iv_inviteBack.setOnClickListener {
-            if(boolean)
-                mContext.start<MainActivity> {  }
-                else
-            activity!!.supportFragmentManager.popBackStack()
+            if (boolean)
+                mContext.start<MainActivity> {
+                    setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
+            else
+                activity!!.supportFragmentManager.popBackStack()
         }
 
         tv_share2WxFriends.setOnClickListener {
@@ -76,12 +79,12 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
 
             val webpage = WXWebpageObject()
             // http://119.3.125.1:8090/downLoad/index?type=1&yuserId=429&yType=1
-            if(BuildConfig.DEBUG)
-            {
-                webpage.webpageUrl = "http://119.3.125.1:8090/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
-            }
-            else {
-                webpage.webpageUrl = "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            if (BuildConfig.DEBUG) {
+                webpage.webpageUrl =
+                    "http://119.3.125.1:8090/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            } else {
+                webpage.webpageUrl =
+                    "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
             }
             val msg = WXMediaMessage(webpage)
             msg.title = "好友邀请"
@@ -118,12 +121,12 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
             val userObj = GsonUtils.fromJson(userJson, User::class.java)
 
             val webpage = WXWebpageObject()
-            if(BuildConfig.DEBUG)
-            {
-                webpage.webpageUrl = "http://119.3.125.1:8090/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
-            }
-            else {
-                webpage.webpageUrl = "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            if (BuildConfig.DEBUG) {
+                webpage.webpageUrl =
+                    "http://119.3.125.1:8090/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
+            } else {
+                webpage.webpageUrl =
+                    "http://bj.jzzchina.com/downLoad/index?type=1&yuserId=${userObj.id}&yType=1"
             }
 
             val msg = WXMediaMessage(webpage)
@@ -153,7 +156,8 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
 
         layout_go2SeeMore.setOnClickListener {
 
-            activity!!.supportFragmentManager.beginTransaction().addToBackStack(InviteFragment.javaClass.name)
+            activity!!.supportFragmentManager.beginTransaction()
+                .addToBackStack(InviteFragment.javaClass.name)
                 .hide(
                     this
                 ).add(
@@ -190,7 +194,7 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
                     allInvitedList = it.data as ArrayList<DataXXXX>
                     val list = ArrayList<DataXXXX>(3)
                     if (it.data.size > 3) {
-                        for (i in 0..3) {
+                        for (i in 0 .. 3) {
                             list.add(it.data[i])
                         }
                         mAdapter.setNewData(list)
@@ -209,7 +213,12 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
                 it.needLogin?.let { needLogin ->
                     if (needLogin) {
                         ToastUtils.showShort("未登录，请登录后再操作！")
-                        startActivity(Intent(this@InviteFragment.context, LoginActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@InviteFragment.context,
+                                LoginActivity::class.java
+                            )
+                        )
                     }
                 }
             })
@@ -226,14 +235,14 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
                 }
             }
             redEnvelopOpen.observe(this@InviteFragment) {
-                if(showRedEnvelopeOpen !=null) {
+                if (showRedEnvelopeOpen != null) {
                     showRedEnvelopeOpen!!.dismiss()
                 }
-                showRedEnvelopeOpen= App.dialogHelp.showRedEnvelopeOpen(
+                showRedEnvelopeOpen = App.dialogHelp.showRedEnvelopeOpen(
                     it.mInviteRewardCount,
                     it.mInviteRewardAmount, {
                         mViewModel.getCount()
-                    },{
+                    }, {
                         it.dismiss()
                     }
                 ) {
@@ -246,11 +255,11 @@ class InviteFragment : BaseVMFragment<InviteViewModel>() {
     }
 
 
-
     override fun initListener() {
     }
 
     private fun buildTransaction(type: String?): String? {
-        return if (type == null) System.currentTimeMillis().toString() else type + System.currentTimeMillis()
+        return if (type == null) System.currentTimeMillis()
+            .toString() else type + System.currentTimeMillis()
     }
 }

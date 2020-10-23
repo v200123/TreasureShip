@@ -16,10 +16,6 @@
         android:layout_height="match_parent">
 
 
-
-
-
-
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"

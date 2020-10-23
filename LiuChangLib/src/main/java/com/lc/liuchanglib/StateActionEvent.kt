@@ -14,4 +14,4 @@ object SuccessState : StateActionEvent()
 
 object NeedLoginState : StateActionEvent()
 
-class ErrorState(val message: String?) : StateActionEvent()
+class ErrorState(val message: String?,val errorCode:Int = -1) : StateActionEvent()

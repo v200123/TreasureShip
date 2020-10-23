@@ -6,6 +6,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/plugins.gradle.org/m2" }
         maven {url "https://jitpack.io"}
 //        maven {
 //            url 'http://nexus3.lilchain.com/repository/maven-releases/'
@@ -18,7 +19,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.baidu.mobstat:mtj-circle-plugin:latest.integration'
         classpath 'com.github.chenyy0708:UploadApkPlugin:3.0.1'
     }
 }
@@ -28,6 +28,7 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/plugins.gradle.org/m2" }
         maven {url "https://jitpack.io"}
 //        maven {
 //            url 'http://nexus3.lilchain.com/repository/maven-releases/'

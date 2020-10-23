@@ -6,7 +6,7 @@ data class Data(
     val createTime: String?,
     val doctorAdvice: String?,
     val goodsNum: Int?,
-    val goodsSkuList: List<GoodsSkuX?>?,
+    val goodsSkuList: List<GoodsSkuX>?,
     val orderId: Int?,
     val orderMoney: Double?,
     val orderNo: String?,

@@ -25,11 +25,20 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
     var login by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     val xPopup  by lazy { XPopup.Builder(mContext).asLoading()}
 
+    var isFinish = false
 
     private val countDown by lazy { CountDownTimerUtils(tv_sendSms, 60 * 1000, 1000) }
     override fun getLayoutResId() = R.layout.activity_bind_phone
 
     override fun initVM(): LoginViewModel = getViewModel()
+
+//    override fun onBackPressed() {
+//        if(isFinish)
+//            mContext.start<MainActivity>()
+//        else{
+//            super.onBackPressed()
+//        }
+//    }
 
     override fun initView() {
         App.CURRENT_USER = null
@@ -72,6 +81,7 @@ class BindPhoneActivity : BaseVMActivity<LoginViewModel>() {
 
                 it.showSuccess?.let {user->
                     xPopup.dismiss()
+                    isFinish = true
                     JPushInterface.setAlias(mContext,1001,user.id.toString())
                     App.CURRENT_USER = user
                     login = true

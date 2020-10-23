@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:layout_marginEnd="16dp"
-                android:drawableRight="@drawable/icon_check_more"
+                android:drawableRight="@drawable/ico_goto"
                 android:gravity="center|left"
                 android:text="订单号：2020888808081"
                 android:textColor="#ff333333"

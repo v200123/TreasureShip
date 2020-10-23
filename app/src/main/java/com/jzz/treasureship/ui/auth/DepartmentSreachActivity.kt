@@ -33,12 +33,10 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
         }
         tv_title.text = "选择科室"
         rlback.setOnClickListener { finish() }
-        mAdapter.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener {
-            override fun onItemClick(
+        mAdapter.setOnItemClickListener{
                 adapter: BaseQuickAdapter<*, *>,
                 view: View,
-                position: Int
-            ) {
+                position: Int ->
                 setResult(500, Intent().apply {
                     putExtra(
                         AuthBaseInformationFragment.EXTRA_POSITION,
@@ -52,8 +50,6 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
                 finish()
             }
 
-        })
-
         et_department_search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -65,11 +61,11 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
 
             override fun afterTextChanged(s: Editable) {
                 if (s.isBlank()) {
-                    mAdapter.setNewData(mDepartmentList)
+                    mAdapter.setList(mDepartmentList)
                 } else {
                     val filter = mDepartmentList
                         .filter { it.mName.contains(s.toString()) }
-                    mAdapter.setNewData(filter)
+                    mAdapter.setList(filter)
                 }
             }
 
@@ -84,7 +80,7 @@ class DepartmentSreachActivity : BaseVMActivity<DepartmentSreachViewModel>(false
     override fun startObserve() {
         mViewModel.hospitalData.observe(this, {
             mDepartmentList = it.mList
-            mAdapter.setNewData(mDepartmentList)
+            mAdapter.setList(mDepartmentList)
         })
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Window
 import com.jzz.treasureship.R
 
+
 class QuestionsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

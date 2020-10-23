@@ -2,7 +2,7 @@ package com.jzz.treasureship.model.api
 
 import com.google.gson.JsonObject
 import com.jzz.treasureship.model.bean.*
-import com.jzz.treasureship.ui.upAddressRequest
+
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -282,7 +282,9 @@ interface JzzApiService {
      * 订单信息：获取订单列表
      */
     @POST("/api/v1/order/getOrderList")
-    suspend fun getOrderList(@Body body: RequestBody): JzzResponse<Orders>
+    suspend fun getOrderList(@Body body: BaseRequestBody): JzzResponse<OrdersListBean>
+
+
 
     /**
      * 收货地址管理：添加收货地址

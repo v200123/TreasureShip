@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.jzz.treasureship.R;
 
 import java.util.ArrayList;
@@ -362,6 +362,7 @@ public class AddressSelector extends LinearLayout implements View.OnClickListene
                             R.layout.item_address_picker,parent,false));
             return viewHolder;
         }
+
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {

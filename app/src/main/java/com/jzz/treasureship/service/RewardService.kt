@@ -6,7 +6,8 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.jzz.treasureship.model.bean.Questionnaire
-import com.jzz.treasureship.model.bean.QuestionnaireResponseVo
+
+import com.jzz.treasureship.core.*
 import com.jzz.treasureship.receiver.RewardReceiver
 import com.jzz.treasureship.utils.out
 

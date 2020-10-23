@@ -29,7 +29,7 @@ class CustomPropertyPopup(context:Context,goodsAttributeList:List<GoodsDetail.Go
         }
         val mAdapter = GoodsPropertiesAdapter()
         mAdapter.run {
-            setNewData(mList)
+            setList(mList)
             notifyDataSetChanged()
         }
 

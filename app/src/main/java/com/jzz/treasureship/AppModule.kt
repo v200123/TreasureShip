@@ -6,6 +6,7 @@ import com.jzz.treasureship.model.api.JzzRetrofitClient
 import com.jzz.treasureship.model.repository.*
 import com.jzz.treasureship.ui.address.AddressViewModel
 import com.jzz.treasureship.ui.addressbook.AddressbookViewModel
+import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.ui.goods.GoodsDetailViewModel
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.jzz.treasureship.ui.invite.InviteViewModel
@@ -17,9 +18,9 @@ import com.jzz.treasureship.ui.ranking.RankingViewModel
 import com.jzz.treasureship.ui.search.SearchViewModel
 import com.jzz.treasureship.ui.shopcar.ShopCarViewModel
 import com.jzz.treasureship.ui.trace.TraceViewModel
-import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
 import com.jzz.treasureship.ui.wallet.WalletViewModel
 import com.jzz.treasureship.ui.withdraw.WithdrawViewModel
+
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

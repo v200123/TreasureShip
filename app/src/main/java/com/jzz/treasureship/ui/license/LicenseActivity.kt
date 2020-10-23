@@ -6,6 +6,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.jzz.treasureship.R
+
 import kotlinx.android.synthetic.main.activity_license.*
 import kotlinx.android.synthetic.main.include_title.*
 

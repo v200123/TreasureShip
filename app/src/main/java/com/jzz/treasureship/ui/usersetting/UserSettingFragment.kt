@@ -1,10 +1,10 @@
 package com.jzz.treasureship.ui.usersetting
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -13,13 +13,15 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.jzz.treasureship.AppInterface.IParentHidden
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.ui.activity.DialogStatusViewModel
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.auth.AuthenticationActivity
 import com.jzz.treasureship.ui.auth.viewmodel.UserViewModel
-import com.jzz.treasureship.ui.coupon.CouponActivity
+import com.jzz.treasureship.ui.coupon.CouponMainFragment
 import com.jzz.treasureship.ui.invite.InviteFragment
 import com.jzz.treasureship.ui.msg.MsgFragment
 import com.jzz.treasureship.ui.orders.OrdersFragment
@@ -29,13 +31,17 @@ import com.jzz.treasureship.ui.shopcar.ShopCarFragment
 import com.jzz.treasureship.ui.user.UserInfoFragment
 import com.jzz.treasureship.ui.wallet.WalletFragment
 import com.jzz.treasureship.utils.PreferenceUtils
+import com.jzz.treasureship.utils.out
+import com.lc.mybaselibrary.ext.getResColor
+import com.lc.mybaselibrary.ext.getResDrawable
 import com.lc.mybaselibrary.start
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user_setting.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class UserSettingFragment : BaseVMFragment<UserViewModel>() {
+class UserSettingFragment : BaseVMFragment<UserViewModel>() , IParentHidden {
     private val mPopStatus by activityViewModels<DialogStatusViewModel> ()
+    override var  mStatusColor = R.color.blue_normal
+    private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
 
     var isShow by PreferenceUtils(PreferenceUtils.no_auth_show,false)
     companion object {
@@ -47,10 +53,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            activity!!.nav_view.visibility = View.VISIBLE
-            activity!!.nav_view.menu[3].isChecked = true
-            StateAppBar.setStatusBarLightMode(this.activity,ContextCompat.getColor(mContext,R.color.blue_normal))
-            if(!mPopStatus.isOpen)
+            if(isLogin)
             mViewModel.getUserInfo()
         }
     }
@@ -59,18 +62,44 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
 
     override fun initVM(): UserViewModel = getViewModel()
 
+    override fun onStart() {
+        super.onStart()
+        "我userSetting当前在onStart".out(true)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        "我userSetting当前在onStop".out(true)
+
+    }
+    override fun onPause() {
+        super.onPause()
+        "我userSetting当前在onPause".out(true)
+    }
+
     override fun onResume() {
         super.onResume()
-        if(!mPopStatus.isOpen)
+        "我userSetting当前在onResume".out(true)
+        if(isLogin)
         mViewModel.getUserInfo()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        "我userSetting当前在onViewStateRestored".out(true)
     }
 
     override fun initView() {
         fl_setting_card.setOnClickListener {
-            mContext.start<CouponActivity> {  }
+
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, CouponMainFragment(), "CouponMainFragment")
+                .commit()
+
         }
-        activity!!.nav_view.visibility = View.VISIBLE
-        StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
+        StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.blue_normal))
 
         val USER_JSON by PreferenceUtils(PreferenceUtils.USER_GSON, "")
 
@@ -98,59 +127,60 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
 
 
         lin_auth.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .hide(this)//隐藏当前Fragment
-                .add(R.id.frame_content, UserInfoFragment.newInstance(), UserInfoFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, UserInfoFragment.newInstance(), "UserInfoFragment")
                 .commit()
         }
 
         lin_shopcar.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .hide(this)//隐藏当前Fragment
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
                 .add(R.id.frame_content, ShopCarFragment.newInstance(), ShopCarFragment.javaClass.name)
                 .commit()
         }
         lin_mine_order.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
-                .addToBackStack("aaa")
-                .hide(this)//隐藏当前Fragment
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
                 .add(R.id.frame_content, OrdersFragment.newInstance(), OrdersFragment.javaClass.name)
                 .commit()
         }
         lin_income.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .hide(this)//隐藏当前Fragment
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
                 .add(R.id.frame_content, WalletFragment.newInstance(), WalletFragment.javaClass.name)
                 .commit()
         }
         lin_ranking.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .hide(this)//隐藏当前Fragment
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
                 .add(R.id.frame_content, RankingFragment.newInstance(), RankingFragment.javaClass.name)
                 .commit()
         }
         lin_invite.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .hide(this)//隐藏当前Fragment
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
                 .add(R.id.frame_content, InviteFragment.newInstance(), InviteFragment.javaClass.name)
                 .commit()
         }
         lin_setting.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.frame_content, SettingFragment.newInstance(), SettingFragment.javaClass.name)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
+                .add(R.id.frame_content, SettingFragment.newInstance(), SettingFragment.javaClass.name)
                 .commit()
         }
 
         iv_msg.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
-                .addToBackStack(UserSettingFragment.javaClass.name)
-                .hide(this)//隐藏当前Fragment
+            (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .hide((mContext as MainActivity).mMainHomeFragemnt)
                 .add(R.id.frame_content, MsgFragment.newInstance(), MsgFragment.javaClass.name)
                 .commit()
 
@@ -193,7 +223,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
                             ) as TextView
                             tv.text = mTags[i]
                             tv.setTextColor(context!!.resources.getColor(R.color.white))
-                            tv.background = context!!.resources.getDrawable(R.drawable.mine_auditstatus_tag_shape)
+                            tv.background = mContext.getResDrawable(R.drawable.mine_auditstatus_tag_shape)
                             cf_titles.addView(tv)
                         }
                     } else {
@@ -203,7 +233,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
                             ) as TextView
                             tv.text = tag
                             tv.setTextColor(context!!.resources.getColor(R.color.white))
-                            tv.background = context!!.resources.getDrawable(R.drawable.mine_auditstatus_tag_shape)
+                            tv.background = mContext.getResDrawable(R.drawable.mine_auditstatus_tag_shape)
                             cf_titles.addView(tv)
                         }
                     }
@@ -232,6 +262,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
     }
 
     override fun initData() {
+        if(isLogin)
         mViewModel.getUserInfo()
     }
 
@@ -253,7 +284,7 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
 
                     if (it.avatar.isNullOrBlank()) {
                         Glide.with(this@UserSettingFragment)
-                            .load(context!!.resources.getDrawable(R.drawable.icon_default_avatar))
+                            .load(mContext.getResDrawable(R.drawable.icon_default_avatar))
                             .into(iv_user_head)
                     } else {
                         Glide.with(this@UserSettingFragment).load(it.avatar)
@@ -269,5 +300,19 @@ class UserSettingFragment : BaseVMFragment<UserViewModel>() {
         mViewModel.getUserInfo()
     }
     override fun initListener() {
+    }
+
+    override fun onBackPressed(): Boolean {
+        return false
+    }
+
+    override fun parentHidden(isHidden: Boolean, Type: Int) {
+
+        "我进入parentHidden02".out()
+
+        if(!isHidden)
+        {
+            setStatusColor()
+        }
     }
 }

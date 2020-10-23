@@ -8,10 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.AnswersAdapter
-import com.jzz.treasureship.base.BaseVMActivity
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.AnswerItem
 import com.jzz.treasureship.model.bean.Questionnaire
@@ -53,7 +51,7 @@ class QuestionsFragment : BaseVMFragment<HomeViewModel>() {
     override fun initVM(): HomeViewModel = getViewModel()
 
     override fun initView() {
-        activity!!.nav_view.visibility = View.GONE
+        //activity!!.nav_view.visibility = View.GONE
         tv_back.setOnClickListener {
             activity!!.supportFragmentManager.popBackStack()
         }
@@ -98,9 +96,9 @@ class QuestionsFragment : BaseVMFragment<HomeViewModel>() {
                 list.add(questionItem)
             }
 
-            setNewData(list)
+            setList(list)
             notifyDataSetChanged()
-            onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+           setOnItemChildClickListener() { adapter, view, position ->
                 when (view.id) {
                     R.id.layout_ansItem -> {
                         val json = JSONObject(mAnswersAdapter.getItem(position)!!.item)

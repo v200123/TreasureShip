@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.GsonUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.GoodsDetail
 import kotlinx.android.synthetic.main.activity_goods_qualification.*

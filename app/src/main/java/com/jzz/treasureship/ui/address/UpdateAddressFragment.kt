@@ -19,6 +19,7 @@ import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.ui.upAddressRequest
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.view.CustomAddPickerBottomPopup
+
 import com.lc.mybaselibrary.assertRead
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
@@ -70,7 +71,7 @@ class UpdateAddressFragment : BaseVMFragment<AddressViewModel>() {
         if (midAddress.isNotBlank()) {
             midAddressObj = GsonUtils.fromJson(midAddress, CityPlace::class.java)
         }
-        activity?.nav_view?.visibility = View.GONE
+//        activity?.nav_view?.visibility = View.GONE
         tv_title.text = "修改地址"
         arguments?.let {
             val address = it.getParcelable<Address>("address")!!
