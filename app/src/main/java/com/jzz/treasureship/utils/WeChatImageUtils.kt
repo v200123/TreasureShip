@@ -8,4 +8,4 @@ import com.blankj.utilcode.util.ImageUtils
  *@describe:
  *@Auth: 29579
  **/
-fun Bitmap.changeImage() = ImageUtils.bitmap2Bytes(this, Bitmap.CompressFormat.PNG)
+fun Bitmap.changeImage() = ImageUtils.bitmap2Bytes(this, Bitmap.CompressFormat.PNG,90)
