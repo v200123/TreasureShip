@@ -1,6 +1,6 @@
 import com.lc.versionplugin.VersionControllor
 
-plugins{
+plugins {
     // 这个 id 就是在 versionPlugin 文件夹下 build.gradle 文件内定义的 id
     id "com.lc.plugin"
 }
@@ -11,7 +11,6 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-
 
 
     defaultConfig {
@@ -33,7 +32,6 @@ android {
 }
 
 
-
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -47,9 +45,24 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-task CopyAndReName(group:'File',description:"用于复制文件并且修改文件名的") {
+task CopyAndReName(group: 'Sign', description: "用于签名加固后的文件的") {
+    def command = "jarsigner -verbose -keystore JzzChinaKeyStore.keystore -signedjar ./baojian-signed.apk ./baojian_nosign.apk TreasureShip"
+
+
+    exec {
+        workingDir "../app"
+        // 查看360加固签名信息
+        executable = 'powershell'
+         command
+        println 'packers===show 360 sign'
+    }
+
+//    println commandLine 'cmd'  command .execute().text
+
 
 }
+
+
 
 
 

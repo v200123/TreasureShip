@@ -35,7 +35,8 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = fals
 
     private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     private val userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
-//    认证的弹窗是否显示过
+
+    //    认证的弹窗是否显示过
     private var authShowSuccess by PreferenceUtils(PreferenceUtils.authShowSuccess, false)
 
     //    每日弹窗的记录
@@ -55,7 +56,11 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = fals
         }
         mViewModel.mStateLiveData.observe(this, {
             if (it is LoadState) {
-                mLoading.show()
+                if (it.type == 0)
+                    mLoading.show()
+                else {
+                    showDialogWithType(it.type)
+                }
             }
             if (it is SuccessState) {
                 mLoading.delayDismiss(100)
@@ -108,19 +113,18 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = fals
         if (isLogin) {
 //未认证
             val user = GsonUtils.fromJson(userInfo, User::class.java)
-            if (user.auditStatus == 1 && user.firstPassTip == 1 &&!authShowSuccess) {
+            if (user.auditStatus == 1 && user.firstPassTip != 1 && !authShowSuccess) {
                 authShowSuccess = true
-                App.dialogHelp.showSuccess(user.nickName){
+                App.dialogHelp.showSuccess(user.nickName) {
 
                 }
                 lifecycleScope.launch {
                     HttpHelp.getRetrofit().notificationServerPass(BaseRequestBody())
                 }
             }
-
-
-
         }
     }
+
+    protected open fun showDialogWithType(type: Int) {}
 
 }

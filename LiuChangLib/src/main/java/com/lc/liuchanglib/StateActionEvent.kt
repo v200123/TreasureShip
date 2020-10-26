@@ -6,9 +6,9 @@ package com.lc.mybaselibrary
  *@Auth: 29579
  **/
 //定义网络请求状态(密封类扩展性更好)
-sealed class StateActionEvent(type: Int = 0)
+sealed class StateActionEvent()
 
-object LoadState : StateActionEvent()
+class LoadState(val type:Int = 0) : StateActionEvent()
 
 object SuccessState : StateActionEvent()
 

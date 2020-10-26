@@ -30,7 +30,6 @@ class OrdersVpFragment() : BaseVMFragment<OrdersViewModel>() {
                 bundle.putInt(OrdersVpPositioin,position)
                 arguments = bundle
             }
-
     }
 
     private val mAdapter by lazy { OrdersVpAdapter() }
@@ -463,6 +462,7 @@ class OrdersVpFragment() : BaseVMFragment<OrdersViewModel>() {
             })
         }
     }
+
 
     override fun initListener() {
 

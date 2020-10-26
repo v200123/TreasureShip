@@ -355,7 +355,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             userState.observe(this@MainActivity, Observer {
                 it.showSuccess?.let {
                     JPushInterface.setAlias(applicationContext, 1001, it.id.toString())
-                    if (it.auditStatus == 1 && it.firstPassTip == 1 && authShowSuccess) {
+                    if (it.auditStatus == 1 && it.firstPassTip != 1 && authShowSuccess) {
                         authShowSuccess = true
                         App.dialogHelp.showSuccess(it.nickName) {
 

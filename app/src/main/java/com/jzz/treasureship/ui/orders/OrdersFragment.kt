@@ -97,7 +97,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
             })
         }
 
-        val mAdapter = object : FragmentStateAdapter(mContext as AppCompatActivity) {
+        val mAdapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
 
                 return OrdersVpFragment.newInstance(position)

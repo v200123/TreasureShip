@@ -55,34 +55,18 @@ class OrdersListBean(
         var mUserMoney: Float = 0f // 0
     ) {
         class GoodsSku(
-            @SerializedName("attrValue")
-            var mAttrValue: String? = "", // string
-            @SerializedName("goodsId")
-            var mGoodsId: Int? = 0, // 0
-            @SerializedName("goodsMoney")
-            var mGoodsMoney: Float = 0f, // 0
-            @SerializedName("goodsName")
-            var mGoodsName: String? = "", // string
-            @SerializedName("goodsType")
-            var mGoodsType: Int? = 0, // 0
-            @SerializedName("id")
-            var mId: Int? = 0, // 0
-            @SerializedName("num")
-            var mNum: Int? = 0, // 0
-            @SerializedName("orderGoodsId")
-            var mOrderGoodsId: Int? = 0, // 0
-            @SerializedName("orderStatus")
-            var mOrderStatus: Int? = 0, // 0
-            @SerializedName("price")
-            var mPrice: Float = 0f, // 0
-            @SerializedName("returnPoint")
-            var mReturnPoint: Float = 0f, // 0
-            @SerializedName("shopId")
-            var mShopId: Int? = 0, // 0
-            @SerializedName("skuId")
-            var mSkuId: Int? = 0, // 0
-            @SerializedName("skuPicture")
-            var mSkuPicture: String? = "" // string
+            val attrValue: String?,
+            val commissionAccount: Double?,
+            val count: Int?,
+            val goodsId: Int?,
+            val goodsMoney: Double?,
+            val goodsType: Int?,
+            val imageUrl: String?,
+            val name: String?,
+            val orderGoodsId: Int?,
+            val price: Double?,
+            val returnPoint: Int?,
+            val skuId: Int?
         )
     }
 }

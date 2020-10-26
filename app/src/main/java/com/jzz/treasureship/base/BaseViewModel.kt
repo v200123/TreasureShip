@@ -6,7 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
 import com.lc.mybaselibrary.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -19,14 +22,7 @@ typealias Cancel = (e: Exception) -> Unit
 open class BaseViewModel : ViewModel() {
     val mStateLiveData = MutableLiveData<StateActionEvent>()
 
-    open class BaseUiModel<T>(
-        var showLoading: Boolean = false,
-        var showError: String? = null,
-        var showSuccess: T? = null,
-        var showEnd: Boolean = false, // 加载更多
-        var isRefresh: Boolean = false // 刷新
 
-    )
 
     fun <T> JzzResponse<T>.resultCheck(
         errorMsg: (msg: String) -> Unit = {
@@ -50,7 +46,7 @@ open class BaseViewModel : ViewModel() {
     ) {//使用协程封装统一的网络请求处理
         viewModelScope.launch {
             //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
-            mStateLiveData.value = LoadState
+            mStateLiveData.value = LoadState()
             runCatching {
                 block()
             }
@@ -103,17 +99,6 @@ open class BaseViewModel : ViewModel() {
 
     }
 
-    suspend fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
-        withContext(Dispatchers.IO) {
-            block
-        }
-    }
-
-    fun launc(tryBlock: suspend CoroutineScope.() -> Unit) {
-        launchOnUI {
-            tryCatch(tryBlock, {}, {}, true)
-        }
-    }
 
 
     private suspend fun tryCatch(

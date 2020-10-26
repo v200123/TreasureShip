@@ -44,11 +44,12 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
             .asLoading()
     }
 
-    protected var mTipDialogText = "请稍等...."
+
     private val _useBinding = useDataBinding
     protected lateinit var mBinding: ViewDataBinding
     private val userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
-     val mFragmentManager by lazy { (mContext as AppCompatActivity).supportFragmentManager }
+    val mFragmentManager by lazy { (mContext as AppCompatActivity).supportFragmentManager }
+
     @ColorRes
     open var mStatusColor: Int = R.color.white
 
@@ -94,7 +95,12 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         initListener()
         mViewModel.mStateLiveData.observe(owner = viewLifecycleOwner, onChanged = {
             if (it is LoadState) {
-                showLoading(mTipDialogText)
+
+                if (it.type == 0)
+                    showLoading("请稍等....")
+                else {
+                    showDialogWithType(it.type)
+                }
             }
             if (it is SuccessState) {
                 mLoading.dismiss()
@@ -206,4 +212,8 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         )
     }
 
+    /**
+     * 如何有对Dialog的显示有需求，那么可以重写这个方法，注意，type的传入是在ViewModel中的请求的loadStatus中进行传入的
+     */
+    protected open fun showDialogWithType(type: Int) {}
 }
