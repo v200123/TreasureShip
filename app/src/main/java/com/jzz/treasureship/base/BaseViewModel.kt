@@ -3,6 +3,7 @@ package com.jzz.treasureship.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.JsonSyntaxException
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
 import com.lc.mybaselibrary.*
@@ -75,6 +76,9 @@ open class BaseViewModel : ViewModel() {
             }
             is HttpException -> {
                 mStateLiveData.value = ErrorState("http code ${e.code()}", -100)
+            }
+            is JsonSyntaxException ->{
+                mStateLiveData.value = ErrorState("解析失败 ${e.message}", -100)
             }
             /**
              * 如果协程还在运行，个别机型退出当前界面时，viewModel会通过抛出CancellationException，
