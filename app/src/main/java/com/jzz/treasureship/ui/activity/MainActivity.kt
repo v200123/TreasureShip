@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
 import android.os.Handler
-import android.os.PersistableBundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -116,9 +114,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
     }
 
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        //super.onSaveInstanceState(outState, outPersistentState)
-    }
+
 
     override fun initVM(): LoginViewModel = getViewModel()
 
@@ -158,44 +154,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         supportFragmentManager.commit {
             add(R.id.frame_content,mMainHomeFragemnt,"MainHomeFragment")
         }
-
-
-//        nav_view.setOnNavigationItemSelectedListener { item: MenuItem ->
-//            if (!isLogin) {
-//                switchToLogin()
-//                return@setOnNavigationItemSelectedListener false
-//            } else {
-//                return@setOnNavigationItemSelectedListener when (item.itemId) {
-//                    R.id.navigation_home -> {
-//                        item.setIcon(R.drawable.home_nav_home_icon_selected)
-//                        switchToHome()
-//                        curFragment = "HomeFragment"
-//                        true
-//                    }
-//                    R.id.navigation_treasure_box -> {
-//                        item.setIcon(R.drawable.icon_treasure_box_selected)
-//                        switchToTsb()
-//                        curFragment = "TreasureBoxFragment"
-//                        true
-//                    }
-//                    R.id.navigation_address_book -> {
-//                        curFragment = "AddressBookFragment"
-//                        item.setIcon(R.drawable.icon_addressbook_selected)
-//                        switchToAddressBook()
-//                        true
-//                    }
-//                    R.id.navigation_user_settings -> {
-//                        curFragment = "UserSettingFragment"
-//                        item.setIcon(R.drawable.icon_mine_selected)
-//                        switchToMine()
-//                        true
-//                    }
-//                    else -> {
-//                        false
-//                    }
-//                }
-//            }
-//        }
 
         intent?.let {
             val goodId = it.getStringExtra(GoodsId)
@@ -326,22 +284,6 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
         mCurrentFragment = targetFragment
     }
 
-//    private fun resetToDefaultIcon() {
-//        val homeItem: MenuItem = nav_view.menu.findItem(R.id.navigation_home)
-//        val tsbItem: MenuItem = nav_view.menu.findItem(R.id.navigation_treasure_box)
-//        val addressBookItem: MenuItem = nav_view.menu.findItem(R.id.navigation_address_book)
-//        val mineItem: MenuItem = nav_view.menu.findItem(R.id.navigation_user_settings)
-//        homeItem.setIcon(R.drawable.home_nav_home_icon_normal)
-//        homeItem.setChecked(false)
-//        tsbItem.setIcon(R.drawable.icon_treasure_box_normal)
-//        tsbItem.setChecked(false)
-//        addressBookItem.setIcon(R.drawable.icon_addressbook_normal)
-//        addressBookItem.setChecked(false)
-//        mineItem.setIcon(R.drawable.icon_mine_normal)
-//        mineItem.setChecked(false)
-//    }
-
-
     override fun initData() {
         Handler().postDelayed(
             {
@@ -355,7 +297,7 @@ class MainActivity : BaseVMActivity<LoginViewModel>() {
             userState.observe(this@MainActivity, Observer {
                 it.showSuccess?.let {
                     JPushInterface.setAlias(applicationContext, 1001, it.id.toString())
-                    if (it.auditStatus == 1 && it.firstPassTip != 1 && authShowSuccess) {
+                    if (it.auditStatus == 1 && it.firstPassTip == 1 && authShowSuccess) {
                         authShowSuccess = true
                         App.dialogHelp.showSuccess(it.nickName) {
 

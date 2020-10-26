@@ -61,7 +61,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         ll_view.background = mContext.getResDrawable(R.drawable.toolbar_bg)
         tv_title.text = context!!.resources.getText(R.string.title_shop_car)
 
-        StateAppBar.setStatusBarLightMode(this.activity, context!!.resources.getColor(R.color.blue_normal))
+        StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.blue_normal))
         rlback.setOnClickListener {
             mFragmentManager.popBackStack()
         }
@@ -101,11 +101,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                 cartModel.showSuccess?.let {
                     if (it.shops.isEmpty()) {
                         layout_noGoods.visibility = View.VISIBLE
-                        layout_goods.visibility = View.GONE
+//                        layout_goods.visibility = View.GONE
                         ll_shop_car_confirm.visibility = View.GONE
                     } else {
                         layout_noGoods.visibility = View.GONE
-                        layout_goods.visibility = View.VISIBLE
+//                        layout_goods.visibility = View.VISIBLE
                         ll_shop_car_confirm.visibility = View.VISIBLE
 
                         spcs = CartList(it.dutyPrice, it.isSelected, it.shops, it.vatPrice)
@@ -174,7 +174,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                                         if (goods?.isSelected == 1) {
                                             val detail: JSONObject = JSONObject()
                                             detail.put("cartId", goods.mCartId)
-                                            detail.put("SkuId", goods.mSkuId)
+                                            detail.put("skuId", goods.mSkuId)
                                             detail.put("count", goods.mCount)
                                             details.put(detail)
                                         }

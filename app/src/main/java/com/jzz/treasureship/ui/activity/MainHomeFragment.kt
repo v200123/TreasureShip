@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentPagerAdapter
 import com.jzz.treasureship.AppInterface.IParentHidden
 import com.jzz.treasureship.R
 import com.jzz.treasureship.ui.home.HomeFragment
@@ -33,8 +33,6 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         tab_container.addTab(
             TabSegment.Tab(
                 mContext.getResDrawable(R.drawable.home_nav_home_icon_normal),
@@ -56,10 +54,10 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
                 "我的", false, true
             )
         )
-        vp_container_home.offscreenPageLimit = 1
+        vp_container_home.offscreenPageLimit = 2
         tab_container.setupWithViewPager(vp_container_home, false)
 
-        vp_container_home.adapter = object : FragmentStatePagerAdapter(
+        vp_container_home.adapter = object : FragmentPagerAdapter(
             childFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
         ) {
             override fun getCount(): Int = 3

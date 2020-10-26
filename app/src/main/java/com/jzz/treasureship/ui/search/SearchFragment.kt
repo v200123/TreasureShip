@@ -6,8 +6,7 @@ import android.graphics.drawable.Drawable
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
-import android.view.View.*
+import android.view.View.OnTouchListener
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -16,16 +15,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.blankj.utilcode.util.ToastUtils
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.HotSearchAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.view.RecyclerViewSpacesItemDecoration
 import com.lxj.xpopup.XPopup
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_search.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -54,7 +50,11 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
         }
 
         tv_cancal.setOnClickListener {
-            activity!!.supportFragmentManager.popBackStack()
+            val imm = mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            // 隐藏软键盘
+            // 隐藏软键盘
+            imm.hideSoftInputFromWindow((mContext as AppCompatActivity).window.decorView.windowToken, 0)
+            mFragmentManager.popBackStack()
         }
 
         etSearch.setOnTouchListener(OnTouchListener { _, event ->
@@ -149,7 +149,7 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
                                 .hide(this@SearchFragment)//隐藏当前Fragment
                                 .add(
                                     R.id.frame_content,
-                                    SearchResultsFragment.newInstance(element.id, 0, type,element.brandName),
+                                    SearchResultsFragment.newInstance(element.id, 0, type, element.brandName),
                                     SearchResultsFragment.javaClass.name
                                 ).commit()
                         }
@@ -230,7 +230,11 @@ class SearchFragment : BaseVMFragment<SearchViewModel>() {
                                         .hide(this@SearchFragment)//隐藏当前Fragment
                                         .add(
                                             R.id.frame_content,
-                                            SearchResultsFragment.newInstance(hotSearchAdapter.getItem(position)!!.videoName, 2, type),
+                                            SearchResultsFragment.newInstance(
+                                                hotSearchAdapter.getItem(position)!!.videoName,
+                                                2,
+                                                type
+                                            ),
                                             SearchResultsFragment.javaClass.name
                                         ).commit()
                                 }

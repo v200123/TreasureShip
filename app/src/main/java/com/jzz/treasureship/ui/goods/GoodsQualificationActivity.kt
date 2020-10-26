@@ -7,8 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.GsonUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.GoodsDetail
 import kotlinx.android.synthetic.main.activity_goods_qualification.*
@@ -21,7 +19,7 @@ import kotlinx.android.synthetic.main.include_title.*
  **/
 class GoodsQualificationActivity : AppCompatActivity(R.layout.activity_goods_qualification) {
     private var mType = 0
-    private val mAdapter by lazy { qualificationAdapter(this) }
+//    private val mAdapter by lazy { qualificationAdapter(this) }
 
     companion object {
         const val QualificationType = "Qualification"
@@ -81,17 +79,17 @@ class GoodsQualificationActivity : AppCompatActivity(R.layout.activity_goods_qua
 
     }
 
-    class qualificationAdapter(var mActivity: AppCompatActivity) :
-        BaseQuickAdapter<String, BaseViewHolder>(
-            R.layout.item_simple_imageview
-        ) {
-        override fun convert(
-            holder: BaseViewHolder,
-            item: String
-        ) {
-
-            Glide.with(mActivity).asDrawable().load(item).into(holder.getView(R.id.iv_item))
-
-        }
-    }
+//    class qualificationAdapter(var mActivity: AppCompatActivity) :
+//        BaseQuickAdapter<String, BaseViewHolder>(
+//            R.layout.item_simple_imageview
+//        ) {
+//        override fun convert(
+//            holder: BaseViewHolder,
+//            item: String
+//        ) {
+//
+//            Glide.with(mActivity).asDrawable().load(item).into(holder.getView(R.id.iv_item))
+//
+//        }
+//    }
 }

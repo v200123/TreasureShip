@@ -10,7 +10,7 @@
             type="com.jzz.treasureship.ui.shopcar.ShopCarViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/white"
@@ -18,48 +18,35 @@
 
         <include layout="@layout/include_title" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
-                android:id="@+id/layout_goods"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
                 <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="50dp"
                     android:id="@+id/srl_shops"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10">
+                    android:layout_height="match_parent"
+                   >
 
-                    <com.scwang.smartrefresh.layout.header.ClassicsHeader
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_shopcar_list"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginBottom="90dp" />
 
-                    <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:srlClassicsSpinnerStyle="Translate" />
                 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
                 <LinearLayout
+                    android:layout_gravity="bottom"
                     android:id="@+id/ll_shop_car_confirm"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <CheckBox
+                        android:layout_gravity="center"
                         android:id="@+id/cb_shop_car_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -78,7 +65,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-
+                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
@@ -88,6 +75,7 @@
 
                         <TextView
                             android:id="@+id/tv_totalPrice"
+                          android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/red_cc0814"
@@ -111,7 +99,6 @@
                         android:text="去结算"
                         android:textColor="@color/white" />
                 </LinearLayout>
-            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/layout_noGoods"
@@ -146,6 +133,5 @@
                     android:textColor="#ffffffff"
                     android:textSize="13sp" />
             </LinearLayout>
-        </FrameLayout>
-    </LinearLayout>
+    </FrameLayout>
 </layout>

@@ -66,14 +66,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
     private val videoList: ArrayList<VideoData> = ArrayList()
     val startAnswer by PreferenceUtils(PreferenceUtils.start_answer, false)
     val go2Wallet by PreferenceUtils(PreferenceUtils.goto_wallet, false)
-    val getReward by PreferenceUtils(PreferenceUtils.get_reward, false)
-    val openReward by PreferenceUtils(PreferenceUtils.open_reward, false)
+//    val getReward by PreferenceUtils(PreferenceUtils.get_reward, false)
+//    val openReward by PreferenceUtils(PreferenceUtils.open_reward, false)
     private val mWalletFragment by lazy { WalletFragment.newInstance() }
     private val mQuestionsAdapter by lazy { AnswersAdapter() }
 
     private var mTab: HomeTabBeanItem? = null
     private var pageNum = 1
-
     private var currentVideoID = -1
     private var currentPosition = -1
 

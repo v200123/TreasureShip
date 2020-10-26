@@ -91,8 +91,6 @@ class GoodsDetailFragment : BaseVMFragment<GoodsDetailViewModel>(),
             f.arguments = bundle
             return f
         }
-
-
     }
 
 //    private val addressLogisticsList: ArrayList<AddressLogisticsBean> = arrayListOf(

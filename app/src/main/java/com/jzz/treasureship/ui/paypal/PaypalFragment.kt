@@ -109,10 +109,6 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
             mFragmentManager.popBackStack()
         }
 
-
-//        tv_agreement.setOnClickListener {
-//            mViewModel.getDocContent("")
-//        }
     }
 
     override fun initData() {

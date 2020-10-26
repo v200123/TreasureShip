@@ -63,12 +63,10 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>(),IParentHidden{
     }
 
     override fun initData() {
-        if (isLogin) {
-            mViewModel.getCount()
-            mViewModel.getCollectCategory()
-        }
+
 
     }
+
 
     override fun startObserve() {
         mViewModel.apply {
@@ -150,6 +148,10 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>(),IParentHidden{
 
     override fun onResume() {
         super.onResume()
+        if (isLogin) {
+            mViewModel.getCount()
+            mViewModel.getCollectCategory()
+        }
 //        activity!!.nav_view.visibility = View.VISIBLE
         GSYVideoManager.releaseAllVideos()
     }

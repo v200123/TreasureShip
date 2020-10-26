@@ -195,10 +195,6 @@ class OrdersVpFragment() : BaseVMFragment<OrdersViewModel>() {
                 3 -> {
                     status = 2
                 }
-                //已收货
-//            4 -> {
-//                status = 3
-//            }
                 //已完成
                 4 -> {
                     status = 8
@@ -233,10 +229,9 @@ class OrdersVpFragment() : BaseVMFragment<OrdersViewModel>() {
                     for (ele in orders.mData) {
                         list.add(ele!!)
                     }
-                    mAdapter.run {
-                        setList(list)
-                        notifyDataSetChanged()
-                    }
+                    mAdapter
+                        .setList(list)
+
                     srl_orders.finishLoadMore(0)
                 } else {
                     --pageNum

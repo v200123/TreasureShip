@@ -446,6 +446,9 @@ interface JzzApiService {
     @POST("/api/v1/user/savePersonalQualification")
     suspend fun uploadInformation(@Body body: BaseRequestBody):JzzResponse<Qualification>
 
+    /**
+     * 通知服务器我已经显示过认证成功的弹窗
+     */
     @POST("/api/v1/common/firstPassTip")
     suspend fun notificationServerPass(@Body body: BaseRequestBody):JsonObject
 
@@ -459,7 +462,7 @@ interface JzzApiService {
     suspend fun getIsFirst(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<OrderRewardFirstBean>
 
     /**
-     *
+     *打开首单红包
      */
     @POST("/api/v1/order/receiveFirstOrderReward")
     suspend fun openOrderRed(@Body body: BaseRequestBody  = BaseRequestBody()):JzzResponse<FirOrderRedBean>
