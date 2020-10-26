@@ -136,9 +136,15 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                     when (view.id) {
                         R.id.layout_like -> {
                             if (isLogin) {
-                                mViewModel.getCollectCategory()
-                                currentVideoID = mAdapter.getItem(position)!!.id
-                                currentPosition = position
+                                val videoData = adapter.data[position] as VideoData
+                                if(videoData.like == 1)
+                                {
+                                    mViewModel.delCollect(videoData.id)
+                                }else {
+                                    mViewModel.getCollectCategory()
+                                    currentVideoID = mAdapter.getItem(position)!!.id
+                                    currentPosition = position
+                                }
                             } else {
                                 switchLogin()
                             }
@@ -398,6 +404,11 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         "点赞成功" -> {
                             ToastUtils.showShort("点赞成功")
                             mViewModel.getCommentList(-1, currentVideoID)
+                        }
+                        "视频取消收藏成功" ->{
+                            ToastUtils.showShort("取消收藏成功")
+                            mViewModel.getVideoList(mTab!!.id!!, 1)
+
                         }
                         "取消点赞" -> {
                             ToastUtils.showShort("取消点赞成功")
