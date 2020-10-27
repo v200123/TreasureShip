@@ -149,7 +149,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             if (isLogin) {
                                 mViewModel.getCommentList(-1, mAdapter.getItem(position).id)
                                 XPopup.Builder(this@HomeVpFragment.context)
-                                    .moveUpToKeyboard(true)
                                     .setPopupCallback(object :SimpleCallback(){
                                         override fun onDismiss(popupView: BasePopupView?) {
                                             super.onDismiss(popupView)

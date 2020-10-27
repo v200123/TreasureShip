@@ -10,6 +10,7 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CommentsAdapter
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.lxj.xpopup.core.BottomPopupView
+import com.lxj.xpopup.util.KeyboardUtils
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.dialog_home_comments.view.*
 import kotlin.math.roundToInt
@@ -54,7 +55,6 @@ class CustomCommentBottomPopup(
                             replyId = -1
                             toWho = "输入内容评论视频"
                             msgInput.hint = toWho
-                            //et_comments.requestFocus()
                             msgInput.requestFocus()
                             val imm: InputMethodManager? =
                                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
@@ -62,28 +62,29 @@ class CustomCommentBottomPopup(
                         }
                     }
                 }
-
                 adapter = mAdapter
             }
         }
-        et_comments.imeOptions = EditorInfo.IME_ACTION_SEND
-        et_comments.setOnEditorActionListener { v, actionId, event ->
+        msgInput.imeOptions = EditorInfo.IME_ACTION_SEND
+        msgInput.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEND
             ) {
-                if (et_comments.text.toString().isBlank()) {
+                if (msgInput.text.toString().isBlank()) {
                     ToastUtils.showShort("先输入点内容再评论吧")
                 } else {
                     mViewModel.addComment(
-                        replyId, et_comments.text.toString(), if (replyId == -1) {
+                        replyId, msgInput.text.toString(), if (replyId == -1) {
                             mVideoId
                         } else {
                             -1
                         }
                     )
-                    et_comments.setText("")
-                    et_comments.hint = "点击回复评论"
+                    msgInput.setText("")
+                    msgInput.hint = "点击回复评论"
+                    msgInput.requestFocus()
+                    KeyboardUtils.showSoftInput(this)
                 }
-                true
+
             }
             false
         }
@@ -92,7 +93,6 @@ class CustomCommentBottomPopup(
             if (et_comments.text.toString().isBlank()) {
                 ToastUtils.showShort("先输入点内容再评论吧")
             } else {
-
                 mViewModel.addComment(
                     replyId, et_comments.text.toString(), if (replyId == -1) {
                         mVideoId
@@ -100,6 +100,10 @@ class CustomCommentBottomPopup(
                         -1
                     }
                 )
+                msgInput.requestFocus()
+
+                KeyboardUtils.showSoftInput(msgInput)
+
                 et_comments.setText("")
                 et_comments.hint = "点击回复评论"
 
@@ -108,10 +112,8 @@ class CustomCommentBottomPopup(
 
     }
 
-
-
     override fun getMaxHeight(): Int {
-        return (XPopupUtils.getWindowHeight(context) * .6f).roundToInt()
+        return (XPopupUtils.getWindowHeight(context) * .65f).roundToInt()
     }
 }
 
