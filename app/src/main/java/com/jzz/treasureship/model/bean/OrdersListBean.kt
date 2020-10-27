@@ -66,7 +66,8 @@ class OrdersListBean(
             val orderGoodsId: Int?,
             val price: Double?,
             val returnPoint: Int?,
-            val skuId: Int?
+            val skuId: Int?,
+            var shopName: String?,
         )
     }
 }

@@ -48,31 +48,45 @@ class GoodsQualificationActivity : AppCompatActivity(R.layout.activity_goods_qua
             tv_qualification_shopPhone.text = good.shopQualification.companyPhone
             Glide.with(this).asDrawable().load(good.shopQualification.imageList[0].path)
                 .into(iv_qualification_01)
-
+//            if (good.instructionsPictureList.isNotEmpty())
+//                Glide.with(this).asDrawable().load(good.instructionsPictureList[0])
+//                    .into(iv_produce_image01)
+//            else {
+//                tv_qualification_use.visibility = View.GONE
+//                iv_produce_image01.visibility = View.GONE
+//            }
+//
+//            if (good.specialDescriptionPictureList.isNotEmpty())
+//                Glide.with(this).asDrawable().load(good.specialDescriptionPictureList[0])
+//                    .into(iv_produce_image03)
+//            else {
+//                tv_qualification_safe.visibility = View.GONE
+//                iv_produce_image03.visibility = View.GONE
+//            }
         } else {
             tv_title.text = "产品参数"
             tv_qualification_productName.text = good.goodsName
             ll_qualification_type02.visibility = View.VISIBLE
-            tv_qualification_from.text = if(good.goodsType ==1) "中国" else "境外"
+            tv_qualification_from.text = if (good.goodsType == 1) "中国" else "境外"
             tv_qualification_type.text = good.goodsAttributeList[0].attrValue
             tv_qualification_features.text = good.goodsAttributeList[0].attrValueName
             tv_qualification_norm.text = good.goodsSku?.get(0)?.specValue ?: ""
-            if(good.instructionsPictureList.isNotEmpty()) {
+            if (good.instructionsPictureList.isNotEmpty()) {
                 Glide.with(this).asDrawable().load(good.instructionsPictureList[0])
                     .into(iv_produce_image01)
-            }else{
+            } else {
                 tv_qualification_use.visibility = View.GONE
             }
-            if(good.qualificationPictureList.isNotEmpty()) {
+            if (good.qualificationPictureList.isNotEmpty()) {
                 Glide.with(this).asDrawable().load(good.qualificationPictureList[0])
                     .into(iv_produce_image02)
-            }else{
+            } else {
                 tv_qualification_shop.visibility = View.GONE
             }
-            if(good.specialDescriptionPictureList.isNotEmpty()) {
+            if (good.specialDescriptionPictureList.isNotEmpty()) {
                 Glide.with(this).asDrawable().load(good.specialDescriptionPictureList[0])
                     .into(iv_produce_image03)
-            }else{
+            } else {
                 tv_qualification_safe.visibility = View.GONE
             }
         }

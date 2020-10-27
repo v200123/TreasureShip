@@ -8,13 +8,19 @@ import com.jzz.treasureship.model.bean.CartGoodsSku
 
 class CartSelectGoodsAdapter(layoutResId: Int = R.layout.item_order_goods) :
     BaseBindAdapter<CartGoodsSku>(layoutResId) {
-
+    private var oldShopName  = ""
     override fun convert(holder: BaseViewHolder, item: CartGoodsSku) {
         super.convert(holder, item)
-
         Glide.with(holder.itemView.context).load(item.mImageUrl).into(holder.getView(R.id.iv_goods))
         holder.setText(R.id.tv_goods_name, item.mName)
-        holder.setText(R.id.tv_orderGoods_name,item.mName)
+        if(oldShopName == item.mShopName )
+        {
+            holder.setGone(R.id.tv_orderGoods_name,true)
+        }else{
+            oldShopName = item.mShopName
+            holder.setText(R.id.tv_orderGoods_name, item.mShopName).setVisible(R.id.tv_orderGoods_name,true)
+        }
+
 //        holder.setText(R.id.tv_goods_num, "${item.stock}")
         holder.setText(R.id.tv_goods_spece, item.mSpecValue)
         holder.setText(R.id.tv_goods_price, "¥${item.mPrice}")

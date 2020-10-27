@@ -132,6 +132,7 @@ class TreasureBoxFragment : BaseVMFragment<HomeViewModel>(),IParentHidden{
             operateUiState.observe(this@TreasureBoxFragment, Observer {
                 it.showSuccess?.let {
                     mViewModel.getCollectCategory()
+
                 }
                 it.showError?.let { message ->
                     ToastUtils.showShort(if (message.isBlank()) "网络异常" else message)

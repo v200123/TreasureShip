@@ -14,7 +14,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +30,6 @@ import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.HomeTabBeanItem
 import com.jzz.treasureship.model.bean.VideoData
 import com.jzz.treasureship.service.RewardService
-import com.jzz.treasureship.ui.activity.DialogStatusViewModel
 import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.login.LoginActivity
@@ -44,7 +42,6 @@ import com.lc.mybaselibrary.ext.getResDrawable
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
-import com.lxj.xpopup.interfaces.XPopupCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
@@ -58,7 +55,6 @@ import java.math.BigDecimal
 
 class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
-    private val popStatus by activityViewModels<DialogStatusViewModel>()
     private val isLogin by PreferenceUtils(PreferenceUtils.IS_LOGIN, false)
     private var tsbUpdate by PreferenceUtils(PreferenceUtils.TSB_UPDATE, false)
     private val mAdapter by lazy { HomeVpAdapter(0) }
@@ -142,7 +138,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                                     mViewModel.delCollect(videoData.id)
                                 }else {
                                     mViewModel.getCollectCategory()
-                                    currentVideoID = mAdapter.getItem(position)!!.id
+                                    currentVideoID = mAdapter.getItem(position).id
                                     currentPosition = position
                                 }
                             } else {
@@ -153,7 +149,13 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             if (isLogin) {
                                 mViewModel.getCommentList(-1, mAdapter.getItem(position).id)
                                 XPopup.Builder(this@HomeVpFragment.context)
-                                    .asCustom(
+                                    .moveUpToKeyboard(true)
+                                    .setPopupCallback(object :SimpleCallback(){
+                                        override fun onDismiss(popupView: BasePopupView?) {
+                                            super.onDismiss(popupView)
+                                            mViewModel.getVideoList(mTab!!.id!!, 1)
+                                        }
+                                    }).asCustom(
                                         CustomCommentBottomPopup(
                                             mContext,
                                             mViewModel,
@@ -168,17 +170,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             }
 
                         }
-//            R.id.layout_share -> {
-//                XPopup.Builder(view.context).asCustom(
-//                    CustomShareBottomPopup(
-//                        view.context,
-//                        mAdapter.getItem(position)!!.videoUrl!!,
-//                        mAdapter.getItem(position)?.videoName,
-//                        mAdapter.getItem(position)?.videoDesc,
-//                        mAdapter.getItem(position)!!.videoCoverUrl!!
-//                    )
-//                ).show()
-//            }
+
                     }
                 }
 
@@ -214,7 +206,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 //        } else if (mTab == 1) {
 //            mViewModel.getRecommendVideoList(1)
 //        }
-        mViewModel.getVideoList(mTab!!.id!!, 1)
     }
 
     override fun startObserve() {
@@ -327,31 +318,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                     XPopup.Builder(context)
                         .dismissOnBackPressed(true)
                         .dismissOnTouchOutside(true)
-                        .setPopupCallback(object : XPopupCallback {
-
-                            override fun onCreated(popupView: BasePopupView?) {
-                            }
-
-                            override fun beforeShow(popupView: BasePopupView?) {
-                            }
-
-                            override fun onShow(popupView: BasePopupView?) {
-                                Log.d("TAG", "onShow:回调发生了 ")
-                                popStatus.isOpen = true
-                            }
-
-                            override fun onDismiss(popupView: BasePopupView?) {
-                                popStatus.isOpen = false
-                            }
-
-                            override fun beforeDismiss(popupView: BasePopupView?) {
-                            }
-
-                            override fun onBackPressed(popupView: BasePopupView?): Boolean {
-
-                                return false
-                            }
-                        })
                         .asCustom(
                             CustomLikeBottomPopup(
                                 requireContext(),
@@ -606,6 +572,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
 
     override fun onResume() {
         super.onResume()
+        mViewModel.getVideoList(mTab!!.id!!, 1)
         GSYVideoManager.releaseAllVideos()
     }
 
@@ -613,7 +580,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
         super.onDestroy()
         GSYVideoManager.releaseAllVideos()
     }
-
     //from:0首页 1宝舰箱
     inner class HomeVpAdapter(
         from: Int,

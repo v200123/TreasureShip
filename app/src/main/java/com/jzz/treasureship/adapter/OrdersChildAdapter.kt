@@ -13,6 +13,7 @@ class OrdersChildAdapter (layoutResId: Int = R.layout.item_order_goods) :
 
         Glide.with(holder.itemView.context).load(item.imageUrl).into(holder.getView(R.id.iv_goods))
         holder.setText(R.id.tv_goods_name, item.name)
+        holder.setText(R.id.tv_orderGoods_name, item.shopName)
         holder.setText(R.id.tv_goods_num,item.attrValue)
         holder.setText(R.id.tv_goods_price, "¥${item.price}")
         holder.setText(R.id.tv_goods_buyCount, "x ${item.count}")

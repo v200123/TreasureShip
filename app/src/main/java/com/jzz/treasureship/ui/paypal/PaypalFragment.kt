@@ -53,7 +53,6 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
     private val isAudit by PreferenceUtils(PreferenceUtils.AUDIT_STATUS, -2)
     var tmpAddress by PreferenceUtils(PreferenceUtils.SELECTED_ADDRESS, "")
     private lateinit var mCoupon: MutableList<Coupon>
-
     //    private  var mCouponId = 0
     private var mPayDialog : BasePopupView? =null
     //private val isAudit = 1
@@ -193,14 +192,12 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         tv_address_districtName.text = selectedAddress!!.mDistrictName
                         tv_address_detail.text = selectedAddress!!.mAddress
                         mAddress = selectedAddress
-                    } else {
-                        layout_noAddress.visibility = View.GONE
-
-                        layout_Address.visibility = View.VISIBLE
-
+                    }
+                    else {
+                        layout_noAddress.visibility = View.VISIBLE
+                        layout_Address.visibility = View.GONE
                         tv_name.text =
-                            "${selectedAddress?.mConsignee ?: ""}\t\t${selectedAddress?.mMobile ?: ""}"
-
+                            "${address?.mConsignee ?: ""}\t\t${address?.mMobile ?: ""}"
                         tv_address_province.text = address.mProvinceName
                         tv_address_city.text = address.mCityName
                         tv_address_districtName.text = address.mDistrictName
@@ -281,7 +278,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                             iv_paypal_bottom.visibility = View.VISIBLE
 
                             tv_name.text =
-                                "${selectedAddress!!.mConsignee}\t\t${selectedAddress!!.mMobile}"
+                                "${it.mReceiveAddress!!.mConsignee}\t\t${it.mReceiveAddress!!.mMobile}"
 
                             tv_address_province.text = it.mReceiveAddress!!.mProvinceName
                             tv_address_city.text = it.mReceiveAddress!!.mCityName
@@ -302,7 +299,7 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                                 iv_paypal_bottom.visibility = View.GONE
                             } else {
                                 tv_name.text =
-                                    "${selectedAddress!!.mConsignee}\t\t${selectedAddress!!.mMobile}"
+                                    "${mAddress!!.mConsignee}\t\t${mAddress!!.mMobile}"
 
                                 tv_address_province.text = mAddress!!.mProvinceName
                                 tv_address_city.text = mAddress!!.mCityName
@@ -320,15 +317,13 @@ class PaypalFragment : BaseVMFragment<PaypalViewModel>() {
                         }
 
                         val list: ArrayList<CartGoodsSku> = ArrayList()
-                        for (shop in it.mShops!!) {
+                        for (shop in it.mShops) {
                             for (sku in shop.mCartGoodsSkuList!!) {
-                                sku.let {
-                                    list.add(it)
-                                }
+                                    list.add(sku.apply { mShopName = shop.mShopName })
+
                             }
                         }
                         adapter = cartSelectedAdapter
-
                         cartSelectedAdapter.setNewInstance(list.toMutableList())
                         cartSelectedAdapter.notifyDataSetChanged()
 

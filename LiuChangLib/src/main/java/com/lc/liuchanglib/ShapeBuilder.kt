@@ -60,7 +60,7 @@ class ShapeBuilder {
     /**
      * <corners android:radius="integer" android:topLeftRadius="integer" android:topRightRadius="integer" android:bottomLeftRadius="integer" android:bottomRightRadius="integer"></corners>
      */
-    private var cornersRadius = 0.0f
+    private var cornersRadius = 24f
     private var cornersTopLeftRadius = 0.0f
     private var cornersTopRightRadius = 0.0f
     private var cornersBottomLeftRadius = 0.0f

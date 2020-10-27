@@ -131,7 +131,7 @@ class OrdersVpAdapter(layoutResId: Int = R.layout.item_order)
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             this.adapter = childAdapter
-            childAdapter.setList(item.mGoodsSkuList)
+            childAdapter.setList(item.mGoodsSkuList?.apply { forEach { it.shopName =item.mShopName }})
             childAdapter.notifyDataSetChanged()
         }
 

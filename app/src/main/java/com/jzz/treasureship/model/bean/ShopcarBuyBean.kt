@@ -11,7 +11,7 @@ class ShopcarBuyBean(
     @SerializedName("couponList")
     var mCouponList: List<Coupon> = listOf(),
     @SerializedName("couponValue")
-    var mCouponValue:Float = 0f, // 0
+    var mCouponValue: Float = 0f, // 0
     @SerializedName("dutyPrice")
     var mDutyPrice: Float = 0f, // 0
     @SerializedName("goodsMoney")
@@ -29,7 +29,7 @@ class ShopcarBuyBean(
     @SerializedName("repurchaseChildOrderId")
     var mRepurchaseChildOrderId: Int = 0, // 0
     @SerializedName("repurchaseDiscount")
-    var mRepurchaseDiscount:Float = 0f, // 0
+    var mRepurchaseDiscount: Float = 0f, // 0
     @SerializedName("shippingFee")
     var mShippingFee: Float = 0f, // 0
     @SerializedName("shops")
@@ -70,8 +70,8 @@ class Coupon(
     @SerializedName("couponUseTime")
     var mCouponUseTime: String = "", // string
     @SerializedName("couponValue")
-    var mCouponValue: Float = 0f ,// 0
-    var isSelector : Boolean= false
+    var mCouponValue: Float = 0f,// 0
+    var isSelector: Boolean = false
 )
 
 class ReceiveAddress(
@@ -134,10 +134,12 @@ class CartGoodsSku(
     @SerializedName("skuId")
     var mSkuId: Int = 0, // 0
     @SerializedName("specValue")
-    var mSpecValue: String = "", // string
-
+    var mSpecValue: String = "",// string
     var isSelected: Int = 0
+
 ) : Parcelable {
+    var mShopName: String = ""
+
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readInt(),
@@ -150,8 +152,7 @@ class CartGoodsSku(
         parcel.readInt(),
         parcel.readString()!!,
         parcel.readInt()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(mCartId)

@@ -75,7 +75,6 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         }
 
         tv_addGoods2Cart.setOnClickListener {
-
            mContext.start<MainActivity>{
                setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
            }
@@ -101,11 +100,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                 cartModel.showSuccess?.let {
                     if (it.shops.isEmpty()) {
                         layout_noGoods.visibility = View.VISIBLE
-//                        layout_goods.visibility = View.GONE
+                        srl_shops.visibility = View.GONE
                         ll_shop_car_confirm.visibility = View.GONE
                     } else {
                         layout_noGoods.visibility = View.GONE
-//                        layout_goods.visibility = View.VISIBLE
+                        srl_shops.visibility = View.VISIBLE
                         ll_shop_car_confirm.visibility = View.VISIBLE
 
                         spcs = CartList(it.dutyPrice, it.isSelected, it.shops, it.vatPrice)
@@ -114,32 +113,28 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                             ele.isSelected = it.isSelected
                         }
 
-                        cb_shop_car_all.isChecked = it.isSelected == 1
-
-
-                        cartAdapter.setNewInstance(spcs.shops.toMutableList())
-                        cartAdapter.notifyDataSetChanged()
+                        cb_shop_car_all_inner.isChecked = it.isSelected == 1
+                        cartAdapter.setNewInstance(spcs.shops)
                     }
 
 
-                    cb_shop_car_all.setOnClickListener {
-                        val selected: Boolean = it.isSelected
-                        for (i in spcs.shops.indices) {
+                    cb_shop_car_all_inner.setOnClickListener {
+                        val selected: Boolean = !cb_shop_car_all_inner.isChecked
+                        cartAdapter.data.forEach{shop ->
                             if (selected) {
-                                spcs.shops[i].isSelected = 0
+                                shop.isSelected = 0
                             } else {
-                                spcs.shops[i].isSelected = 1
+                                shop.isSelected = 1
                             }
-
-                            for (j in spcs.shops[i].mCartGoodsSkuList?.indices!!) {
+                            shop.mCartGoodsSkuList.forEach{
                                 if (selected) {
-                                    spcs.shops[i].mCartGoodsSkuList?.get(j)?.isSelected = 0
+                                    it.isSelected = 0
                                 } else {
-                                    spcs.shops[i].mCartGoodsSkuList?.get(j)?.isSelected = 1
+                                    it.isSelected = 1
                                 }
                             }
                         }
-
+                        cartAdapter.notifyDataSetChanged()
                     }
 
                     tv_shop_car_confirm.setOnClickListener {
@@ -188,15 +183,22 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                             if(shopItem.length()!= 0)
                             shopsJson.put(shopItem)
                         }
-                        mFragmentManager.beginTransaction()
-                            .addToBackStack(null)
-                            .hide(this@ShopCarFragment)//隐藏当前Fragment
-                            .add(
-                                R.id.frame_content,
-                                PaypalFragment.newInstance(2, shopsJson.toString()),
-                                PaypalFragment.javaClass.name
-                            )
-                            .commit()
+                        if(shopsJson.length() == 0)
+                        {
+                            ToastUtils.showShort("请选择要购买的商品")
+                        }
+                        else{
+                            mFragmentManager.beginTransaction()
+                                .addToBackStack(null)
+                                .hide(this@ShopCarFragment)//隐藏当前Fragment
+                                .add(
+                                    R.id.frame_content,
+                                    PaypalFragment.newInstance(2, shopsJson.toString()),
+                                    PaypalFragment.javaClass.name
+                                )
+                                .commit()
+                        }
+
 
                     }
                     var tmp: String? = "0.00"
@@ -238,7 +240,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
         BaseQuickAdapter<Shop, BaseViewHolder>(layoutResId) {
 
         override fun convert(holder: BaseViewHolder, item: Shop) {
-            item?.let {
+            item.let {
                 holder.setText(R.id.cb_shop_car_all, item.mShopName)
                 val cbShop: CheckBox = holder.getView(R.id.cb_shop_car_all)
                 cbShop.isChecked = item.isSelected == 1
@@ -263,7 +265,7 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                         shopList.add(element.isSelected == 1)
                     }
 
-                    cb_shop_car_all.isChecked = !shopList.contains(false)
+                    cb_shop_car_all_inner.isChecked = !shopList.contains(false)
 
                     cartAdapter.notifyDataSetChanged()
                 }
@@ -335,7 +337,12 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                             helper.getView<LinearLayout>(R.id.layout_delGoods).setOnClickListener {
                                 layout!!.toggle()
 
-                                mViewModel.deleteGoods(goodsSku.mCartId)
+                                XPopup.Builder(context).asConfirm("删除商品", "确认将物品从购物车删除？", "取消", "删除", {
+                                    mViewModel.deleteGoods(
+                                        goodsSku.mCartId
+                                    )
+                                }, {}, false).show()
+
                             }
                         }
 
@@ -379,14 +386,11 @@ class ShopCarFragment : BaseVMFragment<ShopCarViewModel>() {
                     for (element in spcs.shops) {
                         shopList.add(element.isSelected == 1)
                     }
-                    cb_shop_car_all.isChecked = !shopList.contains(false)
-
+                    cb_shop_car_all_inner.isChecked = !shopList.contains(false)
                     cartAdapter.notifyDataSetChanged()
                     notifyDataSetChanged()
                 }
-
                 helper.setText(R.id.tv_shopcar_good_name, goodsSku.mName)
-
                 val icon: ImageView = helper.getView(R.id.iv_shopcar_good_cover)
                 Glide.with(mContext).load(goodsSku.mImageUrl).into(icon)
 

@@ -20,6 +20,7 @@ import com.jzz.treasureship.adapter.CommentsAdapter
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.TabBean
 import com.jzz.treasureship.model.bean.VideoData
+import com.jzz.treasureship.ui.activity.MainActivity
 import com.jzz.treasureship.ui.goods.GoodsDetailFragment
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.jzz.treasureship.ui.login.LoginActivity
@@ -98,6 +99,12 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                         R.id.layout_comment -> {
                             mViewModel.getCommentList(-1, mAdapter.getItem(position)!!.id)
                             XPopup.Builder(this@TsbVpFragment.context)
+                                .setPopupCallback(object : SimpleCallback(){
+                                    override fun onDismiss(popupView: BasePopupView?) {
+                                        mViewModel.getCollectVideoList(mTabBean!!.id, null, -1, pageNum)
+                                    }
+
+                                })
                                 .asCustom(
                                     CustomCommentBottomPopup(
                                         mContext,
@@ -244,8 +251,9 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                 it.showSuccess?.let { success ->
                     xPopup.dismiss()
                     when (success) {
-                        "视频评论成功" -> {
+                        "视频评论成功", "点赞成功", "取消点赞" -> {
                             mViewModel.getCommentList(-1, currentVideoID)
+
                         }
                         "视频取消收藏成功", "视频移动成功" -> {
                             pageNum = 1
@@ -324,7 +332,7 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
         tabId: Int = -1,
         layoutResId: Int = R.layout.item_video
     ) :
-        BaseBindAdapter<VideoData>(layoutResId){
+        BaseBindAdapter<VideoData>(layoutResId) {
         private val mFrom = from
         private val mViewModel = viewModel
         private val mTabId = tabId
@@ -429,9 +437,8 @@ class TsbVpFragment : BaseVMFragment<HomeViewModel>() {
                                     startActivity(Intent(activity!!, LoginActivity::class.java))
                                     return@setOnClickListener
                                 }
-                                activity!!.supportFragmentManager.beginTransaction()
-                                    .addToBackStack(TsbVpFragment.javaClass.name)
-                                    .hide(this@TsbVpFragment.requireParentFragment())//隐藏当前Fragment
+                                activity!!.supportFragmentManager.beginTransaction().addToBackStack("6")
+                                    .hide((mContext as MainActivity).mMainHomeFragemnt)//隐藏当前Fragment
                                     .add(
                                         R.id.frame_content,
                                         GoodsDetailFragment.newInstance("${item.goodsId}"),

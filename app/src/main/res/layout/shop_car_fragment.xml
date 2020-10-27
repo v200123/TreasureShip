@@ -46,7 +46,7 @@
 
                     <CheckBox
                         android:layout_gravity="center"
-                        android:id="@+id/cb_shop_car_all"
+                        android:id="@+id/cb_shop_car_all_inner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"

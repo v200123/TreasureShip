@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
@@ -26,7 +24,6 @@ import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
 import com.lc.mybaselibrary.SuccessState
 import com.lc.mybaselibrary.ext.getResColor
-
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.tencent.mmkv.MMKV
@@ -44,17 +41,11 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
             .asLoading()
     }
 
-
-    private val _useBinding = useDataBinding
-    protected lateinit var mBinding: ViewDataBinding
     private val userInfo by PreferenceUtils(PreferenceUtils.USER_GSON, "")
     val mFragmentManager by lazy { (mContext as AppCompatActivity).supportFragmentManager }
 
     @ColorRes
     open var mStatusColor: Int = R.color.white
-
-//    var user = GsonUtils.fromJson(userInfo, User::class.java)
-//    private var isAuthDialog by PreferenceUtils(PreferenceUtils.auth_is_show, "")
 
     protected lateinit var mViewModel: VM
     var mActivity: AppCompatActivity? = null
@@ -72,12 +63,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (_useBinding) {
-            mBinding = DataBindingUtil.inflate(inflater, getLayoutResId(), container, false)
-            mBinding.root
-        } else {
-            inflater.inflate(getLayoutResId(), container, false)
-        }
+            return inflater.inflate(getLayoutResId(), container, false)
     }
 
 

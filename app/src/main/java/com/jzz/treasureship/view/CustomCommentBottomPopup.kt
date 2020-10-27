@@ -55,7 +55,7 @@ class CustomCommentBottomPopup(
                             toWho = "输入内容评论视频"
                             msgInput.hint = toWho
                             //et_comments.requestFocus()
-                            msgInput.clearFocus()
+                            msgInput.requestFocus()
                             val imm: InputMethodManager? =
                                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
                             imm?.hideSoftInputFromWindow(msgInput.windowToken, 0)
@@ -92,6 +92,7 @@ class CustomCommentBottomPopup(
             if (et_comments.text.toString().isBlank()) {
                 ToastUtils.showShort("先输入点内容再评论吧")
             } else {
+
                 mViewModel.addComment(
                     replyId, et_comments.text.toString(), if (replyId == -1) {
                         mVideoId
@@ -100,6 +101,8 @@ class CustomCommentBottomPopup(
                     }
                 )
                 et_comments.setText("")
+                et_comments.hint = "点击回复评论"
+
             }
         }
 
