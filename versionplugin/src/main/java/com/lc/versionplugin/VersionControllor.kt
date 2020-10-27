@@ -48,8 +48,8 @@ private object version{
         val applicationId = "com.jzz.treasureship"
         val minSdkVersion = 21
         val targetSdkVersion = 28
-        val versionCode = 137
-        val versionName = "1.3.7"
+        val versionCode = 138
+        val versionName = "1.3.8"
     }
  object AndroidX {
      val appCompat = "androidx.appcompat:appcompat:${appCompatVersion}"
