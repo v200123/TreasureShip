@@ -102,7 +102,10 @@ class LoginActivity : BaseVMActivity<LoginViewModel>() {
                         MMKV.defaultMMKV().encode(it.id.toString(), UserDialogInformationBean())
                         startActivity(Intent(this@LoginActivity, BindPhoneActivity::class.java))
                     } else {
-                        MMKV.defaultMMKV().encode(it.id.toString(), UserDialogInformationBean())
+                        val defaultMMKV = MMKV.defaultMMKV()
+                        if (!defaultMMKV.containsKey(it.id.toString())) {
+                            defaultMMKV.encode(it.id.toString(), UserDialogInformationBean())
+                        }
                         mContext.start<MainActivity> {
                             setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }

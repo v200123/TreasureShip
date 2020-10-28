@@ -19,4 +19,8 @@ open class ShapeTextView @JvmOverloads constructor(context: Context, attrs: Attr
         shapeBuilder = ShapeBuilder()
         shapeBuilder?.init(this, attributeSetData)
     }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
 }

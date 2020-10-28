@@ -82,9 +82,10 @@ class HomeFragment : BaseVMFragment<HomeViewModel>(),IParentHidden {
                 var mUserDialogShow = MMKV.defaultMMKV()
                     .decodeParcelable(mUser.id.toString(), UserDialogInformationBean::class.java)
                 val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"))
-                if (mUserDialogShow == null)
+                if (mUserDialogShow == null) {
                     mUserDialogShow = UserDialogInformationBean()
-                MMKV.defaultMMKV().encode(mUser.id.toString(), mUserDialogShow)
+                    MMKV.defaultMMKV().encode(mUser.id.toString(), mUserDialogShow)
+                }
                 if (mUserDialogShow.showInviteDialogDate.isBlank()) {
                     if (mUser.auditStatus == 1) {
                         App.dialogHelp.showInvite()

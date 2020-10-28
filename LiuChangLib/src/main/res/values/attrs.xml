@@ -206,4 +206,14 @@
         <attr name="shapeGradientType" />
     </declare-styleable>
 
+    <declare-styleable name="LeftAndRightView">
+        <attr name="leftText" format="string" />
+        <attr name="rightText" format="string"/>
+        <attr name="leftBold" format="boolean"/>
+        <attr name="rightBold" format="boolean"/>
+        <attr name="leftTextSize" format="dimension"/>
+        <attr name="rightTextSize" format="dimension"/>
+        <attr name="leftTextColor" format="color"/>
+        <attr name="rightTextColor" format="color"/>
+    </declare-styleable>
 </resources>
