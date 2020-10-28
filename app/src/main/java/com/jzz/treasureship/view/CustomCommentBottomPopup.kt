@@ -11,7 +11,9 @@ import com.jzz.treasureship.R
 import com.jzz.treasureship.adapter.CommentsAdapter
 import com.jzz.treasureship.ui.home.HomeViewModel
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.BottomPopupView
+import com.lxj.xpopup.interfaces.SimpleCallback
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.dialog_home_comments.view.*
 import kotlin.math.roundToInt
@@ -48,10 +50,7 @@ class CustomCommentBottomPopup(
                             toWho = "@${mAdapter.getItem(position).nickName}"
                             msgInput.hint = toWho
                             showEditextDialog(msgInput.hint.toString())
-//                            msgInput.requestFocus()
-//                            val imm: InputMethodManager? =
-//                                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-//                            imm?.showSoftInput(msgInput, InputMethodManager.SHOW_IMPLICIT)
+
                         }
                         R.id.layout_comment_item -> {
                             replyId = -1
@@ -100,6 +99,14 @@ class CustomCommentBottomPopup(
     fun showEditextDialog(msg: String) {
         XPopup.Builder(context)
             .hasShadowBg(false)
+            .autoFocusEditText(true)
+            .setPopupCallback(object :SimpleCallback(){
+                override fun onDismiss(popupView: BasePopupView?) {
+                    super.onDismiss(popupView)
+                    KeyboardUtils.hideSoftInput(this@CustomCommentBottomPopup)
+
+                }
+            })
             .asCustom(object : BottomPopupView(context) {
                 override fun getImplLayoutId(): Int = R.layout.dialog_editext
 
@@ -126,10 +133,7 @@ class CustomCommentBottomPopup(
                     }
                 }
 
-                override fun beforeDismiss() {
-                    super.beforeDismiss()
-                    KeyboardUtils.hideSoftInput(this)
-                }
+
 
             }).show()
     }

@@ -150,7 +150,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         R.id.layout_comment -> {
                             if (isLogin) {
                                 mViewModel.getCommentList(-1, mAdapter.getItem(position).id)
-                                commDialog= XPopup.Builder(this@HomeVpFragment.context)
+                             XPopup.Builder(this@HomeVpFragment.context)
                                     .moveUpToKeyboard(false)
                                     .setPopupCallback(object : SimpleCallback() {
                                         override fun onDismiss(popupView: BasePopupView?) {
@@ -405,10 +405,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         setList(comments.data.toMutableList())
                         notifyDataSetChanged()
                     }
-                    commDialog?.apply {
-                        this.invalidate()
-                        show()
-                    }
+
                     xPopup.dismiss()
                 }
 
