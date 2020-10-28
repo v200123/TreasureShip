@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.jzz.treasureship">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -21,9 +21,9 @@
         android:theme="@style/xuiTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".ui.reward.QuestionsActivity"/>
+        <activity android:name=".ui.reward.QuestionsActivity" />
         <activity android:name=".ui.activity.WelcomeGuideActivity" />
-        <activity android:name=".ui.activity.PaySuccessActivity" >
+        <activity android:name=".ui.activity.PaySuccessActivity">
 
         </activity>
         <activity android:name=".BigImageActivity" />
@@ -36,7 +36,9 @@
             android:name="design_height_in_dp"
             android:value="667" />
 
-        <meta-data android:name="TD_APP_ID" android:value="AFE1CA21C73E487A8D33CA8C326DC9B0" />
+        <meta-data
+            android:name="TD_APP_ID"
+            android:value="AFE1CA21C73E487A8D33CA8C326DC9B0" />
 
 
         <provider
@@ -54,10 +56,7 @@
 
         </activity>
         <activity android:name=".ui.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".ui.register.RegisterActivity" />
 
@@ -79,21 +78,27 @@
             android:taskAffinity="net.sourceforge.simcpux"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".ui.activity.ClipImageActivity" />
-        <activity android:name=".ui.login.LoginActivity"  />
+        <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.bind.BindPhoneActivity" />
-        <activity android:name=".ui.auth.AuthenticationActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.auth.AuthenticationActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".ui.coupon.CouponActivity" />
         <activity android:name=".ui.auth.AuthInformationActivity" />
         <activity android:name=".ui.auth.DepartmentSreachActivity" />
-        <activity android:name=".ui.auth.AuthConfirmSuccessActivity" >
-        </activity>
+        <activity android:name=".ui.auth.AuthConfirmSuccessActivity"></activity>
         <activity android:name=".ui.withdraw.WithdrawActivity" />
         <activity android:name=".ui.goods.GoodsQualificationActivity" />
         <activity android:name=".ui.activity.OrdersActivity" />
-<!--        <activity android:name=".ui.activity.MainHomeFragment" >-->
-<!--        -->
-<!--        </activity>-->
+        <activity android:name=".ui.activity.TextActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--        <activity android:name=".ui.activity.MainHomeFragment" >-->
+        <!--        -->
+        <!--        </activity>-->
         <!-- 1.这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
             android:name=".service.PushService"
@@ -104,7 +109,8 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service> <!-- 2.用户自定义接收消息器,所有你想要知道的消息都在这里 -->
-        <receiver android:name=".receiver.PushMessageReceiver"
+        <receiver
+            android:name=".receiver.PushMessageReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -114,6 +120,7 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>

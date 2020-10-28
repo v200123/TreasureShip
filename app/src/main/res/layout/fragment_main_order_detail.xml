@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><!--订单详情的类，是一个通用类-->
+<?xml version="1.0" encoding="utf-8"?>
+<!--订单详情的类，是一个通用类-->
+
+
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -102,6 +106,8 @@
 
 
         <com.lc.mybaselibrary.ShapeLinearLayout
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -140,7 +146,28 @@
             <com.lc.liuchanglib.cusotmView.LeftAndRightView
                 android:layout_marginTop="14dp"
                 app:leftText="下单时间"
+                app:leftTextColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
+            <com.lc.liuchanglib.cusotmView.LeftAndRightView
+                android:layout_marginTop="14dp"
+                app:leftText="支付时间："
+                app:leftTextColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.lc.liuchanglib.cusotmView.LeftAndRightView
+                android:layout_marginTop="14dp"
+                app:leftText="支付方式："
+                app:leftTextColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.lc.liuchanglib.cusotmView.LeftAndRightView
+                android:layout_marginTop="14dp"
+                app:leftText="发货时间："
+                app:leftTextColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.lc.mybaselibrary.ShapeLinearLayout>

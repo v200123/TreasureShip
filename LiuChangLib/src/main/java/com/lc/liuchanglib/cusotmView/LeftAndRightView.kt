@@ -20,7 +20,7 @@ class LeftAndRightView @JvmOverloads constructor(
     private var maxHeight = 0
     private val mLeftTextView: TextView
     private val mRightTextView: TextView
-    val mLeftValue = LeftAndRightValue()
+   private val mLeftValue = LeftAndRightValue()
     val mRightValue = LeftAndRightValue()
 
     init {
@@ -61,5 +61,7 @@ class LeftAndRightView @JvmOverloads constructor(
         setMeasuredDimension(measuredWidth, maxHeight)
     }
 
+
+    fun getLeftBuild() = mLeftValue
 
 }

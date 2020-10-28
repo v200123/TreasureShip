@@ -12,12 +12,13 @@ import androidx.annotation.ColorRes
  *@Auth： 29579
  *@Description: 只有左右布局的属性值  **/
 class LeftAndRightValue {
-    var mTextMsg = ""
+    var mTextMsg : CharSequence = ""
     var mTextSize = 15f
     var mTextBold = false
     @ColorRes
     @ColorInt
     var mTextColor = Color.parseColor("#FFFFFF")
+
 
 
     fun buildText(textView: TextView) {
