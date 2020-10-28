@@ -44,7 +44,7 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
             TabSegment.Tab(
                 mContext.getResDrawable(R.drawable.icon_treasure_box_normal),
                 mContext.getResDrawable(R.drawable.icon_treasure_box_selected),
-                "保健箱", false, true
+                "宝舰箱", false, true
             )
         )
         tab_container.addTab(
@@ -83,29 +83,7 @@ class MainHomeFragment : Fragment(R.layout.fragment_main_home) {
 
         })
 
-//        tab_container.addOnTabSelectedListener(object : TabSegment.OnTabSelectedListener {
-//            override fun onTabSelected(index: Int) {
-//
-//            }
-//
-//            override fun onTabUnselected(index: Int) {
-//                if (index == 0) {
-//                    if (!isLogin) {
-//
-//                        mContext.start<LoginActivity> { }
-//                    }
-//                }
-//            }
-//
-//            override fun onTabReselected(index: Int) {
-//
-//            }
-//
-//            override fun onDoubleTap(index: Int) {
-//
-//            }
-//
-//        })
+
 
     }
 

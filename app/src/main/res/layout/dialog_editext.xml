@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#EFEFEF"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:gravity="center_vertical">
+
+
+
+        <EditText
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/et_dialog_comments"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/dialog_comment_et_selector"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="start|center_vertical"
+            android:hint="点击回复评论"
+            android:paddingStart="8dp"
+            android:textColorHint="#999999"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/iv_dialog_sendComments"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="332dp"
+            android:layout_marginEnd="21dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_send_comment" />
+
+</FrameLayout>

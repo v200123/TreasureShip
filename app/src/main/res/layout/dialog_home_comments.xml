@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/dialog_shape"
     android:focusable="false"
     android:focusableInTouchMode="false">
@@ -15,7 +15,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:layout_width="match_parent"
-        android:layout_height="310dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="60dp" />
 
     <FrameLayout
@@ -28,7 +28,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:layout_gravity="center_vertical"
             android:id="@+id/et_comments"
             android:layout_width="match_parent"
@@ -36,10 +36,11 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:focusable="false"
+            android:paddingStart="8dp"
             android:focusableInTouchMode="false"
             android:background="@drawable/dialog_comment_et_selector"
             android:hint="点击回复评论"
-            android:gravity="center"
+            android:gravity="start|center_vertical"
             android:textColorHint="#999999"
             android:textSize="11sp" />
 
