@@ -41,6 +41,7 @@ import com.jzz.treasureship.view.*
 import com.lc.mybaselibrary.ext.getResDrawable
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
@@ -67,6 +68,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
     private val mWalletFragment by lazy { WalletFragment.newInstance() }
     private val mQuestionsAdapter by lazy { AnswersAdapter() }
 
+    private var  commDialog: BasePopupView? = null
     private var mTab: HomeTabBeanItem? = null
     private var pageNum = 1
     private var currentVideoID = -1
@@ -148,8 +150,9 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         R.id.layout_comment -> {
                             if (isLogin) {
                                 mViewModel.getCommentList(-1, mAdapter.getItem(position).id)
-                                XPopup.Builder(this@HomeVpFragment.context)
-                                    .setPopupCallback(object :SimpleCallback(){
+                             XPopup.Builder(this@HomeVpFragment.context)
+                                    .moveUpToKeyboard(false)
+                                    .setPopupCallback(object : SimpleCallback() {
                                         override fun onDismiss(popupView: BasePopupView?) {
                                             super.onDismiss(popupView)
                                             mViewModel.getVideoList(mTab!!.id!!, 1)
@@ -167,7 +170,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             } else {
                                 switchLogin()
                             }
-
                         }
 
                     }
@@ -261,9 +263,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         }
                         srl_Videos.finishLoadMore(0)
                     } else {
-//                        if (list.data.isNotEmpty()) {
-//                            srl_Videos.visibility = View.VISIBLE
-//                            layout_noVideos.visibility = View.GONE
+
                         videoList.clear()
                         for (i in list.data.indices) {
                             list.data[i].position = i
@@ -275,14 +275,6 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                             notifyDataSetChanged()
                         }
                         srl_Videos.finishRefresh(0)
-//                        } else {
-//                            srl_Videos.visibility = View.GONE
-//                            layout_noVideos.visibility = View.VISIBLE
-//
-//                            tv_getVideos.setOnClickListener {
-//                                mViewModel.getVideoList(mTab!!.id!!, 1)
-//                            }
-//                        }
                     }
                 }
 
@@ -413,6 +405,7 @@ class HomeVpFragment : BaseVMFragment<HomeViewModel>() {
                         setList(comments.data.toMutableList())
                         notifyDataSetChanged()
                     }
+
                     xPopup.dismiss()
                 }
 

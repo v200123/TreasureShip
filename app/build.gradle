@@ -96,11 +96,6 @@ android {
         resValue "string", "authorities", applicationId
 
 
-        ndk {
-            //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters  'armeabi-v7a', 'arm64-v8a' ,'x86_64'
-            //,'x86', 'x86_64', 'mips', 'mips64'
-        }
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: defaultConfig.applicationId,
@@ -110,7 +105,11 @@ android {
     }
     buildTypes {
         release {
-
+            ndk {
+                //选择要添加的对应 cpu 类型的 .so 库。
+                abiFilters  'armeabi-v7a'
+                //,'x86', 'x86_64', 'mips', 'mips64'
+            }
             buildConfigField("String","BaseUrl","\"http://bj.jzzchina.com\"")
 //            minifyEnabled true //混淆
             // Zipalign优化
@@ -121,6 +120,12 @@ android {
             debuggable false
         }
         debug {
+
+            ndk {
+                //选择要添加的对应 cpu 类型的 .so 库。
+                abiFilters  'armeabi-v7a', 'arm64-v8a' ,'x86_64'
+                //,'x86', 'x86_64', 'mips', 'mips64'
+            }
             multiDexEnabled false
             crunchPngs false
             ext.enableCrashlytics = false
@@ -269,7 +274,6 @@ dependencies {
     implementation 'cn.yc:YCStatusBarLib:1.4.3'
 
     implementation 'com.azhon:appupdateX:2.8.0'
-
     implementation 'cn.jiguang.sdk:jpush:3.8.0'
     implementation 'cn.jiguang.sdk:jcore:2.4.2'
 //    implementation "androidx.work:work-runtime-ktx:$work_version"
@@ -290,7 +294,6 @@ dependencies {
 //    implementation VersionControllor.dependance.kongzuTab
     implementation VersionControllor.AndroidX.flexboxLayout
     implementation "androidx.preference:preference:1.1.1"
-    implementation 'com.github.AnJiaoDe:TabLayoutNiubility:V1.1.6'
 
 //    implementation 'com.github.KuangGang:RoundCorners:1.0.6'
 }
