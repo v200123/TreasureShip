@@ -18,21 +18,19 @@ class LeftAndRightView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private var maxHeight = 0
-    private val mLeftTextView: TextView
-    private val mRightTextView: TextView
-   private val mLeftValue = LeftAndRightValue()
-    val mRightValue = LeftAndRightValue()
+    private val mLeftTextView: TextView by lazy { TextView(context) }
+    private val mRightTextView: TextView by lazy { TextView(context) }
+   private val mLeftValue = LeftAndRightValue(mLeftTextView)
+    val mRightValue = LeftAndRightValue(mRightTextView)
 
     init {
-        mLeftTextView = TextView(context)
-        mRightTextView = TextView(context)
         val leftParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.START)
         val rightParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.END)
         addView(mLeftTextView, leftParams)
         addView(mRightTextView, rightParams)
         initValue(attrs!!)
-        mLeftValue.buildText(mLeftTextView)
-        mRightValue.buildText(mRightTextView)
+        mLeftValue.buildText()
+        mRightValue.buildText()
     }
 
     fun initValue(attrs: AttributeSet) {

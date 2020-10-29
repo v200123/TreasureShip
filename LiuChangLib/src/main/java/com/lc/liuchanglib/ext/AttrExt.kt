@@ -3,6 +3,7 @@ package com.lc.liuchanglib.ext
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.StyleableRes
 
 /**
@@ -13,4 +14,8 @@ import androidx.annotation.StyleableRes
     val obtainStyledAttributes = mContext.obtainStyledAttributes(this, styRes)
     block(obtainStyledAttributes)
     obtainStyledAttributes.recycle()
+}
+
+infix fun View.click(block : (View) -> Unit){
+    this.setOnClickListener(block)
 }

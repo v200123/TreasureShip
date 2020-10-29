@@ -143,7 +143,7 @@ class WithdrawViewModel(val repository: WithdrawRepository, val provider: Corout
 
     val canWithDraw = MutableLiveData<String>()
     fun getWallet() {
-        launchTask({
+        launchTask(cancel = {
             mStateLiveData.postValue(ErrorState("请求取消了"))
         }) {
             HttpHelp.getRetrofit().getBalance02().resultCheck{

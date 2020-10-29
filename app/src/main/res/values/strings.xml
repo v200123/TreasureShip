@@ -331,4 +331,10 @@
         </p>
         ]]>
     </string>
+    <string name="BatchRefund">批量退款</string>
+    <string name="LookUpLogistics">查看物流</string>
+    <string name="EnsureGet">确认收货</string>
+    <string name="imme_pay">立即支付</string>
+    <string name="restart_buy">重新购买</string>
+    <string name="cancel_order">取消订单</string>
 </resources>

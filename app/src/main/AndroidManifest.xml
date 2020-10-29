@@ -86,7 +86,7 @@
         <activity android:name=".ui.coupon.CouponActivity" />
         <activity android:name=".ui.auth.AuthInformationActivity" />
         <activity android:name=".ui.auth.DepartmentSreachActivity" />
-        <activity android:name=".ui.auth.AuthConfirmSuccessActivity"></activity>
+        <activity android:name=".ui.auth.AuthConfirmSuccessActivity"/>
         <activity android:name=".ui.withdraw.WithdrawActivity" />
         <activity android:name=".ui.goods.GoodsQualificationActivity" />
         <activity android:name=".ui.activity.OrdersActivity" />

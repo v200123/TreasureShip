@@ -56,10 +56,10 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = fals
         }
         mViewModel.mStateLiveData.observe(this, {
             if (it is LoadState) {
-                if (it.type == 0)
-                    mLoading.show()
+                if (it.msg.isBlank())
+                    showLoading("请稍等")
                 else {
-                    showDialogWithType(it.type)
+                    showLoading(it.msg)
                 }
             }
             if (it is SuccessState) {
@@ -123,6 +123,11 @@ abstract class BaseVMActivity<VM : BaseViewModel>(useDataBinding: Boolean = fals
                 }
             }
         }
+    }
+
+    fun showLoading(msg:String)
+    {
+        mLoading.setTitle(msg).show()
     }
 
     protected open fun showDialogWithType(type: Int) {}

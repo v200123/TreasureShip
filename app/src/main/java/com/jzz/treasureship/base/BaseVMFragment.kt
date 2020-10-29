@@ -82,10 +82,10 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         mViewModel.mStateLiveData.observe(owner = viewLifecycleOwner, onChanged = {
             if (it is LoadState) {
 
-                if (it.type == 0)
+                if (it.msg.isBlank())
                     showLoading("请稍等....")
                 else {
-                    showDialogWithType(it.type)
+                    showLoading(it.msg)
                 }
             }
             if (it is SuccessState) {
@@ -198,8 +198,8 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         )
     }
 
-    /**
-     * 如何有对Dialog的显示有需求，那么可以重写这个方法，注意，type的传入是在ViewModel中的请求的loadStatus中进行传入的
-     */
-    protected open fun showDialogWithType(type: Int) {}
+//    /**
+//     * 如何有对Dialog的显示有需求，那么可以重写这个方法，注意，type的传入是在ViewModel中的请求的loadStatus中进行传入的
+//     */
+//    protected open fun showDialogWithType(type: Int) {}
 }

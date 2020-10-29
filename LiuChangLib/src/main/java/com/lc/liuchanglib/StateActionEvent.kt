@@ -8,7 +8,7 @@ package com.lc.mybaselibrary
 //定义网络请求状态(密封类扩展性更好)
 sealed class StateActionEvent()
 
-class LoadState(val type:Int = 0) : StateActionEvent()
+class LoadState(val msg:String = "") : StateActionEvent()
 
 object SuccessState : StateActionEvent()
 

@@ -6,7 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonSyntaxException
 import com.jzz.treasureship.core.Result
 import com.jzz.treasureship.model.bean.JzzResponse
-import com.lc.mybaselibrary.*
+import com.lc.mybaselibrary.ErrorState
+import com.lc.mybaselibrary.LoadState
+import com.lc.mybaselibrary.NeedLoginState
+import com.lc.mybaselibrary.StateActionEvent
+import com.lc.mybaselibrary.SuccessState
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
@@ -41,13 +45,13 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    fun launchTask(
+    fun launchTask(msg:String = "",
         cancel: Cancel? = { mStateLiveData.postValue(ErrorState("请求取消")) },
         block: LaunchBlock
     ) {//使用协程封装统一的网络请求处理
         viewModelScope.launch {
             //ViewModel自带的viewModelScope.launch,会在页面销毁的时候自动取消请求,有效封装内存泄露
-            mStateLiveData.value = LoadState()
+            mStateLiveData.value = LoadState(msg)
             runCatching {
                 block()
             }

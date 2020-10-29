@@ -1,8 +1,52 @@
 package com.jzz.treasureship.model.api
 
 import com.google.gson.JsonObject
-import com.jzz.treasureship.model.bean.*
-
+import com.jzz.treasureship.model.bean.Ad
+import com.jzz.treasureship.model.bean.AddAdviceResBean
+import com.jzz.treasureship.model.bean.AddressPageList
+import com.jzz.treasureship.model.bean.Agreement
+import com.jzz.treasureship.model.bean.BaseRequestBody
+import com.jzz.treasureship.model.bean.Brand
+import com.jzz.treasureship.model.bean.CartList
+import com.jzz.treasureship.model.bean.CityPlaces
+import com.jzz.treasureship.model.bean.CollectCategory
+import com.jzz.treasureship.model.bean.CommentPageList
+import com.jzz.treasureship.model.bean.Contacter
+import com.jzz.treasureship.model.bean.ContacterGoods
+import com.jzz.treasureship.model.bean.CouponBannerBean
+import com.jzz.treasureship.model.bean.CouponBean
+import com.jzz.treasureship.model.bean.CouponShopBean
+import com.jzz.treasureship.model.bean.Data
+import com.jzz.treasureship.model.bean.DataXXX
+import com.jzz.treasureship.model.bean.DepartmentBean
+import com.jzz.treasureship.model.bean.FirOrderRedBean
+import com.jzz.treasureship.model.bean.GoodsDetail
+import com.jzz.treasureship.model.bean.HomeTabBean
+import com.jzz.treasureship.model.bean.HotSearch
+import com.jzz.treasureship.model.bean.Illness
+import com.jzz.treasureship.model.bean.InvitedList
+import com.jzz.treasureship.model.bean.JzzResponse
+import com.jzz.treasureship.model.bean.OccupationBean
+import com.jzz.treasureship.model.bean.Order
+import com.jzz.treasureship.model.bean.OrderDetailsBean
+import com.jzz.treasureship.model.bean.OrderExpress
+import com.jzz.treasureship.model.bean.OrderRewardFirstBean
+import com.jzz.treasureship.model.bean.OrdersGoPayBean
+import com.jzz.treasureship.model.bean.OrdersListBean
+import com.jzz.treasureship.model.bean.Qualification
+import com.jzz.treasureship.model.bean.QuestionnaireResponseVo
+import com.jzz.treasureship.model.bean.Rank
+import com.jzz.treasureship.model.bean.ReceiveAddress
+import com.jzz.treasureship.model.bean.Refund
+import com.jzz.treasureship.model.bean.Reward
+import com.jzz.treasureship.model.bean.ShopcarBuyBean
+import com.jzz.treasureship.model.bean.UpdateAppBean
+import com.jzz.treasureship.model.bean.UploadImgBean
+import com.jzz.treasureship.model.bean.User
+import com.jzz.treasureship.model.bean.UserAuthTypeBean
+import com.jzz.treasureship.model.bean.VideoPageList
+import com.jzz.treasureship.model.bean.WalletBalance
+import com.jzz.treasureship.model.bean.firstBean
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -478,8 +522,14 @@ interface JzzApiService {
     suspend fun getCouponList(@Body body: BaseRequestBody) : JzzResponse<CouponBean>
     @POST("/api/v1/goods/pageRecommendGoods")
     suspend fun getRecommendGoods(@Body body: BaseRequestBody):JzzResponse<CouponShopBean>
+
+    /**
+     * 获取顶部的滚动栏
+     */
     @POST("/api/v1/banner/getBannerList")
     suspend fun getCouponBanner(@Body body: BaseRequestBody):JzzResponse<CouponBannerBean>
 
+    @POST("/api/v1/order/getOrderDetail")
+    suspend fun getOrderDetail(@Body body: BaseRequestBody):JzzResponse<OrderDetailsBean>
 
 }
