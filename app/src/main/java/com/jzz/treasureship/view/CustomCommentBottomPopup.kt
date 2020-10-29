@@ -103,19 +103,26 @@ class CustomCommentBottomPopup(
             .setPopupCallback(object :SimpleCallback(){
                 override fun onDismiss(popupView: BasePopupView?) {
                     super.onDismiss(popupView)
-                    KeyboardUtils.hideSoftInput(this@CustomCommentBottomPopup)
 
                 }
             })
             .asCustom(object : BottomPopupView(context) {
                 override fun getImplLayoutId(): Int = R.layout.dialog_editext
 
+                override fun dismiss() {
+                    super.dismiss()
+                    val comments = findViewById<EditText>(R.id.et_dialog_comments)
+                    comments.clearFocus()
+                    KeyboardUtils.hideSoftInput(comments)
+
+                }
+
                 override fun onCreate() {
                     super.onCreate()
                     val comments = findViewById<EditText>(R.id.et_dialog_comments)
                     val sendComments = findViewById<ImageView>(R.id.iv_dialog_sendComments)
                     comments.requestFocus()
-                    KeyboardUtils.showSoftInput()
+                    KeyboardUtils.showSoftInput(comments)
                     comments.hint = msg
                     sendComments.setOnClickListener {
                         if (comments.text.isNotEmpty()) {
@@ -132,9 +139,6 @@ class CustomCommentBottomPopup(
                         this.dismiss()
                     }
                 }
-
-
-
             }).show()
     }
 
