@@ -274,7 +274,6 @@ dependencies {
     implementation 'cn.yc:YCStatusBarLib:1.4.3'
 
     implementation 'com.azhon:appupdateX:2.8.0'
-
     implementation 'cn.jiguang.sdk:jpush:3.8.0'
     implementation 'cn.jiguang.sdk:jcore:2.4.2'
 //    implementation "androidx.work:work-runtime-ktx:$work_version"
@@ -295,7 +294,6 @@ dependencies {
 //    implementation VersionControllor.dependance.kongzuTab
     implementation VersionControllor.AndroidX.flexboxLayout
     implementation "androidx.preference:preference:1.1.1"
-    implementation 'com.github.AnJiaoDe:TabLayoutNiubility:V1.1.6'
 
 //    implementation 'com.github.KuangGang:RoundCorners:1.0.6'
 }
