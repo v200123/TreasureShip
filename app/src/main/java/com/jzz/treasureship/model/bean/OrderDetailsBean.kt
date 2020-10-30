@@ -23,7 +23,7 @@ class OrderDetailsBean(
     @SerializedName("goodsNum")
     var mGoodsNum: Int? = 0, // 0
     @SerializedName("goodsSkuList")
-    var mGoodsSkuList: List<GoodsSku?>? = listOf(),
+    var mGoodsSkuList: List<GoodsSku>? = listOf(),
     @SerializedName("id")
     var mId: Int? = 0, // 0
     @SerializedName("orderDiscount")

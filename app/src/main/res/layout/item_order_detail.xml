@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="9dp"
+    android:paddingTop="14dp"
+    android:paddingEnd="13dp">
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_item_detail_shoop_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ico_shop"
+        android:gravity="center"
+        android:text="贝利达官方自营店"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:padding="5dp"
+        android:id="@+id/shapeImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="13dp"
+        android:src="@drawable/ic_clock_clocked"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_detail_shoop_name"
+       />
+
+    <TextView
+        android:id="@+id/tv_item_order_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:maxWidth="230dp"
+        android:maxLines="2"
+        android:textSize="13dp"
+        app:layout_constraintStart_toEndOf="@+id/shapeImageView"
+        app:layout_constraintTop_toTopOf="@+id/shapeImageView"
+        tools:text="【境外商品】贝利达Biorepeir德国进 口软毛刷贝利达Bio德国进口软毛刷..." />
+
+    <TextView
+        android:id="@+id/tv_item_order_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:textColor="#FF111111"
+        android:textSize="14dp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_item_order_name"
+        tools:text="x12" />
+
+    <TextView
+        android:id="@+id/tv_item_order_sku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#FF666666"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_item_order_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_order_name"
+        tools:text="成人护齿  |  单支装" />
+
+    <TextView
+        android:id="@+id/tv_item_order_sku_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_item_order_sku"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_order_sku"
+        tools:text="¥19.99" />
+
+    <com.lc.mybaselibrary.ShapeTextView
+        android:visibility="gone"
+        android:id="@+id/tv_item_order_add_shop_car"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:text="@string/add_shop_car"
+        android:textColor="#FF111111"
+        app:layout_constraintEnd_toStartOf="@+id/tv_item_order_apply_afterSale"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:shapeCornersRadius="15dp"
+        app:shapeStrokeColor="#FF999999"
+        app:shapeStrokeWidth="1px"
+        tools:text="加购物车" />
+
+    <com.lc.mybaselibrary.ShapeTextView
+        android:visibility="gone"
+        android:id="@+id/tv_item_order_apply_afterSale"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="center"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:text="@string/apply_afterSale"
+        android:textColor="#FF111111"
+        app:layout_constraintEnd_toStartOf="@+id/tv_item_order_apply_refund"
+        app:layout_constraintTop_toTopOf="@+id/tv_item_order_add_shop_car"
+        app:shapeCornersRadius="15dp"
+        app:shapeStrokeColor="#FF999999"
+        app:shapeStrokeWidth="1px"
+        tools:text="申请售后" />
+
+    <com.lc.mybaselibrary.ShapeTextView
+        android:visibility="gone"
+        android:id="@+id/tv_item_order_apply_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="center"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:text="@string/apply_refund"
+        android:textColor="#FF111111"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_item_order_refunding"
+        app:layout_constraintTop_toTopOf="@+id/tv_item_order_apply_afterSale"
+        app:shapeCornersRadius="15dp"
+        app:shapeStrokeColor="#FF999999"
+        app:shapeStrokeWidth="1px" />
+
+    <com.lc.mybaselibrary.ShapeTextView
+        android:visibility="gone"
+        android:id="@+id/tv_item_order_refunding"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:gravity="center"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:text="@string/refunding"
+        android:textColor="#FF111111"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_item_order_apply_refund"
+        app:shapeCornersRadius="15dp"
+        app:shapeStrokeColor="#FF999999"
+        app:shapeStrokeWidth="1px" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="115dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

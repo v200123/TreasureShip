@@ -106,10 +106,17 @@
             </com.lc.mybaselibrary.ShapeConstraintLayout>
             <!--        用于装商品的容器 -->
             <com.lc.mybaselibrary.ShapeLinearLayout
+                android:paddingBottom="8dp"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="11dp"
+                app:shapeCornersRadius="8dp"
+                app:shapeSolidColor="@color/white"
                 android:id="@+id/ll_order_deatils_goods"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
 
             <com.lc.mybaselibrary.ShapeLinearLayout
                 android:layout_width="match_parent"
@@ -121,6 +128,7 @@
                 android:paddingTop="16dp"
                 android:paddingEnd="13dp"
                 android:paddingBottom="20dp"
+                android:layout_marginBottom="10dp"
                 app:shapeCornersRadius="8dp"
                 app:shapeSolidColor="@color/white">
 
@@ -141,7 +149,6 @@
                         android:layout_gravity="end"
                         android:gravity="center"
                         android:paddingStart="11dp"
-                        android:paddingTop="2dp"
                         android:paddingEnd="11dp"
                         android:text="复制"
                         android:textSize="10dp"

@@ -6,8 +6,11 @@ import com.blankj.utilcode.util.ToastUtils
 import com.didichuxing.doraemonkit.util.ClipboardUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
+import com.jzz.treasureship.model.bean.OrderDetailsBean
+import com.jzz.treasureship.view.ItemOrderDetailView
 import com.lc.liuchanglib.ext.click
 import com.lc.liuchanglib.ext.toColorSpan
+import com.lc.mybaselibrary.ext.getResColor
 import kotlinx.android.synthetic.main.fragment_main_order_detail.*
 import kotlinx.android.synthetic.main.include_title.*
 import q.rorbin.badgeview.DisplayUtil
@@ -20,8 +23,9 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
     override fun getLayoutResId(): Int = R.layout.fragment_main_order_detail
 
     override fun initVM(): MainOrderDeailViewModel = MainOrderDeailViewModel()
-
+    override var mStatusColor: Int = R.color.statue_color
     override fun initView() {
+        ll_view.setBackgroundColor(mContext.getResColor(R.color.statue_color))
         tv_title.text = "订单详情"
     }
 
@@ -30,18 +34,15 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
     }
 
     override fun startObserve() {
-
         mViewModel.mOrderDetailMsg.observe(this) {
-            setBottomButton(it.mOrderStatus,it.mGoodsSkuList?.size?:0)
-
+            setBottomButton(it.mOrderStatus, it.mGoodsSkuList?.size ?: 0)
+            showOrderSkuList(it.mGoodsSkuList, it.mShopName, it.mOrderNo)
             textView21.text = it.getStatusMsg(mContext, iv_order_detail_img)
-            tv_order_detail_address_name.setText(it.mReceiverName + "\t\t\t" + it.mReceiverMobile)
-            tv_order_detail_address.setText(it.mReceiverAddress + "\t\t\t" + it.mReceiverDistrict)
+            tv_order_detail_address_name.setText(it.mReceiverName + "\t\t" + it.mReceiverMobile)
+            tv_order_detail_address.setText(it.mReceiverAddress + "\t\t" + it.mReceiverDistrict)
             tv_order_detail_number.text = ("订单编号: " + it.mOrderNo).toColorSpan(0 .. 5, R.color.black_666666)
             tv_order_detail_create_time.getLeftBuild()
                 .apply { mTextMsg = ("下单时间: " + it.mCreateTime).toColorSpan(0 .. 5, R.color.black_666666) }.buildText()
-
-
             if (it.mPayTime != null) {
                 tv_order_detail_pay_time.apply {
                     visibility = View.VISIBLE
@@ -96,8 +97,16 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
         }
     }
 
+    private fun showOrderSkuList(skuList: List<OrderDetailsBean.GoodsSku>?, shopName: String?, orderNo: String) {
+        var isFirst = true
+        skuList?.forEach {
+            ll_order_deatils_goods.addView(ItemOrderDetailView(it, shopName, orderNo, isFirst, mContext))
+            isFirst = false
+        }
 
-    fun setBottomButton(statue: Int, count: Int) {
+    }
+
+    private fun setBottomButton(statue: Int, count: Int) {
         when (statue) {
 
             0 -> {

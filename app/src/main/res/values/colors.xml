@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+
+    <color name="statue_color">#FFD0EDEF</color>
     <color name="white">#ffffff</color>
     <color name="black_343434">#343434</color>
     <color name="black_666666">#FF666666</color>

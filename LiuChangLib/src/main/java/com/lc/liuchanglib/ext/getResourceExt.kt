@@ -3,6 +3,7 @@ package com.lc.mybaselibrary.ext
 import android.content.Context
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 
 /**
@@ -13,3 +14,5 @@ import androidx.core.content.ContextCompat
 fun Context.getResColor(@ColorRes colorResId:Int):Int = ContextCompat.getColor(this,colorResId)
 
 fun Context.getResDrawable(@DrawableRes drawableResId:Int)= ContextCompat.getDrawable(this,drawableResId)
+
+fun Context.getResString(@StringRes stringId:Int) = this.getString(stringId)
