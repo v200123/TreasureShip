@@ -122,7 +122,7 @@ class CustomCommentBottomPopup(
                     val comments = findViewById<EditText>(R.id.et_dialog_comments)
                     val sendComments = findViewById<ImageView>(R.id.iv_dialog_sendComments)
                     comments.requestFocus()
-                    KeyboardUtils.showSoftInput(comments)
+                    KeyboardUtils.showSoftInput()
                     comments.hint = msg
                     sendComments.setOnClickListener {
                         if (comments.text.isNotEmpty()) {

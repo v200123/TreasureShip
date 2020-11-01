@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="9dp"
+    android:layout_height="wrap_content"
     android:paddingTop="14dp"
-    android:paddingEnd="13dp">
+    >
 
     <TextView
         android:visibility="gone"
@@ -21,8 +20,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:padding="5dp"
+    <com.lc.liuchanglib.ShapeImageView
+        app:qmui_border_color="@color/grey_cccccc"
+        app:qmui_border_width="1dp"
+        app:qmui_corner_radius="4dp"
         android:id="@+id/shapeImageView"
         android:layout_width="80dp"
         android:layout_height="80dp"

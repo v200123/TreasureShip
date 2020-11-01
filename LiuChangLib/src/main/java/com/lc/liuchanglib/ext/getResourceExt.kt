@@ -16,3 +16,5 @@ fun Context.getResColor(@ColorRes colorResId:Int):Int = ContextCompat.getColor(t
 fun Context.getResDrawable(@DrawableRes drawableResId:Int)= ContextCompat.getDrawable(this,drawableResId)
 
 fun Context.getResString(@StringRes stringId:Int) = this.getString(stringId)
+
+fun Context.getResStringFormatter(@StringRes stringId:Int,vararg formatter:Any) = this.getString(stringId,formatter)

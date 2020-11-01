@@ -21,20 +21,20 @@ class LeftAndRightView @JvmOverloads constructor(
     private val mLeftTextView: TextView by lazy { TextView(context) }
     private val mRightTextView: TextView by lazy { TextView(context) }
    private val mLeftValue = LeftAndRightValue(mLeftTextView)
-    val mRightValue = LeftAndRightValue(mRightTextView)
+     val mRightValue = LeftAndRightValue(mRightTextView)
 
     init {
         val leftParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.START)
         val rightParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.END)
         addView(mLeftTextView, leftParams)
         addView(mRightTextView, rightParams)
-        initValue(attrs!!)
+        initValue(attrs)
         mLeftValue.buildText()
         mRightValue.buildText()
     }
 
-    fun initValue(attrs: AttributeSet) {
-        attrs.Resolve(context, R.styleable.LeftAndRightView) {
+    fun initValue(attrs: AttributeSet?) {
+        attrs?.Resolve(context, R.styleable.LeftAndRightView) {
             mLeftValue.mTextMsg = getString(R.styleable.LeftAndRightView_leftText) ?: ""
             mLeftValue.mTextSize= getDimension(R.styleable.LeftAndRightView_leftTextSize, 14f)
             mLeftValue.mTextBold = getBoolean(R.styleable.LeftAndRightView_leftBold, false)

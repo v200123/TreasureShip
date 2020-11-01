@@ -19,7 +19,7 @@ class OrderDetailsBean(
     @SerializedName("finishTime")
     var mFinishTime: String? = "", // string
     @SerializedName("goodsMoney")
-    var mGoodsMoney: Float? = 0f, // 0
+    var mGoodsMoney: String = "", // 0
     @SerializedName("goodsNum")
     var mGoodsNum: Int? = 0, // 0
     @SerializedName("goodsSkuList")
@@ -37,7 +37,7 @@ class OrderDetailsBean(
     @SerializedName("orderStatus")
     var mOrderStatus: Int = 0, // 0
     @SerializedName("payMoney")
-    var mPayMoney: Float? = 0f, // 0
+    var mPayMoney: String = "", // 0
     @SerializedName("payStatus")
     var mPayStatus: Int? = 0, // 0
     @SerializedName("payTime")
@@ -53,7 +53,7 @@ class OrderDetailsBean(
     @SerializedName("receiverName")
     var mReceiverName: String? = "", // string
     @SerializedName("shippingMoney")
-    var mShippingMoney: Float? = 0f, // 0
+    var mShippingMoney: String = "", // 0
     @SerializedName("shopName")
     var mShopName: String? = "", // string
     @SerializedName("shopServerList")

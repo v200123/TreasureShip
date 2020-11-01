@@ -341,4 +341,8 @@
     <string name="refunding">退款中</string>
     <string name="add_shop_car">加购物车</string>
     <string name="apply_afterSale">申请售后</string>
+    <string name="order_price">商品总额</string>
+    <string name="post_price">运费</string>
+    <string name="taxes_price">税费（商家承担）</string>
+    <string name="real_price_formatter">实付款：%s</string>
 </resources>

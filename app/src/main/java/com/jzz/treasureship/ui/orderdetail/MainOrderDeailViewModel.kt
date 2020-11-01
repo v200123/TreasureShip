@@ -22,7 +22,6 @@ class MainOrderDeailViewModel : BaseViewModel() {
            HttpHelp.getRetrofit().getOrderDetail(BaseRequestBody(OrderDetailBody(644)))
                .resultCheck{
                    mOrderDetailMsg.postValue(it)
-
                }
             }
         }
