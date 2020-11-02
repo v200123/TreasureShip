@@ -346,4 +346,5 @@
     <string name="taxes_price">税费（商家承担）</string>
     <string name="real_price_formatter">实付款：%s</string>
     <string name="plase_choice">请选择</string>
+    <string name="submit">提交</string>
 </resources>

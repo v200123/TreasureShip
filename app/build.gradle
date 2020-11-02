@@ -40,8 +40,8 @@ android {
     dexOptions{
         javaMaxHeapSize = "1g"
         //        incremental true
-        threadCount = 8
-        maxProcessCount = 16
+        threadCount = 4
+        maxProcessCount = 8
 
     }
 

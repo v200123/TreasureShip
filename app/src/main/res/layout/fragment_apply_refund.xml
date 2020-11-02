@@ -2,16 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/background_grey"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_grey"
 
-    android:layout_height="match_parent">
-<include layout="@layout/include_title"/>
+    android:orientation="vertical">
+
+    <include layout="@layout/include_title" />
+
     <ViewStub
-        android:layout="@layout/after_sale_part"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout="@layout/after_sale_part" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
@@ -91,33 +94,155 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.lc.mybaselibrary.ShapeConstraintLayout
-        android:paddingTop="15dp"
-        android:paddingStart="15dp"
-        app:shapeCornersRadius="8dp"
-        app:shapeSolidColor="@color/white"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        app:shapeCornersRadius="8dp"
+        app:shapeSolidColor="@color/white">
+
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:textSize="15dp"
-                tools:text = "退款原因"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:hint="@string/plase_choice"
+                android:text="退款原因"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                tools:text="退款原因" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:drawableEnd="@drawable/icon_goto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:hint="@string/plase_choice" />
         </LinearLayout>
 
+        <View
+            android:layout_marginTop="10dp"
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_grey"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            tools:layout_editor_absoluteX="15dp" />
 
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_apply_refund_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="退款金额"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/view6"
+            tools:text="退款金额" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:textColor="@color/red_cc0814"
+            android:textSize="15dp"
+            app:layout_constraintStart_toEndOf="@+id/tv_apply_refund_price"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_refund_price"
+            tools:text="dsfsdfsfs" />
+
+
+        <View
+            android:layout_marginTop="10dp"
+            android:id="@+id/view8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_grey"
+            app:layout_constraintTop_toBottomOf="@+id/textView23"
+            tools:layout_editor_absoluteX="15dp" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_apply_refund_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="退款说明"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/view8"
+            tools:text="退款金额" />
+
+        <EditText
+            android:background="@null"
+            android:id="@+id/et_apply_refund_remark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:textColor="@color/red_cc0814"
+            android:textSize="15dp"
+            app:layout_constraintStart_toEndOf="@+id/tv_apply_refund_remark"
+            app:layout_constraintTop_toTopOf="@+id/tv_apply_refund_remark"
+            tools:text="dsfsdfsfs" />
+
+
+        <View
+            android:layout_marginTop="10dp"
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_grey"
+            app:layout_constraintTop_toBottomOf="@+id/textView23"
+            tools:layout_editor_absoluteX="15dp" />
+
+
+        <View
+            android:layout_marginTop="10dp"
+            android:id="@+id/view9"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_grey"
+            app:layout_constraintTop_toBottomOf="@+id/et_apply_refund_remark"
+            tools:layout_editor_absoluteX="15dp" />
+<!--        上传凭证，用于退货-->
+        <FrameLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/fl_apply_refund_goods"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/view9"
+         >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上传凭证" />
+
+        </FrameLayout>
     </com.lc.mybaselibrary.ShapeConstraintLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.lc.mybaselibrary.ShapeTextView
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="15dp"
+            app:shapeSolidColor="@color/blue_normal"
+            app:shapeCornersRadius="20dp"
+            android:textColor="@color/white"
+            android:text="@string/submit"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+    </FrameLayout>
 
 </LinearLayout>
