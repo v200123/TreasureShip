@@ -5,9 +5,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.IdRes
 import com.bumptech.glide.Glide
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.OrderDetailsBean
+import com.lc.liuchanglib.ext.click
 import kotlinx.android.synthetic.main.item_order_detail.view.*
 import q.rorbin.badgeview.DisplayUtil
 
@@ -16,7 +18,7 @@ import q.rorbin.badgeview.DisplayUtil
  *@Auth： 29579
  **/
 class ItemOrderDetailView @JvmOverloads constructor(
-    orderDetailSku: OrderDetailsBean.GoodsSku,
+   var orderDetailSku: OrderDetailsBean.GoodsSku,
     shopName: String?,shopNo: String, needShowShop: Boolean,
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -26,6 +28,7 @@ class ItemOrderDetailView @JvmOverloads constructor(
         showShopName(shopName,shopNo, needShowShop)
         showOtherInformation(orderDetailSku)
     }
+
 
 
     private fun showOtherInformation(orderDetailSku: OrderDetailsBean.GoodsSku){
@@ -44,9 +47,14 @@ class ItemOrderDetailView @JvmOverloads constructor(
             }?:let { tv_item_detail_shoop_name.setCompoundDrawables(null,null,null,null)
                 tv_item_detail_shoop_name.text = "订单编号: $shopNo"
             }
-
         }
     }
+
+    inline fun setViewClickListener(@IdRes clickID:Int, crossinline block:OrderDetailsBean.GoodsSku.()->Unit){
+       findViewById<View>(clickID) click {
+           block(orderDetailSku)
+       }
+   }
 
     private fun showButton(orderDetailSku: OrderDetailsBean.GoodsSku) {
         when (orderDetailSku.mOrderStatus) {
@@ -69,7 +77,6 @@ class ItemOrderDetailView @JvmOverloads constructor(
                 tv_item_order_add_shop_car.visibility = View.VISIBLE
 
             }
-
         }
 
     }

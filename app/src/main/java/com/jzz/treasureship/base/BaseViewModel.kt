@@ -39,7 +39,7 @@ open class BaseViewModel : ViewModel() {
             block(this.result)
         } else {
             if (this.code == 401) {
-                mStateLiveData.value = NeedLoginState
+                mStateLiveData.postValue(NeedLoginState)
             }
             errorMsg(this.message)
         }
@@ -56,7 +56,7 @@ open class BaseViewModel : ViewModel() {
                 block()
             }
                 .onSuccess {
-                    mStateLiveData.value = SuccessState
+                    mStateLiveData.postValue(SuccessState)
                 }
                 .onFailure {
                     getApiException(it, cancel)

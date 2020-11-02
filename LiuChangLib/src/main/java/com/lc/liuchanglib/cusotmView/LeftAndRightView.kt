@@ -18,8 +18,8 @@ class LeftAndRightView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private var maxHeight = 0
-    private val mLeftTextView: TextView by lazy { TextView(context) }
-    private val mRightTextView: TextView by lazy { TextView(context) }
+     val mLeftTextView: TextView by lazy { TextView(context) }
+     val mRightTextView: TextView by lazy { TextView(context) }
    private val mLeftValue = LeftAndRightValue(mLeftTextView)
      val mRightValue = LeftAndRightValue(mRightTextView)
 
@@ -38,12 +38,11 @@ class LeftAndRightView @JvmOverloads constructor(
             mLeftValue.mTextMsg = getString(R.styleable.LeftAndRightView_leftText) ?: ""
             mLeftValue.mTextSize= getDimension(R.styleable.LeftAndRightView_leftTextSize, 14f)
             mLeftValue.mTextBold = getBoolean(R.styleable.LeftAndRightView_leftBold, false)
-            mLeftValue.mTextColor = getColor(R.styleable.LeftAndRightView_leftTextColor, Color.parseColor("#FFFFFF"))
-
+            mLeftValue.mTextColor = getColor(R.styleable.LeftAndRightView_leftTextColor, Color.parseColor("#FF111111"))
             mRightValue.mTextMsg = getString(R.styleable.LeftAndRightView_rightText) ?: ""
             mRightValue.mTextSize= getDimension(R.styleable.LeftAndRightView_rightTextSize, 14f)
             mRightValue.mTextBold = getBoolean(R.styleable.LeftAndRightView_rightBold, false)
-            mRightValue.mTextColor = getColor(R.styleable.LeftAndRightView_rightTextColor, Color.parseColor("#FFFFFF"))
+            mRightValue.mTextColor = getColor(R.styleable.LeftAndRightView_rightTextColor, Color.parseColor("#FF111111"))
 
         }
     }

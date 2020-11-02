@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.jzz.treasureship.R
-import com.jzz.treasureship.ui.orderdetail.MainOrderDetailFragment
+import com.jzz.treasureship.ui.orderdetail.AfterSaleFragment
 
 /**
  *@PackageName: com.jzz.treasureship.ui.activity
@@ -15,7 +15,7 @@ class TextActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportFragmentManager.commit {
-            add(R.id.frame_content,MainOrderDetailFragment())
+            add(R.id.frame_content,AfterSaleFragment())
         }
     }
 

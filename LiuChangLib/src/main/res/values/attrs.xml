@@ -234,6 +234,8 @@
         <attr name="rightTextSize" format="dimension" />
         <attr name="leftTextColor" format="color" />
         <attr name="rightTextColor" format="color" />
+        <attr name="leftDrawable" format="reference" />
+        <attr name="rightDrawable" format="reference" />
     </declare-styleable>
 
 

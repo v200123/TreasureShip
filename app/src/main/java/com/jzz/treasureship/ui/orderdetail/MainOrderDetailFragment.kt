@@ -4,19 +4,18 @@ import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.core.view.get
 import com.blankj.utilcode.util.ToastUtils
 import com.didichuxing.doraemonkit.util.ClipboardUtils
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.OrderDetailsBean
+import com.jzz.treasureship.ui.orderdetail.viewModel.MainOrderDeailViewModel
 import com.jzz.treasureship.view.ItemOrderDetailView
 import com.lc.liuchanglib.cusotmView.LeftAndRightView
 import com.lc.liuchanglib.ext.click
 import com.lc.liuchanglib.ext.toColorSpan
 import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.ext.getResString
-import com.lc.mybaselibrary.ext.getResStringFormatter
 import kotlinx.android.synthetic.main.fragment_main_order_detail.*
 import kotlinx.android.synthetic.main.include_title.*
 import q.rorbin.badgeview.DisplayUtil
@@ -70,6 +69,10 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
                 }
             }
 
+            mViewModel.addCartResult.observe(this){
+                ToastUtils.showShort("加入购物车成功")
+            }
+
 //            if (it.mFinishTime != null) {
 //                tv_order_detail_finish_time.apply {
 //                    visibility = View.VISIBLE
@@ -119,7 +122,12 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
     ) {
         var isFirst = true
         skuList?.forEach {
-            ll_order_deatils_goods.addView(ItemOrderDetailView(it, shopName, orderNo, isFirst, mContext))
+            ll_order_deatils_goods.addView(ItemOrderDetailView(it, shopName, orderNo, isFirst, mContext).apply {
+                setViewClickListener(R.id.tv_item_order_add_shop_car){
+                    mViewModel.addShopCart(this.mSkuId)
+                }
+
+            })
             isFirst = false
         }
         val totalParamars = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -239,7 +247,18 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
             }
 
         }
+    }
+
+
+    private fun showEnsureDialog(){
+
+
 
     }
 
+enum class DialogType{
+
+
+
+}
 }

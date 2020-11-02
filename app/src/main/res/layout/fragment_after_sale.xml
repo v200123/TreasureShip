@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF3F3F3"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_title" />
+    <ViewStub
+        android:layout="@layout/after_sale_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingStart="14dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_item_detail_shoop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ico_shop"
+            android:gravity="center"
+            android:text="贝利达官方自营店"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.lc.liuchanglib.ShapeImageView
+            android:id="@+id/shapeImageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/ic_clock_clocked"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_detail_shoop_name"
+            app:qmui_border_color="@color/grey_cccccc"
+            app:qmui_border_width="1dp"
+            app:qmui_corner_radius="4dp" />
+
+        <TextView
+            android:id="@+id/tv_item_order_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:maxWidth="230dp"
+            android:maxLines="2"
+            android:textSize="13dp"
+            app:layout_constraintStart_toEndOf="@+id/shapeImageView"
+            app:layout_constraintTop_toTopOf="@+id/shapeImageView"
+            tools:text="【境外商品】贝利达Biorepeir德国进 口软毛刷贝利达Bio德国进口软毛刷..." />
+
+        <TextView
+            android:id="@+id/tv_item_order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF111111"
+            android:textSize="14dp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_item_order_sku_price"
+            tools:text="x12" />
+
+        <TextView
+            android:id="@+id/tv_item_order_sku"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#FF666666"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_item_order_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_order_name"
+            tools:text="成人护齿  |  单支装" />
+
+        <TextView
+            android:id="@+id/tv_item_order_sku_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_item_order_sku"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_order_sku"
+            tools:text="¥19.99" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.lc.mybaselibrary.ShapeLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        android:paddingStart="12dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="11dp"
+        app:shapeCornersRadius="8dp"
+        app:shapeSolidColor="@color/white">
+
+        <com.lc.liuchanglib.cusotmView.LeftAndRightView
+            app:leftBold="false"
+            android:id="@+id/layout_refund"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftText="退款"
+            app:leftTextSize="6dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="11dp" />
+
+        <com.lc.liuchanglib.cusotmView.LeftAndRightView
+            android:id="@+id/layout_refundAndReturnOfGoods"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:leftText="退款退货"
+            app:leftTextSize="6dp" />
+    </com.lc.mybaselibrary.ShapeLinearLayout>
+</LinearLayout>

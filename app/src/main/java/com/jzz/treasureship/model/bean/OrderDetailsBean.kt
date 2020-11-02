@@ -135,7 +135,7 @@ class OrderDetailsBean(
         @SerializedName("shopId")
         var mShopId: Int? = 0, // 0
         @SerializedName("skuId")
-        var mSkuId: Int? = 0, // 0
+        var mSkuId: Int = 0, // 0
         @SerializedName("skuPicture")
         var mSkuPicture: String? = "" // string
     )

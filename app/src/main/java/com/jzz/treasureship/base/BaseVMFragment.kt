@@ -16,14 +16,17 @@ import com.jzz.treasureship.App
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.User
 import com.jzz.treasureship.model.bean.UserDialogInformationBean
+import com.jzz.treasureship.ui.login.LoginActivity
 import com.jzz.treasureship.utils.FragmentBackHandler
 import com.jzz.treasureship.utils.PreferenceUtils
 import com.jzz.treasureship.utils.normalOut
 import com.jzz.treasureship.utils.out
 import com.lc.mybaselibrary.ErrorState
 import com.lc.mybaselibrary.LoadState
+import com.lc.mybaselibrary.NeedLoginState
 import com.lc.mybaselibrary.SuccessState
 import com.lc.mybaselibrary.ext.getResColor
+import com.lc.mybaselibrary.start
 import com.lxj.xpopup.XPopup
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.tencent.mmkv.MMKV
@@ -80,21 +83,35 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
         startObserve()
         initListener()
         mViewModel.mStateLiveData.observe(owner = viewLifecycleOwner, onChanged = {
-            if (it is LoadState) {
+            when(it){
+               is LoadState ->{
+                   if (it.msg.isBlank())
+                       showLoading("请稍等....")
+                   else {
+                       showLoading(it.msg)
+                   }
+               }
+                is SuccessState->{
+                    mLoading.dismiss()
+                }
+                is ErrorState ->{
+                    if(it.message == "登录已失效，请重新登录"){
+                        mContext.start<LoginActivity> {  }
 
-                if (it.msg.isBlank())
-                    showLoading("请稍等....")
-                else {
-                    showLoading(it.msg)
+                    }
+                    else{
+                        mLoading.delayDismiss(100)
+                        ToastUtils.showShort(it.message)
+                    }
+
+                }
+                is NeedLoginState ->{
+                    mContext.start<LoginActivity> {  }
                 }
             }
-            if (it is SuccessState) {
-                mLoading.dismiss()
-            }
-            if (it is ErrorState) {
-                mLoading.delayDismiss(100)
-                ToastUtils.showShort(it.message)
-            }
+
+
+
         })
 
     }
@@ -190,6 +207,7 @@ abstract class BaseVMFragment<VM : BaseViewModel>(useDataBinding: Boolean = true
     override fun onBackPressed(): Boolean {
         return true
     }
+
 
     protected fun setStatusColor(@ColorRes colorRes: Int = mStatusColor) {
         StateAppBar.setStatusBarLightMode(
