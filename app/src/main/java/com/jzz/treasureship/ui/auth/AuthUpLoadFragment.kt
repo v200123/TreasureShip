@@ -40,7 +40,11 @@ import kotlinx.android.synthetic.main.item_card_unuse.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -543,10 +547,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false),EasyPermis
         {
             gotoPhoto()
         }
-        if(requestCode == AuthenticationActivity.REQUEST_PERMISSION_CAMERA)
-        {
 
-        }
         "我权限授予成功了".out()
     }
 

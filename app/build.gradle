@@ -291,6 +291,7 @@ dependencies {
     implementation VersionControllor.dependance.xpop
     implementation VersionControllor.dependance.MMKV
     implementation VersionControllor.dependance.logger
+    implementation VersionControllor.dependance.photoSelect
 //    implementation VersionControllor.dependance.kongzuTab
     implementation VersionControllor.AndroidX.flexboxLayout
     implementation "androidx.preference:preference:1.1.1"

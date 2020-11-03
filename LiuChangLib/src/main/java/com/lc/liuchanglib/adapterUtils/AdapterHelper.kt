@@ -2,7 +2,6 @@ package com.lc.liuchanglib.adapterUtils
 
 import android.view.View
 import android.widget.CheckBox
-import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter

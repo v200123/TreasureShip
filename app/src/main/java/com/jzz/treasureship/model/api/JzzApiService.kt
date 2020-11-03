@@ -38,6 +38,7 @@ import com.jzz.treasureship.model.bean.QuestionnaireResponseVo
 import com.jzz.treasureship.model.bean.Rank
 import com.jzz.treasureship.model.bean.ReceiveAddress
 import com.jzz.treasureship.model.bean.Refund
+import com.jzz.treasureship.model.bean.RefundMsg
 import com.jzz.treasureship.model.bean.Reward
 import com.jzz.treasureship.model.bean.ShopcarBuyBean
 import com.jzz.treasureship.model.bean.UpdateAppBean
@@ -529,7 +530,18 @@ interface JzzApiService {
     @POST("/api/v1/banner/getBannerList")
     suspend fun getCouponBanner(@Body body: BaseRequestBody):JzzResponse<CouponBannerBean>
 
+    /**
+     * 获取订单详情
+     */
     @POST("/api/v1/order/getOrderDetail")
     suspend fun getOrderDetail(@Body body: BaseRequestBody):JzzResponse<OrderDetailsBean>
 
+    /**
+     * 获取退货的原因
+     */
+    @POST("/api/v1/afterSale/orderRefundReason")
+    suspend fun getRefundMsg(@Body body: BaseRequestBody):JzzResponse<RefundMsg>
+
+    @POST("/api/v1/afterSale/orderApplyRefund")
+    suspend fun submitRefundMsg(@Body body: BaseRequestBody):JzzResponse<Unit>
 }

@@ -3,6 +3,7 @@ package com.lc.versionplugin
 import com.lc.versionplugin.VersionControllor.version.appCompatVersion
 import com.lc.versionplugin.VersionControllor.version.constraintlayoutVersion
 import com.lc.versionplugin.VersionControllor.version.koinVersion
+import com.lc.versionplugin.VersionControllor.version.photoSelectVersion
 import com.lc.versionplugin.VersionControllor.version.xuiVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -41,6 +42,7 @@ private object version{
     val loggerVersion = "2.2.0"
     val kongzuTabVersion = "1.5.4"
     val httpLogVersion = "4.9.0"
+    val photoSelectVersion = "v2.5.9"
 }
 
     object Android{
@@ -82,7 +84,10 @@ private object version{
         val httpLog = "com.squareup.okhttp3:logging-interceptor:${version.httpLogVersion}"
         val logger = "com.orhanobut:logger:${version.loggerVersion}"
         val kongzuTab = "com.kongzue.tabbarx:tabbar:${version.kongzuTabVersion}"
+//        百度移动统计
         val baiduStatistics = "com.baidu.mobstat:mtj-sdk:4.0.3.4"
+//        图片选择工具  @{link:https://github.com/LuckSiege/PictureSelector}
+        val photoSelect = "com.github.LuckSiege.PictureSelector:picture_library:$photoSelectVersion"
     }
 
     object oppo{

@@ -101,6 +101,9 @@ class OrderDetailsBean(
             12 -> {
                 "退款不通过"
             }
+            8 ->{
+                "已完成"
+            }
             else -> {
                 "未知状态"
             }
