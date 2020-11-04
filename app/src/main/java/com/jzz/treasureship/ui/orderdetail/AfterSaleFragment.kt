@@ -36,7 +36,7 @@ class AfterSaleFragment : BaseVMFragment<BaseViewModel>() {
             setCompoundDrawablesWithIntrinsicBounds(null,null,resDrawable,null) }
 
         mOrderDetailViewModel.singleOrderInfo.apply {
-            tv_item_detail_shoop_name.text = this.mGoodsName
+            tv_item_detail_shoop_name.text = this!!.mGoodsName
         }
     }
 
