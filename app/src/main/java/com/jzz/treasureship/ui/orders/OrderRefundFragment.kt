@@ -1,6 +1,7 @@
 package com.jzz.treasureship.ui.orders
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
@@ -27,24 +28,42 @@ class OrderRefundFragment : BaseVMFragment<OrderRefundViewModel>() {
                     helper.setText(
                         R.id.tv_item_order_name,
                         if (goodsSku.mGoodsType == 1) "【境外商品】${goodsSku.mGoodsName}" else goodsSku.mGoodsName
-                    ).setText(R.id.tv_item_order_list_sku,goodsSku.mAttrValue)
-                        .setText(R.id.tv_item_order_list_sku_price,"¥${goodsSku.mSkuPicture}")
-                        .setText(R.id.tv_item_order_list_count,"x ${goodsSku.mNum}")
+                    ).setText(R.id.tv_item_order_list_sku, goodsSku.mAttrValue)
+                        .setText(R.id.tv_item_order_list_sku_price, "¥${goodsSku.mSkuPicture}")
+                        .setText(R.id.tv_item_order_list_count, "x ${goodsSku.mNum}")
 
                     helper.getView<LeftAndRightView>(R.id.tv_item_order_list_name).apply {
                         getLeftBuild().mTextMsg = item.mShopName
                         getLeftBuild().mDrawable = mContext.getResDrawable(R.drawable.ico_shop_name)
                         getLeftBuild().buildText()
-
-                        R.string.BatchRefund
                         mRightValue.mTextMsg = if (item.mRefundType == 1) "仅退款" else "退货退款"
+                        mRightValue.mTextBold = true
+                        mRightValue.buildText()
+                        mRightTextView.setCompoundDrawablesWithIntrinsicBounds(
+                            if (item.mRefundType == 1) mContext.getResDrawable(R.drawable.icon_remoney) else mContext.getResDrawable(
+                                R.drawable.icon_refund
+                            ), null, null, null
+                        )
                     }
 
                 }
 
             },
             mRefundList,
-        ).apply { addChildClickViewIds() }
+        ).apply {
+            addChildClickViewIds(R.id.tv_item_order_list_seemore, R.id.tv_item_order_list_sudo)
+
+            setOnItemClickListener { adapter, view, position ->
+
+                when (view.id) {
+                    R.id.tv_item_order_list_seemore -> {
+                        ToastUtils.showShort("跳转到新的界面")
+                    }
+                }
+
+
+            }
+        }
 
 
     }
