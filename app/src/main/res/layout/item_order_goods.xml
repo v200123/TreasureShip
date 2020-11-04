@@ -24,7 +24,7 @@
             android:textSize="14dp"
           android:textStyle="bold"
             android:gravity="center"
-            android:drawableStart="@drawable/ico_shop"
+            android:drawableStart="@drawable/ico_shop_name"
             android:text="贝利达官方自营店"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

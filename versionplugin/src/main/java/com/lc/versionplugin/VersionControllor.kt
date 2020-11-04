@@ -49,7 +49,7 @@ private object version{
         val compileSdkVersion = 29
         val applicationId = "com.jzz.treasureship"
         val minSdkVersion = 21
-        val targetSdkVersion = 28
+        val targetSdkVersion = 30
         val versionCode = 138
         val versionName = "1.3.8"
     }

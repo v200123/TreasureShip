@@ -55,7 +55,7 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
             setBottomButton(it.mOrderStatus, it.mGoodsSkuList?.size ?: 0)
             showOrderSkuList(
                 it.mGoodsSkuList,
-                it.mShopName,
+                it.mShopServerList?.get(0)?.mShopName?:"未知",
                 it.mOrderNo,
                 it.mGoodsMoney,
                 it.mShippingMoney,
@@ -136,9 +136,9 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
                 setViewClickListener(R.id.tv_item_order_add_shop_car) {
                     mViewModel.addShopCart(this.mSkuId)
                 }
-
                 setViewClickListener(R.id.tv_item_order_apply_afterSale) {
                     mOrderDetailViewModel.singleOrderInfo = this
+                    mOrderDetailViewModel.singleOrderInfo!!.mShopName = shopName
                     mFragmentManager.commit {
                         addToBackStack("1")
                         hide(this@MainOrderDetailFragment)

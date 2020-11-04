@@ -12,7 +12,7 @@
         tools:text  = "sdfsdfsdf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <CheckBox
+    <com.lc.liuchanglib.cusotmView.noTouchCheckBox
         android:id="@+id/cb_item_submit"
         android:button="@drawable/address_check_seletor"
         android:layout_gravity="end"

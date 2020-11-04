@@ -13,8 +13,10 @@ import com.lc.mybaselibrary.StateActionEvent
 import com.lc.mybaselibrary.SuccessState
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -29,20 +31,24 @@ open class BaseViewModel : ViewModel() {
 
 
 
-    fun <T> JzzResponse<T>.resultCheck(
+   suspend fun <T> JzzResponse<T>.resultCheck(
         errorMsg: (msg: String) -> Unit = {
             mStateLiveData.postValue(ErrorState(it))
         },
         block: (T?) -> Unit
     ) {
-        if (this.success) {
-            block(this.result)
-        } else {
-            if (this.code == 401) {
-                mStateLiveData.postValue(NeedLoginState)
-            }
-            errorMsg(this.message)
-        }
+       withContext(Dispatchers.Main){
+           if (this@resultCheck.success) {
+               block(this@resultCheck.result)
+           } else {
+               if (this@resultCheck.code == 401) {
+                   mStateLiveData.postValue(NeedLoginState)
+               }
+               errorMsg(this@resultCheck.message)
+           }
+       }
+
+
     }
 
     fun launchTask(msg:String = "",

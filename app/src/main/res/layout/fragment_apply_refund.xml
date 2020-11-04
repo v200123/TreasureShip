@@ -26,10 +26,10 @@
         android:paddingBottom="8dp">
 
         <TextView
-            android:id="@+id/tv_apply_refund_shoop_name"
+            android:id="@+id/tv_apply_refund_shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ico_shop"
+            android:drawableStart="@drawable/ico_shop_name"
             android:gravity="center"
             android:text="贝利达官方自营店"
             android:textSize="14dp"
@@ -38,13 +38,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.lc.liuchanglib.ShapeImageView
-            android:id="@+id/shapeImageView"
+            android:id="@+id/tv_item_order_list_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="13dp"
             android:src="@drawable/ic_clock_clocked"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_apply_refund_shoop_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_apply_refund_shop_name"
             app:qmui_border_color="@color/grey_cccccc"
             app:qmui_border_width="1dp"
             app:qmui_corner_radius="4dp" />
@@ -57,8 +57,8 @@
             android:maxWidth="230dp"
             android:maxLines="2"
             android:textSize="13dp"
-            app:layout_constraintStart_toEndOf="@+id/shapeImageView"
-            app:layout_constraintTop_toTopOf="@+id/shapeImageView"
+            app:layout_constraintStart_toEndOf="@+id/tv_item_order_list_image"
+            app:layout_constraintTop_toTopOf="@+id/tv_item_order_list_image"
             tools:text="【境外商品】贝利达Biorepeir德国进 口软毛刷贝利达Bio德国进口软毛刷..." />
 
         <TextView
@@ -94,6 +94,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.lc.mybaselibrary.ShapeConstraintLayout
+        android:paddingBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -150,7 +151,7 @@
             tools:text="退款金额" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/tv_apply_refund_total_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -167,7 +168,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:background="@color/background_grey"
-            app:layout_constraintTop_toBottomOf="@+id/textView23"
+            app:layout_constraintTop_toBottomOf="@+id/tv_apply_refund_total_price"
             tools:layout_editor_absoluteX="15dp" />
 
         <TextView
@@ -182,16 +183,17 @@
             tools:text="退款金额" />
 
         <EditText
+            android:autofillHints="输入退款说明，选填"
+            android:hint="输入退款说明，选填"
             android:id="@+id/et_apply_refund_remark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:background="@null"
-            android:textColor="@color/red_cc0814"
             android:textSize="15dp"
             app:layout_constraintStart_toEndOf="@+id/tv_apply_refund_remark"
             app:layout_constraintTop_toTopOf="@+id/tv_apply_refund_remark"
-            tools:text="dsfsdfsfs" />
+            />
 
 
         <View
@@ -200,11 +202,12 @@
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:background="@color/background_grey"
-            app:layout_constraintTop_toBottomOf="@+id/textView23"
+            app:layout_constraintTop_toBottomOf="@+id/tv_apply_refund_total_price"
             tools:layout_editor_absoluteX="15dp" />
 
 
         <View
+            android:visibility="gone"
             android:id="@+id/view9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -214,6 +217,7 @@
             tools:layout_editor_absoluteX="15dp" />
         <!--        上传凭证，用于退货-->
         <FrameLayout
+            android:visibility="gone"
             android:id="@+id/fl_apply_refund_goods"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -228,10 +232,11 @@
         </FrameLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_apply_refund_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fl_apply_refund_goods"
             tools:layout_editor_absoluteX="15dp">

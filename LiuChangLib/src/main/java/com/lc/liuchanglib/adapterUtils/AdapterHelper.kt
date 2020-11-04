@@ -9,10 +9,12 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 object AdapterHelper {
 
-    fun <ITEM> getAdapter(@LayoutRes itemLayout:Int,
-                          converter: ViewHolderConverter<ITEM>,
-                          data: MutableList<ITEM>): Adapter<ITEM>
-            = Adapter(itemLayout, converter, data)
+    fun <ITEM> getAdapter(
+        @LayoutRes itemLayout: Int,
+        converter: ViewHolderConverter<ITEM>,
+        data: MutableList<ITEM>,
+        @IdRes vararg viewIds: Int = intArrayOf()
+    ): Adapter<ITEM> = Adapter(itemLayout, converter, data, *viewIds)
 
     interface ViewHolderConverter<ITEM> {
         fun convert(helper: BaseViewHolder, item: ITEM)
@@ -21,10 +23,15 @@ object AdapterHelper {
     class Adapter<ITEM>(
         @LayoutRes private val layout: Int,
         private val converter: ViewHolderConverter<ITEM>,
-        val list: MutableList<ITEM>
-    ): BaseQuickAdapter<ITEM, BaseViewHolder>(layout, list) {
-        override fun convert(helper: BaseViewHolder, item: ITEM) {
-            converter.convert(helper, item)
+        val list: MutableList<ITEM>,
+        @IdRes vararg viewIds: Int
+    ) : BaseQuickAdapter<ITEM, BaseViewHolder>(layout, list) {
+        init {
+            addChildClickViewIds(*viewIds)
+        }
+
+        override fun convert(holder: BaseViewHolder, item: ITEM) {
+            converter.convert(holder, item)
         }
     }
 }
@@ -33,6 +40,7 @@ object AdapterHelper {
 fun BaseViewHolder.goneIf(@IdRes id: Int, goneIf: Boolean) {
     this.getView<View>(id).visibility = if (goneIf) View.GONE else View.VISIBLE
 }
+
 fun BaseViewHolder.setChecked(@IdRes id: Int, isCheck: Boolean) {
     this.getView<CheckBox>(id).isChecked = isCheck
 }

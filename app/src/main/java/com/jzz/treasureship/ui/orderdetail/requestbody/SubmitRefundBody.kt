@@ -10,7 +10,7 @@ import com.jzz.treasureship.model.bean.body
  **/
 class SubmitRefundBody(
     @SerializedName("id")
-    var mId: Int = 0, // 0
+    var mId: String? = null, // 0
     @SerializedName("orderGoodsIds")
     var mOrderGoodsIds: String = "", // string
     @SerializedName("orderId")
@@ -23,6 +23,6 @@ class SubmitRefundBody(
     var mRefundReasonId: Int = 0, // 0
     @SerializedName("refundType")
     var mRefundType: Int = 0 // 0
-) :body() {
+) : body() {
 
 }

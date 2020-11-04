@@ -25,7 +25,7 @@ class ApplyRefundViewModel : BaseViewModel() {
         }
     }
 
-    fun submitMsg(orderId: Int, refundType: Int, refundResult: Int) {
+    fun submitMsg(orderId: Int, refundType: Int, refundResult: Int,skuId:String) {
 
         launchTask {
 
@@ -34,7 +34,8 @@ class ApplyRefundViewModel : BaseViewModel() {
                     SubmitRefundBody(
                         mRefundReasonId = refundResult,
                         mRefundType = refundType,
-                        mOrderId = orderId
+                        mOrderId = orderId,
+                        mOrderGoodsIds = skuId
                     )
                 )
             ).resultCheck {

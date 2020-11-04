@@ -347,4 +347,6 @@
     <string name="real_price_formatter">实付款：%s</string>
     <string name="plase_choice">请选择</string>
     <string name="submit">提交</string>
+    <string name="refunding_seemore">查看详情</string>
+    <string name="refunding_sudo">撤销申请</string>
 </resources>

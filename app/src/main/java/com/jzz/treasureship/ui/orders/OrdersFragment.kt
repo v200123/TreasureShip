@@ -52,7 +52,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
 
         StateAppBar.setStatusBarLightMode(this.activity, mContext.getResColor(R.color.white))
 
-        val titles = arrayOf("全部", "待付款", "待发货", "已发货", "已完成")
+        val titles = arrayOf("全部", "待付款", "待发货", "待收货", "退款/售后")
 
 
         arguments?.let {
@@ -67,11 +67,10 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
 
         ordersTablayout.run {
             setSelectedTabIndicatorColor(mContext.getResColor(R.color.blue_light))
-            setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
 
                 }
-
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
                     val view = tab!!.customView
                     if (null == view) {
@@ -79,7 +78,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
                     }
                     val textView: TextView = tab.customView!!.findViewById(R.id.tab_item_textview)
                     textView.text = titles[tab.position]
-                    textView.setTextColor(context.resources.getColor(R.color.gray999))
+                    textView.setTextColor(mContext.getResColor(R.color.gray999))
                     textView.typeface = Typeface.DEFAULT
                 }
 
@@ -93,14 +92,17 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
                     textView.setTextColor(context.resources.getColor(R.color.blue_light))
                     textView.typeface = Typeface.DEFAULT_BOLD
                 }
-
             })
+
         }
 
         val mAdapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
 
-                return OrdersVpFragment.newInstance(position)
+                return if(position !=3) OrdersVpFragment.newInstance(position)
+                else{
+                    OrderRefundFragment()
+                }
             }
 
             override fun getItemCount(): Int {

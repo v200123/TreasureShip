@@ -57,7 +57,7 @@ class OrderDetailsBean(
     @SerializedName("shopName")
     var mShopName: String? = "", // string
     @SerializedName("shopServerList")
-    var mShopServerList: List<ShopServer?>? = listOf(),
+    var mShopServerList: List<ShopServer>? = listOf(),
     @SerializedName("signTime")
     var mSignTime: String = "", // string
     @SerializedName("taxMoney")
@@ -126,13 +126,13 @@ class OrderDetailsBean(
         @SerializedName("num")
         var mNum: Int? = 0, // 0
         @SerializedName("orderGoodsId")
-        var mOrderGoodsId: Int? = 0, // 0
+        var mOrderGoodsId: String = "", // 0
         @SerializedName("orderStatus")
         var mOrderStatus: Int? = 0, // 0
         @SerializedName("payMoney")
         var mPayMoney: Float? = 0f, // 0
         @SerializedName("price")
-        var mPrice: Float? = 0f, // 0
+        var mPrice: String = "", // 0
         @SerializedName("returnPoint")
         var mReturnPoint: Float? = 0f, // 0
         @SerializedName("shopId")
@@ -142,7 +142,9 @@ class OrderDetailsBean(
         @SerializedName("skuPicture")
         var mSkuPicture: String? = "" // string
     )
-
+    {
+        var mShopName: String? = "" // string
+    }
     class ShopServer(
         @SerializedName("shopName")
         var mShopName: String? = "", // string

@@ -30,6 +30,7 @@ import com.jzz.treasureship.model.bean.OccupationBean
 import com.jzz.treasureship.model.bean.Order
 import com.jzz.treasureship.model.bean.OrderDetailsBean
 import com.jzz.treasureship.model.bean.OrderExpress
+import com.jzz.treasureship.model.bean.OrderRefundListBean
 import com.jzz.treasureship.model.bean.OrderRewardFirstBean
 import com.jzz.treasureship.model.bean.OrdersGoPayBean
 import com.jzz.treasureship.model.bean.OrdersListBean
@@ -544,4 +545,7 @@ interface JzzApiService {
 
     @POST("/api/v1/afterSale/orderApplyRefund")
     suspend fun submitRefundMsg(@Body body: BaseRequestBody):JzzResponse<Unit>
+
+    @POST("/api/v1/afterSale/orderRefundList")
+    suspend fun getOrderRefundList(@Body body: BaseRequestBody):JzzResponse<OrderRefundListBean>
 }
