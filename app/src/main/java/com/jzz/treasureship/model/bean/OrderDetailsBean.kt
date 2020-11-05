@@ -144,6 +144,7 @@ class OrderDetailsBean(
     )
     {
         var mShopName: String? = "" // string
+        var isSelect = false
     }
     class ShopServer(
         @SerializedName("shopName")

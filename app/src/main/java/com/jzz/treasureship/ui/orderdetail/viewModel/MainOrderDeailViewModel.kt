@@ -20,10 +20,10 @@ class MainOrderDeailViewModel : BaseViewModel() {
 
     val mOrderDetailMsg = MutableLiveData<OrderDetailsBean>()
     val addCartResult = MutableLiveData<Boolean>()
-    fun getOrderDetail() {
+    fun getOrderDetail(orderId:Int) {
         launchTask("获取详情中") {
             withContext(Dispatchers.IO) {
-                HttpHelp.getRetrofit().getOrderDetail(BaseRequestBody(OrderDetailBody(644)))
+                HttpHelp.getRetrofit().getOrderDetail(BaseRequestBody(OrderDetailBody(orderId)))
                     .resultCheck {
                         mOrderDetailMsg.postValue(it)
                     }

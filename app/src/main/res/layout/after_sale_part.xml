@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/white"
+
     android:id="@+id/ll_after_part_parent"
     android:paddingStart="23dp"
     android:paddingBottom="23dp"
@@ -22,6 +24,14 @@
 
         android:layout_marginTop="13dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_after_sale_part"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+
+    </HorizontalScrollView>
 </LinearLayout
     >

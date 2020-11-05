@@ -11,12 +11,14 @@
     <include layout="@layout/include_title" />
 
     <ViewStub
+        android:id="@+id/vs_apply_refund"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout="@layout/after_sale_part" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
+        android:visibility="gone"
+        android:id="@+id/cl_apply_refund"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -26,7 +28,7 @@
         android:paddingBottom="8dp">
 
         <TextView
-            android:id="@+id/tv_apply_refund_shop_name"
+            android:id="@+id/tv_refund_item_shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ico_shop_name"
@@ -44,7 +46,7 @@
             android:layout_marginTop="13dp"
             android:src="@drawable/ic_clock_clocked"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_apply_refund_shop_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_refund_item_shop_name"
             app:qmui_border_color="@color/grey_cccccc"
             app:qmui_border_width="1dp"
             app:qmui_corner_radius="4dp" />
@@ -152,8 +154,8 @@
 
         <TextView
             android:id="@+id/tv_apply_refund_total_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="24dp"
             android:textColor="@color/red_cc0814"
             android:textSize="15dp"

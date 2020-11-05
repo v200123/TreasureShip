@@ -4,12 +4,14 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.jzz.treasureship.R
 import com.jzz.treasureship.model.bean.OrdersListBean
+import com.jzz.treasureship.ui.orderdetail.MainOrderDetailActivity
+import com.lc.mybaselibrary.start
 
-class OrdersVpAdapter(layoutResId: Int = R.layout.item_order)
-    : BaseBindAdapter<OrdersListBean.Data>(layoutResId){
+class OrdersVpAdapter(layoutResId: Int = R.layout.item_order) : BaseBindAdapter<OrdersListBean.Data>(layoutResId) {
     init {
         addChildClickViewIds(
             R.id.tv_go_pay,
@@ -131,8 +133,18 @@ class OrdersVpAdapter(layoutResId: Int = R.layout.item_order)
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             this.adapter = childAdapter
-            childAdapter.setList(item.mGoodsSkuList?.apply { forEach { it.shopName =item.mShopName }})
+            childAdapter.setList(item.mGoodsSkuList?.apply { forEach { it.shopName = item.mShopName } })
             childAdapter.notifyDataSetChanged()
+        }
+
+        childAdapter.setOnItemClickListener { baseQuickAdapter: BaseQuickAdapter<*, *>, view: View, i: Int ->
+
+            context.start<MainOrderDetailActivity> {
+                putExtra(
+                    MainOrderDetailActivity.EXTRA_ORDER,
+                    item.mOrderId
+                )
+            }
         }
 
         if (item.mPayMoney == 0.0f) {

@@ -77,8 +77,6 @@ class OrderRefundFragment : BaseVMFragment<OrderRefundViewModel>() {
             layoutManager = LinearLayoutManager(mContext)
             adapter = mAdapter
         }
-
-
     }
 
     override fun initData() {

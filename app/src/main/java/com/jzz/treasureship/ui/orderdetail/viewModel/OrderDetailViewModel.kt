@@ -13,4 +13,11 @@ class OrderDetailViewModel : ViewModel() {
 
     var singleOrderInfo: OrderDetailsBean.GoodsSku? = null
 
+
+    var mingleOrderInfo = listOf<OrderDetailsBean.GoodsSku>()
+
+    set(value) {
+        singleOrderInfo = null
+        field = value
+    }
 }

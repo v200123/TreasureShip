@@ -1,6 +1,5 @@
 package com.jzz.treasureship.ui.orderdetail
 
-import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -47,15 +46,20 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
     }
 
     override fun initData() {
-        mViewModel.getOrderDetail()
+        mViewModel.getOrderDetail(mOrderDetailViewModel.id)
     }
 
     override fun startObserve() {
         mViewModel.mOrderDetailMsg.observe(this) {
-            setBottomButton(it.mOrderStatus, it.mGoodsSkuList?.size ?: 0)
+            setBottomButton(
+                it.mOrderStatus,
+                it.mGoodsSkuList?.size ?: 0,
+                it.mGoodsSkuList,
+                it.mShopServerList?.get(0)?.mShopName ?: "未知"
+            )
             showOrderSkuList(
                 it.mGoodsSkuList,
-                it.mShopServerList?.get(0)?.mShopName?:"未知",
+                it.mShopServerList?.get(0)?.mShopName ?: "未知",
                 it.mOrderNo,
                 it.mGoodsMoney,
                 it.mShippingMoney,
@@ -132,6 +136,7 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
     ) {
         var isFirst = true
         skuList?.forEach {
+
             ll_order_deatils_goods.addView(ItemOrderDetailView(it, shopName, orderNo, isFirst, mContext).apply {
                 setViewClickListener(R.id.tv_item_order_add_shop_car) {
                     mViewModel.addShopCart(this.mSkuId)
@@ -142,15 +147,23 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
                     mFragmentManager.commit {
                         addToBackStack("1")
                         hide(this@MainOrderDetailFragment)
-                        add(R.id.frame_content,AfterSaleFragment(),"AfterSaleFragment")
+                        add(R.id.frame_content, AfterSaleFragment(), "AfterSaleFragment")
                     }
-
                 }
-
+                setViewClickListener(R.id.tv_item_order_apply_refund) {
+                    mOrderDetailViewModel.singleOrderInfo = this
+                    mOrderDetailViewModel.singleOrderInfo!!.mShopName = shopName
+                    mFragmentManager.commit {
+                        addToBackStack("1")
+                        hide(this@MainOrderDetailFragment)
+                        add(R.id.frame_content, ApplyRefundFragment(), "ApplyRefundFragment")
+                    }
+                }
             })
             isFirst = false
         }
-        val totalParamars = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        val totalParamars =
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         totalParamars.setMargins(0, _9dp, 0, 0)
         //商品总额
         LeftAndRightView(mContext).apply {
@@ -210,14 +223,14 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
             val ViewParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, _1dp)
             ViewParams.setMargins(0, _14dp, 0, 0)
             layoutParams = ViewParams
-            setBackgroundColor(mContext.getResColor(R.color.red))
+            setBackgroundColor(mContext.getResColor(R.color.background_grey))
             ll_order_deatils_goods.addView(this)
         }
 
         LeftAndRightView(mContext).apply {
 
             mRightValue.run {
-                mTextMsg = "实付款：¥ ${realPrice}".toColorSpan(0 .. 3, Color.GREEN)
+                mTextMsg = "实付款：¥ ${realPrice}".toColorSpan(0 .. 3, mContext.getResColor(R.color.background_grey))
                 mTextBold = true
                 mTextColor = mContext.getResColor(R.color.red_cc0814)
                 mTextSize = 13f
@@ -232,7 +245,7 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
     /**
      * 用于控制底部按钮的显隐
      */
-    private fun setBottomButton(statue: Int, count: Int) {
+    private fun setBottomButton(statue: Int, count: Int, skuList: List<OrderDetailsBean.GoodsSku>?, shopName: String) {
         when (statue) {
 
             0 -> {
@@ -252,7 +265,14 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
             1 -> {
                 if (count > 1)
                     tv_order_detail_BatchRefund.visibility = View.VISIBLE
-                tv_order_detail_BatchRefund click { ToastUtils.showShort("我应该批量退货") }
+                tv_order_detail_BatchRefund click {
+                    mOrderDetailViewModel.mingleOrderInfo = skuList ?: arrayListOf()
+                    mOrderDetailViewModel.mingleOrderInfo.forEach { it.mShopName = shopName }
+                    mFragmentManager.commit {
+                        addToBackStack("4")
+                        replace(R.id.frame_content, ChoiceRefundFragment())
+                    }
+                }
             }
 
             2 -> {

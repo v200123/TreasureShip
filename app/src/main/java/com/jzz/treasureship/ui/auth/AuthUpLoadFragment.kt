@@ -311,7 +311,6 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false),EasyPermis
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == AuthenticationActivity.REQUEST_CAPTURE_CERT) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 val img = Uri.fromFile(tempFile)

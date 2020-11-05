@@ -16,7 +16,7 @@ class SubmitRefundBody(
     @SerializedName("orderId")
     var mOrderId: Int = 0, // 0
     @SerializedName("refundExplain")
-    var mRefundExplain: String = "", // string
+    var mRefundExplain: String? = "", // string
     @SerializedName("refundImages")
     var mRefundImages: String = "", // string
     @SerializedName("refundReasonId")

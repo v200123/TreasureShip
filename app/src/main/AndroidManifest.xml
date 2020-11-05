@@ -52,7 +52,11 @@
 
         </activity>
         <activity android:name=".ui.activity.MainActivity">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
 
+            </intent-filter>
         </activity>
         <activity android:name=".ui.register.RegisterActivity" />
 
@@ -90,11 +94,7 @@
 
         </activity>
         <activity android:name=".ui.orderdetail.MainOrderDetailActivity" >
-            <intent-filter >
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
 
-            </intent-filter>
         </activity>
         <!--        <activity android:name=".ui.activity.MainHomeFragment" >-->
         <!--        -->

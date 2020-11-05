@@ -9,11 +9,13 @@
 
     <include layout="@layout/include_title" />
     <ViewStub
+        android:id="@+id/viewStub"
         android:layout="@layout/after_sale_part"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <androidx.constraintlayout.widget.ConstraintLayout
-
+        android:visibility="gone"
+        android:id="@+id/cl_after_sale"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"

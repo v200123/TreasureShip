@@ -52,8 +52,6 @@ class AuthUpLoadViewModel : BaseViewModel() {
                 }
 
             }
-
-
     }
 
 

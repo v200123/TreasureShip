@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -24,6 +26,7 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.lxj.xpopup.XPopup
+import kotlinx.android.synthetic.main.after_sale_part.*
 import kotlinx.android.synthetic.main.fragment_apply_refund.*
 import kotlinx.android.synthetic.main.include_title.*
 
@@ -33,9 +36,9 @@ import kotlinx.android.synthetic.main.include_title.*
  **/
 class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
     val type by lazy { arguments?.getInt(RefundType) }
-    val mOrderDetailViewModel by activityViewModels<OrderDetailViewModel>()
-
-
+    private val mOrderDetailViewModel by activityViewModels<OrderDetailViewModel>()
+    private var mSkuIds = ""
+    private val mPhotoMap = mutableMapOf<View,String>()
     private var mReFundMsg: List<RefundMsg.data>? = null
 
     //    用于保存已选中的理由
@@ -62,9 +65,6 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
 
         tv_title.text = "申请退款"
 
-        // TODO: 2020/11/4 需要增加一个对ViewGroup监听的事件
-
-
         if (type == 2) {
             view9.visibility = View.VISIBLE
             fl_apply_refund_goods.visibility = View.VISIBLE
@@ -72,7 +72,8 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
 
         }
         mOrderDetailViewModel.singleOrderInfo?.let {
-            tv_apply_refund_shop_name.text = it.mShopName
+            cl_apply_refund.visibility = View.VISIBLE
+            tv_refund_item_shop_name.text = it.mShopName
             Glide.with(this).asDrawable().load(it.mSkuPicture)
                 .into(tv_item_order_list_image)
             tv_apply_refund_name.text = it.mGoodsName
@@ -80,10 +81,26 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
             tv_apply_refund_sku_price.text = "￥" + it.mPrice
             tv_apply_refund_count.text = "x ${it.mNum}"
             tv_apply_refund_total_price.text = "￥${it.mPayMoney}"
-        } ?: {
-
+        } ?: run {
+            vs_apply_refund.visibility = View.VISIBLE
+            var mTotalPrice = 0f
+            tv_refund_item_shop_name.text = mOrderDetailViewModel.mingleOrderInfo[0].mShopName
+            mOrderDetailViewModel.mingleOrderInfo.forEach {
+                mTotalPrice += it.mPayMoney!!
+                mSkuIds += "${it.mId},"
+                ll_after_sale_part.addView(
+                    layoutInflater.inflate(
+                        R.layout.item_after_sale_part,
+                        ll_after_sale_part,
+                        false
+                    ).apply {
+                        Glide.with(this@ApplyRefundFragment).asDrawable().load(it.mSkuPicture)
+                            .into(findViewById(R.id.iv_item_after_sale_part))
+                        findViewById<TextView>(R.id.tv_item_after_sale_part).text = "￥" + it.mPrice
+                    })
+            }
+            tv_apply_refund_total_price.text = "￥" + mTotalPrice
         }
-
     }
 
     override fun initData() {
@@ -94,10 +111,12 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
         mViewModel.refundMsg.observe(this) {
             mReFundMsg = it.mList.apply { get(0).isSelect = true }
         }
+        mViewModel.ImageResultData.observe(this){
+            ToastUtils.showShort("图片上传成功")
+        }
     }
 
     override fun initListener() {
-
         add_refund click {
             XPopup.Builder(mContext).asCustom(
                 DialogSimpleList(
@@ -121,12 +140,12 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
                 mOrderDetailViewModel.id,
                 type ?: 1,
                 mSelectMsg.mId,
-                mOrderDetailViewModel.singleOrderInfo!!.mId.toString()
+                mOrderDetailViewModel.singleOrderInfo?.run { id.toString() } ?: let { mSkuIds },
+                et_apply_refund_remark.text.toString(),mPhotoMap
             )
         }
         linearLayout2 click {
             XPopup.Builder(mContext)
-
                 .asCustom(
                     DialogHasSubmit(
                         mContext,
@@ -157,8 +176,7 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
                     val obtainMultipleResult = PictureSelector.obtainMultipleResult(data)
                     obtainMultipleResult.forEach {
                         ll_apply_refund_container
-                            .addView(
-                                layoutInflater.inflate(
+                            .addView(layoutInflater.inflate(
                                     R.layout.layout_imageview_close, ll_apply_refund_container, false
                                 ).apply {
                                     Glide.with(this@ApplyRefundFragment)
@@ -166,10 +184,13 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
                                         .into(findViewById(R.id.iv_layout_image))
                                     findViewById<ImageView>(R.id.iv_layout_image) click {
                                         ll_apply_refund_container.removeView(this)
+                                        mPhotoMap.remove(this)
                                         add_refund.visibility = View.VISIBLE
                                     }
+                                mPhotoMap[this] = it.realPath
                                 }, ll_apply_refund_container.childCount - 1
                             )
+
                     }
                     if (ll_apply_refund_container.childCount > 3) {
                         add_refund.visibility = View.GONE

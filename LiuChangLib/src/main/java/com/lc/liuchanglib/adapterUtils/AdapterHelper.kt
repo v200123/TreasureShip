@@ -41,8 +41,9 @@ fun BaseViewHolder.goneIf(@IdRes id: Int, goneIf: Boolean) {
     this.getView<View>(id).visibility = if (goneIf) View.GONE else View.VISIBLE
 }
 
-fun BaseViewHolder.setChecked(@IdRes id: Int, isCheck: Boolean) {
+fun BaseViewHolder.setChecked(@IdRes id: Int, isCheck: Boolean):BaseViewHolder {
     this.getView<CheckBox>(id).isChecked = isCheck
+    return this
 }
 
 

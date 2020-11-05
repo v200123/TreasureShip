@@ -61,6 +61,7 @@ class ItemOrderDetailView @JvmOverloads constructor(
             1 -> {
                 tv_item_order_add_shop_car.visibility = View.VISIBLE
                 tv_item_order_apply_refund.visibility = View.VISIBLE
+
             }
 
             8 -> {

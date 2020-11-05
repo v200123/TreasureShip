@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingStart="14dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="14dp"
+    android:paddingBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.lc.liuchanglib.cusotmView.noTouchCheckBox
+        android:id="@+id/cb_refund_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/shopcar_check_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_refund_item_shop_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:drawableStart="@drawable/ico_shop_name"-->
+<!--            android:gravity="center"-->
+<!--            android:text="贝利达官方自营店"-->
+<!--            android:textSize="14dp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/cb_refund_item"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.lc.liuchanglib.ShapeImageView
+        android:layout_marginStart="8dp"
+        android:id="@+id/tv_item_order_refund_list_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_clock_clocked"
+        app:layout_constraintStart_toEndOf="@+id/cb_refund_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:qmui_border_color="@color/grey_cccccc"
+        app:qmui_border_width="1dp"
+        app:qmui_corner_radius="4dp" />
+
+        <TextView
+            android:id="@+id/tv_item_order_refund_list_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:maxWidth="230dp"
+            android:maxLines="2"
+            android:textSize="13dp"
+            app:layout_constraintStart_toEndOf="@+id/tv_item_order_refund_list_image"
+            app:layout_constraintTop_toTopOf="@+id/tv_item_order_refund_list_image"
+            tools:text="【境外商品】贝利达Biorepeir德国进 口软毛刷贝利达Bio德国进口软毛刷..." />
+
+        <TextView
+            android:id="@+id/tv_item_order_refund_list_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF111111"
+            android:textSize="14dp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_item_order_refund_list_sku_price"
+            tools:text="x12" />
+
+        <TextView
+            android:id="@+id/tv_item_order_refund_list_sku"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#FF666666"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_item_order_refund_list_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_order_refund_list_name"
+            tools:text="成人护齿  |  单支装" />
+
+        <TextView
+            android:textColor="@color/red_cc0814"
+            android:id="@+id/tv_item_order_refund_list_sku_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_item_order_refund_list_sku"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_order_refund_list_sku"
+            tools:text="¥19.99" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lc.mybaselibrary.ShapeConstraintLayout
+    android:layout_marginEnd="12dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:shapeSolidColor="@color/white"
+    app:shapeCornersRadius="3dp"
+    app:shapeStrokeWidth="1dp"
+    app:shapeStrokeColor="@color/background_grey"
+    android:layout_width="80dp"
+    android:layout_height="80dp">
+
+    <ImageView
+        android:id="@+id/iv_item_after_sale_part"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.lc.mybaselibrary.ShapeTextView
+        android:gravity="center"
+        android:text="￥19.99"
+        android:textSize="10dp"
+        android:textColor="@color/red_cc0814"
+        app:shapeSolidColor="@color/background_grey_ffe4e4e4"
+        app:shapeCornersBottomLeftRadius="3dp"
+        app:shapeCornersBottomRightRadius="3dp"
+        android:id="@+id/tv_item_after_sale_part"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_item_after_sale_part" />
+</com.lc.mybaselibrary.ShapeConstraintLayout>

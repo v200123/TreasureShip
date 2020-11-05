@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <include layout="@layout/include_title" />
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="54dp"
+            android:id="@+id/srl_refund_orders_shops"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_refund_orders_list"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                />
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <FrameLayout
+            android:layout_gravity="bottom"
+            android:id="@+id/ll_refund_orders_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:layout_gravity="start|center_vertical"
+                android:id="@+id/cb__refund_orders_all_inner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:button="@drawable/shopcar_check_selector"
+                android:text="全选"
+                android:textColor="#FF333333"
+                android:textSize="12sp" />
+
+
+            <com.lc.mybaselibrary.ShapeTextView
+
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="21dp"
+                app:shapeSolidColor="@color/blue_normal"
+                app:shapeCornersRadius="20dp"
+                android:id="@+id/tv_refund_orders_confirm"
+                android:layout_width="116dp"
+                android:layout_height="40dp"
+                android:background="@color/blue_light"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="确认"
+                android:textColor="@color/white" />
+        </FrameLayout>
+
+
+</FrameLayout>
