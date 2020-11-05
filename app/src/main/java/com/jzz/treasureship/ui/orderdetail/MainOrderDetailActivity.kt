@@ -23,10 +23,10 @@ class MainOrderDetailActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mOrderDetailViewModel.id = intent.getIntExtra(EXTRA_ORDER,644)
-        supportFragmentManager.commit {
-            add(R.id.frame_content, MainOrderDetailFragment(),"MainOrderDetailFragment")
-        }
+//        mOrderDetailViewModel.id = intent.getIntExtra(EXTRA_ORDER,644)
+//        supportFragmentManager.commit {
+//            add(R.id.frame_content, MainOrderDetailFragment(),"MainOrderDetailFragment")
+//        }
 
 
     }

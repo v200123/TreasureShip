@@ -14,9 +14,9 @@ class TextActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportFragmentManager.commit {
-            add(R.id.frame_content, ApplyRefundFragment())
-        }
+//        supportFragmentManager.commit {
+//            add(R.id.frame_content, ApplyRefundFragment())
+//        }
     }
 
 }

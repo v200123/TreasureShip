@@ -8,6 +8,7 @@ import com.jzz.treasureship.model.bean.BaseRequestBody
 import com.jzz.treasureship.model.bean.RefundMsg
 import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.ui.orderdetail.requestbody.RefundMsgBody
+import com.jzz.treasureship.ui.orderdetail.requestbody.SubmitRefundBody
 import com.jzz.treasureship.utils.out
 import com.lc.mybaselibrary.ErrorState
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,6 @@ class ApplyRefundViewModel : BaseViewModel() {
     fun getRefundInformation(type: Int) {
 
         launchTask {
-
             HttpHelp.getRetrofit().getRefundMsg(BaseRequestBody(RefundMsgBody(type))).resultCheck {
                 refundMsg.postValue(it)
             }
@@ -58,20 +58,20 @@ class ApplyRefundViewModel : BaseViewModel() {
             }
             async.await()
             async1.await().out()
-//            HttpHelp.getRetrofit().submitRefundMsg(
-//                BaseRequestBody(
-//                    SubmitRefundBody(
-//                        mRefundReasonId = refundResult,
-//                        mRefundType = refundType,
-//                        mOrderId = orderId,
-//                        mOrderGoodsIds = skuId,
-//                        mRefundExplain = refundExplain,
-//                        mRefundImages = mPhotoString
-//                    )
-//                )
-//            ).resultCheck {
-//
-//            }
+            HttpHelp.getRetrofit().submitRefundMsg(
+                BaseRequestBody(
+                    SubmitRefundBody(
+                        mRefundReasonId = refundResult,
+                        mRefundType = refundType,
+                        mOrderId = orderId,
+                        mOrderGoodsIds = skuId,
+                        mRefundExplain = refundExplain,
+                        mRefundImages = mPhotoString
+                    )
+                )
+            ).resultCheck {
+
+            }
         }
 
     }
