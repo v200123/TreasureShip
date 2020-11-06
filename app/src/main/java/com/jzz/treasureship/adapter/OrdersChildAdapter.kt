@@ -11,11 +11,11 @@ class OrdersChildAdapter (layoutResId: Int = R.layout.item_order_goods) :
 
     override fun convert(holder: BaseViewHolder, item: OrdersListBean.Data.GoodsSku) {
 
-        Glide.with(holder.itemView.context).load(item.imageUrl).into(holder.getView(R.id.iv_goods))
-        holder.setText(R.id.tv_goods_name, item.name)
+        Glide.with(holder.itemView.context).load(item.mSkuPicture).into(holder.getView(R.id.iv_goods))
+        holder.setText(R.id.tv_goods_name, item.mGoodsName)
         holder.setText(R.id.tv_orderGoods_name, item.shopName)
-        holder.setText(R.id.tv_goods_num,item.attrValue)
-        holder.setText(R.id.tv_goods_price, "¥${item.price}")
-        holder.setText(R.id.tv_goods_buyCount, "x ${item.count}")
+        holder.setText(R.id.tv_goods_num,item.mAttrValue)
+        holder.setText(R.id.tv_goods_price, "¥${item.mPrice}")
+        holder.setText(R.id.tv_goods_buyCount, "x ${item.mNum}")
     }
 }

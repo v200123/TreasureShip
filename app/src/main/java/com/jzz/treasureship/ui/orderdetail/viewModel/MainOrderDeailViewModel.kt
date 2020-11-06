@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.jzz.treasureship.base.BaseViewModel
 import com.jzz.treasureship.model.api.HttpHelp
 import com.jzz.treasureship.model.bean.BaseRequestBody
+import com.jzz.treasureship.model.bean.Order
 import com.jzz.treasureship.model.bean.OrderDetailsBean
 import com.jzz.treasureship.ui.orderdetail.requestbody.OrderDetailBody
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,7 @@ class MainOrderDeailViewModel : BaseViewModel() {
 
     val mOrderDetailMsg = MutableLiveData<OrderDetailsBean>()
     val addCartResult = MutableLiveData<Boolean>()
+    val orderResult = MutableLiveData<Order>()
     fun getOrderDetail(orderId:Int) {
         launchTask("获取详情中") {
             withContext(Dispatchers.IO) {
@@ -50,5 +52,21 @@ class MainOrderDeailViewModel : BaseViewModel() {
         }
     }
 
+
+    fun ensureOrderReceived(orderId:Int){
+        launchTask {
+            val root = JSONObject()
+            val body = JSONObject()
+
+            body.put("id", orderId)
+
+            root.put("body", body)
+            val requestBody = root.toString().toRequestBody("application/json".toMediaTypeOrNull())
+           HttpHelp.getRetrofit().sureReceived(requestBody).resultCheck {
+               orderResult.value = it
+           }
+        }
+
+    }
 
 }

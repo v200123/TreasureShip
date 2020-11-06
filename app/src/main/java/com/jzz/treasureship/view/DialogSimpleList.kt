@@ -14,7 +14,7 @@ import com.xuexiang.xui.widget.layout.XUILinearLayout
  *@describe:
  *@Auth: 29579
  **/
-class DialogSimpleList(context: Context, var list: Array<String>) : BottomPopupView(context) {
+class DialogSimpleList(context: Context, var mutableList:  MutableList<String>) : BottomPopupView(context) {
     override fun getImplLayoutId(): Int {
         return  R.layout.dialog_simple_list
     }
@@ -25,11 +25,11 @@ class DialogSimpleList(context: Context, var list: Array<String>) : BottomPopupV
         super.onCreate()
         findViewById<XUILinearLayout>(R.id.xll_radius_01).apply {
             setOnClickListener {  this@DialogSimpleList.dismiss()}
-            list.forEachIndexed { i: Int, s: String ->
+            mutableList.forEachIndexed { i: Int, s: String ->
                 val commonView =
                     LayoutInflater.from(context).inflate(R.layout.common_simple_text, this, false)
                 commonView.findViewById<TextView>(R.id.tv_common_simple_text).text = s
-                if(i == list.size -1)
+                if(i == mutableList.size -1)
                 {
                     commonView.findViewById<View>(R.id.common_simple_view).visibility = View.GONE
                 }

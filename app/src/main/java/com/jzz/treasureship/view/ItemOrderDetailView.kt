@@ -36,7 +36,7 @@ class ItemOrderDetailView @JvmOverloads constructor(
         tv_item_order_name.text =if(orderDetailSku.mGoodsType == 1) "【境外商品】${orderDetailSku.mGoodsName}" else orderDetailSku.mGoodsName
         tv_item_order_list_sku.text = orderDetailSku.mAttrValue
         tv_item_order_list_count.text = "x${orderDetailSku.mNum}"
-        tv_item_order_list_sku_price.text = orderDetailSku.mPrice.toString()
+        tv_item_order_list_sku_price.text = "¥ "+orderDetailSku.mPrice
     }
 
     private fun showShopName(shopName: String?,shopNo:String, needShowShop: Boolean) {
@@ -55,7 +55,7 @@ class ItemOrderDetailView @JvmOverloads constructor(
            block(orderDetailSku)
        }
    }
-
+    //0、待付款1、待发货2、已发货3、已收货、8、已完成9、退款中10、已退款11、已关闭 12、退款不通过
     private fun showButton(orderDetailSku: OrderDetailsBean.GoodsSku) {
         when (orderDetailSku.mOrderStatus) {
             1 -> {

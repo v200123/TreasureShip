@@ -15,6 +15,7 @@ import com.jzz.treasureship.GlideEngine
 import com.jzz.treasureship.R
 import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.RefundMsg
+import com.jzz.treasureship.model.bean.UploadImgBean
 import com.jzz.treasureship.ui.orderdetail.viewModel.ApplyRefundViewModel
 import com.jzz.treasureship.ui.orderdetail.viewModel.OrderDetailViewModel
 import com.jzz.treasureship.view.DialogHasSubmit
@@ -29,6 +30,8 @@ import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.after_sale_part.*
 import kotlinx.android.synthetic.main.fragment_apply_refund.*
 import kotlinx.android.synthetic.main.include_title.*
+import q.rorbin.badgeview.DisplayUtil
+import java.io.File
 
 /**
  *@PackageName: com.jzz.treasureship.ui.orderdetail
@@ -38,7 +41,7 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
     val type by lazy { arguments?.getInt(RefundType) }
     private val mOrderDetailViewModel by activityViewModels<OrderDetailViewModel>()
     private var mSkuIds = ""
-    private val mPhotoMap = mutableMapOf<View,String>()
+    private val mPhotoList = mutableListOf<UploadImgBean>()
     private var mReFundMsg: List<RefundMsg.data>? = null
 
     //    用于保存已选中的理由
@@ -111,8 +114,37 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
         mViewModel.refundMsg.observe(this) {
             mReFundMsg = it.mList.apply { get(0).isSelect = true }
         }
-        mViewModel.ImageResultData.observe(this){
+        mViewModel.ImageResultData.observe(this) {
             ToastUtils.showShort("图片上传成功")
+
+            ll_apply_refund_container
+                .addView(
+                    layoutInflater.inflate(
+                        R.layout.layout_imageview_close, ll_apply_refund_container, false
+                    ).apply {
+                        Glide.with(this@ApplyRefundFragment)
+                            .asDrawable()
+                            .override(DisplayUtil.dp2px(mContext,74f))
+                            .load(it.url)
+                            .into(findViewById(R.id.iv_layout_image))
+
+
+                        findViewById<ImageView>(R.id.iv_layout_close) click {
+                            val indexOfChild = ll_apply_refund_container.indexOfChild(this)
+                            mPhotoList.removeAt(indexOfChild)
+                            ll_apply_refund_container.removeView(this)
+                            add_refund.visibility = View.VISIBLE
+                        }
+                    }, ll_apply_refund_container.childCount - 1
+                )
+            if (ll_apply_refund_container.childCount > 3) {
+                add_refund.visibility = View.GONE
+            }
+            mPhotoList.add(it)
+        }
+
+        mViewModel.refundResultData.observe(this) {
+            ToastUtils.showShort("申请上传成功${it.mId}")
         }
     }
 
@@ -121,7 +153,7 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
             XPopup.Builder(mContext).asCustom(
                 DialogSimpleList(
                     mContext,
-                    arrayOf("从手机相册选择", "拍摄")
+                    mutableListOf("从手机相册选择", "拍摄")
                 ).apply {
                     click = {
                         if (it == 0) {
@@ -136,12 +168,22 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
         }
 
         tv_apply_refund_submit click {
+            var photoListString = ""
+
+            mPhotoList.forEachIndexed { i, bean ->
+                if (i != mPhotoList.size - 1) {
+                    photoListString += "${bean.url},"
+                } else {
+                    photoListString += bean.url
+                }
+
+            }
             mViewModel.submitMsg(
                 mOrderDetailViewModel.id,
                 type ?: 1,
                 mSelectMsg.mId,
-                mOrderDetailViewModel.singleOrderInfo?.run { id.toString() } ?: let { mSkuIds },
-                et_apply_refund_remark.text.toString(),mPhotoMap
+                mOrderDetailViewModel.singleOrderInfo?.run { mId.toString() } ?: let { mSkuIds },
+                et_apply_refund_remark.text.toString(), photoListString
             )
         }
         linearLayout2 click {
@@ -174,32 +216,17 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
             when (requestCode) {
                 PictureConfig.CHOOSE_REQUEST, PictureConfig.REQUEST_CAMERA -> {
                     val obtainMultipleResult = PictureSelector.obtainMultipleResult(data)
-                    obtainMultipleResult.forEach {
-                        ll_apply_refund_container
-                            .addView(layoutInflater.inflate(
-                                    R.layout.layout_imageview_close, ll_apply_refund_container, false
-                                ).apply {
-                                    Glide.with(this@ApplyRefundFragment)
-                                        .load(it.path)
-                                        .into(findViewById(R.id.iv_layout_image))
-                                    findViewById<ImageView>(R.id.iv_layout_image) click {
-                                        ll_apply_refund_container.removeView(this)
-                                        mPhotoMap.remove(this)
-                                        add_refund.visibility = View.VISIBLE
-                                    }
-                                mPhotoMap[this] = it.realPath
-                                }, ll_apply_refund_container.childCount - 1
-                            )
 
-                    }
-                    if (ll_apply_refund_container.childCount > 3) {
-                        add_refund.visibility = View.GONE
+                    obtainMultipleResult.forEach {
+                        mViewModel.uploadImg(File(it.realPath))
                     }
                 }
 
             }
         }
     }
+
+
 
 
     private fun gotoCamera() {
@@ -214,7 +241,7 @@ class ApplyRefundFragment : BaseVMFragment<ApplyRefundViewModel>() {
         PictureSelector.create(this)
             .openGallery(PictureMimeType.ofImage())
             .isWebp(true)
-            .maxSelectNum(3)
+            .maxSelectNum(1)
             .minSelectNum(1)
             .imageEngine(GlideEngine().createGlideEngine()) // Please refer to the Demo GlideEngine.java
             .forResult(PictureConfig.CHOOSE_REQUEST);

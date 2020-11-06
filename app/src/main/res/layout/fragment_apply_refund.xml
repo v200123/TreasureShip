@@ -185,6 +185,7 @@
             tools:text="退款金额" />
 
         <EditText
+            android:paddingStart="0dp"
             android:autofillHints="输入退款说明，选填"
             android:hint="输入退款说明，选填"
             android:id="@+id/et_apply_refund_remark"

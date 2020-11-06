@@ -176,7 +176,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false),EasyPermis
                     XPopup.Builder(mContext).asCustom(
                         DialogSimpleList(
                             mContext,
-                            arrayOf(mList[0].mTitle, mList[1].mTitle)
+                            mutableListOf(mList[0].mTitle, mList[1].mTitle)
                         ).apply {
                             click = {
                                 if (it == 0) {
@@ -245,7 +245,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false),EasyPermis
         XPopup.Builder(mContext).asCustom(
             DialogSimpleList(
                 mContext,
-                arrayOf("从手机相册选择", "拍摄")
+                mutableListOf("从手机相册选择", "拍摄")
             ).apply {
                 click = {
                     if (it == 0) {
@@ -265,7 +265,7 @@ class AuthUpLoadFragment : BaseVMFragment<AuthUpLoadViewModel>(false),EasyPermis
         XPopup.Builder(mContext).asCustom(
             DialogSimpleList(
                 mContext,
-                arrayOf("删除", "查看大图", "从手机相册选择", "拍摄")
+                mutableListOf("删除", "查看大图", "从手机相册选择", "拍摄")
             ).apply {
                 click = {
                     if (it == 0) {

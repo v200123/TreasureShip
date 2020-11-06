@@ -1,5 +1,7 @@
 package com.jzz.treasureship.ui.orders
 
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -24,13 +26,24 @@ class OrderRefundFragment : BaseVMFragment<OrderRefundViewModel>() {
             R.layout.item_order_refund_list,
             object : AdapterHelper.ViewHolderConverter<OrderRefundListBean.Data> {
                 override fun convert(helper: BaseViewHolder, item: OrderRefundListBean.Data) {
-                    val goodsSku = item.mGoodsSkuList[0]
-                    helper.setText(
-                        R.id.tv_item_order_name,
-                        if (goodsSku.mGoodsType == 1) "【境外商品】${goodsSku.mGoodsName}" else goodsSku.mGoodsName
-                    ).setText(R.id.tv_item_order_list_sku, goodsSku.mAttrValue)
-                        .setText(R.id.tv_item_order_list_sku_price, "¥${goodsSku.mSkuPicture}")
-                        .setText(R.id.tv_item_order_list_count, "x ${goodsSku.mNum}")
+
+                    val mRefundContainer = helper.getView<LinearLayout>(R.id.ll_order_refund_list)
+                    mRefundContainer.removeAllViews()
+                item.mGoodsSkuList.forEach {goodsSku->
+                        mRefundContainer.addView(   layoutInflater.inflate(R.layout.item_item_order_refund_list,mRefundContainer,false).apply {
+                           findViewById<TextView>(R.id.tv_item_order_name).text = if (goodsSku.mGoodsType == 1) "【境外商品】${goodsSku.mGoodsName}" else goodsSku.mGoodsName
+                           findViewById<TextView>(R.id.tv_item_order_list_sku).text = goodsSku.mAttrValue
+                           findViewById<TextView>(R.id.tv_item_order_list_sku_price).text = "¥${goodsSku.mGoodsMoney}"
+                           findViewById<TextView>(R.id.tv_item_order_list_count).text = "x ${goodsSku.mNum}"
+                        }  )
+                    }
+                    helper.setText(R.id.tv_refund_point, "${item.mRefundStatusDesc}")
+
+//                        R.id.tv_item_order_name,
+//                        if (goodsSku.mGoodsType == 1) "【境外商品】${goodsSku.mGoodsName}" else goodsSku.mGoodsName
+//                    ).setText(R.id.tv_item_order_list_sku, goodsSku.mAttrValue)
+//                        .setText(R.id.tv_item_order_list_sku_price, "¥${goodsSku.mGoodsMoney}")
+//                        .setText(R.id.tv_item_order_list_count, "x ${goodsSku.mNum}")
 
                     helper.getView<LeftAndRightView>(R.id.tv_item_order_list_name).apply {
                         getLeftBuild().mTextMsg = item.mShopName

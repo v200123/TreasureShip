@@ -60,15 +60,14 @@ class AfterSaleFragment : BaseVMFragment<BaseViewModel>() {
         layout_refund click {
             mFragmentManager.commit {
                 addToBackStack("2")
-                hide(this@AfterSaleFragment)
-                add(R.id.frame_content, ApplyRefundFragment.newInstance(1))
+
+                replace(R.id.frame_content, ApplyRefundFragment.newInstance(1))
             }
         }
         layout_refundAndReturnOfGoods click {
             mFragmentManager.commit {
                 addToBackStack("2")
-                hide(this@AfterSaleFragment)
-                add(R.id.frame_content, ApplyRefundFragment.newInstance(2))
+                replace(R.id.frame_content, ApplyRefundFragment.newInstance(2))
             }
 
         }

@@ -87,8 +87,7 @@ class OrderDetailsBean(
             }
             9 -> {
                 imageview?.setImageDrawable(context?.getResDrawable(R.drawable.icon_order_sent))
-
-                "交易成功"
+                "退款中"
             }
             10 -> {
                 "已退款"

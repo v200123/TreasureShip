@@ -3,11 +3,13 @@ package com.jzz.treasureship.ui.orderdetail
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
@@ -30,9 +32,33 @@ import kotlinx.android.synthetic.main.include_title.*
  *@Description: 选择批量退款的商品  **/
 class ChoiceRefundFragment : Fragment(R.layout.fragment_choice_refund_orders), FragmentBackHandler {
 
+    companion object {
+
+        const val EXTRA_CHoiceStatus = "com.ChoiceRefund.statue"
+
+        fun newInstance(statue: Int) = ChoiceRefundFragment().apply {
+            arguments = Bundle().apply { putInt(EXTRA_CHoiceStatus, statue) }
+        }
+
+    }
+
 
     private lateinit var mContext: Context
     val mOrderDetailViewModel by activityViewModels<OrderDetailViewModel>()
+    private val mObserver by lazy {
+        object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                cb__refund_orders_all_inner.isChecked = mAdapter.data.all { it.isSelect }
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                super.onItemRangeChanged(positionStart, itemCount)
+                cb__refund_orders_all_inner.isChecked = mAdapter.data.all { it.isSelect }
+            }
+        }
+    }
+
     private val mAdapter by lazy {
         AdapterHelper.getAdapter(
             R.layout.item_choice_refund_orders,
@@ -81,21 +107,38 @@ class ChoiceRefundFragment : Fragment(R.layout.fragment_choice_refund_orders), F
             mOrderDetailViewModel.mingleOrderInfo[i].isSelect = !mOrderDetailViewModel.mingleOrderInfo[i].isSelect
             baseQuickAdapter.notifyItemChanged(i)
         }
+
+        mAdapter.registerAdapterDataObserver(mObserver)
     }
 
     private fun initClickListener() {
+        cb__refund_orders_all_inner click { view ->
+            mAdapter.data.forEach { it.isSelect = (view as CheckBox).isChecked }
+            mAdapter.notifyDataSetChanged()
+        }
+
         tv_refund_orders_confirm click {
             mOrderDetailViewModel.mingleOrderInfo.asSequence()
                 .filter { it.isSelect }
                 .takeIf { it.count() > 0 }?.run {
-                    if(this.count() ==1)
+                    if (this.count() == 1)
                         mOrderDetailViewModel.singleOrderInfo = this.toList()[0]
                     else {
                         mOrderDetailViewModel.mingleOrderInfo = this.toList()
                     }
-                    (mContext as AppCompatActivity).supportFragmentManager.commit {
-                        hide(this@ChoiceRefundFragment)
-                        add(R.id.frame_content, AfterSaleFragment())
+
+                    if (arguments?.getInt(EXTRA_CHoiceStatus) == 1) {
+                        (mContext as AppCompatActivity).supportFragmentManager.commit {
+                            addToBackStack("4")
+                            hide(this@ChoiceRefundFragment)
+                            add(R.id.frame_content, ApplyRefundFragment())
+                        }
+                    } else {
+                        (mContext as AppCompatActivity).supportFragmentManager.commit {
+                            addToBackStack("4")
+                            hide(this@ChoiceRefundFragment)
+                            add(R.id.frame_content, AfterSaleFragment())
+                        }
                     }
                 } ?: run {
                 ToastUtils.showShort("请选择售后商品")
@@ -108,6 +151,18 @@ class ChoiceRefundFragment : Fragment(R.layout.fragment_choice_refund_orders), F
             context as AppCompatActivity,
             mContext.getResColor(R.color.white)
         )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mAdapter.unregisterAdapterDataObserver(mObserver)
+    }
+
+
+
+    override fun onDetach() {
+        super.onDetach()
+
     }
 
 }

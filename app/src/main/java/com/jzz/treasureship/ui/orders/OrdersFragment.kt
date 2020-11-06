@@ -99,7 +99,7 @@ class OrdersFragment : BaseVMFragment<OrdersViewModel>() {
         val mAdapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
 
-                return if(position !=3) OrdersVpFragment.newInstance(position)
+                return if(position !=4) OrdersVpFragment.newInstance(position)
                 else{
                     OrderRefundFragment()
                 }

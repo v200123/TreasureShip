@@ -16,7 +16,7 @@ class OrderRefundListBean(
 ) {
     class Data(
         @SerializedName("actualRefundMoney")
-        var mActualRefundMoney: Int = 0, // 0
+        var mActualRefundMoney: Float = 0f, // 0
         @SerializedName("createTime")
         var mCreateTime: String = "", // string
         @SerializedName("goodsNum")
@@ -26,7 +26,7 @@ class OrderRefundListBean(
         @SerializedName("refundId")
         var mRefundId: Int = 0, // 0
         @SerializedName("refundMoney")
-        var mRefundMoney: Int = 0, // 0
+        var mRefundMoney:Float = 0f, // 0
         @SerializedName("refundNo")
         var mRefundNo: String = "", // string
         @SerializedName("refundStatus")
@@ -44,7 +44,7 @@ class OrderRefundListBean(
             @SerializedName("goodsId")
             var mGoodsId: Int = 0, // 0
             @SerializedName("goodsMoney")
-            var mGoodsMoney: Int = 0, // 0
+            var mGoodsMoney:Float = 0f, // 0
             @SerializedName("goodsName")
             var mGoodsName: String = "", // string
             @SerializedName("goodsType")
@@ -58,11 +58,11 @@ class OrderRefundListBean(
             @SerializedName("orderStatus")
             var mOrderStatus: Int = 0, // 0
             @SerializedName("payMoney")
-            var mPayMoney: Int = 0, // 0
+            var mPayMoney: Float = 0f, // 0
             @SerializedName("price")
-            var mPrice: Int = 0, // 0
+            var mPrice: Float = 0f, // 0
             @SerializedName("returnPoint")
-            var mReturnPoint: Int = 0, // 0
+            var mReturnPoint: Float = 0f, // 0
             @SerializedName("shopId")
             var mShopId: Int = 0, // 0
             @SerializedName("skuId")

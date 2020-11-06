@@ -87,7 +87,6 @@ class TraceFragment : BaseVMFragment<TraceViewModel>() {
             }
         } else {
             ToastUtils.showShort("当前未登录，请登录后再重新操作！")
-            //startActivity(Intent(context, LoginActivity::class.java))
         }
     }
 

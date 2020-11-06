@@ -1,5 +1,7 @@
 package com.jzz.treasureship.ui.orderdetail
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -12,12 +14,15 @@ import com.jzz.treasureship.base.BaseVMFragment
 import com.jzz.treasureship.model.bean.OrderDetailsBean
 import com.jzz.treasureship.ui.orderdetail.viewModel.MainOrderDeailViewModel
 import com.jzz.treasureship.ui.orderdetail.viewModel.OrderDetailViewModel
+import com.jzz.treasureship.ui.trace.TraceFragment
+import com.jzz.treasureship.view.DialogSimpleList
 import com.jzz.treasureship.view.ItemOrderDetailView
 import com.lc.liuchanglib.cusotmView.LeftAndRightView
 import com.lc.liuchanglib.ext.click
 import com.lc.liuchanglib.ext.toColorSpan
 import com.lc.mybaselibrary.ext.getResColor
 import com.lc.mybaselibrary.ext.getResString
+import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.fragment_main_order_detail.*
 import kotlinx.android.synthetic.main.include_title.*
 import q.rorbin.badgeview.DisplayUtil
@@ -48,14 +53,39 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
     override fun initData() {
         mViewModel.getOrderDetail(mOrderDetailViewModel.id)
     }
-
+    //0、待付款1、待发货2、已发货3、已收货、8、已完成9、退款中10、已退款11、已关闭 12、退款不通过
     override fun startObserve() {
+
+        mViewModel.orderResult.observe(this){
+            ToastUtils.showShort("确认收货")
+        mViewModel.getOrderDetail(mOrderDetailViewModel.id)
+        }
         mViewModel.mOrderDetailMsg.observe(this) {
+            val title = arrayListOf<String>()
+            it.mShopServerList?.forEach { title.add(it.mShopName ?: "") }
+            iv_order_detail_call_phone click { view ->
+
+                XPopup.Builder(mContext).asCustom(
+                    DialogSimpleList(
+                        mContext,
+                        title
+                    ).apply {
+                        click = { i ->
+                            val data =
+                                Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + it.mShopServerList!![i].mShopPhone))
+                            mContext.startActivity(data)
+                            this.dismiss()
+                        }
+                    }
+                ).show()
+            }
+
             setBottomButton(
                 it.mOrderStatus,
                 it.mGoodsSkuList?.size ?: 0,
                 it.mGoodsSkuList,
-                it.mShopServerList?.get(0)?.mShopName ?: "未知"
+                it.mShopServerList?.get(0)?.mShopName ?: "未知",
+                it.mId!!
             )
             showOrderSkuList(
                 it.mGoodsSkuList,
@@ -121,6 +151,9 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
             ClipboardUtils.copyText(tv_order_detail_number.text.removePrefix("订单编号: "))
             ToastUtils.showShort("粘贴成功")
         }
+
+
+
     }
 
     /**
@@ -230,7 +263,7 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
         LeftAndRightView(mContext).apply {
 
             mRightValue.run {
-                mTextMsg = "实付款：¥ ${realPrice}".toColorSpan(0 .. 3, mContext.getResColor(R.color.background_grey))
+                mTextMsg = "实付款：¥ ${realPrice}".toColorSpan(0 .. 3, mContext.getResColor(R.color.Home_text_normal))
                 mTextBold = true
                 mTextColor = mContext.getResColor(R.color.red_cc0814)
                 mTextSize = 13f
@@ -241,11 +274,11 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
 
 
     }
-
+//0、待付款1、待发货2、已发货3、已收货、8、已完成 9、退款中 10、已退款 11、已关闭 12、退款不通过
     /**
      * 用于控制底部按钮的显隐
      */
-    private fun setBottomButton(statue: Int, count: Int, skuList: List<OrderDetailsBean.GoodsSku>?, shopName: String) {
+    private fun setBottomButton(statue: Int, count: Int, skuList: List<OrderDetailsBean.GoodsSku>?, shopName: String,orderId:Int) {
         when (statue) {
 
             0 -> {
@@ -256,11 +289,15 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
 
             8 -> {
                 tv_lookup_logistics.visibility = View.VISIBLE
+                tv_lookup_logistics click { mFragmentManager.commit {
+                    addToBackStack("6")
+                    hide(this@MainOrderDetailFragment)
+                    add(R.id.frame_content, TraceFragment.newInstance(orderId), "TraceFragment")
+                } }
             }
 
             11 -> {
                 tv_restart_buy.visibility = View.VISIBLE
-
             }
             1 -> {
                 if (count > 1)
@@ -270,19 +307,38 @@ class MainOrderDetailFragment : BaseVMFragment<MainOrderDeailViewModel>() {
                     mOrderDetailViewModel.mingleOrderInfo.forEach { it.mShopName = shopName }
                     mFragmentManager.commit {
                         addToBackStack("4")
-                        replace(R.id.frame_content, ChoiceRefundFragment())
+                        replace(R.id.frame_content, ChoiceRefundFragment.newInstance(1))
                     }
                 }
             }
 
             2 -> {
+                if (count > 1)
+                    tv_order_detail_BatchRefund.visibility = View.GONE
+//                tv_order_detail_BatchRefund click {
+//                    mOrderDetailViewModel.mingleOrderInfo = skuList ?: arrayListOf()
+//                    mOrderDetailViewModel.mingleOrderInfo.forEach { it.mShopName = shopName }
+//                    mFragmentManager.commit {
+//                        addToBackStack("4")
+//                        replace(R.id.frame_content, ChoiceRefundFragment.newInstance(2))
+//                    }
+//                }
                 tv_ensureGet.visibility = View.VISIBLE
+
+                tv_ensureGet click {
+                    mViewModel.ensureOrderReceived(orderId)
+                }
+
                 tv_lookup_logistics.visibility = View.VISIBLE
                 tv_lookup_logistics.layoutParams =
                     (tv_lookup_logistics.layoutParams as FrameLayout.LayoutParams).apply {
                         marginEnd = DisplayUtil.dp2px(mContext, 100f)
                     }
-                tv_lookup_logistics click { ToastUtils.showShort("我应该查看物流") }
+                tv_lookup_logistics click { mFragmentManager.commit {
+                    addToBackStack("6")
+                    hide(this@MainOrderDetailFragment)
+                    add(R.id.frame_content, TraceFragment.newInstance(orderId), "TraceFragment")
+                } }
             }
 
         }

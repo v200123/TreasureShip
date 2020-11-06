@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 <ImageView
+    android:layout_marginTop="8dp"
     android:src="@drawable/icon_upload_add"
     android:layout_width="74dp"
     android:layout_height="74dp"/>
@@ -12,7 +13,7 @@
         android:layout_marginBottom="7dp"
         android:textSize="10dp"
         android:layout_gravity="bottom|center_horizontal"
-        tools:text = "sdfsdfsdfsdf"
+       android:text = "最多三张"
         android:id="@+id/tv_add_image_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

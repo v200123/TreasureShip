@@ -133,7 +133,7 @@ class OrdersVpAdapter(layoutResId: Int = R.layout.item_order) : BaseBindAdapter<
                 it.orientation = LinearLayoutManager.VERTICAL
             }
             this.adapter = childAdapter
-            childAdapter.setList(item.mGoodsSkuList?.apply { forEach { it.shopName = item.mShopName } })
+            childAdapter.setList(item.mGoodsSkuList?.apply { forEach { it.shopName = item.mShopName?:"未知" } })
             childAdapter.notifyDataSetChanged()
         }
 
